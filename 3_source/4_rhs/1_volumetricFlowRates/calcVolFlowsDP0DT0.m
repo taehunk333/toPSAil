@@ -96,10 +96,10 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
         %If we are dealing with a constant pressure DAE model,
         if daeModCur(i,nS) == 0
 
-            %-------------------------------------------------------------%
-            %Unpack additional params
-            coefMat = params.coefMat{i,nS}{1};
-            %-------------------------------------------------------------%                        
+%             %-------------------------------------------------------------%
+%             %Unpack additional params
+%             coefMat = params.coefMat{i,nS}{1};
+%             %-------------------------------------------------------------%                        
             
             
             
@@ -122,7 +122,7 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
             rhsVec = -partCoefHp*cstrHt ...
                   ./ col.(sColNums{i}).gasConsTot ...
                   .* col.(sColNums{i}).adsRatSum;
-            rhsVec0 = rhsVec;
+%             rhsVec0 = rhsVec;
             %-------------------------------------------------------------%                                                 
 
             
@@ -151,10 +151,10 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                 
                 
                 
-                %---------------------------------------------------------%
-                %Update the right hand side vector
-                rhsVec0(:,1) = vFlBoRhs + rhsVec0(:,1);
-                %---------------------------------------------------------%
+%                 %---------------------------------------------------------%
+%                 %Update the right hand side vector
+%                 rhsVec0(:,1) = vFlBoRhs + rhsVec0(:,1);
+%                 %---------------------------------------------------------%
                 
                 
                 
@@ -170,7 +170,7 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                                - vFlMinus(:,j);
                       
                     %Determine the flow direction
-                    flowDir = round(heaviside(rhsVecEval));
+                    flowDir = (rhsVecEval >= 0);
                     
                     %Compute the pseudo volumetric flow rates
                     vFlPlus(:,j+1)  = rhsVecEval ...
@@ -178,7 +178,10 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                     vFlMinus(:,j+1) = (-1)*rhsVecEval ...
                                    .* (1-flowDir);
                     
-                end                              
+                end        
+                
+                vFlPlus0  = vFlPlus ;
+                vFlMinus0 = vFlMinus;
                 %---------------------------------------------------------%
                 
             %Else, we have a boundary condition at the product-end
@@ -202,10 +205,10 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                 
                 
                                 
-                %---------------------------------------------------------%
-                %Update the right hand side vector
-                rhsVec0(:,nVols) = -vFlBoRhs + rhsVec0(:,nVols);
-                %---------------------------------------------------------%
+%                 %---------------------------------------------------------%
+%                 %Update the right hand side vector
+%                 rhsVec0(:,nVols) = -vFlBoRhs + rhsVec0(:,nVols);
+%                 %---------------------------------------------------------%
                 
                 
                 
@@ -221,67 +224,67 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                                + vFlMinus(:,j+1);
                     
                     %Determine the flow direction
-                    flowDir = round(heaviside(rhsVecEval));
+                    flowDir = (rhsVecEval >= 0);
                     
                     %Compute the pseudo volumetric flow rates
-                    vFlPlus(:,j+1)  = (-1)*rhsVecEval ...
-                                   .* flowDir ;
-                    vFlMinus(:,j+1) = rhsVecEval ...
-                                   .* (1-flowDir);
+                    vFlPlus(:,j)  = (-1)*rhsVecEval ...
+                                 .* (1-flowDir) ;
+                    vFlMinus(:,j) = rhsVecEval ...
+                                 .* flowDir;
                     
-                end                              
+                end 
+                
+                vFlPlus0  = vFlPlus ;
+                vFlMinus0 = vFlMinus;
                 %---------------------------------------------------------%              
                 
             end
             
-            %Note that for an isothermal simulation, $\alpha_{n,n-1} \left( 
-            %t \right) = -1$ and $\alpha_{n,n} \left( t \right) = 1$,
-            %regardless of the flow direction.
             %-------------------------------------------------------------%                              
             
             
                                                                                                                      
-            %-------------------------------------------------------------%                              
-            %Solve for the unknown volumetric flow rates 
+%             %-------------------------------------------------------------%                              
+%             %Solve for the unknown volumetric flow rates 
+%             
+%             %Solve for dimensionless volumetric flow rates using a linear
+%             %solver           
+%             vFl0 = mldivide(coefMat, rhsVec0');            
+%             %-------------------------------------------------------------%                              
             
-            %Solve for dimensionless volumetric flow rates using a linear
-            %solver           
-            vFl0 = mldivide(coefMat, rhsVec0');            
-            %-------------------------------------------------------------%                              
             
             
-            
-            %-------------------------------------------------------------%                              
-            %Save the results
-            
-            %Concatenate the boundary conditions
-            
-            %If we have a boundary condition at the feed end 
-            if feEndBC == 1
-                
-                %We are specifying a volumetric flow rate at the feed-end
-                vFl0 = [vFlBoRhs, vFl0'];
-                
-            %Else, we have a boundary condition at the product end     
-            else
-                
-                %We are specifying a volumetric flow rate at the 
-                %product-end
-                vFl0 = [vFl0', vFlBoRhs];
-                
-            end
-            
-            %Save the volumetric flow rate calculated results
-            vFlCol0(:,(nVols+1)*(i-1)+1:(nVols+1)*i) = vFl0;
-            
-            %Call the helper function to calculate the pseudo volumetric 
-            %flow rates
-            [vPlus0,vMinus0] = calcPseudoVolFlows(vFlCol0); 
-            
-            %Save the pseudo volumetric flow rates
-            vFlPlus0(:,(nVols+1)*(i-1)+1:(nVols+1)*i)  = vPlus0 ;
-            vFlMinus0(:,(nVols+1)*(i-1)+1:(nVols+1)*i) = vMinus0;
-            %-------------------------------------------------------------%                              
+%             %-------------------------------------------------------------%                              
+%             %Save the results
+%             
+%             %Concatenate the boundary conditions
+%             
+%             %If we have a boundary condition at the feed end 
+%             if feEndBC == 1
+%                 
+%                 %We are specifying a volumetric flow rate at the feed-end
+%                 vFl0 = [vFlBoRhs, vFl0'];
+%                 
+%             %Else, we have a boundary condition at the product end     
+%             else
+%                 
+%                 %We are specifying a volumetric flow rate at the 
+%                 %product-end
+%                 vFl0 = [vFl0', vFlBoRhs];
+%                 
+%             end
+%             
+%             %Save the volumetric flow rate calculated results
+%             vFlCol0(:,(nVols+1)*(i-1)+1:(nVols+1)*i) = vFl0;
+%             
+%             %Call the helper function to calculate the pseudo volumetric 
+%             %flow rates
+%             [vPlus0,vMinus0] = calcPseudoVolFlows(vFlCol0); 
+%             
+%             %Save the pseudo volumetric flow rates
+%             vFlPlus0(:,(nVols+1)*(i-1)+1:(nVols+1)*i)  = vPlus0 ;
+%             vFlMinus0(:,(nVols+1)*(i-1)+1:(nVols+1)*i) = vMinus0;
+%             %-------------------------------------------------------------%                              
             
         %-----------------------------------------------------------------%
         
