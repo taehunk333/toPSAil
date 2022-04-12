@@ -188,6 +188,14 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
             
             %Save the volumetric flow rate calculated results
             vFlCol(:,(nVols+1)*(i-1)+1:(nVols+1)*i) = vFl;
+            
+            %Call the helper function to calculate the pseudo volumetric 
+            %flow rates
+            [vPlus,vMinus] = calcPseudoVolFlows(vFlCol); 
+            
+            %Save the pseudo volumetric flow rates
+            vFlPlus(:,(nVols+1)*(i-1)+1:(nVols+1)*i)  = vPlus ;
+            vFlMinus(:,(nVols+1)*(i-1)+1:(nVols+1)*i) = vMinus;
             %-------------------------------------------------------------%                              
             
         %-----------------------------------------------------------------%

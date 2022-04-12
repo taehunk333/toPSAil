@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/2/18/Friday
-%Code last modified on : 2022/4/11/Monday
+%Code last modified on : 2022/4/12/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -385,6 +385,14 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
 
                 %Save the volumetric flow rate calculated results
                 vFlCol(t,(nVols+1)*(i-1)+1:(nVols+1)*i) = vFl;
+                
+                %Call the helper function to calculate the pseudo volumetric 
+                %flow rates
+                [vPlus,vMinus] = calcPseudoVolFlows(vFlCol); 
+
+                %Save the pseudo volumetric flow rates
+                vFlPlus(:,(nVols+1)*(i-1)+1:(nVols+1)*i)  = vPlus ;
+                vFlMinus(:,(nVols+1)*(i-1)+1:(nVols+1)*i) = vMinus;
                 %---------------------------------------------------------%                                    
             
             end
