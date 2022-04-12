@@ -1,0 +1,124 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Project Sponsors :
+%U.S. Department of Energy 
+%American Institute of Chemical Engineers
+%Rapid Advancement in Process Intensification Deployment (RAPID) Institute
+%Center for Process Modeling (CPM)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Contributor(s) :
+%Department of Chemical and Biomolecular Engineering,
+%Georgia Institute of Technology,
+%311 Ferst Drive NW, Atlanta, GA 30332-0100.
+%Scott Research Group
+%https://www.jkscottresearchgroup.com/
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Project title :
+%Dynamic Modeling and Simulation of Pressure Swing Adsroption (PSA)
+%Process Systems
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Code by               : Taehun Kim
+%Review by             : Taehun Kim
+%Code created on       : 2021/1/13/Wednesday
+%Code last modified on : 2022/3/12/Saturday
+%Code last modified by : Taehun Kim
+%Model Release Number  : 3rd
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Function   : getMomentumBalanceParams.m
+%Source     : common
+%Description: given a user specified simulation parameters inside params,
+%             calculates important dimensionless groups and dimensionless
+%             functions that are relevant for the computations required in
+%             momentum balance of the system.
+%Inputs     : params       - a struct containing simulation parameters.
+%Outputs    : params       - a struct containing simulation parameters.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+function params = getMomentumBalanceParams(params)    
+    
+    %---------------------------------------------------------------------%    
+    %Define known quantities
+    
+    %Name the function ID
+    %funcId = 'getMomentumBalanceParams.m';
+    
+    %Unpack params
+    densFeGas    = params.densFeGas   ; 
+    viscFeGas    = params.viscFeGas   ;
+    diamPellet   = params.diamPellet  ;
+    modSp        = params.modSp       ;
+    volScaleFac  = params.volScaleFac ;
+    oneCstrHt    = params.oneCstrHt   ;
+    gasCons      = params.gasCons     ;
+    teScaleFac   = params.teScaleFac  ;
+    gConScaleFac = params.gConScaleFac;
+    crsAreaInCol = params.crsAreaInCol;
+    voidFracBed  = params.voidFracBed ;
+    %---------------------------------------------------------------------%                                                          
+    
+    
+        
+    %---------------------------------------------------------------------%                                                          
+    %Define relevant parameters for the momentum balance equation
+    
+    
+    if modSp(6) == 0
+        
+        %Print error message to select a momentum drop equation
+        msg = 'No axial pressure drop equation was selected.';
+        msg = append(funcId,': ',msg);
+        error(msg);
+    
+    %For using Carman-Kozeny equation
+    elseif modSp(6) == 1    
+        
+        %TBD
+    
+    %For using Ergun equation
+    elseif modSp(6) == 2
+        
+        %Define the dimensionless coefficient for the quadratic term in the
+        %dimensionless quadratic equation for the volumetric flow rate
+        %calculation
+        params.coefQuadNorm ...
+            = 1.75*10^(-6) ...
+            * densFeGas ...
+            / diamPellet ...
+            * volScaleFac^2 ...
+            * oneCstrHt ...
+            / gasCons ...
+            / teScaleFac ...
+            / gConScaleFac ...
+            / crsAreaInCol^2 ...
+            * (1-voidFracBed) ...
+            / voidFracBed^3;
+
+        %Define the dimensionless coefficient for the linear term in the
+        %dimensionless quadratic equation for the volumetric flow rate
+        %calculation
+        params.coefLinNorm ...
+            = 1.50*10^(-3) ...
+            * viscFeGas ...
+            / diamPellet^2 ...
+            * volScaleFac ...
+            * oneCstrHt ...
+            / gasCons ...
+            / teScaleFac ...
+            / gConScaleFac ...
+            / crsAreaInCol ...
+            * (1-voidFracBed)^2 ...
+            / voidFracBed^3;
+        
+    %Under development
+    else
+        
+        %Model under development
+        noteModelNotReady(6);
+    
+    end
+    %---------------------------------------------------------------------%                                                          
+    
+end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%End function
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
