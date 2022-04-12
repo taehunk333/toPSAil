@@ -267,7 +267,7 @@ function units = calcVolFlows4PFD(params,units,vFlPlus,vFlMinus,nS)
                      - (presRaTa/presBeHi);
         
             %Obtain the volumetric flow rate out of the check valve
-            vFlRaTa(t,(nCols+1)) = round(heaviside(testConc)) ...
+            vFlRaTa(t,(nCols+1)) = (testConc >= 0) ...
                                  * max(vFlNetRaTa(t),0);
 
     end
@@ -378,7 +378,7 @@ function units = calcVolFlows4PFD(params,units,vFlPlus,vFlMinus,nS)
                  - (presExTa/presBeHi);
 
         %Obtain the volumetric flow rate out of the check valve
-        vFlExTa(t,(nCols+1)) = round(heaviside(testConc)) ...
+        vFlExTa(t,(nCols+1)) = (testConc >= 0) ...
                              * max(vFlNetExTa(t),0);
        
     end
