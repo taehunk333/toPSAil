@@ -59,7 +59,7 @@ function yDot = defineRhsFunc(~,y,params)
     y = y(:).';
     %---------------------------------------------------------------------%                            
     
-    
+
     
     %---------------------------------------------------------------------%
     %Given a state vector, convert it to respective state variables

@@ -114,23 +114,12 @@ function params = getDimLessParams(params)
     valConNorm(valConNorm==valScaleFac) = 1;
     %---------------------------------------------------------------------%           
     
-    
-    
-    %---------------------------------------------------------------------%           
-    %Update the numerical array for indicating the status of the partition
-    %coefficients    
-    
-    %Get an initial numerical array for the partition coefficient
-    partCoef = partCoefHp*ones(nCols,nSteps);      
-    %---------------------------------------------------------------------%   
-    
-    
+
     
     %---------------------------------------------------------------------%   
     %Save computed quantities into a struct
     
     %Pack variables into params
-    params.partCoef      = partCoef     ;
     params.partCoefHp    = partCoefHp   ;    
     params.damkoNo       = damkoNo      ;
     params.gasConsNormEq = gasConsNormEq;

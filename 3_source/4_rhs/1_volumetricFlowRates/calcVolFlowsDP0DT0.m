@@ -49,15 +49,15 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
     %funcId = 'calcVolFlowsDP0DT0.m';
     
     %Unpack params   
-    nCols     = params.nCols    ; 
-    nVols     = params.nVols    ;        
-    vFlBo     = params.volFlBo  ;   
-    daeModCur = params.daeModel ;
-    cstrHt    = params.cstrHt   ; 
-    partCoef  = params.partCoef ;
-    sColNums  = params.sColNums ;
-    nRows     = params.nRows    ;
-    valConT   = params.valConT  ;
+    nCols      = params.nCols     ; 
+    nVols      = params.nVols     ;        
+    vFlBo      = params.volFlBo   ;   
+    daeModCur  = params.daeModel  ;
+    cstrHt     = params.cstrHt    ; 
+    partCoefHp = params.partCoefHp;
+    sColNums   = params.sColNums  ;
+    nRows      = params.nRows     ;
+    valConT    = params.valConT   ;
     
     %Unpack units
     col  = units.col ;
@@ -74,7 +74,6 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
     %A numeric array for the volumetric flow rates for the adsorption
     %columns
     vFlCol0 = zeros(nRows,nCols*(nVols+1));
-    vFlCol = zeros(nRows,nCols*(nVols+1));
     
     %Initialize numeric arrays for the pseudo volumetric flow rates for the
     %adsorption columns
@@ -120,11 +119,12 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
             
             %Multiply dimensionless total adsorption rates by the 
             %coefficients that are relevant for the step for ith column            
-            rhsVec0 = -partCoef(i,nS)*cstrHt ...
+            rhsVec = -partCoefHp*cstrHt ...
                   ./ col.(sColNums{i}).gasConsTot ...
-                  .* col.(sColNums{i}).adsRatSum;                                                     
+                  .* col.(sColNums{i}).adsRatSum;
+            rhsVec0 = rhsVec;
             %-------------------------------------------------------------%                                                 
-            
+
             
             
             %-------------------------------------------------------------%
@@ -134,14 +134,19 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
             if feEndBC == 1
                 
                 %---------------------------------------------------------%
-                %Unpack units and boundary conditions
-                
-                
-                
-                
+                %Get boundary conditions
+
                 %Take account for the boundary condition on the right hand 
                 %side vector
                 vFlBoRhs = vFlBo{2,i,nS}(params,col,feTa,raTa,exTa,nS,i);
+                
+                %Call the helper function to calculate the pseudo 
+                %volumetric flow rates
+                [vPlusBo,vMinusBo] = calcPseudoVolFlows(vFlBoRhs);
+                
+                %Update the pseudo volumetric flow rate matrices
+                vFlPlus(:,1)  = vPlusBo ;
+                vFlMinus(:,1) = vMinusBo;
                 %---------------------------------------------------------%
                 
                 
@@ -154,26 +159,45 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                 
                 
                 %---------------------------------------------------------%
+                %Calculate the pseudo volumetric flow rates
                 
-                
-                
-                
+                %For each CSTR,
+                for j = 1 : nVols
+                    
+                    %Update the right hand side vector
+                    rhsVecEval = rhsVec(:,j) ...
+                               + vFlPlus(:,j) ...
+                               - vFlMinus(:,j);
+                      
+                    %Determine the flow direction
+                    flowDir = round(heaviside(rhsVecEval));
+                    
+                    %Compute the pseudo volumetric flow rates
+                    vFlPlus(:,j+1)  = rhsVecEval ...
+                                   .* flowDir ;
+                    vFlMinus(:,j+1) = (-1)*rhsVecEval ...
+                                   .* (1-flowDir);
+                    
+                end                              
                 %---------------------------------------------------------%
                 
             %Else, we have a boundary condition at the product-end
             else
                 
                 %---------------------------------------------------------%
-                %Unpack units and boundary conditions
-                
-                
-                
-                
-                
+                %Get boundary conditions
                 
                 %Take account for the boundary condition on the right hand 
                 %side vector
                 vFlBoRhs = vFlBo{1,i,nS}(params,col,feTa,raTa,exTa,nS,i);
+                
+                %Call the helper function to calculate the pseudo 
+                %volumetric flow rates
+                [vPlusBo,vMinusBo] = calcPseudoVolFlows(vFlBoRhs);
+                
+                %Update the pseudo volumetric flow rate matrices
+                vFlPlus(:,nVols+1)  = vPlusBo ;
+                vFlMinus(:,nVols+1) = vMinusBo;
                 %---------------------------------------------------------%
                 
                 
@@ -186,13 +210,27 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                 
                 
                 %---------------------------------------------------------%
+                %Calculate the pseudo volumetric flow rates
                 
-                
-                
-                
-                
-                
-                %---------------------------------------------------------%                
+                %For each CSTR,
+                for j = nVols : -1 : 1
+                    
+                    %Update the right hand side vector
+                    rhsVecEval = rhsVec(:,j) ...
+                               - vFlPlus(:,j+1) ...
+                               + vFlMinus(:,j+1);
+                    
+                    %Determine the flow direction
+                    flowDir = round(heaviside(rhsVecEval));
+                    
+                    %Compute the pseudo volumetric flow rates
+                    vFlPlus(:,j+1)  = (-1)*rhsVecEval ...
+                                   .* flowDir ;
+                    vFlMinus(:,j+1) = rhsVecEval ...
+                                   .* (1-flowDir);
+                    
+                end                              
+                %---------------------------------------------------------%              
                 
             end
             
@@ -283,7 +321,7 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
             
             %Get the first order difference between adjacent columns of the
             %total adsorption rates for the current ith column            
-            rhsVec0 = -partCoef(i,nS) ...
+            rhsVec0 = -partCoefHp...
                   ./ col.(sColNums{i}).gasConsTot(:,2:nVols) ...
                   .* diff(col.(sColNums{i}).adsRatSum,1,2);
                              
