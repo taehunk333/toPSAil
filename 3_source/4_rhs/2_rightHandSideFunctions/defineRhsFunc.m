@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/14/Thursday
-%Code last modified on : 2022/3/14/Monday
+%Code last modified on : 2022/4/11/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -90,9 +90,6 @@ function yDot = defineRhsFunc(~,y,params)
     %Based on the volumetric flow function handle, obtain the corresponding
     %volumetric flow rates associated with the adsorption columns
     units = funcVol(params,units,nS);
-    
-    %DUPLICATE units
-    units0 = units;
     %---------------------------------------------------------------------%                      
     
         
@@ -106,15 +103,12 @@ function yDot = defineRhsFunc(~,y,params)
         
         %Do the column mole balance
         units = getColMoleBal(params,units);                    
-        units0 = getColMoleBal0(params,units0,nS); 
         
         %Do the column energy balance                                  
-        units = getColEnerBal(params,units); 
-        units0 = getColEnerBal0(params,units0,nS); 
+        units = getColEnerBal(params,units);  
 
         %Do the column cumulate flow calculations
         units = getColCuMolBal(params,units);
-        units0 = getColCuMolBal0(params,units0,nS);
         %-----------------------------------------------------------------%
 
         
@@ -124,15 +118,12 @@ function yDot = defineRhsFunc(~,y,params)
 
         %Do the feed tank mole balance      
         units = getFeTaMoleBal(params,units,nS);       
-        units0 = getFeTaMoleBal0(params,units0,nS); 
 
         %Do the feed tank energy balance               
-        units = getFeTaEnerBal(params,units);    
-        units0 = getFeTaEnerBal0(params,units0);   
+        units = getFeTaEnerBal(params,units);      
         
         %Do the feed tank cumulative flow calculations
         units = getFeTaCuMolBal(params,units);
-        units0 = getFeTaCuMolBal0(params,units0);
         %-----------------------------------------------------------------%
         
         
@@ -142,19 +133,15 @@ function yDot = defineRhsFunc(~,y,params)
     
         %Do the raffinate product tank mole balance      
         units = getRaTaMoleBal(params,units,nS);
-        units0 = getRaTaMoleBal0(params,units0,nS);
 
         %Do the raffinate product tank energy balance             
         units = getRaTaEnerBal(params,units,nS);
-        units0 = getRaTaEnerBal0(params,units0,nS);
         
         %Do the raffinate product tank cumulative flow calculations 
         units = getRaTaCuMolBal(params,units);
-        units0 = getRaTaCuMolBal0(params,units0);
         
         %Get the right hand side expression for the raffinate waste streams
         units = getRaWaCuMolBal(params,units,nS);
-        units0 = getRaWaCuMolBal0(params,units0,nS);
         %-----------------------------------------------------------------%
         
         
@@ -164,19 +151,15 @@ function yDot = defineRhsFunc(~,y,params)
         
         %Do the extract product tank mole balance     
         units = getExTaMoleBal(params,units,nS);
-        units0 = getExTaMoleBal0(params,units0,nS);
 
         %Do the extract product tank energy balance             
         units = getExTaEnerBal(params,units,nS);
-        units0 = getExTaEnerBal0(params,units0,nS);
         
         %Do the extract product tank cumulative flow calculations
         units = getExTaCuMolBal(params,units);
-        units0 = getExTaCuMolBal0(params,units0);
         
         %Get the right hand side expression for the extract waste streams
         units = getExWaCuMolBal(params,units,nS);
-        units0 = getExWaCuMolBal0(params,units0,nS);
         %-----------------------------------------------------------------%
         
         
@@ -186,7 +169,6 @@ function yDot = defineRhsFunc(~,y,params)
         
         %Get the right hand side expression for feed compression work rate
         units = getCompWorkRate(params,units);
-        units0 = getCompWorkRate0(params,units0);
         %-----------------------------------------------------------------%
         
         
@@ -197,7 +179,6 @@ function yDot = defineRhsFunc(~,y,params)
         %Get the right hand side expression for vacuum depressurization 
         %work rate
         units = getVacWorkRate(params,units,nS); 
-        units0 = getVacWorkRate0(params,units0,nS); 
         %-----------------------------------------------------------------%                               
         
     %---------------------------------------------------------------------%
@@ -212,9 +193,6 @@ function yDot = defineRhsFunc(~,y,params)
     %produce the final output (a column vector) for the right hand side 
     %function
     yDot = getRhsFuncVals(params,units); 
-    yDot0 = getRhsFuncVals0(params,units0);  
-    
-    normVal = norm(yDot-yDot0,2)
     %---------------------------------------------------------------------%
     
 end
