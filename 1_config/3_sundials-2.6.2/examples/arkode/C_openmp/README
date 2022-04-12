@@ -1,0 +1,11 @@
+List of OpenMP ARKODE C examples
+
+  ark_brusselator1D_omp : stiff chemical kinetics PDE system example (DIRK/BAND)
+
+Sample results:
+
+  SUNDIALS was built with OpenMP enabled, and the example output was run using 4 OpenMP threads:
+ 
+  BASH/SH:   export OMP_NUM_THREADS=4
+  TCSH/CSH:  setenv OMP_NUM_THREADS 4
+
