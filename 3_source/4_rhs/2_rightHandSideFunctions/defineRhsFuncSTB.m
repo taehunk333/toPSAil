@@ -50,12 +50,11 @@ function [yDot,flag,params] = defineRhsFuncSTB(~,y,params)
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'defineRhsFunc.m';    
+    %funcId = 'defineRhsFuncSTB.m';    
     
     %Unpack params              
     funcVol = params.funcVol;
     nS      = params.nS     ;
-    nCy     = params.nCy    ;
     %---------------------------------------------------------------------%                            
     
     
@@ -67,41 +66,40 @@ function [yDot,flag,params] = defineRhsFuncSTB(~,y,params)
     y = y(:).';
     %---------------------------------------------------------------------%                            
     
-    
+
     
     %---------------------------------------------------------------------%
     %Given a state vector, convert it to respective state variables
     %associated with each columns and tanks    
     
     %Create an object for the columns
-    col = makeColumns(params,y);
+    units.col = makeColumns(params,y);
     
     %Create an object for the feed tanks
-    feTa = makeFeedTank(params,y);
+    units.feTa = makeFeedTank(params,y);
     
     %Create an object for the raffinate product tanks
-    raTa = makeRaffTank(params,y);  
+    units.raTa = makeRaffTank(params,y);  
     
     %Create an object for the extract product tanks
-    exTa = makeExtrTank(params,y);  
-    
-    %Update col by including interaction between units down or upstream
-    col = makeCol2Interact(params,col,feTa,raTa,exTa,nS);
-    %---------------------------------------------------------------------%                      
+    units.exTa = makeExtrTank(params,y); 
+    %---------------------------------------------------------------------%
     
     
     
     %---------------------------------------------------------------------%
-    %Calculate associated volumetric flow rates for the currently
-    %interacting units in the flow sheet
+    %Define the inter-unit interactions in a given process flow diagram    
+    
+    %Update adsorption column structures to contain interactions between 
+    %units down or upstream
+    units = makeCol2Interact(params,units,nS);
     
     %Based on the volumetric flow function handle, obtain the corresponding
     %volumetric flow rates associated with the adsorption columns
-    [col,feTa,raTa,exTa,raWa,exWa] = ...
-        funcVol(params,col,feTa,raTa,exTa,nS,nCy);
-    %---------------------------------------------------------------------% 
+    units = funcVol(params,units,nS);
+    %---------------------------------------------------------------------%                      
     
-    
+        
     
     %---------------------------------------------------------------------%
     %Evaluate the time derivatives of the state variables based on the
@@ -110,14 +108,14 @@ function [yDot,flag,params] = defineRhsFuncSTB(~,y,params)
         %-----------------------------------------------------------------%
         %Adsorption Columns
         
-        %Do the column mole balance (always)
-        col = getColMoleBal(params,col,feTa,raTa,exTa,raWa,exWa,nS,nCy);                    
+        %Do the column mole balance
+        units = getColMoleBal(params,units);                    
         
-        %Do the column energy balance (only when asked)                                      
-        col = getColEnerBal(params,col,feTa,raTa,exTa,raWa,exWa,nS,nCy);    
+        %Do the column energy balance                                  
+        units = getColEnerBal(params,units);  
 
-        %Do the column cumulate flow calculations (always)
-        col = getColCuMolBal(params,col,feTa,raTa,exTa,raWa,exWa,nS,nCy);
+        %Do the column cumulate flow calculations
+        units = getColCuMolBal(params,units);
         %-----------------------------------------------------------------%
 
         
@@ -125,14 +123,14 @@ function [yDot,flag,params] = defineRhsFuncSTB(~,y,params)
         %-----------------------------------------------------------------%
         %Feed Tank
 
-        %Do the feed tank mole balance (always)        
-        feTa = getFeTaMoleBal(params,col,feTa,raTa,exTa,raWa,exWa,nS,nCy);       
+        %Do the feed tank mole balance      
+        units = getFeTaMoleBal(params,units,nS);       
 
-        %Do the feed tank energy balance (only when asked)                     
-        feTa = getFeTaEnerBal(params,col,feTa,raTa,exTa,raWa,exWa,nS,nCy);    
+        %Do the feed tank energy balance               
+        units = getFeTaEnerBal(params,units);      
         
-        %Do the feed tank cumulative flow calculations (always)
-        feTa = getFeTaCuMolBal(params,col,feTa,raTa,exTa,raWa,exWa,nS,nCy);
+        %Do the feed tank cumulative flow calculations
+        units = getFeTaCuMolBal(params,units);
         %-----------------------------------------------------------------%
         
         
@@ -140,18 +138,17 @@ function [yDot,flag,params] = defineRhsFuncSTB(~,y,params)
         %-----------------------------------------------------------------%
         %Raffinate Product Tank    
     
-        %Do the raffinate product tank mole balance (always)      
-        raTa = getRaTaMoleBal(params,col,feTa,raTa,exTa,raWa,exWa,nS,nCy);
+        %Do the raffinate product tank mole balance      
+        units = getRaTaMoleBal(params,units,nS);
 
-        %Do the raffinate product tank energy balance (only when asked)              
-        raTa = getRaTaEnerBal(params,col,feTa,raTa,exTa,raWa,exWa,nS,nCy);
+        %Do the raffinate product tank energy balance             
+        units = getRaTaEnerBal(params,units,nS);
         
         %Do the raffinate product tank cumulative flow calculations 
-        %(always)
-        raTa = getRaTaCuMolBal(params,col,feTa,raTa,exTa,raWa,exWa,nS,nCy);
+        units = getRaTaCuMolBal(params,units);
         
         %Get the right hand side expression for the raffinate waste streams
-        raWa = getRaWaCuMolBal(params,col,feTa,raTa,exTa,raWa,exWa,nS,nCy);
+        units = getRaWaCuMolBal(params,units,nS);
         %-----------------------------------------------------------------%
         
         
@@ -159,17 +156,17 @@ function [yDot,flag,params] = defineRhsFuncSTB(~,y,params)
         %-----------------------------------------------------------------%
         %Extract Tank
         
-        %Do the extract product tank mole balance (always)      
-        exTa = getExTaMoleBal(params,col,feTa,raTa,exTa,raWa,exWa,nS,nCy);
+        %Do the extract product tank mole balance     
+        units = getExTaMoleBal(params,units,nS);
 
-        %Do the extract product tank energy balance (only when asked)              
-        exTa = getExTaEnerBal(params,col,feTa,raTa,exTa,raWa,exWa,nS,nCy);
+        %Do the extract product tank energy balance             
+        units = getExTaEnerBal(params,units,nS);
         
-        %Do the extract product tank cumulative flow calculations (always)
-        exTa = getExTaCuMolBal(params,col,feTa,raTa,exTa,raWa,exWa,nS,nCy);
+        %Do the extract product tank cumulative flow calculations
+        units = getExTaCuMolBal(params,units);
         
         %Get the right hand side expression for the extract waste streams
-        exWa = getExWaCuMolBal(params,col,feTa,raTa,exTa,raWa,exWa,nS,nCy);
+        units = getExWaCuMolBal(params,units,nS);
         %-----------------------------------------------------------------%
         
         
@@ -178,7 +175,7 @@ function [yDot,flag,params] = defineRhsFuncSTB(~,y,params)
         %Compressor
         
         %Get the right hand side expression for feed compression work rate
-        comp = getCompWorkRate(params,col,feTa,raTa,exTa,raWa,exWa,nS,nCy);
+        units = getCompWorkRate(params,units);
         %-----------------------------------------------------------------%
         
         
@@ -188,7 +185,7 @@ function [yDot,flag,params] = defineRhsFuncSTB(~,y,params)
         
         %Get the right hand side expression for vacuum depressurization 
         %work rate
-        pump = getVacWorkRate(params,col,feTa,raTa,exTa,raWa,exWa,nS,nCy); 
+        units = getVacWorkRate(params,units,nS); 
         %-----------------------------------------------------------------%                               
         
     %---------------------------------------------------------------------%
@@ -202,7 +199,7 @@ function [yDot,flag,params] = defineRhsFuncSTB(~,y,params)
     %Put together the resulting right hand sides from conservation laws and
     %produce the final output (a column vector) for the right hand side 
     %function
-    yDot = getRhsFuncVals(params,col,feTa,raTa,exTa,raWa,exWa,comp,pump);          
+    yDot = getRhsFuncVals(params,units); 
     %---------------------------------------------------------------------%
     
     
