@@ -121,7 +121,7 @@ function col = makeColumns(params,states)
             
             %Assign the value of the sum of the adsorption rates into a
             %struct
-            col.(sColNums{i}).adsRatSum...
+            col.(sColNums{i}).adsRatSum ...
                 = col.(sColNums{i}).adsRatSum ...
                 + col.(sColNums{i}).adsRat.(sComNums{j});
             
@@ -133,7 +133,7 @@ function col = makeColumns(params,states)
         end    
         %-----------------------------------------------------------------% 
         
-    
+
                 
         %-----------------------------------------------------------------% 
         %Calculate overall heat capacities for all CSTRs for all adsorption

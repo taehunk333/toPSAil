@@ -172,6 +172,10 @@ function sol = runPsaCycle(params)
                 %---------------------------------------------------------%
                 %Simulate the step
                 
+                %Set the number of time points within the right hand side
+                %function
+                params.nRows = 1;
+                
                 %Run runPsaCycleStep.m
                 [stTimePts,stStates,flags] ...
                     = runPsaCycleStep(params,iStates,tDom,nS,nCy);
