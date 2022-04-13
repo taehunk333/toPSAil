@@ -101,8 +101,8 @@ function params = getEnergyBalanceParams(params)
     %Define the dimensionless ideal gas constant for an adsorption column
     %Ideal gas constant in [J/mol-K]. Since the area is in cm^2, we convert
     %it into m^2 by using the factor of 10,000.
-    params.gasConsNormCol = ((gasCons/10)*gConScaleFac*volScaleFac)...
-                          / (htTrCoInCol*crsAreaInCol/10000);
+    params.gConsNormCol = ((gasCons/10)*gConScaleFac*volScaleFac)...
+                        / (htTrCoInCol*crsAreaInCol/10000);
                    
     %Define the dimensionless ideal gas constant for an adsorption column
     %Ideal gas constant in [J/mol-K]. Since the area is in cm^2, we convert

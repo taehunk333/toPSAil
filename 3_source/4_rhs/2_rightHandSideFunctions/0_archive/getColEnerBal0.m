@@ -94,21 +94,21 @@ function units = getColEnerBal0(params,units,nS)
     %funcId = 'getColEnerBal0.m';
     
     %Unpack params    
-    nCols          = params.nCols         ;
-    nRows          = params.nRows         ;
-    nComs          = params.nComs         ;    
-    intHtTrFacCol  = params.intHtTrFacCol ;
-    extHtTrFacCol  = params.extHtTrFacCol ;
-    nVols          = params.nVols         ;     
-    isoStHtNorm    = params.isoStHtNorm   ;
-    partCoefHp     = params.partCoefHp    ;
-    gasConsNormCol = params.gasConsNormCol;
-    flowDir        = params.flowDir       ;
-    ambTempNorm    = params.ambTempNorm   ;
-    sColNums       = params.sColNums      ; 
-    sComNums       = params.sComNums      ;
-    cstrHt         = params.cstrHt        ;
-    htCapCpNorm    = params.htCapCpNorm   ;    
+    nCols         = params.nCols        ;
+    nRows         = params.nRows        ;
+    nComs         = params.nComs        ;    
+    intHtTrFacCol = params.intHtTrFacCol;
+    extHtTrFacCol = params.extHtTrFacCol;
+    nVols         = params.nVols        ;     
+    isoStHtNorm   = params.isoStHtNorm  ;
+    partCoefHp    = params.partCoefHp   ;
+    gConsNormCol  = params.gConsNormCol ;
+    flowDir       = params.flowDir      ;
+    ambTempNorm   = params.ambTempNorm  ;
+    sColNums      = params.sColNums     ; 
+    sComNums      = params.sComNums     ;
+    cstrHt        = params.cstrHt       ;
+    htCapCpNorm   = params.htCapCpNorm  ;    
     %---------------------------------------------------------------------%              
     
  
@@ -182,7 +182,7 @@ function units = getColEnerBal0(params,units,nS)
             %Calcualte the terms in the energy balance equation
             
             %Calcualte the vectorized terms
-            presDeltaEner = gasConsNormCol ...
+            presDeltaEner = gConsNormCol ...
                          .* Tnm0 ...
                          .* (cnm1.*vnm1 ...
                             -cnm0.*vnm0);
@@ -211,10 +211,10 @@ function units = getColEnerBal0(params,units,nS)
             
             %Take account for the pre-factors
             adsHeatEner = partCoefHp ...
-                       .* gasConsNormCol ...
+                       .* gConsNormCol ...
                        .* cstrHt ...
                        .* adsHeatEner;
-            convFlowEner = gasConsNormCol ...
+            convFlowEner = gConsNormCol ...
                         .* vnm1.*(Tnm1-Tnm0) ...
                         .* convFlowEner;
             %-------------------------------------------------------------%
@@ -273,7 +273,7 @@ function units = getColEnerBal0(params,units,nS)
             
             %Calcualte the vectorized terms
             presDeltaEner ...
-                = gasConsNormCol ...
+                = gConsNormCol ...
                .* Tnm0.*(cnm0.*vnm1-cnp1.*vnm0);
                         
             %Initialize the non-vectorized terms
@@ -300,10 +300,10 @@ function units = getColEnerBal0(params,units,nS)
             
             %Take account for the pre-factors
             adsHeatEner = partCoefHp ...
-                       .* gasConsNormCol ...
+                       .* gConsNormCol ...
                        .* cstrHt ...
                        .* adsHeatEner;
-            convFlowEner = gasConsNormCol ...
+            convFlowEner = gConsNormCol ...
                         .* vnm0.*(Tnm0-Tnp1) ...
                         .* convFlowEner;
             %-------------------------------------------------------------%
