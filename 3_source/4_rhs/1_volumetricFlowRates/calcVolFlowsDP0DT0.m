@@ -110,9 +110,7 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
             
             %Multiply dimensionless total adsorption rates by the 
             %coefficients that are relevant for the step for ith column            
-            rhsVec = -partCoefHp*cstrHt ...
-                  ./ col.(sColNums{i}).gasConsTot ...
-                  .* col.(sColNums{i}).adsRatSum;
+            rhsVec = -col.(sColNums{i}).volAdsRatTot;
             %-------------------------------------------------------------%                                                 
 
             
@@ -261,12 +259,10 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
             %DAE model
                           
             %Calculate the volumic adsorption rate terms
-            rateNm1 = partCoefHp ...
-                   .* col.(sColNums{i}).adsRatSum(:,1:nVols-1) ...
-                   ./ col.(sColNums{i}).gasConsTot(:,1:nVols-1);
-            rateNm0 = partCoefHp ...
-                   .* col.(sColNums{i}).adsRatSum(:,2:nVols) ...
-                   ./ col.(sColNums{i}).gasConsTot(:,2:nVols);
+            rateNm1 = col.(sColNums{i}).volAdsRatTot(:,1:nVols-1) ...
+                   ./ cstrHt(:,1:nVols-1);
+            rateNm0 = col.(sColNums{i}).volAdsRatTot(:,2:nVols) ...
+                   ./ cstrHt(:,2:nVols);
                       
             %Get the first order difference between adjacent columns of the
             %total adsorption rates for the current ith column            
@@ -296,7 +292,6 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
             options = optimoptions('linprog','Display','none', ...
                                    'Algorithm','interior-point');
                                             
-
             %Solve a linear program for each time point
             for j = 1 : nRows
                 
