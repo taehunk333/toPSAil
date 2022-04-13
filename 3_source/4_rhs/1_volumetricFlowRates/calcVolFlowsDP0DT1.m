@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/2/18/Friday
-%Code last modified on : 2022/4/12/Tuesday
+%Code last modified on : 2022/4/13/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -63,16 +63,20 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
     %funcId = 'calcVolFlowsDP0DT1.m';
     
     %Unpack params   
-    nCols     = params.nCols   ; 
-    nVols     = params.nVols   ;        
-    vFlBo     = params.volFlBo ;   
-    daeModCur = params.daeModel; 
-    sColNums  = params.sColNums;
-    nRows     = params.nRows   ;
-    flowDir   = params.flowDir ;
-    valConT   = params.valConT ;
-    nComs     = params.nComs   ;
-    sComNums  = params.sComNums;
+    nCols        = params.nCols       ; 
+    nVols        = params.nVols       ;        
+    vFlBo        = params.volFlBo     ;   
+    daeModCur    = params.daeModel    ; 
+    sColNums     = params.sColNums    ;
+    nRows        = params.nRows       ;
+    flowDir      = params.flowDir     ;
+    valConT      = params.valConT     ;
+    nComs        = params.nComs       ;
+    sComNums     = params.sComNums    ;
+    cstrHt       = params.cstrHt      ;
+    gConsNormCol = params.gConsNormCol;
+    htCapCvNorm  = params.htCapCvNorm ;
+    htCapCpNorm  = params.htCapCpNorm ; 
     
     %Unpack units
     col  = units.col ;
@@ -108,18 +112,6 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
         %-----------------------------------------------------------------%
         %If we are dealing with a constant pressure DAE model,
         if daeModCur(i,nS) == 0
-            
-            %-------------------------------------------------------------%
-            %Define needed quantities
-            
-            %Unpack additional params
-            cstrHt         = params.cstrHt        ;
-            gasConsNormCol = params.gasConsNormCol;
-            htCapCvNorm    = params.htCapCvNorm   ;
-            htCapCpNorm    = params.htCapCpNorm   ;                                    
-            %-------------------------------------------------------------%
-            
-            
            
             %-------------------------------------------------------------%
             %Decide which boundary condition is given
@@ -192,14 +184,14 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                 %Get the diagonal entries
                 coefnm1 = (-1) ...
                         * ((cnm1./cnm0) ...
-                        + gasConsNormCol ...
+                        + gConsNormCol ...
                        .* cstrHt ...
                        ./ htCOnm0 ...
                        .* termnm1);                                    
                 
                 %Get the diagonal entries
                 coefnm0 = 1 ...
-                        + gasConsNormCol ...
+                        + gConsNormCol ...
                        .* cstrHt ...
                        .* cnm0 ...
                        ./ htCOnm0;                                                                 
@@ -261,14 +253,14 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                 
                 %Get the diagonal entries
                 coefnm1 = (-1) ...
-                        * (1+gasConsNormCol ...
+                        * (1+gConsNormCol ...
                        .*  cstrHt ...
                        .*  cnm0 ...
                        ./  htCOnm0);                                    
                 
                 %Get the diagonal entries
                 coefnm0 = ((cnp1./cnm0) ...
-                        + gasConsNormCol ...
+                        + gConsNormCol ...
                        .* cstrHt ...
                        ./ htCOnm0 ...
                        .* termnp1);                                                                 
@@ -407,18 +399,6 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
         elseif daeModCur(i,nS) == 1
 
             %-------------------------------------------------------------%
-            %Define needed quantities
-            
-            %Unpack additional params
-            cstrHt         = params.cstrHt        ;
-            gasConsNormCol = params.gasConsNormCol;
-            htCapCvNorm    = params.htCapCvNorm   ;
-            htCapCpNorm    = params.htCapCpNorm   ;                                    
-            %-------------------------------------------------------------%
-
-                        
-            
-            %-------------------------------------------------------------%
             %Define the coefficients                   
             
             %For a co-current flow,
@@ -490,18 +470,18 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                 %Get the -1 diagonal entries
                 coefnm2 = (-1) ...
                         * (cnm2./cnm1./cstrHt(2:nVols) ...
-                        + gasConsNormCol./htCOnm0.*termnm2);                                    
+                        + gConsNormCol./htCOnm0.*termnm2);                                    
                 
                 %Get the diagonal entries
                 coefnm1 = (cnm1./cnm0./cstrHt(2:nVols) ...
                         + 1./cstrHt(1:nVols-1) ...
-                        + gasConsNormCol.*cnm1./htCOnm1 ...
-                        + gasConsNormCol./htCOnm0.*termnm1);                                    
+                        + gConsNormCol.*cnm1./htCOnm1 ...
+                        + gConsNormCol./htCOnm0.*termnm1);                                    
                 
                 %Get the +1 diagonal entries
                 coefnm0 = (-1) ...
                         * (1./cstrHt(2:nVols) ...
-                        +  gasConsNormCol.*cnm0./htCOnm0);                               
+                        +  gConsNormCol.*cnm0./htCOnm0);                               
                 %---------------------------------------------------------%                                                             
 
             %For a counter-current flow,
@@ -573,18 +553,18 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                 %Get the -1 diagonal entries
                 coefnm2 = (-1) ...
                         * (1./cstrHt(1:nVols-1) ...
-                        + gasConsNormCol.*cnm1./htCOnm1);                                    
+                        + gConsNormCol.*cnm1./htCOnm1);                                    
                 
                 %Get the diagonal entries
                 coefnm1 = (1./cstrHt(2:nVols) ...
                         + cnm0./cnm1./cstrHt(1:nVols-1) ...
-                        + gasConsNormCol.*cnm0./htCOnm0 ...
-                        + gasConsNormCol./htCOnm1.*termnm0);                                    
+                        + gConsNormCol.*cnm0./htCOnm0 ...
+                        + gConsNormCol./htCOnm1.*termnm0);                                    
                 
                 %Get the +1 diagonal entries
                 coefnm0 = (-1) ...
                         * (cnp1./cnm0./cstrHt(2:nVols) ...
-                        + gasConsNormCol./htCOnm0.*termnp1);                               
+                        + gConsNormCol./htCOnm0.*termnp1);                               
                 %---------------------------------------------------------% 
                 
             end

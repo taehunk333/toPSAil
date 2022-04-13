@@ -291,8 +291,12 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
             %Solve for the unknown volumetric flow rates
             
             %Set the option for linprog.m
-            options = optimoptions('linprog','Display','none');
-            
+            %1. 'interior-point' (faster in this case)
+            %2. 'dual-simplex' 
+            options = optimoptions('linprog','Display','none', ...
+                                   'Algorithm','interior-point');
+                                            
+
             %Solve a linear program for each time point
             for j = 1 : nRows
                 

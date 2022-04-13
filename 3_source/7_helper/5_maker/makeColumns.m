@@ -145,13 +145,13 @@ function col = makeColumns(params,states)
             
             %-------------------------------------------------------------%
             %Unpack additional params
-            gasConsNormCol = params.gasConsNormCol;
-            cstrHt         = params.cstrHt        ;
-            partCoefHp     = params.partCoefHp    ;
-            htCapSolNorm   = params.htCapSolNorm  ; 
-            htCapCvNorm    = params.htCapCvNorm   ;
-            htCapCpNorm    = params.htCapCpNorm   ;
-            isoStHtNorm    = params.isoStHtNorm   ;
+            gConsNormCol = params.gConsNormCol;
+            cstrHt       = params.cstrHt      ;
+            partCoefHp   = params.partCoefHp  ;
+            htCapSolNorm = params.htCapSolNorm; 
+            htCapCvNorm  = params.htCapCvNorm ;
+            htCapCpNorm  = params.htCapCpNorm ;
+            isoStHtNorm  = params.isoStHtNorm ;
             %-------------------------------------------------------------%
             
             
@@ -196,7 +196,7 @@ function col = makeColumns(params,states)
             end
             
             %Save the overall heat capacities into a struct
-            col.(sColNums{i}).htCO = gasConsNormCol ...
+            col.(sColNums{i}).htCO = gConsNormCol ...
                                   .* cstrHt ...
                                   .* htCO0;
             %-------------------------------------------------------------%
@@ -219,7 +219,7 @@ function col = makeColumns(params,states)
                 = (cstrHt./col.(sColNums{i}).htCO) ...
                .* ((col.(sColNums{i}).temps.wall ...
                   ./col.(sColNums{i}).temps.cstr-1) ...
-                  +(gasConsNormCol.*partCoefHp.*cstrHt) ...
+                  +(gConsNormCol.*partCoefHp.*cstrHt) ...
                  .*heatReleased);  
             %-------------------------------------------------------------%
             

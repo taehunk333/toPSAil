@@ -93,20 +93,20 @@ function units = getColEnerBal(params,units)
     %funcId = 'getColEnerBal.m';
     
     %Unpack params    
-    nCols          = params.nCols         ;
-    nRows          = params.nRows         ;
-    nComs          = params.nComs         ;    
-    intHtTrFacCol  = params.intHtTrFacCol ;
-    extHtTrFacCol  = params.extHtTrFacCol ;
-    nVols          = params.nVols         ;     
-    isoStHtNorm    = params.isoStHtNorm   ;
-    partCoefHp     = params.partCoefHp    ;
-    gasConsNormCol = params.gasConsNormCol;
-    ambTempNorm    = params.ambTempNorm   ;
-    sColNums       = params.sColNums      ; 
-    sComNums       = params.sComNums      ;
-    cstrHt         = params.cstrHt        ;
-    htCapCpNorm    = params.htCapCpNorm   ;    
+    nCols         = params.nCols        ;
+    nRows         = params.nRows        ;
+    nComs         = params.nComs        ;    
+    intHtTrFacCol = params.intHtTrFacCol;
+    extHtTrFacCol = params.extHtTrFacCol;
+    nVols         = params.nVols        ;     
+    isoStHtNorm   = params.isoStHtNorm  ;
+    partCoefHp    = params.partCoefHp   ;
+    gConsNormCol  = params.gConsNormCol ;
+    ambTempNorm   = params.ambTempNorm  ;
+    sColNums      = params.sColNums     ; 
+    sComNums      = params.sComNums     ;
+    cstrHt        = params.cstrHt       ;
+    htCapCpNorm   = params.htCapCpNorm  ;    
     %---------------------------------------------------------------------%              
     
  
@@ -278,7 +278,7 @@ function units = getColEnerBal(params,units)
         %adsorption column
         col.(sColNums{i}).cstrEnBal ... 
             = (col.(sColNums{i}).cstrEnBal ...
-              +gasConsNormCol ...
+              +gConsNormCol ...
               *(adsHeatGen ...
                +flEnerAbove ...
                +flEnerBelow ...

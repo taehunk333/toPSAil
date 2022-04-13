@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/24/Sunday
-%Code last modified on : 2022/4/11/Monday
+%Code last modified on : 2022/4/13/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -73,13 +73,10 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
     
     %A numeric array for the volumetric flow rates for the adsorption
     %columns
-    vFlCol0 = zeros(nRows,nCols*(nVols+1));
-    vFlCol = zeros(nRows,nCols*(nVols+1));
+    vFlCol = zeros(nRows,nCols*2*(nVols-1));
     
     %Initialize numeric arrays for the pseudo volumetric flow rates for the
     %adsorption columns
-    vFlPlus0  = zeros(nRows,nCols*(nVols+1));
-    vFlMinus0 = zeros(nRows,nCols*(nVols+1));
     vFlPlus  = zeros(nRows,nCols*(nVols+1));
     vFlMinus = zeros(nRows,nCols*(nVols+1));
     %---------------------------------------------------------------------% 
@@ -165,9 +162,6 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                                    .* (1-flowDir);
                     
                 end        
-                
-                vFlPlus0  = vFlPlus ;
-                vFlMinus0 = vFlMinus;
                 %---------------------------------------------------------%
                 
             %Else, we have a boundary condition at the product-end
@@ -212,13 +206,9 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                                  .* flowDir;
                     
                 end 
-                
-                vFlPlus0  = vFlPlus ;
-                vFlMinus0 = vFlMinus;
                 %---------------------------------------------------------%              
                 
-            end
-            
+            end            
             %-------------------------------------------------------------%                              
             
         %-----------------------------------------------------------------%
@@ -231,9 +221,9 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
 
             %-------------------------------------------------------------%
             %Unpack additional params
-            coefMatLo = params.coefMat{i,nS}{1}; %Lower triangular matrix
-            coefMatUp = params.coefMat{i,nS}{2}; %Upper triangular matrix
-            dTriDiag  = params.dTriDiag        ;
+            
+            %Unpack params
+            dTriDiag  = params.dTriDiag;
             %-------------------------------------------------------------%
 
 
@@ -269,23 +259,7 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
             %-------------------------------------------------------------%
             %Obtain the right hand side vector for time varying pressure
             %DAE model
-            
-            %Get the first order difference between adjacent columns of the
-            %total adsorption rates for the current ith column            
-            rhsVec0 = -partCoefHp...
-                  ./ col.(sColNums{i}).gasConsTot(:,2:nVols) ...
-                  .* diff(col.(sColNums{i}).adsRatSum,1,2);
-                             
-            %Add the feed-end boundary condition for the ith column in nS
-            %step in a given PSA cycle
-            rhsVec0(:,1) = rhsVec0(:,1) ...
-                         - vFlBoFe/cstrHt(1);
-                        
-            %Add the product-end boundary condition for the ith column in
-            %nS step in a given PSA cycle
-            rhsVec0(:,end) = rhsVec0(:,end) ...
-                          -  vFlBoPr/cstrHt(end);        
-            
+                          
             %Calculate the volumic adsorption rate terms
             rateNm1 = partCoefHp ...
                    .* col.(sColNums{i}).adsRatSum(:,1:nVols-1) ...
@@ -316,22 +290,21 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
             %-------------------------------------------------------------%
             %Solve for the unknown volumetric flow rates
             
-            %Solve L(Ux)=b for y where Ly=b with y = Ux            
-            vFl0 = mldivide(coefMatLo,rhsVec0');
-
-            %Solve Ux = y for x                                  
-            vFl0 = mldivide(coefMatUp,vFl0);
-            
             %Set the option for linprog.m
-            options = optimoptions('linprog','Display','none');
-            
+            options = optimoptions('linprog','Display','none', ...
+                                   'linprog','Algorithm','interior-point');
+                                            %1. 'interior-point'
+                                            %2. 'dual-simplex’
+                                            %3. 'active-set’
+                                            %4. 'simplex’
+
             %Solve a linear program for each time point
             for j = 1 : nRows
                 
                 %Solve the LP using linprog.m
-                vFlCol() ...
+                vFlCol(j,2*(nVols-1)*(i-1)+1:2*(nVols-1)*i) ...
                     = linprog(ones(1,2*(nVols-1)), ...
-                             [], ...
+                              [], ...
                               [], ...
                               dTriDiag, ...
                               rhsVec(j,:)', ...
@@ -347,27 +320,16 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
             %-------------------------------------------------------------%
             %Save the results
             
-            %Concateante the results
-            vFl0 = [vFlBoFe,vFl0',vFlBoPr];
-            
-            %Save the volumetric flow rate calculated results
-            vFlCol0(:,(nVols+1)*(i-1)+1:(nVols+1)*i) = vFl0;
-            
-            %Call the helper function to calculate the pseudo volumetric 
-            %flow rates
-            [vPlus0,vMinus0] = calcPseudoVolFlows(vFl0); 
-            
-            %Save the pseudo volumetric flow rates
-            vFlPlus0(:,(nVols+1)*(i-1)+1:(nVols+1)*i)  = vPlus0 ;
-            vFlMinus0(:,(nVols+1)*(i-1)+1:(nVols+1)*i) = vMinus0;
-            
+            %Save the positive pseudo volumetric flow rates
             vFlPlus(:,(nVols+1)*(i-1)+1:(nVols+1)*i)  ...
                 = [vPlusFe, ...
-                   vFlCol(1:nVols-1)', ...
+                   vFlCol(:,1:nVols-1), ...
                    vPlusPr];
+               
+            %Save the negative pseudo volumetric flow rates
             vFlMinus(:,(nVols+1)*(i-1)+1:(nVols+1)*i) ...
                 = [vMinusFe, ...
-                   vFlCol(nVols:2*(nVols-1))', ...
+                   vFlCol(:,nVols:2*(nVols-1)), ...
                    vMinusPr];
             %-------------------------------------------------------------%
             
