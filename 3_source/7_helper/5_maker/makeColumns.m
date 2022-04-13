@@ -48,14 +48,16 @@ function col = makeColumns(params,states)
     %funcId = 'makeColumns.m';
     
     %Unpack params       
-    nCols    = params.nCols   ;
-    funcRat  = params.funcRat ;
-    nComs    = params.nComs   ;
-    nVols    = params.nVols   ;
-    sColNums = params.sColNums;
-    sComNums = params.sComNums;
-    nR       = params.nRows   ;
-    bool     = params.bool    ;
+    nCols      = params.nCols     ;
+    funcRat    = params.funcRat   ;
+    nComs      = params.nComs     ;
+    nVols      = params.nVols     ;
+    sColNums   = params.sColNums  ;
+    sComNums   = params.sComNums  ;
+    nR         = params.nRows     ;
+    bool       = params.bool      ;
+    cstrHt     = params.cstrHt    ;
+    partCoefHp = params.partCoefHp;
     %---------------------------------------------------------------------%           
 
         
@@ -112,7 +114,7 @@ function col = makeColumns(params,states)
         %-----------------------------------------------------------------%          
         %Save results to the column properties
     
-        %For each species
+        %For each species,
         for j = 1 : nComs
         
             %Save adsorption rates into column properties
@@ -130,10 +132,17 @@ function col = makeColumns(params,states)
                 = col.(sColNums{i}).gasConsTot ...
                 + col.(sColNums{i}).gasCons.(sComNums{j});
             
-        end    
+        end  
+                
+        %Compute the total volumic adsorption rate, r_n \ti
+        col.(sColNums{i}).volAdsRatTot ...
+            = partCoefHp ...
+           .* cstrHt ...
+           ./ col.(sColNums{i}).gasConsTot ...
+           .* col.(sColNums{i}).adsRatSum; 
         %-----------------------------------------------------------------% 
         
-
+        
                 
         %-----------------------------------------------------------------% 
         %Calculate overall heat capacities for all CSTRs for all adsorption
@@ -145,9 +154,7 @@ function col = makeColumns(params,states)
             
             %-------------------------------------------------------------%
             %Unpack additional params
-            gConsNormCol = params.gConsNormCol;
-            cstrHt       = params.cstrHt      ;
-            partCoefHp   = params.partCoefHp  ;
+            gConsNormCol = params.gConsNormCol;            
             htCapSolNorm = params.htCapSolNorm; 
             htCapCvNorm  = params.htCapCvNorm ;
             htCapCpNorm  = params.htCapCpNorm ;
@@ -206,14 +213,7 @@ function col = makeColumns(params,states)
             %-------------------------------------------------------------%            
             %Compute the quantities for the right hand side vectors for the
             %non-isothermal volumetric flow rates
-            
-            %Compute the total volumic adsorption rate, r_n \ti
-            col.(sColNums{i}).volAdsRatTot ...
-                = partCoefHp ...
-               .* cstrHt ...
-               ./ col.(sColNums{i}).gasConsTot ...
-               .* col.(sColNums{i}).adsRatSum;   
-            
+                          
             %Define the nonisothermal correction term, \beta_n \ti
             col.(sColNums{i}).volCorRatTot ...
                 = (cstrHt./col.(sColNums{i}).htCO) ...

@@ -261,9 +261,8 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
             %DAE model
                           
             %Calculate the volumic adsorption rate terms
-            rateNm1 = partCoefHp ...
-                   .* col.(sColNums{i}).adsRatSum(:,1:nVols-1) ...
-                   ./ col.(sColNums{i}).gasConsTot(:,1:nVols-1);
+            rateNm1 = col.(sColNums{i}).volAdsRatTot(:,1:nVols-1);
+;
             rateNm0 = partCoefHp ...
                    .* col.(sColNums{i}).adsRatSum(:,2:nVols) ...
                    ./ col.(sColNums{i}).gasConsTot(:,2:nVols);
@@ -291,12 +290,11 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
             %Solve for the unknown volumetric flow rates
             
             %Set the option for linprog.m
+            %1. 'interior-point' (faster in this case)
+            %2. 'dual-simplex' 
             options = optimoptions('linprog','Display','none', ...
-                                   'linprog','Algorithm','interior-point');
-                                            %1. 'interior-point'
-                                            %2. 'dual-simplex’
-                                            %3. 'active-set’
-                                            %4. 'simplex’
+                                   'Algorithm','interior-point');
+                                            
 
             %Solve a linear program for each time point
             for j = 1 : nRows
