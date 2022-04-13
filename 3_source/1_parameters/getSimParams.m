@@ -306,6 +306,15 @@ function params = getSimParams(exampleFolder)
     
     
     %---------------------------------------------------------------------%
+    %Get solver related parameters
+
+    %Get solver options
+    params = getSolverOpts(params);
+    %---------------------------------------------------------------------%
+    
+    
+    
+    %---------------------------------------------------------------------%
     %Define the initial condition
     
     %Define an initial state row vector (dimensionless)
