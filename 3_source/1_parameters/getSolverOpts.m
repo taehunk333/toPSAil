@@ -18,57 +18,37 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2011/2/4/Thursday
-%Code last modified on : 2022/2/17/Thursday
+%Code created on       : 2022/4/13/Wednesday
+%Code last modified on : 2022/4/13/Wednesday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : programProfiler.m
+%Function   : getSolverOpts.m
 %Source     : common
-%Description: this is a function that calls runPsaProcessSimulation.m so
-%             that MATLAB's profiler can be used to optimize the program.
-%                            folder
+%Description: This function defines solver options
+%Inputs     : params       - a struct containing simulation parameters.
+%Outputs    : params       - a struct containing simulation parameters.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function programProfiler()        
-    
+function params = getSolverOpts(params)
+
     %---------------------------------------------------------------------%    
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'programProfiler.m';
+    %funcId = 'getSolverOpts.m';        
     %---------------------------------------------------------------------%    
     
-
-    
-    %---------------------------------------------------------------------%
-    %Profile the main function
-    
-    %Define the first folder name
-    %name = "test_2_cols_isothermal_no_pres_drop_o2_n2_zeolite_5a_time_and_event";
-    %name = "test_1_col_isothermal_no_pres_drop_o2_n2_zeolite_5a_time_and_event";
-    %name = "testNonIsothermal";
-    name = "testIsothermal";
-    %name = "testIsothermalMomentumErgun";
-    %---------------------------------------------------------------------%
     
     
+    %---------------------------------------------------------------------%        
+    %Define parameters related to linprog.m
     
-    %---------------------------------------------------------------------%
-    %Get the final folder name
-    
-    %Append the name
-    name = append(name);
-    %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %Profile the code
-    
-    %Run the PSA process simulator
-    runPsaProcessSimulation(name);
-    %---------------------------------------------------------------------%            
+    %Set the option for linprog.m
+    %1. 'interior-point' (faster in this case)
+    %2. 'dual-simplex' 
+    params.linprog.opts = optimoptions('linprog','Display','none');    
+    %---------------------------------------------------------------------%              
     
 end
 

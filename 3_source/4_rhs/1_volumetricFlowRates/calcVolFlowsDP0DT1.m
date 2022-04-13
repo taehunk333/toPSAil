@@ -92,8 +92,7 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
     
     %A numeric array for the volumetric flow rates for the adsorption
     %columns
-    vFlSave0 = zeros(nRows,nCols*(nVols+1));    
-    vFlPseudo = zeros(nRows,nCols*(nVols+1));    
+    vFlSave0 = zeros(nRows,nCols*(nVols+1));       
     
     %Initialize numeric arrays for the pseudo volumetric flow rates for the
     %adsorption columns
@@ -143,8 +142,6 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
             %coefficients that are relevant for the step for ith column            
             rhsVec = (-1)*col.(sColNums{i}).volAdsRatTot ...
                    + col.(sColNums{i}).volCorRatTot; 
-            
-            rhsVec0 = rhsVec;
             %-------------------------------------------------------------%
             
             
@@ -238,41 +235,7 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                     ./ htCOnm0 ...
                     .* termNp1);       
             %-------------------------------------------------------------%
-            
-            
-            
-            %-------------------------------------------------------------%
-            %Define the coefficients
-                                    
-            %For a co-current flow,
-            if flowDir(i,nS) == 0  
-
-                %---------------------------------------------------------%
-                %Get the diagonal entries for the both coefficients
                 
-                %Get the diagonal entries
-                coefnm1 = aMinusNm0;                                    
-                
-                %Get the diagonal entries
-                coefnm0 = aNoneNm0;                                                                 
-                %---------------------------------------------------------%                                                
-                
-            %For a counter-current flow,
-            elseif flowDir(i,nS) == 1         
-                                                                                                                            
-                %---------------------------------------------------------%
-                %Get the diagonal entries
-                
-                %Get the diagonal entries
-                coefnm1 = -aNoneNm0;                                    
-                
-                %Get the diagonal entries
-                coefnm0 = -aPlusNm0;                                                                 
-                %---------------------------------------------------------%                
-                
-            end
-            %-------------------------------------------------------------%                        
-            
             
             
             %-------------------------------------------------------------%
@@ -328,23 +291,7 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                     
                 end        
                 %---------------------------------------------------------%
-                
-                
-                
-                
-                
-                         
-                
-                %Update the right hand side vector
-                rhsVec0(:,1) = rhsVec0(:,1) ...
-                            - coefnm1(:,1) ...
-                           .* vFlBoRhs;
-                       
-                       
-                       
-                       
-                       
-            
+
             %Else, we have a boundary condition at the product-end
             else
                 
@@ -394,101 +341,10 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                     
                 end 
                 %---------------------------------------------------------% 
-                
-                
-                
 
-                
-                %Update the right hand side vector
-                rhsVec0(:,nVols) = rhsVec0(:,nVols) ...
-                                - coefnm0(:,nVols) ...
-                               .* vFlBoRhs;
-                           
-                           
-                           
-                           
-                           
-                
             end
             %-------------------------------------------------------------%
-            
-            
-            
-            %-------------------------------------------------------------% 
-            %Loop over each time point and compute the volumetric flow
-            %rates around each adsorption column
-            
-            %For each time point
-            for t = 1 : nRows
-                
-                %---------------------------------------------------------% 
-                %Define the coefficient matrix
 
-                %For a given boundary condition at the feed-end
-                if feEndBC == 1
-
-                    %Combine the main and the off diagonal entries
-                    coefMat = diag(coefnm1(t,2:nVols),-1) ...
-                            + diag(coefnm0(t,:),0);             
-
-                %For a given boundary condition at the product-end
-                elseif feEndBC == 0                    
-
-                    %Combine the main and the off diagonal entries
-                    coefMat = diag(coefnm0(t,1:nVols-1),+1) ...
-                            + diag(coefnm1(t,:),0);
-
-                end                        
-                %---------------------------------------------------------% 
-
-
-
-                %---------------------------------------------------------%                              
-                %Solve for the unknown volumetric flow rates 
-
-                %Solve for dimensionless volumetric flow rates using a 
-                %linear solver           
-                vFl0 = mldivide(coefMat, rhsVec0(t,:)');            
-                %---------------------------------------------------------%                              
-
-
-
-                %---------------------------------------------------------%                              
-                %Save the results
-
-                %Concatenate the boundary conditions
-
-                %If we have a boundary condition at the feed end 
-                if feEndBC == 1
-
-                    %We are specifying a volumetric flow rate at the 
-                    %feed-end
-                    vFl0 = [vFlBoRhs(t), vFl0'];
-
-                %Else, we have a boundary condition at the product end     
-                else
-
-                    %We are specifying a volumetric flow rate at the 
-                    %product-end
-                    vFl0 = [vFl0', vFlBoRhs(t)];
-
-                end
-
-                %Save the volumetric flow rate calculated results
-                vFlSave0(t,(nVols+1)*(i-1)+1:(nVols+1)*i) = vFl0;
-                
-                %Call the helper function to calculate the pseudo volumetric 
-                %flow rates
-                [vPlus0,vMinus0] = calcPseudoVolFlows(vFlSave0); 
-
-                %Save the pseudo volumetric flow rates
-                vFlPlus0(:,(nVols+1)*(i-1)+1:(nVols+1)*i)  = vPlus0 ;
-                vFlMinus0(:,(nVols+1)*(i-1)+1:(nVols+1)*i) = vMinus0;
-                %---------------------------------------------------------%                                    
-            
-            end
-            %-------------------------------------------------------------%                                                                              
-            
         %-----------------------------------------------------------------%
         
         
