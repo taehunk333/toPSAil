@@ -72,8 +72,9 @@ function params = getNumParams(params)
     [params.loTrMat,params.upTrMat] = lu(tiVaPrMat);
     
     %Save as sparse matrices
-    params.loTrMat = sparse(params.loTrMat);
-    params.upTrMat = sparse(params.upTrMat);
+    params.loTrMat  = sparse(params.loTrMat)        ;
+    params.upTrMat  = sparse(params.upTrMat)        ;
+    params.dTriDiag = sparse([-tiVaPrMat,tiVaPrMat]);
     %---------------------------------------------------------------------%    
     
     

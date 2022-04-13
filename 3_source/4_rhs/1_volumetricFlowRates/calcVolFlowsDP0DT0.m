@@ -74,6 +74,7 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
     %A numeric array for the volumetric flow rates for the adsorption
     %columns
     vFlCol0 = zeros(nRows,nCols*(nVols+1));
+    vFlCol = zeros(nRows,nCols*2*(nVols-1));
     
     %Initialize numeric arrays for the pseudo volumetric flow rates for the
     %adsorption columns
@@ -164,9 +165,6 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                                    .* (1-flowDir);
                     
                 end        
-                
-                vFlPlus0  = vFlPlus ;
-                vFlMinus0 = vFlMinus;
                 %---------------------------------------------------------%
                 
             %Else, we have a boundary condition at the product-end
@@ -211,13 +209,9 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                                  .* flowDir;
                     
                 end 
-                
-                vFlPlus0  = vFlPlus ;
-                vFlMinus0 = vFlMinus;
                 %---------------------------------------------------------%              
                 
-            end
-            
+            end            
             %-------------------------------------------------------------%                              
             
         %-----------------------------------------------------------------%
@@ -232,6 +226,7 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
             %Unpack additional params
             coefMatLo = params.coefMat{i,nS}{1}; %Lower triangular matrix
             coefMatUp = params.coefMat{i,nS}{2}; %Upper triangular matrix
+            dTriDiag  = params.dTriDiag        ;
             %-------------------------------------------------------------%
 
 
@@ -247,7 +242,19 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
             %Obtain the boundary condition for the feed-end of the ith
             %column under current step in a given PSA cycle
             vFlBoFe = ones(nRows,1) ...
-                   .* vFlBo{2,i,nS}(params,col,feTa,raTa,exTa,nS,i);           
+                   .* vFlBo{2,i,nS}(params,col,feTa,raTa,exTa,nS,i);   
+            %-------------------------------------------------------------% 
+            
+            
+            
+            %-------------------------------------------------------------% 
+            %Convert the boundary conditions into pseudo volumetric flow
+            %rates
+               
+            %Call the helper function to calculate the pseudo volumetric 
+            %flow rates
+            [vPlusPr,vMinusPr] = calcPseudoVolFlows(vFlBoPr); 
+            [vPlusFe,vMinusFe] = calcPseudoVolFlows(vFlBoFe);                         
             %-------------------------------------------------------------% 
             
             
@@ -264,15 +271,37 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                              
             %Add the feed-end boundary condition for the ith column in nS
             %step in a given PSA cycle
-            rhsVec0(:,1) = ...
-                        + rhsVec0(:,1) ...
-                        - vFlBoFe/cstrHt(1);
+            rhsVec0(:,1) = rhsVec0(:,1) ...
+                         - vFlBoFe/cstrHt(1);
                         
             %Add the product-end boundary condition for the ith column in
             %nS step in a given PSA cycle
-            rhsVec0(:,end) = ...
-                          + rhsVec0(:,end) ...
-                          - vFlBoPr/cstrHt(end);                        
+            rhsVec0(:,end) = rhsVec0(:,end) ...
+                          -  vFlBoPr/cstrHt(end);        
+            
+            %Calculate the volumic adsorption rate terms
+            rateNm1 = partCoefHp ...
+                   .* col.(sColNums{i}).adsRatSum(:,1:nVols-1) ...
+                   ./ col.(sColNums{i}).gasConsTot(:,1:nVols-1);
+            rateNm0 = partCoefHp ...
+                   .* col.(sColNums{i}).adsRatSum(:,2:nVols) ...
+                   ./ col.(sColNums{i}).gasConsTot(:,2:nVols);
+                      
+            %Get the first order difference between adjacent columns of the
+            %total adsorption rates for the current ith column            
+            rhsVec = rateNm0-rateNm1;
+                             
+            %Add the feed-end boundary condition for the ith column in nS
+            %step in a given PSA cycle
+            rhsVec(:,1) = rhsVec(:,1) ...
+                        + (vPlusFe-vMinusFe) ...
+                        / cstrHt(1);
+                        
+            %Add the product-end boundary condition for the ith column in
+            %nS step in a given PSA cycle
+            rhsVec(:,nVols-1) = rhsVec(:,end) ...
+                              + (vPlusPr-vMinusPr) ...
+                              / cstrHt(nVols-1);
             %-------------------------------------------------------------%
             
             
@@ -285,6 +314,25 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
 
             %Solve Ux = y for x                                  
             vFl0 = mldivide(coefMatUp,vFl0);
+            
+            %Set the option for linprog.m
+            options = optimoptions('linprog','Display','none');
+            
+            %Solve a linear program for each time point
+            for j = 1 : nRows
+                
+                %Solve the LP using linprog.m
+                vFlCol(j,2*(nVols-1)*(i-1)+1:2*(nVols-1)*i) ...
+                    = linprog(ones(1,2*(nVols-1)), ...
+                              [], ...
+                              [], ...
+                              dTriDiag, ...
+                              rhsVec(j,:)', ...
+                              zeros(1,2*(nVols-1)), ...
+                              Inf*ones(1,2*(nVols-1)), ...
+                              options);
+                          
+            end
             %-------------------------------------------------------------%
             
             
@@ -300,11 +348,20 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
             
             %Call the helper function to calculate the pseudo volumetric 
             %flow rates
-            [vPlus0,vMinus0] = calcPseudoVolFlows(vFlCol0); 
+            [vPlus0,vMinus0] = calcPseudoVolFlows(vFl0); 
             
             %Save the pseudo volumetric flow rates
             vFlPlus0(:,(nVols+1)*(i-1)+1:(nVols+1)*i)  = vPlus0 ;
             vFlMinus0(:,(nVols+1)*(i-1)+1:(nVols+1)*i) = vMinus0;
+            
+            vFlPlus(:,(nVols+1)*(i-1)+1:(nVols+1)*i)  ...
+                = [vPlusFe, ...
+                   vFlCol(:,1:nVols-1), ...
+                   vPlusPr];
+            vFlMinus(:,(nVols+1)*(i-1)+1:(nVols+1)*i) ...
+                = [vMinusFe, ...
+                   vFlCol(:,nVols:2*(nVols-1)), ...
+                   vMinusPr];
             %-------------------------------------------------------------%
             
         end
@@ -321,7 +378,7 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
 
     %Grab the unknown volumetric flow rates from the calculated volumetric
     %flow rates from the adsorption columns
-    units = calcVolFlows4PFD(params,units,vFlPlus0,vFlMinus0,nS);
+    units = calcVolFlows4PFD(params,units,vFlPlus,vFlMinus,nS);
     %---------------------------------------------------------------------%                                   
     
 end

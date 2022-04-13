@@ -177,10 +177,10 @@ function sol = runPsaCycle(params)
                 params.nRows = 1;
                 
                 %Run runPsaCycleStep.m
-%                 [stTimePts,stStates,flags] ...
-%                     = runPsaCycleStep(params,iStates,tDom,nS,nCy);
                 [stTimePts,stStates,flags] ...
-                    = runPsaCycleStepSTB(params,iStates,tDom,nS,nCy);             
+                    = runPsaCycleStep(params,iStates,tDom,nS,nCy);
+%                 [stTimePts,stStates,flags] ...
+%                     = runPsaCycleStepSTB(params,iStates,tDom,nS,nCy);             
                 %---------------------------------------------------------%
 
 
