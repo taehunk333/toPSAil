@@ -89,15 +89,11 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
     
     %---------------------------------------------------------------------%
     %Initialize solution arrays
-    
-    %A numeric array for the volumetric flow rates for the adsorption
-    %columns
-    vFlSave0 = zeros(nRows,nCols*(nVols+1));       
-    
+
     %Initialize numeric arrays for the pseudo volumetric flow rates for the
     %adsorption columns
-    vFlPlus0  = zeros(nRows,nCols*(nVols+1));
-    vFlMinus0 = zeros(nRows,nCols*(nVols+1));
+%     vFlPlus0  = zeros(nRows,nCols*(nVols+1));
+%     vFlMinus0 = zeros(nRows,nCols*(nVols+1));
     vFlPlus  = zeros(nRows,nCols*(nVols+1));
     vFlMinus = zeros(nRows,nCols*(nVols+1));
     %---------------------------------------------------------------------% 
@@ -346,10 +342,10 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
             end
             %-------------------------------------------------------------%
             
-            %%%ERASE WHEN DONE%%%
-            vFlPlus0  = vFlPlus ;
-            vFlMinus0 = vFlMinus;
-            %%%%%%%%%%%%%%%%%%%%%
+%             %%%ERASE WHEN DONE%%%
+%             vFlPlus0  = vFlPlus ;
+%             vFlMinus0 = vFlMinus;
+%             %%%%%%%%%%%%%%%%%%%%%
 
         %-----------------------------------------------------------------%
         
@@ -358,6 +354,15 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
         %-----------------------------------------------------------------%
         %If we are dealing with a time varying pressure DAE model,
         elseif daeModCur(i,nS) == 1
+            
+            %-------------------------------------------------------------%
+            %Unpack additional params
+            
+            %Unpack params
+            options = params.linprog.opts;
+            %-------------------------------------------------------------%
+            
+            
             
             %-------------------------------------------------------------%
             %Unpack states
@@ -480,43 +485,43 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
             pPlusNm0 = (cnp1./cnm0./cstrHt(2:nVols) ...
                      + gConsNormCol./htCOnm0.*termNp1);
             
-            %For a co-current flow,
-            if flowDir(i,nS) == 0  
-
-                %---------------------------------------------------------%
-                %Get the diagonal entries
-                
-                %Get the -1 diagonal entries
-                coefnm2 = pMinusNm1;                                    
-                
-                %Get the diagonal entries
-                coefnm1 = pPlusNm1 ...
-                        + (1./cstrHt(1:nVols-1)) ...
-                        + (gConsNormCol.*cnm1./htCOnm1);                                    
-                
-                %Get the +1 diagonal entries
-                coefnm0 = pNoneNm0;                               
-                %---------------------------------------------------------%                                                             
-
-            %For a counter-current flow,
-            elseif flowDir(i,nS) == 1
-                
-                %---------------------------------------------------------%
-                %Get the diagonal entries
-                
-                %Get the -1 diagonal entries
-                coefnm2 = (-1)*pNoneNm1;                                    
-                
-                %Get the diagonal entries
-                coefnm1 = (-1)*pMinusNm0 ...
-                        + (1./cstrHt(2:nVols)) ...
-                        + (gConsNormCol.*cnm0./htCOnm0);                                    
-                
-                %Get the +1 diagonal entries
-                coefnm0 = (-1)*pPlusNm0;                               
-                %---------------------------------------------------------% 
-                
-            end
+%             %For a co-current flow,
+%             if flowDir(i,nS) == 0  
+% 
+%                 %---------------------------------------------------------%
+%                 %Get the diagonal entries
+%                 
+%                 %Get the -1 diagonal entries
+%                 coefnm2 = pMinusNm1;                                    
+%                 
+%                 %Get the diagonal entries
+%                 coefnm1 = pPlusNm1 ...
+%                         + (1./cstrHt(1:nVols-1)) ...
+%                         + (gConsNormCol.*cnm1./htCOnm1);                                    
+%                 
+%                 %Get the +1 diagonal entries
+%                 coefnm0 = pNoneNm0;                               
+%                 %---------------------------------------------------------%                                                             
+% 
+%             %For a counter-current flow,
+%             elseif flowDir(i,nS) == 1
+%                 
+%                 %---------------------------------------------------------%
+%                 %Get the diagonal entries
+%                 
+%                 %Get the -1 diagonal entries
+%                 coefnm2 = (-1)*pNoneNm1;                                    
+%                 
+%                 %Get the diagonal entries
+%                 coefnm1 = (-1)*pMinusNm0 ...
+%                         + (1./cstrHt(2:nVols)) ...
+%                         + (gConsNormCol.*cnm0./htCOnm0);                                    
+%                 
+%                 %Get the +1 diagonal entries
+%                 coefnm0 = (-1)*pPlusNm0;                               
+%                 %---------------------------------------------------------% 
+%                 
+%             end
             %-------------------------------------------------------------%                                                                        
             
             
@@ -537,6 +542,18 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
             
             
             
+            %-------------------------------------------------------------% 
+            %Convert the boundary conditions into pseudo volumetric flow
+            %rates
+               
+            %Call the helper function to calculate the pseudo volumetric 
+            %flow rates
+            [vFlPlusPr,vFlMinusPr] = calcPseudoVolFlows(vFlBoPr); 
+            [vFlPlusFe,vFlMinusFe] = calcPseudoVolFlows(vFlBoFe);                         
+            %-------------------------------------------------------------% 
+            
+            
+            
             %-------------------------------------------------------------%
             %Obtain the right hand side vector for time varying pressure
             %DAE model
@@ -544,75 +561,173 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
             %Initialize the right hand side vector for the current time
             %step, by considering the adsorption as well as the correction
             %for the nonisothermal heat effects
-            rhsVec0 = (1./cstrHt(2:nVols)) ...
+            rhsVec = (1./cstrHt(2:nVols)) ...
                   .* (col.(sColNums{i}).volAdsRatTot(:,2:nVols) ...
                      -col.(sColNums{i}).volCorRatTot(:,2:nVols)) ...
                    - (1./cstrHt(1:nVols-1)) ...
                   .* (col.(sColNums{i}).volAdsRatTot(:,1:nVols-1) ...
                      -col.(sColNums{i}).volCorRatTot(:,1:nVols-1));
-                             
+                 
+%             rhsVec0 = rhsVec;
+%                              
+%             %Add the feed-end boundary condition for the ith column in nS
+%             %step in a given PSA cycle
+%             rhsVec0(:,1) = rhsVec0(:,1) ...
+%                         - coefnm2(:,1) ... 
+%                        .* vFlBoFe;
+%                         
+%             %Add the product-end boundary condition for the ith column in
+%             %nS step in a given PSA cycle
+%             rhsVec0(:,end) = rhsVec0(:,end) ...
+%                           - coefnm0(:,end) ...
+%                          .* vFlBoPr;   
+                     
             %Add the feed-end boundary condition for the ith column in nS
             %step in a given PSA cycle
-            rhsVec0(:,1) = rhsVec0(:,1) ...
-                        - coefnm2(:,1) ...
-                       .* vFlBoFe;
+            rhsVec(:,1) = rhsVec(:,1) ...
+                        - pMinusNm1(:,1)...
+                       .* vFlPlusFe ...
+                        - pNoneNm1(:,1)...
+                       .* vFlMinusFe;
                         
             %Add the product-end boundary condition for the ith column in
             %nS step in a given PSA cycle
-            rhsVec0(:,end) = rhsVec0(:,end) ...
-                          - coefnm0(:,end) ...
-                         .* vFlBoPr;                       
+            rhsVec(:,nVols-1) = rhsVec(:,nVols-1) ...
+                              - pNoneNm0(:,nVols-1)...
+                             .* vFlPlusPr...
+                              - pPlusNm0(:,nVols-1)...
+                             .* vFlMinusPr;          
             %-------------------------------------------------------------%
             
             
             
-            %-------------------------------------------------------------% 
-            %Loop over each time point and compute the volumetric flow
-            %rates around each adsorption column
+%             %-------------------------------------------------------------% 
+%             %Loop over each time point and compute the volumetric flow
+%             %rates around each adsorption column
+%             
+%             %For each time point
+%             for t = 1 : nRows
+%                 
+%                 %---------------------------------------------------------%
+%                 %Define the coefficient matrix
+% 
+%                 %Combine the main and the off diagonal entries
+%                 coefMat = diag(coefnm2(t,2:end),-1) ...
+%                         + diag(coefnm1(t,:),0) ...
+%                         + diag(coefnm0(t,1:end-1),+1);                                   
+%                 %---------------------------------------------------------%                                   
+% 
+% 
+% 
+%                 %---------------------------------------------------------%
+%                 %Solve for the unknown volumetric flow rates
+% 
+%                 %Solve the liner system          
+%                 vFl0 = mldivide(coefMat,rhsVec0(t,:)');
+%                 %---------------------------------------------------------%
+% 
+% 
+% 
+%                 %---------------------------------------------------------%
+%                 %Save the results
+% 
+%                 %Concateante the results
+%                 vFl0 = [vFlBoFe(t),vFl0',vFlBoPr(t)];
+%                 
+%                 %Call the helper function to calculate the pseudo 
+%                 %volumetric flow rates
+%                 [vPlus0,vMinus0] = calcPseudoVolFlows(vFl0); 
+% 
+%                 %Save the pseudo volumetric flow rates
+%                 vFlPlus0(:,(nVols+1)*(i-1)+1:(nVols+1)*i)  = vPlus0 ;
+%                 vFlMinus0(:,(nVols+1)*(i-1)+1:(nVols+1)*i) = vMinus0;
+%                 %---------------------------------------------------------%                
+%                 
+%             end                                    
+%             %-------------------------------------------------------------%  
             
-            %For each time point
+            
+
+            %-------------------------------------------------------------%
+            %Solve for the unknown volumetric flow rates
+                        
+            %A numeric array for the volumetric flow rates for the 
+            %adsorption columns
+            vFlPseudo = zeros(nRows,nCols*2*(nVols-1));
+                                                        
+            %Solve a linear program for each time point
             for t = 1 : nRows
+                                
+                %---------------------------------------------------------%
+                %Define terms required for formulating the linear program 
+                %(LP)
+
+                %Define the diagonal entries in the positive tri-diagonal
+                %matrix
+                diagDownPos = diag(pMinusNm1(t,2:nVols-1),-1)      ;
+                diagMidPos  = diag((pNoneNm1(t,:)+pPlusNm1(t,:)),0);
+                diagUpPos   = diag(pNoneNm0(t,1:nVols-2),+1)       ;
+
+                %Define the diagonal entries in the negative tri-diagonal
+                %matrix
+                diagDownNeg = diag(pNoneNm1(t,2:nVols-1),-1)        ;
+                diagMidNeg  = diag((pMinusNm0(t,:)+pNoneNm0(t,:)),0);
+                diagUpNeg   = diag(pPlusNm0(t,1:nVols-2),+1)        ;
+
+                %Define the positive tri-diagonal matrix
+                triDiagPos = diagDownPos ...
+                           + diagMidPos ...
+                           + diagUpPos;
+
+                %Define the negative tri-diagonal matrix
+                triDiagNeg = diagDownNeg ...
+                           + diagMidNeg ...
+                           + diagUpNeg;
+
+                %Construct the time dependent double tri-diagonal 
+                %coefficient matrix by concatenating the two coefficient 
+                %matrices.
+                dTriDiag = [triDiagPos,triDiagNeg];
+                %---------------------------------------------------------%
+                
+                
                 
                 %---------------------------------------------------------%
-                %Define the coefficient matrix
-
-                %Combine the main and the off diagonal entries
-                coefMat = diag(coefnm2(t,2:end),-1) ...
-                        + diag(coefnm1(t,:),0) ...
-                        + diag(coefnm0(t,1:end-1),+1);                                   
-                %---------------------------------------------------------%                                   
-
-
-
-                %---------------------------------------------------------%
-                %Solve for the unknown volumetric flow rates
-
-                %Solve the liner system          
-                vFl0 = mldivide(coefMat,rhsVec0(t,:)');
-                %---------------------------------------------------------%
-
-
-
-                %---------------------------------------------------------%
-                %Save the results
-
-                %Concateante the results
-                vFl0 = [vFlBoFe(t),vFl0',vFlBoPr(t)];
-
-                %Save the volumetric flow rate calculated results
-                vFlSave0(t,(nVols+1)*(i-1)+1:(nVols+1)*i) = vFl0;
+                %Solve the linear program for the unknown pseudo volumetric
+                %flow rates
                 
-                %Call the helper function to calculate the pseudo 
-                %volumetric flow rates
-                [vPlus0,vMinus0] = calcPseudoVolFlows(vFlSave0); 
-
-                %Save the pseudo volumetric flow rates
-                vFlPlus0(:,(nVols+1)*(i-1)+1:(nVols+1)*i)  = vPlus0 ;
-                vFlMinus0(:,(nVols+1)*(i-1)+1:(nVols+1)*i) = vMinus0;
-                %---------------------------------------------------------%                
-                
-            end                                    
-            %-------------------------------------------------------------%                        
+                %Solve the LP using linprog.m
+                vFlPseudo(t,2*(nVols-1)*(i-1)+1:2*(nVols-1)*i) ...
+                    = linprog(ones(1,2*(nVols-1)), ...
+                              [], ...
+                              [], ...
+                              dTriDiag, ...
+                              rhsVec(t,:)', ...
+                              zeros(1,2*(nVols-1)), ...
+                              Inf*ones(1,2*(nVols-1)), ...
+                              options);
+                %---------------------------------------------------------%    
+                      
+            end
+            
+            %Define the interior pseudo volumetric flow rates
+            vFlPlusIn  = vFlPseudo(:,1:nVols-1)        ;
+            vFlMinusIn = vFlPseudo(:,nVols:2*(nVols-1));
+            %-------------------------------------------------------------%
+            
+            
+            
+            %-------------------------------------------------------------%
+            %Save the results
+            
+            %Save the positive pseudo volumetric flow rates
+            vFlPlus(:,shiftFac+1:(nVols+1)*i)  ...
+                = [vFlPlusFe,vFlPlusIn,vFlPlusPr];
+               
+            %Save the negative pseudo volumetric flow rates
+            vFlMinus(:,shiftFac+1:(nVols+1)*i) ...
+                = [vFlMinusFe,vFlMinusIn,vFlMinusPr];
+            %-------------------------------------------------------------%
             
         end
         %-----------------------------------------------------------------%
@@ -628,7 +743,7 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
 
     %Grab the unknown volumetric flow rates from the calculated volumetric
     %flow rates from the adsorption columns
-    units = calcVolFlows4PFD(params,units,vFlPlus0,vFlMinus0,nS);
+    units = calcVolFlows4PFD(params,units,vFlPlus,vFlMinus,nS);
     %---------------------------------------------------------------------%  
     
 end
