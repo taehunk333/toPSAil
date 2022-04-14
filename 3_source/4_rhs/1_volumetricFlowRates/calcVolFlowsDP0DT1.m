@@ -178,7 +178,7 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
 
             %Compute the temperature ratio
             TratNm1 = Tnm1./Tnm0;
-            TratBp1 = Tnp1./Tnm0;
+            TratNp1 = Tnp1./Tnm0;
 
             %Loop over each species
             for j = 1: nComs                                                                        
@@ -194,7 +194,7 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                       
                 %Update the nm1 term
                 termNp1 = termNp1 ...
-                        + (TratBp1*htCapCpNorm(j) ...
+                        + (TratNp1*htCapCpNorm(j) ...
                           -htCapCvNorm(j)) ...
                        .* [col.(sColNums{i}).gasCons. ...
                           (sComNums{j})(:,2:nVols), ...
@@ -207,7 +207,8 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
             
             
             %-------------------------------------------------------------%
-            %Calculate the coefficients
+            %Define the coefficients
+            %$\forall n \in \left\{ 1, ..., n_c \right\}$
             
             %Calculate the first time dependent coefficient:
             %$\tilde{alpha}_n^{-} \left(t\right)$
@@ -344,6 +345,11 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
 
             end
             %-------------------------------------------------------------%
+            
+            %%%ERASE WHEN DONE%%%
+            vFlPlus0  = vFlPlus ;
+            vFlMinus0 = vFlMinus;
+            %%%%%%%%%%%%%%%%%%%%%
 
         %-----------------------------------------------------------------%
         
@@ -352,174 +358,162 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
         %-----------------------------------------------------------------%
         %If we are dealing with a time varying pressure DAE model,
         elseif daeModCur(i,nS) == 1
-
+            
             %-------------------------------------------------------------%
-            %Define the coefficients                   
+            %Unpack states
+
+            %Unpack the total concentration variables  
+
+            %We have the down stream total concentration of the column 
+            %to be equal to the total concentration in the first CSTR
+            cnm2 = [col.(sColNums{i}).feEnd.gasConsTot, ...
+                    col.(sColNums{i}).gasConsTot(:,1:nVols-2)];                  
+            cnm1 = col.(sColNums{i}).gasConsTot(:,1:nVols-1);
+            cnm0 = col.(sColNums{i}).gasConsTot(:,2:nVols);
+            cnp1 = [col.(sColNums{i}).gasConsTot(:,3:nVols), ...
+                    col.(sColNums{i}).prEnd.gasConsTot];
+
+            %Unpack the interior temperature variables
+            Tnm2 = [col.(sColNums{i}).feEnd.temps, ...
+                    col.(sColNums{i}).temps.cstr(:,1:nVols-2)];
+            Tnm1 = col.(sColNums{i}).temps.cstr(:,1:nVols-1);
+            Tnm0 = col.(sColNums{i}).temps.cstr(:,2:nVols);
+            Tnp1 = [col.(sColNums{i}).temps.cstr(:,3:nVols), ...
+                    col.(sColNums{i}).prEnd.temps];
+
+            %Unpack the overall heat capacity
+            htCOnm1 = col.n1.htCO(:,1:nVols-1);
+            htCOnm0 = col.n1.htCO(:,2:nVols)  ;                             
+            %-------------------------------------------------------------%
+            
+            
+            
+            %-------------------------------------------------------------%
+            %Compute the species dependent terms
+
+            %Initialize the solution arrays
+            termNm2 = zeros(nRows,nVols-1);
+            termNm1 = zeros(nRows,nVols-1);
+            termNm0 = zeros(nRows,nVols-1);
+            termNp1 = zeros(nRows,nVols-1);
+
+            %Compute the temperature ratios
+            TratNm2 = Tnm2./Tnm1;
+            TratNm1 = Tnm1./Tnm0;
+            TratNm0 = Tnm0./Tnm1;
+            TratNp1 = Tnp1./Tnm0;
+
+            %Loop over each species
+            for j = 1: nComs
+
+                %Update the nm2 term
+                termNm2 = termNm2 ...
+                        + (TratNm2*htCapCpNorm(j) ...
+                          -htCapCvNorm(j)) ...
+                       .* [col.(sColNums{i}).feEnd. ...
+                          gasCons.(sComNums{j}), ...
+                          col.(sColNums{i}).gasCons. ...
+                          (sComNums{j})(:,1:nVols-2)];                    
+
+                %Update the nm1 term
+                termNm1 = termNm1 ...
+                        + (TratNm1*htCapCpNorm(j) ...
+                          -htCapCvNorm(j)) ...
+                       .* col.(sColNums{i}).gasCons. ...
+                          (sComNums{j})(:,1:nVols-1);
+                      
+                %Update the nm0 term
+                termNm0 = termNm0 ...
+                        + (TratNm0*htCapCpNorm(j) ...
+                          -htCapCvNorm(j)) ...
+                       .* col.(sColNums{i}).gasCons. ...
+                          (sComNums{j})(:,2:nVols);                    
+
+                %Update the np1 term
+                termNp1 = termNp1 ...
+                        + (TratNp1*htCapCpNorm(j) ...
+                          -htCapCvNorm(j)) ...
+                       .* [col.(sColNums{i}).gasCons. ...
+                          (sComNums{j})(:,3:nVols), ...
+                          col.(sColNums{i}).prEnd. ...
+                          gasCons.(sComNums{j})];
+
+            end                                                      
+            %-------------------------------------------------------------%
+            
+            
+            
+            %-------------------------------------------------------------%
+            %Define the coefficients:
+            %$\forall n \in \left\{ 2, ..., n_c \right\}$              
+            
+            %Calculate the first time dependent coefficient:
+            %$\tilde{\phi}_{n,n-1}^{-} \left( t \right)$
+            pMinusNm1 = (-1) ...
+                      * (cnm2./cnm1./cstrHt(2:nVols) ...
+                      + gConsNormCol./htCOnm1.*termNm2);
+                        
+            %Calculate the second time dependent coefficient:
+            %$\tilde{\phi}_{n,n-1} \left( t \right)$
+            pNoneNm1 = (1./cstrHt(1:nVols-1) ...
+                     + gConsNormCol.*cnm1./htCOnm1);
+                        
+            %Calculate the third time dependent coefficient:
+            %$\tilde{\phi}_{n,n-1}^{+} \left( t \right)$
+            pPlusNm1 = (cnm1./cnm0./cstrHt(2:nVols)) ...
+                     + gConsNormCol./htCOnm0.*termNm1;
+                        
+            %Calculate the fourth time dependent coefficient:
+            %$\tilde{\phi}_{n,n}^{-} \left( t \right)$
+            pMinusNm0 = (-1) ...
+                      * (cnm0./cnm1./cstrHt(1:nVols-1) ...
+                      + gConsNormCol./htCOnm1.*termNm0);
+                        
+            %Calculate the fifth time dependent coefficient:
+            %$\tilde{\phi}_{n,n} \left( t \right)$
+            pNoneNm0 = (-1) ...
+                     * (1./cstrHt(2:nVols) ...
+                     + gConsNormCol.*cnm0./htCOnm0);
+                                    
+            %Calculate the sixth time dependent coefficient:
+            %$\tilde{\phi}_{n,n}^{+} \left( t \right)$
+            pPlusNm0 = (cnp1./cnm0./cstrHt(2:nVols) ...
+                     + gConsNormCol./htCOnm0.*termNp1);
             
             %For a co-current flow,
             if flowDir(i,nS) == 0  
-                
-                %---------------------------------------------------------%
-                %Unpack states
-                
-                %Unpack the total concentration variables  
-                
-                %We have the down stream total concentration of the column 
-                %to be equal to the total concentration in the first CSTR
-                cnm2 = [col.(sColNums{i}).feEnd.gasConsTot, ...
-                        col.(sColNums{i}).gasConsTot(:,1:nVols-2)];                  
-                cnm1 = col.(sColNums{i}).gasConsTot(:,1:nVols-1)  ;
-                cnm0 = col.(sColNums{i}).gasConsTot(:,2:nVols)    ;
-                
-                %Unpack the interior temperature variables
-                Tnm2 = [col.(sColNums{i}).feEnd.temps, ...
-                        col.(sColNums{i}).temps.cstr(:,1:nVols-2)];
-                Tnm1 = col.(sColNums{i}).temps.cstr(:,1:nVols-1)  ;
-                Tnm0 = col.(sColNums{i}).temps.cstr(:,2:nVols)    ;
-                
-                %Unpack the overall heat capacity
-                htCOnm1 = col.n1.htCO(:,1:nVols-1);
-                htCOnm0 = col.n1.htCO(:,2:nVols)  ;                               
-                %---------------------------------------------------------%
-                
-                
-                                
-                %---------------------------------------------------------%
-                %Compute the species dependent terms
-                
-                %Initialize the solution arrays
-                termnm2 = zeros(nRows,nVols-1);
-                termNm1 = zeros(nRows,nVols-1);
-                
-                %Compute the temperature ratios
-                Tratnm2 = Tnm2./Tnm1;
-                TratNm1 = Tnm1./Tnm0;
-                
-                %Loop over each species
-                for j = 1: nComs
-                                                        
-                    %Update the nm2 term
-                    termnm2 = termnm2 ...
-                            + (Tratnm2*htCapCpNorm(j) ...
-                              -htCapCvNorm(j)) ...
-                           .* [col.(sColNums{i}).feEnd. ...
-                              gasCons.(sComNums{j}), ...
-                              col.(sColNums{i}).gasCons. ...
-                              (sComNums{j})(:,1:nVols-2)];                    
-                    
-                    %Update the nm1 term
-                    termNm1 = termNm1 ...
-                            + (TratNm1*htCapCpNorm(j) ...
-                              -htCapCvNorm(j)) ...
-                           .* col.(sColNums{i}).gasCons. ...
-                              (sComNums{j})(:,1:nVols-1);
-                                        
-                end                            
-                %---------------------------------------------------------%
-                
-                
-                
+
                 %---------------------------------------------------------%
                 %Get the diagonal entries
                 
                 %Get the -1 diagonal entries
-                coefnm2 = (-1) ...
-                        * (cnm2./cnm1./cstrHt(2:nVols) ...
-                        + gConsNormCol./htCOnm0.*termnm2);                                    
+                coefnm2 = pMinusNm1;                                    
                 
                 %Get the diagonal entries
-                coefnm1 = (cnm1./cnm0./cstrHt(2:nVols) ...
-                        + 1./cstrHt(1:nVols-1) ...
-                        + gConsNormCol.*cnm1./htCOnm1 ...
-                        + gConsNormCol./htCOnm0.*termNm1);                                    
+                coefnm1 = pPlusNm1 ...
+                        + (1./cstrHt(1:nVols-1)) ...
+                        + (gConsNormCol.*cnm1./htCOnm1);                                    
                 
                 %Get the +1 diagonal entries
-                coefnm0 = (-1) ...
-                        * (1./cstrHt(2:nVols) ...
-                        +  gConsNormCol.*cnm0./htCOnm0);                               
+                coefnm0 = pNoneNm0;                               
                 %---------------------------------------------------------%                                                             
 
             %For a counter-current flow,
             elseif flowDir(i,nS) == 1
                 
                 %---------------------------------------------------------%
-                %Unpack states
-                
-                %Unpack the total concentration variables  
-                
-                %We have the up stream total concentration of the column 
-                %to be equal to the total concentration in the last CSTR                                  
-                cnm1 = col.(sColNums{i}).gasConsTot(:,1:nVols-1)   ;
-                cnm0 = col.(sColNums{i}).gasConsTot(:,2:nVols)     ;
-                cnp1 = [col.(sColNums{i}).gasConsTot(:,3:nVols), ...
-                        col.(sColNums{i}).prEnd.gasConsTot]        ;
-                
-                %Unpack the interior temperature variables                
-                Tnm1 = col.(sColNums{i}).temps.cstr(:,1:nVols-1)     ;
-                Tnm0 = col.(sColNums{i}).temps.cstr(:,2:nVols)       ;
-                Tnp1 = [col.(sColNums{i}).temps.cstr(:,3:nVols), ...
-                        col.(sColNums{i}).prEnd.temps];
-                
-                %Unpack the overall heat capacity
-                htCOnm1 = col.n1.htCO(:,1:nVols-1);
-                htCOnm0 = col.n1.htCO(:,2:nVols)  ;                               
-                %---------------------------------------------------------%
-                
-                
-                
-                %---------------------------------------------------------%
-                %Compute the species dependent terms
-                
-                %Initialize the solution arrays
-                termnm0 = zeros(nRows,nVols-1);
-                termNp1 = zeros(nRows,nVols-1);
-                
-                %Compute the temperature ratios
-                Tratnm0 = Tnm0./Tnm1;
-                TratBp1 = Tnp1./Tnm0;
-                
-                %Loop over each species
-                for j = 1: nComs
-                                                        
-                    %Update the nm0 term
-                    termnm0 = termnm0 ...
-                            + (Tratnm0*htCapCpNorm(j) ...
-                              -htCapCvNorm(j)) ...
-                           .* col.(sColNums{i}).gasCons. ...
-                              (sComNums{j})(:,2:nVols);                    
-                    
-                    %Update the np1 term
-                    termNp1 = termNp1 ...
-                            + (TratBp1*htCapCpNorm(j) ...
-                              -htCapCvNorm(j)) ...
-                           .* [col.(sColNums{i}).gasCons. ...
-                              (sComNums{j})(:,3:nVols), ...
-                              col.(sColNums{i}).prEnd. ...
-                              gasCons.(sComNums{j})];
-                                        
-                end                            
-                %---------------------------------------------------------% 
-                
-                
-                
-                %---------------------------------------------------------%
                 %Get the diagonal entries
                 
                 %Get the -1 diagonal entries
-                coefnm2 = (-1) ...
-                        * (1./cstrHt(1:nVols-1) ...
-                        + gConsNormCol.*cnm1./htCOnm1);                                    
+                coefnm2 = (-1)*pNoneNm1;                                    
                 
                 %Get the diagonal entries
-                coefnm1 = (1./cstrHt(2:nVols) ...
-                        + cnm0./cnm1./cstrHt(1:nVols-1) ...
-                        + gConsNormCol.*cnm0./htCOnm0 ...
-                        + gConsNormCol./htCOnm1.*termnm0);                                    
+                coefnm1 = (-1)*pMinusNm0 ...
+                        + (1./cstrHt(2:nVols)) ...
+                        + (gConsNormCol.*cnm0./htCOnm0);                                    
                 
                 %Get the +1 diagonal entries
-                coefnm0 = (-1) ...
-                        * (cnp1./cnm0./cstrHt(2:nVols) ...
-                        + gConsNormCol./htCOnm0.*termNp1);                               
+                coefnm0 = (-1)*pPlusNm0;                               
                 %---------------------------------------------------------% 
                 
             end
