@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/4/11/Monday
-%Code last modified on : 2022/4/11/Monday
+%Code last modified on : 2022/4/19/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -71,28 +71,33 @@ function units = getColMoleBal(params,units)
             %-------------------------------------------------------------%    
             %Unpack units
             
+            %Unpack pseudo volumetric flow rates
+            volFlPlus  = col.(sColNums{i}).volFlPlus ;
+            volFlMinus = col.(sColNums{i}).volFlMinus;
+            
+            %Unpack the total concentrstion variables
+            gasConsSpec = col.(sColNums{i}).gasCons. ...
+                          (sComNums{j});
+            
             %Get the pseudo volumetric flow rates
-            vPlNm1 = col.(sColNums{i}).volFlPlus(:,1:nVols)   ;
-            vMiNm1 = col.(sColNums{i}).volFlMinus(:,1:nVols)  ;
-            vPlNm0 = col.(sColNums{i}).volFlPlus(:,2:nVols+1) ;
-            vMiNm0 = col.(sColNums{i}).volFlMinus(:,2:nVols+1);
+            vPlNm1 = volFlPlus(:,1:nVols)   ;
+            vMiNm1 = volFlMinus(:,1:nVols)  ;
+            vPlNm0 = volFlPlus(:,2:nVols+1) ;
+            vMiNm0 = volFlMinus(:,2:nVols+1);
             
             %Get the concentration of species at the boundaries
-            cSpecPr = col.(sColNums{i}).prEnd.gasCons.(sComNums{j}); 
-            cSpecFe = col.(sColNums{i}).feEnd.gasCons.(sComNums{j});
+            gasConsSpecPr = col.(sColNums{i}).prEnd.gasCons.(sComNums{j}); 
+            gasConsSpecFe = col.(sColNums{i}).feEnd.gasCons.(sComNums{j});
             
             %Get the gas phase species concentrations
             gSpecNm1 ...
-                = [cSpecFe, ...
-                   col.(sColNums{i}).gasCons. ...
-                   (sComNums{j})(:,1:nVols-1)];
+                = [gasConsSpecFe, ...
+                   gasConsSpec(:,1:nVols-1)];
             gSpecNm0 ...
-                = col.(sColNums{i}).gasCons. ...
-                  (sComNums{j})(:,1:nVols);
+                = gasConsSpec(:,1:nVols);
             gSpecNp1 ...
-                = [col.(sColNums{i}).gasCons. ...
-                   (sComNums{j})(:,2:nVols), ...
-                   cSpecPr];                        
+                = [gasConsSpec(:,2:nVols), ...
+                   gasConsSpecPr];                        
             %-------------------------------------------------------------%    
             
             

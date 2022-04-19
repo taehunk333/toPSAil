@@ -69,21 +69,27 @@ function units = getColCuMolBal(params,units)
             %-------------------------------------------------------------%
             %Unpack units
             
+            %Unpack pseudo volumetric flow rates
+            volFlPlus  = col.(sColNums{i}).volFlPlus ;
+            volFlMinus = col.(sColNums{i}).volFlMinus;
+            
+            %Unpack gas species concentration
+            gasConsSpec = col.(sColNums{i}).gasCons. ...
+                          (sComNums{j});
+            
             %Get the pseudo volumetric flow rates
-            vPlFe = col.(sColNums{i}).volFlPlus(:,1)       ;
-            vMiFe = col.(sColNums{i}).volFlMinus(:,1)      ;
-            vPlPr = col.(sColNums{i}).volFlPlus(:,nVols+1) ;
-            vMiPr = col.(sColNums{i}).volFlMinus(:,nVols+1);            
+            vPlFe = volFlPlus(:,1)       ;
+            vMiFe = volFlMinus(:,1)      ;
+            vPlPr = volFlPlus(:,nVols+1) ;
+            vMiPr = volFlMinus(:,nVols+1);            
             
             %Get the species concentrations associated with the boundaries
-            cSpecPr    = col.(sColNums{i}).prEnd. ...
-                         gasCons.(sComNums{j}); 
-            cSpecNeq1  = col.(sColNums{i}).gasCons. ...
-                         (sComNums{j})(:,1);
-            cSpecFe    = col.(sColNums{i}).feEnd. ...
-                         gasCons.(sComNums{j});
-            cSpecNeqNc = col.(sColNums{i}).gasCons. ...
-                         (sComNums{j})(:,nVols);                        
+            gasConsSpecPr    = col.(sColNums{i}).prEnd. ...
+                               gasCons.(sComNums{j}); 
+            gasConsSpecNeq1  = gasConsSpec(:,1);
+            gasConsSpecFe    = col.(sColNums{i}).feEnd. ...
+                               gasCons.(sComNums{j});
+            gasConsSpecNeqNc = gasConsSpec(:,nVols);                        
             %-------------------------------------------------------------%
             
             
@@ -94,15 +100,15 @@ function units = getColCuMolBal(params,units)
             %Assign the right hand side for the cumulative moles
             %flowing into the adsorption column from the product-end
             col.(sColNums{i}).cumMolBal.prod.(sComNums{j}) ...
-                = cSpecNeqNc*vPlPr ...
-                - cSpecPr*vMiPr;                
+                = gasConsSpecNeqNc*vPlPr ...
+                - gasConsSpecPr*vMiPr;                
 
             %Assign the right hand side for the cumulative moles
             %flowing out of the adsorption column from the column at
             %the feed-end
             col.(sColNums{i}).cumMolBal.feed.(sComNums{j}) ...
-                = cSpecNeq1*vMiFe ...
-                - cSpecFe*vPlFe;                          
+                = gasConsSpecNeq1*vMiFe ...
+                - gasConsSpecFe*vPlFe;                          
             %-------------------------------------------------------------%          
             
         end 
