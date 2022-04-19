@@ -58,6 +58,7 @@ function col = makeColumns(params,states)
     bool       = params.bool      ;
     cstrHt     = params.cstrHt    ;
     partCoefHp = params.partCoefHp;
+    modSp      = params.modSp     ;
     %---------------------------------------------------------------------%           
 
         
@@ -145,11 +146,9 @@ function col = makeColumns(params,states)
         
                 
         %-----------------------------------------------------------------% 
-        %Calculate overall heat capacities for all CSTRs for all adsorption
-        %columns and store the results inside a struct
+        %Calculate relevant quantities for non-isothermal system
 
-        %Calculate dimensionless overall heat capacity values only when the
-        %system is non-isothermal
+        %Calculate the quantities, only when the system is non-isothermal
         if bool(5) == 1
             
             %-------------------------------------------------------------%
@@ -224,6 +223,64 @@ function col = makeColumns(params,states)
             %-------------------------------------------------------------%
             
         end              
+        %-----------------------------------------------------------------%
+        
+        
+        
+        %-----------------------------------------------------------------%
+        %Calculate relevant quantities for the system with a given momentum
+        %balance equation
+                
+        %Calculate only when the system is non-isothermal
+        if bool(6) == 1 && modSp(6) == 2
+        
+            %-------------------------------------------------------------%
+            %Unpack additional params
+            
+            %Unpack params
+            molecWtC    = params.molecWtC   ;   
+            coefQuadPre = params.coefQuadPre;
+            %-------------------------------------------------------------%
+            
+            
+            
+            %-------------------------------------------------------------%
+            %Initialize solution arrays
+            
+            %Initialize the quadratic coefficnent array
+            quadCoeffEval = zeros(1,nVols);
+            %-------------------------------------------------------------%
+            
+            
+            
+            %-------------------------------------------------------------%
+            %Compute the molar density
+            
+            %For each species, j,
+            for j = 1 : nComs
+                
+                %Calculate the molar density as the weighted sum of gas
+                %phase concentration with the corresponding molecular
+                %weight
+                quadCoeffEval = quadCoeffEval ...
+                              + coefQuadPre ...
+                              * molecWtC(j) ...
+                              * col.(sColNums{i}). ...
+                                gasCons.(sComNums{j});
+                
+            end
+            %-------------------------------------------------------------%
+            
+            
+            
+            %-------------------------------------------------------------%
+            %Save the results
+            
+            %Save the molar density in the CSTRs associated with ith column
+            col.(sColNums{i}).quadCoeff = quadCoeffEval;
+            %-------------------------------------------------------------%
+            
+        end
         %-----------------------------------------------------------------%
         
     end                    

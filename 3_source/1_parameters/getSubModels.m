@@ -591,9 +591,9 @@ function models = getSubModels(params)
     elseif modSp(modNo6) == 1 && ... %linear axial pressure drop
                  bool(6) == 1  %axial pressure drop
               
-%         %Define the function for calculating the volumetric flow rates
-%         models{modNo6} ...
-%             = @(params,units,nS) calcVolFlowsDP1CK(params,units,nS);  
+        %Define the function for calculating the volumetric flow rates
+        models{modNo6} ...
+            = @(params,units,nS) calcVolFlowsDP1KC(params,units,nS);  
         
     %Ergun's equation discretized momentum balance
     elseif modSp(modNo6) == 2 && ... %quadratic axial pressure drop

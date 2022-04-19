@@ -18,15 +18,15 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2022/3/12/Saturday
+%Code created on       : 2022/4/17/Sunday
 %Code last modified on : 2022/4/18/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : calcVolFlowsDP1ER.m
+%Function   : calcVolFlowsDP1KC.m
 %Source     : common
 %Description: This function calculates volumetric flow rates (algebraic
-%             relationships) that is required to implement Ergun's 
+%             relationships) that is required to implement Kozeny-Carman 
 %             equation, for a given column undergoing a given step in a PSA
 %             cycle. The assumption in this model is that there is an axial
 %             pressure drop, i.e., DP = 1.
@@ -38,22 +38,22 @@
 %                            the process flow diagram.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function units = calcVolFlowsDP1ER(params,units,nS)
+function units = calcVolFlowsDP1KC(params,units,nS)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'calcVolFlowsDP1ER.m';
+    %funcId = 'calcVolFlowsDP1KC.m';
     
     %Unpack params   
-    nCols       = params.nCols      ; 
-    nVols       = params.nVols      ;        
-    vFlBo       = params.volFlBo    ;   
-    sColNums    = params.sColNums   ;
-    nRows       = params.nRows      ;
-    coefLinNorm = params.coefLinNorm;
-            
+    nCols         = params.nCols        ; 
+    nVols         = params.nVols        ;        
+    vFlBo         = params.volFlBo      ;   
+    sColNums      = params.sColNums     ;
+    nRows         = params.nRows        ;
+    preFacLinFlow = params.preFacLinFlow;
+    
     %Unpack units
     col  = units.col ;
     feTa = units.feTa;
@@ -69,10 +69,6 @@ function units = calcVolFlowsDP1ER(params,units,nS)
     %A numeric array for the volumetric flow rates for the adsorption
     %columns
     vFlCol = zeros(nRows,nCols*(nVols+1));
-    
-    %A numeric array for the linear coefficients in the Ergun equation
-    coefLinNorm = coefLinNorm ...
-                * ones(nRows,(nVols-1));
     %---------------------------------------------------------------------% 
                                                 
     
@@ -111,11 +107,7 @@ function units = calcVolFlowsDP1ER(params,units,nS)
         %Unpack the interior temperature variables from the 1st CSTR to
         %(nVols-1)th CSTR       
         Tnm0 = col.(sColNums{i}).temps.cstr(:,1:nVols-1);        
-        Tnp1 = col.(sColNums{i}).temps.cstr(:,2:nVols)  ;   
-        
-        %Unpack quadratic coefficient for ith adsorber for the 1st through
-        %n_c-1 CSTRs
-        coefQuadNorm = col.(sColNums{i}).quadCoeff(1:nVols-1);
+        Tnp1 = col.(sColNums{i}).temps.cstr(:,2:nVols)  ;        
         %-----------------------------------------------------------------%
         
         
@@ -125,25 +117,13 @@ function units = calcVolFlowsDP1ER(params,units,nS)
         
         %Compute the product of the total concentrations with the interior
         %temperature
-        coefConNorm = cNm0.*Tnm0 ...
-                    - cNp1.*Tnp1;        
+        deltaP = cNm0.*Tnm0 ...
+               - cNp1.*Tnp1;        
 
-        %Determine the sign of the volumetric flows in the interior of the
-        %CIS model
-        flowDir = sign(-coefConNorm);
-        
-        %Take the absolute value and negate deltaP
-        coefConNorm = -abs(coefConNorm);
-           
-        %Evaluate the quadratic dependence of the pressure and compute the 
+        %Evaluate the linear difference in the pressure and compute the 
         %volumetric flow rates         
-        vFl = flowDir ...
-            * 2 ...
-           .* coefConNorm ...
-           ./ (coefLinNorm.^2 ...
-            + sqrt(coefLinNorm.^2 ...
-            - 4*coefQuadNorm ...
-           .* coefConNorm));
+        vFl = preFacLinFlow ...
+            * deltaP;
         %-----------------------------------------------------------------%
 
         

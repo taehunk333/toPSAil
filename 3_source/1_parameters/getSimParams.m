@@ -219,39 +219,9 @@ function params = getSimParams(exampleFolder)
         - params.voidMolDiff ...
         - params.adsMolDiff;
     %---------------------------------------------------------------------%    
-    
    
     
-    %---------------------------------------------------------------------%
-    %Compute dimensionless quantities
-    
-    %Grab dimensionless quantities
-    params = getDimLessParams(params);                           
-    %---------------------------------------------------------------------%
-    
-    
-                        
-    %---------------------------------------------------------------------%
-    %Perform mass transfer zone theory based calculations          
-    
-    %Specifty parameters for computing MTZ thickness
-    params.mtz = getMtzParams();    
-    
-    %Define the areaThreshold
-    areaThres = params.mtz.areaThres;
-    
-    %Compute the normalization constant for time [=] seconds
-    [params.maxTiFe,~] = calcMtzTheory(params,areaThres);     
-    
-    %Compute the nominal volumetric feed flow rate as per the predicted
-    %equilibrium calculations above for the high pressure feed step 
-    %duration and the maximum moles of raffinate product produced.
-    %[=] cc/sec
-    params.volFlowEq = params.maxMolFe/params.maxTiFe/params.gConScaleFac; 
-    %---------------------------------------------------------------------%
-                               
-                
-    
+   
     %---------------------------------------------------------------------%
     %Get parameters for conservation laws (if needed)
     
@@ -272,6 +242,36 @@ function params = getSimParams(exampleFolder)
     end
     %---------------------------------------------------------------------%
     
+    
+    
+    %---------------------------------------------------------------------%
+    %Compute dimensionless quantities
+    
+    %Grab dimensionless quantities
+    params = getDimLessParams(params);                           
+    %---------------------------------------------------------------------%
+    
+    
+    
+    %---------------------------------------------------------------------%
+    %Perform mass transfer zone theory based calculations          
+    
+    %Specifty parameters for computing MTZ thickness
+    params.mtz = getMtzParams();    
+    
+    %Define the areaThreshold
+    areaThres = params.mtz.areaThres;
+    
+    %Compute the normalization constant for time [=] seconds
+    [params.maxTiFe,~] = calcMtzTheory(params,areaThres);     
+    
+    %Compute the nominal volumetric feed flow rate as per the predicted
+    %equilibrium calculations above for the high pressure feed step 
+    %duration and the maximum moles of raffinate product produced.
+    %[=] cc/sec
+    params.volFlowEq = params.maxMolFe/params.maxTiFe/params.gConScaleFac; 
+    %---------------------------------------------------------------------%
+
     
     
     %---------------------------------------------------------------------%
