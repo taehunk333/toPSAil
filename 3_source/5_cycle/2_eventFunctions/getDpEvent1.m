@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/18/Monday
-%Code last modified on : 2022/3/3/Thursday
+%Code last modified on : 2022/4/17/Sunday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -42,8 +42,8 @@
 %                            a zero event function value
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [event,isterminal,direction] = ...
-                                 getDpEvent1(params,~,states,nS,~,varargin)
+function [event,isterminal,direction] ...
+    = getDpEvent1(params,~,states,nS,~,varargin)
 
     %---------------------------------------------------------------------%
     %Define known quantities
@@ -81,7 +81,7 @@ function [event,isterminal,direction] = ...
     %---------------------------------------------------------------------%
     %Unpack states and obtain necessary quantities
  
-    %Compute the total concentration inside the 1st CSTR in the column
+    %Compute the total pressure inside the 1st CSTR in the column
     %where the event would take place
     gasTotPres1 ...
         = sum(states(:,nColStT*(eveColNo-1)+1: ...
@@ -95,7 +95,7 @@ function [event,isterminal,direction] = ...
     %---------------------------------------------------------------------%
     %Compute the event criteria 
     
-    %Total concentration differnce between the current pressure of the 1st
+    %Total pressure differnce between the current pressure of the 1st
     %CSTR vs. the low pressure
     event = gasTotPres1-eveTotPresDp;
     %---------------------------------------------------------------------%

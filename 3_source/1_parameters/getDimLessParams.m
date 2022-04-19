@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/5/Tuesday
-%Code last modified on : 2022/3/3/Thursday
+%Code last modified on : 2022/4/17/Sunday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -45,8 +45,6 @@ function params = getDimLessParams(params)
     nVols        = params.nVols       ;
     cstrVol      = params.cstrVol     ;
     colVol       = params.colVol      ;    
-    nCols        = params.nCols       ;
-    nSteps       = params.nSteps      ;
     gConScaleFac = params.gConScaleFac;    
     tiScaleFac   = params.tiScaleFac  ;
     teScaleFac   = params.teScaleFac  ;
@@ -112,7 +110,7 @@ function params = getDimLessParams(params)
     
     %Recover the unity values
     valConNorm(valConNorm==valScaleFac) = 1;
-    %---------------------------------------------------------------------%           
+    %---------------------------------------------------------------------%               
     
 
     

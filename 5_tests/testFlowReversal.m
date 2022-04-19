@@ -18,12 +18,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2022/3/7/Monday
-%Code last modified on : 2022/3/7/Monday
+%Code created on       : 2022/4/17/Sunday
+%Code last modified on : 2022/4/17/Sunday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : testDaeConst.m
+%Function   : testFlowReversal.m
 %Source     : common
 %Description: test out the assumption made in the DAE system. In other
 %             words, given a state solution at a given time point, we
@@ -39,13 +39,13 @@
 %Outputs    : status       - 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function status = testDaeConst(t,y,flag,varargin)
+function status = testFlowReversal(t,y,flag,varargin)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'testDaeConst.m';
+    %funcId = 'testFlowReversal.m';
     %---------------------------------------------------------------------%                 
     
     
@@ -139,47 +139,44 @@ function status = testDaeConst(t,y,flag,varargin)
 
 
         %-----------------------------------------------------------------%
-        %Do differential mole balance for adsorption columns
+        %Calculate the pseudo volumetric flow rates in the first adsorption
+        %column
         
-        %Do the column mole balance
-        units = getColMoleBal(params,units);                    
-        
-        %Do the column energy balance                                  
-        units = getColEnerBal(params,units);  
-        
-        %Unpack units
-        col = units.col;
+        %Call the helper function to calculate the pseudo volumetric flow 
+        %rates
+        [vFlPlus,vFlMinus] = calcPseudoVolFlows(units.col.n1.volFlRat);        
         %-----------------------------------------------------------------%
         
         
         
         %-----------------------------------------------------------------%
-        %Perform the main tests on your condition at the current time
-        %point, after having a successful integration step
-                   
-        %Plot the closure of the right hand side function
-        hold off
-        plot(col.n1.cstrEnBal,'r','LineWidth',1.5)
-        hold on
-        plot(col.n1.gasConsTot,'--r','LineWidth',1.5)        
-        hold on
-        plot((col.n1.moleBal.C1+col.n1.moleBal.C2),'g','LineWidth',1.5)
-        hold on 
-        plot(col.n1.temps.cstr,'--g','LineWidth',1.5)
-        hold on
-        plot(col.n1.temps.cstr.*(col.n1.moleBal.C1+col.n1.moleBal.C2) ...
-            +col.n1.gasConsTot.*col.n1.cstrEnBal,'--b','LineWidth',2)
-        hold on
+        %Check to see if there is flow reversal
+       
+        %Compute the sums
+        sumPlus  = sum(vFlPlus);
+        sumMinus = sum(vFlMinus);
         
-        legend('enerBal','gasConsTot','moleBal','tempCSTRs','closure');
+        %Compare the sum and see if at least one of them is zero
         
-        %Print out the convergence criteria: (max-min)
-        max(col.n1.temps.cstr ...
-          .*(col.n1.moleBal.C1+col.n1.moleBal.C2) ...
-           +col.n1.gasConsTot.*col.n1.cstrEnBal) ...
-        - min(col.n1.temps.cstr ...
-          .*(col.n1.moleBal.C1+col.n1.moleBal.C2) ...
-           +col.n1.gasConsTot.*col.n1.cstrEnBal)
+        %If the sum of the positive pseudo volumetric flow rates is zero
+        if sumPlus == 0 
+            
+            %Print unity
+            1
+            
+        %If the sum of the negative pseudo volumetric flow rates is zero    
+        elseif sumMinus == 0
+            
+            %Print a negative unity
+            -1
+            
+        %If no sums for the pseudo volumetric flow rates are zero
+        else
+            
+            %Print zero
+            0
+            
+        end                        
         %-----------------------------------------------------------------%
      
     %When there is a flag that is non-empty
