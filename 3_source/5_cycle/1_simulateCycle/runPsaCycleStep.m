@@ -102,8 +102,8 @@ function [stTime,stStates,flags] ...
                         testFlowReversal(time,states,flag,params,nS,nCy));
                      
         %Save the final options (For testing)
-        %options = odeset(event,output);
-        options = odeset(event);
+        options = odeset(event,output);
+        %options = odeset(event);
         
         %Test to see if the event function will even work before solving 
         %the ODEs
@@ -128,8 +128,8 @@ function [stTime,stStates,flags] ...
                         testFlowReversal(time,states,flag,params,nS,nCy));
         
         %Save the final options (For testing)
-        %options = odeset(output);
-        options = [];
+        options = odeset(output);
+        %options = [];
         
     end    
     %---------------------------------------------------------------------%

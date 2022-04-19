@@ -103,15 +103,21 @@ function units = calcVolFlowsDP1ER(params,units,nS)
         %-----------------------------------------------------------------%
         %Unpack states
         
-        %Unpack the total concentration variables from the 1st CSTR to
-        %(nVols-1)th CSTR
-        cNm0 = col.(sColNums{i}).gasConsTot(:,1:nVols-1);
-        cNp1 = col.(sColNums{i}).gasConsTot(:,2:nVols)  ;
+        %Unpack the total concentrstion variables
+        gasConsTot = col.(sColNums{i}).gasConsTot;
+
+        %Unpack the interior temperature variables 
+        cstrTemps = col.(sColNums{i}).temps.cstr;
         
-        %Unpack the interior temperature variables from the 1st CSTR to
+        %Define the total concentration variables from the 1st CSTR to
+        %(nVols-1)th CSTR
+        cNm0 = gasConsTot(:,1:nVols-1);
+        cNp1 = gasConsTot(:,2:nVols)  ;
+        
+        %Define the interior temperature variables from the 1st CSTR to
         %(nVols-1)th CSTR       
-        Tnm0 = col.(sColNums{i}).temps.cstr(:,1:nVols-1);        
-        Tnp1 = col.(sColNums{i}).temps.cstr(:,2:nVols)  ;   
+        Tnm0 = cstrTemps(:,1:nVols-1);        
+        Tnp1 = cstrTemps(:,2:nVols)  ;   
         
         %Unpack quadratic coefficient for ith adsorber for the 1st through
         %n_c-1 CSTRs

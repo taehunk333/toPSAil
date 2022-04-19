@@ -39,7 +39,7 @@ function example()
     %Define known quantities
     
     %Name the function ID
-    FuncID = 'TBD';
+    funcID = 'TBD';
     
     %Unpack Params
     

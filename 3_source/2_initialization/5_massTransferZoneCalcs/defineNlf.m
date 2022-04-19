@@ -44,7 +44,7 @@ function y = defineNlf(coefVals,z)
     %Define known quantities
     
     %Name the function ID
-    funcId = 'defineNlf.m';
+    %funcId = 'defineNlf.m';
     
     %Unpack the coefVals
     alpha = coefVals(1);
