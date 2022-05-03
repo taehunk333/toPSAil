@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/4/13/Wednesday
-%Code last modified on : 2022/4/13/Wednesday
+%Code last modified on : 2022/4/19/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -36,7 +36,8 @@ function params = getSolverOpts(params)
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'getSolverOpts.m';        
+    %funcId = 'getSolverOpts.m';    
+    nVols = params.nVols;
     %---------------------------------------------------------------------%    
     
     
@@ -47,7 +48,14 @@ function params = getSolverOpts(params)
     %Set the option for linprog.m
     %1. 'interior-point' (faster in this case)
     %2. 'dual-simplex' 
-    params.linprog.opts = optimoptions('linprog','Display','none');    
+    params.linprog.opts = optimoptions('linprog','Display','none'); 
+    
+    %Set the objective function coefficient vector
+    params.linprog.objs = ones(1,2*(nVols-1));
+    
+    %Set the lower and upper bounds
+    params.linprog.lbs = zeros(1,2*(nVols-1))   ;
+    params.linprog.ubs = Inf*ones(1,2*(nVols-1));
     %---------------------------------------------------------------------%              
     
 end

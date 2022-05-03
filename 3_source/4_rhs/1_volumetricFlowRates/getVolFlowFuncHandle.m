@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/26/Tuesday
-%Code last modified on : 2022/2/6/Sunday
+%Code last modified on : 2022/5/3/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -29,7 +29,7 @@
 %             boundary condition for "nS" th step, "numCol" th column, and 
 %             "numBo" th boundary condition.
 %Inputs     : params       - a struct containing simulation parameters.
-%             nSt          - the current number of the step.
+%             nS           - the current number of the step.
 %             numCol       - the column number
 %             numBo        - the current boundary condition number (1 means
 %                            product-end and 2 means feed-end).            
@@ -38,7 +38,7 @@
 %                            situation.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function funcHandle = getVolFlowFuncHandle(params,nSt,numCol,numBo)
+function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
@@ -56,6 +56,8 @@ function funcHandle = getVolFlowFuncHandle(params,nSt,numCol,numBo)
     valRinBot  = params.valRinBot ;
     valPurBot  = params.valPurBot ;
     valFeeTop  = params.valFeeTop ;
+    bool       = params.bool      ;
+    daeModel   = params.daeModel  ;
     %---------------------------------------------------------------------%                
   
     
@@ -67,25 +69,25 @@ function funcHandle = getVolFlowFuncHandle(params,nSt,numCol,numBo)
     %Get the current valve constant values
            
     %Procuct-end raffinate product valve
-    val1Con = valConNorm(nAdsVals*(numCol-1)+1,nSt);
+    val1Con = valConNorm(nAdsVals*(numCol-1)+1,nS);
 
     %Product-end equalization valve
-    val3Con = valConNorm(nAdsVals*(numCol-1)+3,nSt);
+    val3Con = valConNorm(nAdsVals*(numCol-1)+3,nS);
 
     %Product-end purge/pressurization(w/product)/rinse valve 
-    val5Con = valConNorm(nAdsVals*(numCol-1)+5,nSt);
+    val5Con = valConNorm(nAdsVals*(numCol-1)+5,nS);
 
     %Feed-end feed/purge/rinse/pressuroization(w/feed) valve
-    val2Con = valConNorm(nAdsVals*(numCol-1)+2,nSt);
+    val2Con = valConNorm(nAdsVals*(numCol-1)+2,nS);
 
     %Feed-end equalization valve
-    val4Con = valConNorm(nAdsVals*(numCol-1)+4,nSt);
+    val4Con = valConNorm(nAdsVals*(numCol-1)+4,nS);
 
     %Feed-end extract product/waste valve
-    val6Con = valConNorm(nAdsVals*numCol,nSt);        
+    val6Con = valConNorm(nAdsVals*numCol,nS);        
     
     %The flow direction in the current adsorber
-    flowDirCurr = flowDir(numCol,nSt);
+    flowDirCurr = flowDir(numCol,nS);
     %---------------------------------------------------------------------%
     
     
@@ -116,6 +118,12 @@ function funcHandle = getVolFlowFuncHandle(params,nSt,numCol,numBo)
                  val5Con ~= 0);
     val6HasCv = (val6Con ~= 1 && ...
                  val6Con ~= 0);
+             
+    %Check to see if the step is a constant pressure step
+    constPres = daeModel(numCol,nS);
+    
+    %Check to see if the step has a momentum balance
+    momentBal = bool(6);
     %---------------------------------------------------------------------%
         
         
@@ -151,7 +159,7 @@ function funcHandle = getVolFlowFuncHandle(params,nSt,numCol,numBo)
         elseif val1HasCv && ...        %valve 1 has a Cv
                flowDirCurr == 0 && ... %co-current flow
                numBo == 1 && ...       %product-end boundary condition
-               valRaTa(nSt) == 1       %goes to the raffinate product tank
+               valRaTa(nS) == 1       %goes to the raffinate product tank
                                     
             %Define the function handle
             funcHandle ...
@@ -162,7 +170,7 @@ function funcHandle = getVolFlowFuncHandle(params,nSt,numCol,numBo)
         elseif val1HasCv && ...        %valve 1 has a Cv
                flowDirCurr == 0 && ... %co-current flow
                numBo == 1 && ...       %product-end boundary condition
-               valRaTa(nSt) == 0       %goes to the raffinate waste stream
+               valRaTa(nS) == 0       %goes to the raffinate waste stream
            
             %Define the function handle
             funcHandle ...
@@ -180,8 +188,8 @@ function funcHandle = getVolFlowFuncHandle(params,nSt,numCol,numBo)
         elseif val2HasCv && ...           %valve 2 has a Cv
                flowDirCurr == 0 && ...    %co-current flow
                numBo == 2 && ...          %feed-end boundary condition
-               valRinBot(nSt) == 0 && ... %not from the extract tank
-               valPurBot(nSt) == 0        %not from the raffinate tank
+               valRinBot(nS) == 0 && ... %not from the extract tank
+               valPurBot(nS) == 0        %not from the raffinate tank
 
             %Define the function handle
             funcHandle ...
@@ -193,7 +201,7 @@ function funcHandle = getVolFlowFuncHandle(params,nSt,numCol,numBo)
         elseif val2HasCv && ...        %valve 2 has a Cv
                flowDirCurr == 0 && ... %co-current flow
                numBo == 2 && ...       %feed-end boundary condition
-               valPurBot(nSt) == 1     %from the raffinate tank
+               valPurBot(nS) == 1     %from the raffinate tank
 
             %Define the function handle
             funcHandle ...
@@ -205,7 +213,7 @@ function funcHandle = getVolFlowFuncHandle(params,nSt,numCol,numBo)
         elseif val2HasCv && ...        %valve 2 has a Cv
                flowDirCurr == 0 && ... %co-current flow
                numBo == 2 && ...       %feed-end boundary condition
-               valRinBot(nSt) == 1     %from the extract tank
+               valRinBot(nS) == 1     %from the extract tank
 
             %Define the function handle
             funcHandle ...
@@ -323,7 +331,7 @@ function funcHandle = getVolFlowFuncHandle(params,nSt,numCol,numBo)
         elseif val5HasCv && ...        %valve 5 has a Cv
                flowDirCurr == 1 && ... %counter-current flow
                numBo == 1 && ...       %product-end boundary condition                        
-               valRinTop(nSt) == 1     %rinse from the top end
+               valRinTop(nS) == 1     %rinse from the top end
                
             %Define the function handle
             funcHandle ...
@@ -335,7 +343,7 @@ function funcHandle = getVolFlowFuncHandle(params,nSt,numCol,numBo)
         elseif val5HasCv && ...        %valve 5 has a Cv
                flowDirCurr == 1 && ... %counter-current flow
                numBo == 1 && ...       %product-end boundary condition                                        
-               valFeeTop(nSt) == 1      %feed from the top end
+               valFeeTop(nS) == 1      %feed from the top end
 
             %Define the function handle
             funcHandle ...
@@ -363,7 +371,7 @@ function funcHandle = getVolFlowFuncHandle(params,nSt,numCol,numBo)
         elseif val6HasCv && ...        %valve 6 has a Cv
                flowDirCurr == 1 && ... %counter-current flow
                numBo == 2 && ...       %feed-end boundary condition
-               valExTa(nSt) == 1       %goes to the extract product tank
+               valExTa(nS) == 1       %goes to the extract product tank
                                     
             %Define the function handle
             funcHandle ...
@@ -374,7 +382,7 @@ function funcHandle = getVolFlowFuncHandle(params,nSt,numCol,numBo)
         elseif val6HasCv && ...        %valve 6 has a Cv
                flowDirCurr == 1 && ... %counter-current flow
                numBo == 2 && ...       %feed-end boundary condition
-               valExTa(nSt) == 0       %goes to the extract waste stream 
+               valExTa(nS) == 0        %goes to the extract waste stream 
                  
             %Define the function handle
             funcHandle ...
@@ -385,10 +393,56 @@ function funcHandle = getVolFlowFuncHandle(params,nSt,numCol,numBo)
         
         
         %-----------------------------------------------------------------%
+        %Check for a discretized momentum balance with a constant boundary
+        %condition with Cv specified at the product-end
+        
+        %The step is a constant pressure step, a step with momentum balance
+        %equations, and has a Cv specified at the product-end
+        elseif constPres == 0 && ... %Is a constant pressure step
+               momentBal == 1 && ... %Has a momentum balance
+               val6Con == 1   && ... %Feed-end boundary condition is needed
+               numBo == 2            %We will update the feed-end boundary
+                                     %condition
+        
+            %Define the function handle
+            funcHandle ...
+                = @(params,col,feTa,raTa,exTa,nS,nCo) ...
+                  calcVolFlowValSixConPrCu(params, ...
+                                           col,feTa,raTa,exTa,nS,nCo);                         
+        %-----------------------------------------------------------------%
+        
+                                     
+                                     
+        %-----------------------------------------------------------------%
+        %Check for a discretized momentum balance with a constant boundary
+        %condition with Cv specified at the feed-end
+                                  
+        %The step is a constant pressure step, a step with momentum balance
+        %equations, and has a Cv specified at the product-end
+        elseif constPres == 0 && ... %Is a constant pressure step
+               momentBal == 1 && ... %Has a momentum balance
+               val1Con == 1   && ... %Product-end boundary condition is 
+                                 ... %needed
+               numBo == 1            %We will update the product-end 
+                                     %boundary condition
+        
+            %Define the function handle
+            funcHandle ...
+                = @(params,col,feTa,raTa,exTa,nS,nCo) ...
+                  calcVolFlowValOneConPrCo(params, ...
+                                           col,feTa,raTa,exTa,nS,nCo);             
+        %-----------------------------------------------------------------%
+        
+        
+        
+        %-----------------------------------------------------------------%
         %For all other cases, by default the valves must be completely
         %opened. Therefore, we assign a unity for the boundary condition
         %for the time being. 
         else
+            
+            %Check for momentum balance equation
+            
             
             %We define an open boundary condition
             funcHandle = @(params,col,feTa,raTa,exTa,nS,nCo) 1;
@@ -422,12 +476,11 @@ function funcHandle = getVolFlowFuncHandle(params,nSt,numCol,numBo)
             %        maintain a constrant pressure in the first CSTR. This
             %        is a counter-current case.
             %Case 5: If the product-end has an open valve leading to the 
-            %        top-end of the adsorption column from the raffinate 
-            %        product tank (i.e., valve 5), counter-current rinse is
-            %        going on at a high pressure, and we use a constant
-            %        pressure DAE model to simulate an adsorption column. 
-            %        In this case, we have a specified valve constant at 
-            %        the feed-end of the adsorption column.
+            %        raffinate waste (i.e., valve 1), counter-current 
+            %        rinse is going on at a high pressure, and we use a 
+            %        constant pressure DAE model to simulate an adsorption 
+            %        column. In this case, we have a specified valve 
+            %        constant at the feed-end of the adsorption column.
             %Case 6: If the product-end has a linear valve with a specified 
             %        valve constant leading to the top-end of the 
             %        adsorption column from the raffinate product tank 

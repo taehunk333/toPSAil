@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/4/17/Sunday
-%Code last modified on : 2022/4/18/Monday
+%Code last modified on : 2022/5/3/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -79,23 +79,7 @@ function units = calcVolFlowsDP1KC(params,units,nS)
         
     %For each column
     for i = 1 : nCols
-        
-        %-----------------------------------------------------------------%
-        %Define the boundary conditions                                                         
-
-        %Obtain the boundary condition for the product-end of the 
-        %ith column under current step in a given PSA cycle
-        vFlBoPr = ones(nRows,1) ...                   
-               .* vFlBo{1,i,nS}(params,col,feTa,raTa,exTa,nS,i); 
-
-        %Obtain the boundary condition for the feed-end of the ith
-        %column under current step in a given PSA cycle
-        vFlBoFe = ones(nRows,1) ...                   
-               .* vFlBo{2,i,nS}(params,col,feTa,raTa,exTa,nS,i); 
-        %-----------------------------------------------------------------%
-        
-        
-                        
+                                                       
         %-----------------------------------------------------------------%
         %Unpack states
         
@@ -128,10 +112,33 @@ function units = calcVolFlowsDP1KC(params,units,nS)
 
         %Evaluate the linear difference in the pressure and compute the 
         %volumetric flow rates         
-        vFl = preFacLinFlow ...
+        vFl = 0.001*preFacLinFlow ...
             * deltaP;
+        
+        %Save vFl to col structure for the call in the boundary condition
+        %calculations
+        col.vFl = vFl;
         %-----------------------------------------------------------------%
 
+        
+        
+        %-----------------------------------------------------------------%
+        %Define the boundary conditions                                                         
+
+        %Obtain the boundary condition for the product-end of the 
+        %ith column under current step in a given PSA cycle
+        vFlBoPr = ones(nRows,1) ...                   
+               .* vFlBo{1,i,nS}(params,col,feTa,raTa,exTa,nS,i); 
+
+        %Obtain the boundary condition for the feed-end of the ith
+        %column under current step in a given PSA cycle
+        vFlBoFe = ones(nRows,1) ...                   
+               .* vFlBo{2,i,nS}(params,col,feTa,raTa,exTa,nS,i); 
+           
+        %Remove col.vFl from struct
+        col = rmfield(col,'vFl');
+        %-----------------------------------------------------------------%
+        
         
         
         %-----------------------------------------------------------------%
@@ -140,7 +147,7 @@ function units = calcVolFlowsDP1KC(params,units,nS)
         %For each time point
         for t = 1 : nRows
 
-            %Save the volumetric flow rate calculated results
+            %Save the volumetric flow rate calculation results
             vFlCol(t,(nVols+1)*(i-1)+1:(nVols+1)*i) ...
                 = [vFlBoFe(t),vFl(t,:),vFlBoPr(t)];
 
