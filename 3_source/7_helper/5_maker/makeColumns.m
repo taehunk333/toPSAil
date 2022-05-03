@@ -222,6 +222,13 @@ function col = makeColumns(params,states)
                  .*heatReleased);  
             %-------------------------------------------------------------%
             
+        %If isothermal, 
+        else
+            
+            %Assign zeros for the entries
+            col.(sColNums{i}).htCO         = zeros(1,nVols);;
+            col.(sColNums{i}).volCorRatTot = zeros(1,nVols);;
+            
         end              
         %-----------------------------------------------------------------%
         

@@ -100,10 +100,13 @@ function [stTime,stStates,flags] ...
         output = odeset('OutputFcn', ...
                         @(time,states,flag) ...
                         testFlowReversal(time,states,flag,params,nS,nCy));
+                    
+        %Assign the tolerance values
+        tols = odeset('RelTol',1e-8,'AbsTol',1e-10);
                      
         %Save the final options (For testing)
-        options = odeset(event,output);
-        %options = odeset(event);
+        %options = odeset(event,output,tols);
+        options = odeset(event,tols);
         
         %Test to see if the event function will even work before solving 
         %the ODEs
@@ -126,10 +129,13 @@ function [stTime,stStates,flags] ...
         output = odeset('OutputFcn', ...
                         @(time,states,flag) ...
                         testFlowReversal(time,states,flag,params,nS,nCy));
+                    
+        %Assign the tolerance values
+        tols = odeset('RelTol',1e-8,'AbsTol',1e-10);
         
         %Save the final options (For testing)
-        options = odeset(output);
-        %options = [];
+        %options = odeset(output,tols);
+        options = odeset(tols);
         
     end    
     %---------------------------------------------------------------------%

@@ -100,9 +100,9 @@ function raTa = makeRaffTank(params,states)
     if bool(5) == 1
         
         %Unpack additional params
-        htCapCvNorm    = params.htCapCvNorm   ;
-        gasConsNormTan = params.gasConsNormTan;
-        tankScaleFac   = params.tankScaleFac  ;
+        htCapCvNorm  = params.htCapCvNorm   ;
+        gConsNormTan = params.gasConsNormTan;
+        tankScaleFac = params.tankScaleFac  ;
     
         %Initialize the overall heat capacity
         htCO0 = 0;
@@ -120,9 +120,15 @@ function raTa = makeRaffTank(params,states)
         end
         
         %Save the overall heat capacity to a struct 
-        raTa.n1.htCO = gasConsNormTan ...
+        raTa.n1.htCO = gConsNormTan ...
                     ./ tankScaleFac ...
                      * htCO0;
+        
+    %If isothermal,
+    else
+        
+        %Then, assign the zeros
+        raTa.n1.htCO = 0;
         
     end
     %---------------------------------------------------------------------%  

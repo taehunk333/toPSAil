@@ -86,18 +86,18 @@ function units = getExTaEnerBal(params,units,nS)
     %funcId = 'getExTaEnerBal.m';
     
     %Unpack params     
-    nComs          = params.nComs         ;       
-    intHtTrFacTan  = params.intHtTrFacTan ;
-    extHtTrFacTan  = params.extHtTrFacTan ;    
-    ambTempNorm    = params.ambTempNorm   ;    
-    nCols          = params.nCols         ;
-    sColNums       = params.sColNums      ;
-    sComNums       = params.sComNums      ;
-    flowDir        = params.flowDir       ;    
-    gasConsNormTan = params.gasConsNormTan;
-    valRinTop      = params.valRinTop     ;
-    valRinBot      = params.valRinBot     ;
-    htCapCpNorm    = params.htCapCpNorm   ;
+    nComs         = params.nComs        ;       
+    intHtTrFacTan = params.intHtTrFacTan;
+    extHtTrFacTan = params.extHtTrFacTan;    
+    ambTempNorm   = params.ambTempNorm  ;    
+    nCols         = params.nCols        ;
+    sColNums      = params.sColNums     ;
+    sComNums      = params.sComNums     ;
+    flowDir       = params.flowDir      ;    
+    gConsNormTan  = params.gConsNormTan ;
+    valRinTop     = params.valRinTop    ;
+    valRinBot     = params.valRinBot    ;
+    htCapCpNorm   = params.htCapCpNorm  ;
     %---------------------------------------------------------------------%                                                 
     
     
@@ -213,10 +213,10 @@ function units = getExTaEnerBal(params,units,nS)
         end
         
         %Scale the terms with the relevant pre-factors
-        presDeltaEner = gasConsNormTan ...
+        presDeltaEner = gConsNormTan ...
                       * exTa.n1.temps.cstr ...
                       * netMolarFlow;
-        convFlowEner = gasConsNormTan ...
+        convFlowEner = gConsNormTan ...
                      * convFlowEner;
         
     end                                                                   

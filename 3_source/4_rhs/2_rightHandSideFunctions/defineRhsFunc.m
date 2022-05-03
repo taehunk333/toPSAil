@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/14/Thursday
-%Code last modified on : 2022/4/11/Tuesday
+%Code last modified on : 2022/4/28/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -28,16 +28,16 @@
 %Description: a function that defines the right hand side functions for all
 %             steps involved inside a given PSA simulation.
 %Inputs     : t            - a scalar value of a current time point 
-%             y            - a state solution row vector containing all
+%             x            - a state solution row vector containing all
 %                            the state variables associated with the
 %                            current step inside a given PSA cycle.
 %             params       - a struct containing simulation parameters.
-%Outputs    : yDot         - evaluated values for the right hand side 
+%Outputs    : xDot         - evaluated values for the right hand side 
 %                            function for a given step inside a PSA cycle.
 %                            This is a column vector.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function yDot = defineRhsFunc(~,y,params)
+function xDot = defineRhsFunc(~,x,params)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
@@ -56,7 +56,7 @@ function yDot = defineRhsFunc(~,y,params)
     %Check function inputs
       
     %Convert the states to a row vector
-    y = y(:).';
+    x = x(:).';
     %---------------------------------------------------------------------%                            
     
 
@@ -66,16 +66,16 @@ function yDot = defineRhsFunc(~,y,params)
     %associated with each columns and tanks    
     
     %Create an object for the columns
-    units.col = makeColumns(params,y);
+    units.col = makeColumns(params,x);
     
     %Create an object for the feed tanks
-    units.feTa = makeFeedTank(params,y);
+    units.feTa = makeFeedTank(params,x);
     
     %Create an object for the raffinate product tanks
-    units.raTa = makeRaffTank(params,y);  
+    units.raTa = makeRaffTank(params,x);  
     
     %Create an object for the extract product tanks
-    units.exTa = makeExtrTank(params,y); 
+    units.exTa = makeExtrTank(params,x); 
     %---------------------------------------------------------------------%
     
     
@@ -192,7 +192,7 @@ function yDot = defineRhsFunc(~,y,params)
     %Put together the resulting right hand sides from conservation laws and
     %produce the final output (a column vector) for the right hand side 
     %function
-    yDot = getRhsFuncVals(params,units); 
+    xDot = getRhsFuncVals(params,units); 
     %---------------------------------------------------------------------%
     
 end

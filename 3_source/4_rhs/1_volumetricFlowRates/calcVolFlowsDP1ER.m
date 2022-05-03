@@ -83,23 +83,7 @@ function units = calcVolFlowsDP1ER(params,units,nS)
         
     %For each column
     for i = 1 : nCols
-        
-        %-----------------------------------------------------------------%
-        %Define the boundary conditions                                                         
-
-        %Obtain the boundary condition for the product-end of the 
-        %ith column under current step in a given PSA cycle
-        vFlBoPr = ones(nRows,1) ...                   
-               .* vFlBo{1,i,nS}(params,col,feTa,raTa,exTa,nS,i); 
-
-        %Obtain the boundary condition for the feed-end of the ith
-        %column under current step in a given PSA cycle
-        vFlBoFe = ones(nRows,1) ...                   
-               .* vFlBo{2,i,nS}(params,col,feTa,raTa,exTa,nS,i); 
-        %-----------------------------------------------------------------%
-        
-        
-                        
+                                                       
         %-----------------------------------------------------------------%
         %Unpack states
         
@@ -150,8 +134,31 @@ function units = calcVolFlowsDP1ER(params,units,nS)
             + sqrt(coefLinNorm.^2 ...
             - 4*coefQuadNorm ...
            .* coefConNorm));
+      
+        %Save vFl to col structure for the call in the boundary condition
+        %calculations
+        col.vFl = vFl;
         %-----------------------------------------------------------------%
 
+        
+        
+        %-----------------------------------------------------------------%
+        %Define the boundary conditions                                                         
+
+        %Obtain the boundary condition for the product-end of the 
+        %ith column under current step in a given PSA cycle
+        vFlBoPr = ones(nRows,1) ...                   
+               .* vFlBo{1,i,nS}(params,col,feTa,raTa,exTa,nS,i); 
+
+        %Obtain the boundary condition for the feed-end of the ith
+        %column under current step in a given PSA cycle
+        vFlBoFe = ones(nRows,1) ...                   
+               .* vFlBo{2,i,nS}(params,col,feTa,raTa,exTa,nS,i); 
+           
+        %Remove col.vFl from struct
+        col = rmfield(col,'vFl');
+        %-----------------------------------------------------------------%
+        
         
         
         %-----------------------------------------------------------------%
@@ -160,7 +167,7 @@ function units = calcVolFlowsDP1ER(params,units,nS)
         %For each time point
         for t = 1 : nRows
 
-            %Save the volumetric flow rate calculated results
+            %Save the volumetric flow rate calculation results
             vFlCol(t,(nVols+1)*(i-1)+1:(nVols+1)*i) ...
                 = [vFlBoFe(t),vFl(t,:),vFlBoPr(t)];
 

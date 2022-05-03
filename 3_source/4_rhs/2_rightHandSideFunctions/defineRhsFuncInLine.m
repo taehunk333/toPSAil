@@ -692,11 +692,11 @@ function yDot = defineRhsFuncInLine(~,y,params)
             %Define known quantities
 
             %Unpack additional params  
-            intHtTrFacTan  = params.intHtTrFacTan ;
-            extHtTrFacTan  = params.extHtTrFacTan ; 
-            ambTempNorm    = params.ambTempNorm   ;
-            gasConsNormTan = params.gasConsNormTan;
-            htCapCpNorm    = params.htCapCpNorm   ;
+            intHtTrFacTan = params.intHtTrFacTan;
+            extHtTrFacTan = params.extHtTrFacTan; 
+            ambTempNorm   = params.ambTempNorm  ;
+            gConsNormTan  = params.gConsNormTan ;
+            htCapCpNorm   = params.htCapCpNorm  ;
             %-------------------------------------------------------------%              
 
 
@@ -767,7 +767,7 @@ function yDot = defineRhsFuncInLine(~,y,params)
             end            
 
             %Update the term with the prefactors
-            convFlowEner = gasConsNormTan ...
+            convFlowEner = gConsNormTan ...
                          * vnm1*(Tnm1-Tnm0) ...
                          * convFlowEner;    
             %-------------------------------------------------------------%
@@ -954,7 +954,7 @@ function yDot = defineRhsFuncInLine(~,y,params)
             intHtTrFacTan  = params.intHtTrFacTan ;
             extHtTrFacTan  = params.extHtTrFacTan ;    
             ambTempNorm    = params.ambTempNorm   ;                                                                          
-            gasConsNormTan = params.gasConsNormTan;
+            gConsNormTan = params.gasConsNormTan;
             %-------------------------------------------------------------%                                                  
 
 
@@ -1073,10 +1073,10 @@ function yDot = defineRhsFuncInLine(~,y,params)
                 end
 
                 %Scale the terms with the relevant pre-factors
-                presDeltaEner = gasConsNormTan ...
+                presDeltaEner = gConsNormTan ...
                               * raTa.n1.temps.cstr ...
                               * netMolarFlow;
-                convFlowEner = gasConsNormTan ...
+                convFlowEner = gConsNormTan ...
                              * convFlowEner;
 
             end            
@@ -1330,7 +1330,7 @@ function yDot = defineRhsFuncInLine(~,y,params)
             intHtTrFacTan  = params.intHtTrFacTan ;
             extHtTrFacTan  = params.extHtTrFacTan ;    
             ambTempNorm    = params.ambTempNorm   ;       
-            gasConsNormTan = params.gasConsNormTan;
+            gConsNormTan = params.gasConsNormTan;
             htCapCpNorm    = params.htCapCpNorm   ;
             %-------------------------------------------------------------%                                                 
 
@@ -1447,10 +1447,10 @@ function yDot = defineRhsFuncInLine(~,y,params)
                 end
 
                 %Scale the terms with the relevant pre-factors
-                presDeltaEner = gasConsNormTan ...
+                presDeltaEner = gConsNormTan ...
                               * exTa.n1.temps.cstr ...
                               * netMolarFlow;
-                convFlowEner = gasConsNormTan ...
+                convFlowEner = gConsNormTan ...
                              * convFlowEner;
 
             end                                                                   
