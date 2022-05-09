@@ -36,9 +36,11 @@
 %Outputs    : funcHandle   - a function handle that returns the
 %                            corresponding boundary condition for the
 %                            situation.
+%             flags        - a structure with information about the
+%                            boundary conditions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
+function [funcHandle,flags] = getVolFlowFuncHandle(params,nS,numCol,numBo)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
@@ -141,6 +143,9 @@ function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
 
             %Define the function handle to be a constant value of zero
             funcHandle = @(params,col,feTa,raTa,exTa,nS,nCo) 0;
+            
+            %Assign the flag denoting which boundary condition is specified
+            flags.whichEnd = 0;
 
         %If all the feed-end valves are closed, assign the function handle 
         %a value of zero    
@@ -148,6 +153,9 @@ function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
 
             %Define the function handle to be a constant value of zero
             funcHandle = @(params,col,feTa,raTa,exTa,nS,nCo) 0;
+            
+            %Assign the flag denoting which boundary condition is specified
+            flags.whichEnd = 0;
         %-----------------------------------------------------------------%
         
         
@@ -164,7 +172,10 @@ function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
             %Define the function handle
             funcHandle ...
                 = @(params,col,feTa,raTa,exTa,nS,nCo) ...
-                  calcVolFlowValOne2RaTa(params,col,feTa,raTa,exTa,nS,nCo);            
+                  calcVolFlowValOne2RaTa(params,col,feTa,raTa,exTa,nS,nCo);   
+              
+            %Assign the flag denoting which boundary condition is specified
+            flags.whichEnd = 0;
         
         %If the product-end has a Cv leading to the raffinate waste stream
         elseif val1HasCv && ...        %valve 1 has a Cv
@@ -175,7 +186,10 @@ function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
             %Define the function handle
             funcHandle ...
                 = @(params,col,feTa,raTa,exTa,nS,nCo) ...
-                  calcVolFlowValOne2RaWa(params,col,feTa,raTa,exTa,nS,nCo);                                          
+                  calcVolFlowValOne2RaWa(params,col,feTa,raTa,exTa,nS,nCo); 
+              
+            %Assign the flag denoting which boundary condition is specified
+            flags.whichEnd = 0;
         %-----------------------------------------------------------------%     
         
         
@@ -195,6 +209,9 @@ function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
             funcHandle ...
                 = @(params,col,feTa,raTa,exTa,nS,nCo) ...
                   calcVolFlowValFeTa2Two(params,col,feTa,raTa,exTa,nS,nCo); 
+              
+            %Assign the flag denoting which boundary condition is specified
+            flags.whichEnd = 0;
            
         %If the feed-end has a Cv and the flow to the adsorber is from the
         %raffinate product tank
@@ -207,6 +224,9 @@ function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
             funcHandle ...
                 = @(params,col,feTa,raTa,exTa,nS,nCo) ...
                   calcVolFlowValRaTa2Two(params,col,feTa,raTa,exTa,nS,nCo); 
+              
+            %Assign the flag denoting which boundary condition is specified
+            flags.whichEnd = 0;
         
         %If the feed-end has a Cv and the flow to the adsorber is from the
         %raffinate product tank
@@ -218,7 +238,10 @@ function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
             %Define the function handle
             funcHandle ...
                 = @(params,col,feTa,raTa,exTa,nS,nCo) ...
-                  calcVolFlowValExTa2Two(params,col,feTa,raTa,exTa,nS,nCo);      
+                  calcVolFlowValExTa2Two(params,col,feTa,raTa,exTa,nS,nCo); 
+              
+            %Assign the flag denoting which boundary condition is specified
+            flags.whichEnd = 0;
         %-----------------------------------------------------------------%
         
         
@@ -236,6 +259,9 @@ function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
             funcHandle ...
                 = @(params,col,feTa,raTa,exTa,nS,nCo) ...
                   calcVolFlowValRaEqCu(params,col,feTa,raTa,exTa,nS,nCo);  
+              
+            %Assign the flag denoting which boundary condition is specified
+            flags.whichEnd = 0;
         
         %If the product-end is open and the flow to the adsorber is from 
         %the other interacting adsorber
@@ -247,6 +273,9 @@ function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
             funcHandle ...
                 = @(params,col,feTa,raTa,exTa,nS,nCo) ...
                   calcVolFlowValRaEqCu(params,col,feTa,raTa,exTa,nS,nCo);
+              
+            %Assign the flag denoting which boundary condition is specified
+            flags.whichEnd = 0;
                     
         %If the product-end has a Cv and the flow to the adsorber is to the 
         %other interacting adsorber
@@ -259,6 +288,9 @@ function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
                 = @(params,col,feTa,raTa,exTa,nS,nCo) ...
                   calcVolFlowValRaEqCo(params,col,feTa,raTa,exTa,nS,nCo); 
               
+            %Assign the flag denoting which boundary condition is specified
+            flags.whichEnd = 0;
+              
         %If the product-end is open and the flow to the adsorber is to the 
         %other interacting adsorber
         elseif val3Con == 1 && ...     %valve 3 is open
@@ -269,6 +301,9 @@ function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
             funcHandle ...
                 = @(params,col,feTa,raTa,exTa,nS,nCo) ...
                   calcVolFlowValRaEqCo(params,col,feTa,raTa,exTa,nS,nCo);
+              
+            %Assign the flag denoting which boundary condition is specified
+            flags.whichEnd = 0;
         %-----------------------------------------------------------------%
         
         
@@ -286,6 +321,9 @@ function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
             funcHandle ...
                 = @(params,col,feTa,raTa,exTa,nS,nCo) ...
                   calcVolFlowValFeEqCu(params,col,feTa,raTa,exTa,nS,nCo);
+              
+            %Assign the flag denoting which boundary condition is specified
+            flags.whichEnd = nu0mBo;
 
         %If the feed-end has a Cv and the flow to the adsorber is from 
         %the other interacting adsorber
@@ -297,6 +335,9 @@ function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
             funcHandle ...
                 = @(params,col,feTa,raTa,exTa,nS,nCo) ...
                   calcVolFlowValFeEqCu(params,col,feTa,raTa,exTa,nS,nCo);
+              
+            %Assign the flag denoting which boundary condition is specified
+            flags.whichEnd = 0;
   
         %If the feed-end has a Cv and the flow to the adsorber is to the 
         %other interacting adsorber
@@ -308,6 +349,9 @@ function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
             funcHandle ...
                 = @(params,col,feTa,raTa,exTa,nS,nCo) ...
                   calcVolFlowValFeEqCo(params,col,feTa,raTa,exTa,nS,nCo);
+              
+            %Assign the flag denoting which boundary condition is specified
+            flags.whichEnd = 0;
 
         %If the feed-end has a Cv and the flow to the adsorber is to the 
         %other interacting adsorber
@@ -318,7 +362,10 @@ function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
             %Define the function handle
             funcHandle ...
                 = @(params,col,feTa,raTa,exTa,nS,nCo) ...
-                  calcVolFlowValFeEqCo(params,col,feTa,raTa,exTa,nS,nCo);        
+                  calcVolFlowValFeEqCo(params,col,feTa,raTa,exTa,nS,nCo);  
+              
+            %Assign the flag denoting which boundary condition is specified
+            flags.whichEnd = 0;
         %-----------------------------------------------------------------%
         
         
@@ -337,6 +384,9 @@ function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
             funcHandle ...
                 = @(params,col,feTa,raTa,exTa,nS,nCo) ...
                   calcVolFlowValExTa2Fiv(params,col,feTa,raTa,exTa,nS,nCo);
+              
+            %Assign the flag denoting which boundary condition is specified
+            flags.whichEnd = 0;
         
         %If the product-end has a Cv and the flow to the adsorber is from 
         %the feed tank
@@ -348,7 +398,10 @@ function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
             %Define the function handle
             funcHandle ...
                 = @(params,col,feTa,raTa,exTa,nS,nCo) ...
-                  calcVolFlowValFeTa2Fiv(params,col,feTa,raTa,exTa,nS,nCo);      
+                  calcVolFlowValFeTa2Fiv(params,col,feTa,raTa,exTa,nS,nCo);     
+              
+            %Assign the flag denoting which boundary condition is specified
+            flags.whichEnd = 0;
               
         %If the product-end has a Cv and the flow to the adsorber is from 
         %the raffinate product tank
@@ -359,7 +412,10 @@ function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
             %Define the function handle
             funcHandle ...
                 = @(params,col,feTa,raTa,exTa,nS,nCo) ...
-                  calcVolFlowValRaTa2Fiv(params,col,feTa,raTa,exTa,nS,nCo);                 
+                  calcVolFlowValRaTa2Fiv(params,col,feTa,raTa,exTa,nS,nCo); 
+              
+            %Assign the flag denoting which boundary condition is specified
+            flags.whichEnd = 0;
         %-----------------------------------------------------------------%
         
         
@@ -377,6 +433,9 @@ function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
             funcHandle ...
                 = @(params,col,feTa,raTa,exTa,nS,nCo) ...
                   calcVolFlowValSix2ExTa(params,col,feTa,raTa,exTa,nS,nCo);
+              
+            %Assign the flag denoting which boundary condition is specified
+            flags.whichEnd = 0;
         
         %If the product-end has a Cv leading to the raffinate product tank
         elseif val6HasCv && ...        %valve 6 has a Cv
@@ -388,6 +447,9 @@ function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
             funcHandle ...
                 = @(params,col,feTa,raTa,exTa,nS,nCo) ...
                   calcVolFlowValSix2ExWa(params,col,feTa,raTa,exTa,nS,nCo);
+              
+            %Assign the flag denoting which boundary condition is specified
+            flags.whichEnd = 0;
         %-----------------------------------------------------------------%
         
         
@@ -408,7 +470,10 @@ function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
             funcHandle ...
                 = @(params,col,feTa,raTa,exTa,nS,nCo) ...
                   calcVolFlowValSixConPrCu(params, ...
-                                           col,feTa,raTa,exTa,nS,nCo);                         
+                                           col,feTa,raTa,exTa,nS,nCo);      
+                                       
+            %Assign the flag denoting which boundary condition is specified
+            flags.whichEnd = 0;
         %-----------------------------------------------------------------%
         
                                      
@@ -430,7 +495,10 @@ function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
             funcHandle ...
                 = @(params,col,feTa,raTa,exTa,nS,nCo) ...
                   calcVolFlowValOneConPrCo(params, ...
-                                           col,feTa,raTa,exTa,nS,nCo);             
+                                           col,feTa,raTa,exTa,nS,nCo);  
+                                       
+            %Assign the flag denoting which boundary condition is specified
+            flags.whichEnd = 0;
         %-----------------------------------------------------------------%
         
         
@@ -446,6 +514,9 @@ function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
             
             %We define an open boundary condition
             funcHandle = @(params,col,feTa,raTa,exTa,nS,nCo) 1;
+            
+            %Assign the flag denoting which boundary condition is specified
+            flags.whichEnd = numBo;
             
             %List of Cases that do not require a boundary condition
             %
@@ -532,8 +603,7 @@ function funcHandle = getVolFlowFuncHandle(params,nS,numCol,numBo)
         
         end 
         %-----------------------------------------------------------------%
-        
-                            
+                                    
     %---------------------------------------------------------------------%
   
 end

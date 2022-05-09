@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/25/Monday
-%Code last modified on : 2022/2/7/Monday
+%Code last modified on : 2022/5/9/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -41,9 +41,11 @@ function params = getColBoundConds(params)
     %funcId = 'getColBoundConds.m';
     
     %Unpack Params
-    nCols   = params.nCols  ;
-    nSteps  = params.nSteps ;
-    maxNoBC = params.maxNoBC;
+    nCols    = params.nCols   ;
+    nSteps   = params.nSteps  ;
+    maxNoBC  = params.maxNoBC ;
+    daeModel = params.daeModel;
+    bool     = params.bool    ;
     %---------------------------------------------------------------------%                
   
     
@@ -54,6 +56,10 @@ function params = getColBoundConds(params)
     %Get a cell array to store function handles for the boundary volumetric
     %flow rates
     volFlBo = cell(maxNoBC,nCols,nSteps);
+    
+    %Get a numerical array to store the location of the specified boundary
+    %conditions for constant pressure with no axial pressure drop case
+    volFlBoFree = zeros(nCols,nSteps);    
     %---------------------------------------------------------------------%                    
            
     
@@ -65,19 +71,56 @@ function params = getColBoundConds(params)
     %For each step, 
     for i = 1 : nSteps
         
+        %-----------------------------------------------------------------%
         %For each column in ith step,
         for j = 1 : nCols
             
+            %-------------------------------------------------------------%
             %For each boundary condition associated with jth column,
             for k = 1 : maxNoBC
             
                 %Assign the function handle
-                volFlBo{k,j,i}  = getVolFlowFuncHandle(params,i,j,k);
+                [volFlBo{k,j,i},flags] ...
+                    = getVolFlowFuncHandle(params,i,j,k);
+                %---------------------------------------------------------%
+                
+                
+                
+                %---------------------------------------------------------%
+                %Save the information about the boundary conditions
+                
+                %Check to see if we should save the location of the 
+                %boundary condition where it was specifeid; we save when we
+                %have a constant pressure DAE model with no axial pressure 
+                %drop
+                checkDaeModel = daeModel(j,i);    
+                
+                %Check if we have momentum balance or not
+                checkMomBal = bool(6);
+                
+                %Unpack the flags
+                whichEnd = flags.whichEnd;
+                
+                if checkDaeModel == 0 && ... %Constant pressure DAE
+                   checkMomBal == 0 && ...   %No axial pressure drop
+                   whichEnd ~= 0             %Update only when needed
 
-            end
+                    %Update the boundary condition for the constant 
+                    %pressure no axial pressure drop DAE model which 
+                    %requires only one boundary condition. All the other 
+                    %DAE models require the specification of two boundary
+                    %conditions.
+                    volFlBoFree(j,i) = flags.whichEnd;
+
+                end
+                %---------------------------------------------------------%
+                
+            end                        
+            %-------------------------------------------------------------%
             
         end    
-    
+        %-----------------------------------------------------------------%
+        
     end
     %---------------------------------------------------------------------%
     
@@ -87,7 +130,8 @@ function params = getColBoundConds(params)
     %Return the computed values to the struct
     
     %Pack into params
-    params.volFlBo = volFlBo;        
+    params.volFlBo     = volFlBo    ;   
+    params.volFlBoFree = volFlBoFree;
     %---------------------------------------------------------------------%
     
 end
