@@ -94,7 +94,8 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
 
                 %---------------------------------------------------------%
                 %Unpack additional params
-                coefMat = params.coefMat{i,nS}{1};
+                coefMatPlus  = params.coefMat{i,nS}{1};
+                coefMatMinus = params.coefMat{i,nS}{2};
                 %---------------------------------------------------------%                        
 
 
@@ -126,67 +127,167 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                 %If we have a boundary condition at the feed-end
                 if feEndHasBC == 1
 
+                    %-----------------------------------------------------% 
+                    %Handle the boundary condition
+                    
                     %Take account for the boundary condition on the right 
                     %hand side vector
-                    vFlBoRhs ...
+                    vFlBoFe ...
                         = vFlBo{2,i,nS}(params,col,feTa,raTa,exTa,nS,i);
+                    
+                    %Call the helper function to calculate the pseudo 
+                    %volumetric flow rates
+                    [vFlPlusBoFe,vFlMinusBoFe] ...
+                        = calcPseudoVolFlows(vFlBoFe);
 
                     %Update the right hand side vector
                     rhsVec(:,1) = rhsVec(:,1) ...
-                                + vFlBoRhs;
+                                + vFlPlusBoFe ...
+                                - vFlMinusBoFe;
+                    %-----------------------------------------------------%  
+                    
+                    
+                    
+                    %-----------------------------------------------------%                              
+                    %Solve for the unknown volumetric flow rates, depending
+                    %on the flow direction
+                    
+                    %For counter-current flow,
+                    if flowDirStep == 1
+                        
+                        %-------------------------------------------------%
+                        %Calculate the pseudo volumetric flwo rates
+                        
+                        %Set the positive pseudo volumetric flow rates
+                        %equal to a zero vector
+                        vFlPlusCol = zeros(nRows,nVols+1);
+                        
+                        %Solve for dimensionless volumetric flow rates 
+                        %using a linear solver           
+                        vFlMinusCol = mldivide(coefMatMinus,rhsVec');
+                        %-------------------------------------------------%
+                        
+                        
+                        
+                        %-------------------------------------------------%
+                        %Save the results
+
+                        %We are specifying a volumetric flow rate at the 
+                        %feed-end
+                        vFlMinusCol = [vFlMinusBoFe,vFlMinusCol'];
+                        %-------------------------------------------------%
+                                                
+                    %For co-current flow, 
+                    elseif flowDirStep == 0
+                        
+                        %-------------------------------------------------%
+                        %Calculate the pseudo volumetric flwo rates
+                        
+                        %Set the negative pseudo volumetric flow rates
+                        %equal to a zero vector
+                        vFlMinusCol = zeros(nRows,nVols+1);
+                        
+                        %Solve for dimensionless volumetric flow rates 
+                        %using a linear solver           
+                        vFlPlusCol = mldivide(coefMatPlus,rhsVec');
+                        %-------------------------------------------------%
+
+                        
+                        
+                        %-------------------------------------------------%
+                        %Save the results
+
+                        %We are specifying a volumetric flow rate at the 
+                        %feed-end
+                        vFlPlusCol = [vFlPlusBoFe,vFlPlusCol'];
+                        %-------------------------------------------------%
+                        
+                    end                                                    
+                    %-----------------------------------------------------%
 
                 %Else, we have a boundary condition at the product-end
                 else
 
+                    %-----------------------------------------------------%  
+                    %Handle the boundary condition
+                    
                     %Take account for the boundary condition on the right
                     %hand side vector
-                    vFlBoRhs ...
+                    vFlBoPr ...
                         = vFlBo{1,i,nS}(params,col,feTa,raTa,exTa,nS,i);
+                    
+                    %Call the helper function to calculate the pseudo 
+                    %volumetric flow rates
+                    [vFlPlusBoPr,vFlMinusBoPr] ...
+                        = calcPseudoVolFlows(vFlBoPr);
 
                     %Update the right hand side vector
                     rhsVec(:,nVols) = rhsVec(:,nVols)...
-                                    - vFlBoRhs;
+                                    - vFlPlusBoPr ...
+                                    + vFlMinusBoPr;
+                    %-----------------------------------------------------%  
+                    
+                    
+                                
+                    %-----------------------------------------------------%                              
+                    %Solve for the unknown volumetric flow rates, depending
+                    %on the flow direction
+                    
+                    %For counter-current flow,
+                    if flowDirStep == 1
+                        
+                        %-------------------------------------------------%
+                        %Calculate the pseudo volumetric flwo rates
+                        
+                        %Set the positive pseudo volumetric flow rates
+                        %equal to a zero vector
+                        vFlPlusCol = zeros(nRows,nVols+1);
+                        
+                        %Solve for dimensionless volumetric flow rates 
+                        %using a linear solver           
+                        vFlMinusCol = mldivide(coefMatMinus,rhsVec');
+                        %-------------------------------------------------%
+                        
+                        
+                        
+                        %-------------------------------------------------%
+                        %Save the results
+
+                        %We are specifying a volumetric flow rate at the 
+                        %feed-end
+                        vFlMinusCol = [vFlMinusCol',vFlMinusBoPr];
+                        %-------------------------------------------------%
+                                                
+                    %For co-current flow, 
+                    elseif flowDirStep == 0
+                        
+                        %-------------------------------------------------%
+                        %Calculate the pseudo volumetric flwo rates
+                        
+                        %Set the negative pseudo volumetric flow rates
+                        %equal to a zero vector
+                        vFlMinusCol = zeros(nRows,nVols+1);
+                        
+                        %Solve for dimensionless volumetric flow rates 
+                        %using a linear solver           
+                        vFlPlusCol = mldivide(coefMatPlus,rhsVec');
+                        %-------------------------------------------------%
+
+                        
+                        
+                        %-------------------------------------------------%
+                        %Save the results
+
+                        %We are specifying a volumetric flow rate at the 
+                        %feed-end
+                        vFlPlusCol = [vFlPlusCol',vFlPlusBoPr];
+                        %-------------------------------------------------%
+                        
+                    end                                                    
+                    %-----------------------------------------------------%
 
                 end
                 %---------------------------------------------------------%                              
-
-
-
-                %---------------------------------------------------------%                              
-                %Solve for the unknown volumetric flow rates 
-
-                %Solve for dimensionless volumetric flow rates using a 
-                %linear solver           
-                vFlCol = mldivide(coefMat, rhsVec');            
-                %---------------------------------------------------------%                              
-
-
-
-                %---------------------------------------------------------%                              
-                %Save the results
-
-                %Concatenate the boundary conditions
-
-                %If we have a boundary condition at the feed end 
-                if feEndHasBC == 1
-
-                    %We are specifying a volumetric flow rate at the 
-                    %feed-end
-                    vFlCol = [vFlBoRhs, vFlCol'];
-
-                %Else, we have a boundary condition at the product end     
-                else
-
-                    %We are specifying a volumetric flow rate at the 
-                    %product-end
-                    vFlCol = [vFlCol', vFlBoRhs];
-
-                end
-                
-                %Call the helper function to calculate the pseudo 
-                %volumetric flow rates
-                [vFlPlusCol,vFlMinusCol] = calcPseudoVolFlows(vFlCol); 
-                %---------------------------------------------------------%
 
             %-------------------------------------------------------------%
 
@@ -321,7 +422,7 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                     vFlMinusCol ...
                         = [vFlMinusBoFe,vFlMinusCol',vFlMinusBoPr];               
                     
-                    %Set the negative pseudo volumetric flow rate equal to
+                    %Set the positive pseudo volumetric flow rate equal to
                     %a zero vector
                     vFlPlusCol = zeros(nRows,nVols+1);
                     %-----------------------------------------------------%
@@ -343,6 +444,9 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
         %For each time point,
         for t = 1 : nRows
             
+            %-------------------------------------------------------------%
+            %Check the flow reversal 
+            
             %For co-current flow
             if flowDirStep == 0
                 
@@ -358,7 +462,13 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                 flowDirCheck = all(vFlPlusCol(t,:));
                 
             end                        
-
+            %-------------------------------------------------------------%
+            
+            
+            
+            %-------------------------------------------------------------%
+            %Do the recourse measure
+            
             %If flow reversed, then,
             if flowDirCheck == 1
                 
@@ -376,7 +486,8 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                 %Restore the number of rows
                 params.nRows = nRowsSave;
 
-            end    
+            end  
+            %-------------------------------------------------------------%
         
         end
         %-----------------------------------------------------------------%
