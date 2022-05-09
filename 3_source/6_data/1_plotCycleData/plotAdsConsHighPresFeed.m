@@ -128,10 +128,10 @@ function plotAdsConsHighPresFeed(params,sol,colNum)
     %Make any terminal settings
     
     %Add entry to the legend
-    legend(sCom,'Location','NorthEastOutside');
+    legend(sCom,'Location','SouthWest');
     
     %Resize the figure
-    set(gcf,'Position',[200,200,700,500]);
+    set(gcf,'Position',[100,25,600,500]);
     
     %Set the limit on the x-axis
     xlim([0,heightCol]);

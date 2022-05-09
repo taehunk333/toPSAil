@@ -130,10 +130,10 @@ function plotCssConv(params,sol)
     str2 = append('modSp7 = ',int2str(modSp(7)));
     
     %Add entry to the legend
-    legend(str2,'Location','NorthEastOutside');
+    legend(str2,'Location','SouthWest');
     
     %Resize the figure
-    set(gcf,'Position',[200,200,700,500]);    
+    set(gcf,'Position',[100,25,600,500]);    
     
     %Set integer spacing
     set(gca,'xtick',0:laststep/nSteps);

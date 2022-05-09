@@ -117,10 +117,10 @@ function plotProductPurity(params,sol)
     set(gca,'FontSize',14)                 ;    
     
     %Add entry to the legend
-    legend(sCom,'Location','NorthEastOutside');
+    legend(sCom,'Location','NorthWest');
     
     %Resize the figure
-    set(gcf,'Position',[200,200,700,500]);
+    set(gcf,'Position',[100,25,600,500]);
     
     %Set the limit on the x-axis
     %xlim([1,laststep/nSteps]);
