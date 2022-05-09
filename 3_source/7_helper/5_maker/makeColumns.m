@@ -114,7 +114,7 @@ function col = makeColumns(params,states)
         
         %-----------------------------------------------------------------%          
         %Save results to the column properties
-    
+        
         %For each species,
         for j = 1 : nComs
         
@@ -226,8 +226,8 @@ function col = makeColumns(params,states)
         else
             
             %Assign zeros for the entries
-            col.(sColNums{i}).htCO         = zeros(1,nVols);;
-            col.(sColNums{i}).volCorRatTot = zeros(1,nVols);;
+            col.(sColNums{i}).htCO         = zeros(1,nVols);
+            col.(sColNums{i}).volCorRatTot = zeros(1,nVols);
             
         end              
         %-----------------------------------------------------------------%

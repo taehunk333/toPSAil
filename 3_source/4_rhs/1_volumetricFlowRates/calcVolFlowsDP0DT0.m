@@ -57,6 +57,7 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
     sColNums    = params.sColNums   ;
     nRows       = params.nRows      ;
     volFlBoFree = params.volFlBoFree;
+    flowDir     = params.flowDir    ;
     
     %Unpack units
     col  = units.col ;
@@ -64,18 +65,7 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
     raTa = units.raTa;
     exTa = units.exTa;
     %---------------------------------------------------------------------%
-
-    
-    
-    %---------------------------------------------------------------------%
-    %Initialize solution arrays
-    
-    %Initialize numeric arrays for the pseudo volumetric flow rates for the
-    %adsorption columns
-    vFlPlus  = zeros(nRows,nCols*(nVols+1));
-    vFlMinus = zeros(nRows,nCols*(nVols+1));        
-    %---------------------------------------------------------------------%
-    
+        
     
     
     %---------------------------------------------------------------------%
@@ -86,6 +76,15 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
     for i = 1 : nCols
     
         %-----------------------------------------------------------------%
+        %Obtain the information about the adsorber
+        
+        %Get the flow direction for (i)th adsorber at (nS)th step       
+        flowDirStep = flowDir(i,nS);
+        %-----------------------------------------------------------------%
+        
+        
+
+        %-----------------------------------------------------------------%
         %Calculate the pseudo volumetric flow rates with assumed flow
         %directions
 
@@ -95,8 +94,7 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
 
                 %---------------------------------------------------------%
                 %Unpack additional params
-                coefMat    = params.coefMat{i,nS}{1};
-                partCoefHp = params.partCoefHp      ;
+                coefMat = params.coefMat{i,nS}{1};
                 %---------------------------------------------------------%                        
 
 
@@ -116,9 +114,8 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
 
                 %Multiply dimensionless total adsorption rates by the 
                 %coefficients that are relevant for the step for ith column            
-                rhsVec = -partCoefHp*cstrHt ...
-                      ./ col.(sColNums{i}).gasConsTot ...
-                      .* col.(sColNums{i}).adsRatSum;                                                     
+                rhsVec = (-1) ...
+                       * col.(sColNums{i}).volAdsRatTot;                                                     
                 %---------------------------------------------------------%                                                 
 
 
@@ -135,8 +132,8 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                         = vFlBo{2,i,nS}(params,col,feTa,raTa,exTa,nS,i);
 
                     %Update the right hand side vector
-                    rhsVec(:,1) ...
-                        = vFlBoRhs + rhsVec(:,1);
+                    rhsVec(:,1) = rhsVec(:,1) ...
+                                + vFlBoRhs;
 
                 %Else, we have a boundary condition at the product-end
                 else
@@ -147,8 +144,8 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                         = vFlBo{1,i,nS}(params,col,feTa,raTa,exTa,nS,i);
 
                     %Update the right hand side vector
-                    rhsVec(:,nVols) ...
-                        = -vFlBoRhs + rhsVec(:,nVols);
+                    rhsVec(:,nVols) = rhsVec(:,nVols)...
+                                    - vFlBoRhs;
 
                 end
                 %---------------------------------------------------------%                              
@@ -201,27 +198,54 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
 
                 %---------------------------------------------------------%
                 %Unpack additional params
-                coefMatLo ...
-                    = params.coefMat{i,nS}{1}; %Lower triangular matrix
-                coefMatUp ...
-                    = params.coefMat{i,nS}{2}; %Upper triangular matrix
-                partCoefHp = params.partCoefHp;
+                
+                %Depending on the flow direction, unpack the coefficient
+                %matrices
+                
+                %For a counter current,
+                if flowDirStep == 1
+                    
+                    %Obtain the coefficient matrices
+                    loTriVaPr ... %Lower triangular matrix
+                        = -params.coefMat{i,nS}{1}; 
+                    upTriVaPr ... %Upper triangular matrix
+                        = -params.coefMat{i,nS}{2}; 
+                
+                %For a co-current,
+                elseif flowDirStep == 0
+                    
+                    %Obtain the coefficient matrices
+                    loTriVaPr ... %Lower triangular matrix
+                        = params.coefMat{i,nS}{1}; 
+                    upTriVaPr ... %Upper triangular matrix
+                        = params.coefMat{i,nS}{2};
+                    
+                end
                 %---------------------------------------------------------%
 
 
 
                 %---------------------------------------------------------%
-                %Define the boundary conditions                                     
+                %Define the boundary conditions and the pseudo volumetric 
+                %flow rates                               
 
                 %Obtain the boundary condition for the product-end of the 
                 %ith column under current step in a given PSA cycle           
                 vFlBoPr = ones(nRows,1) ...
-                       .* vFlBo{1,i,nS}(params,col,feTa,raTa,exTa,nS,i);                        
+                       .* vFlBo{1,i,nS}(params,col,feTa,raTa,exTa,nS,i);   
+                   
+                %Call the helper function to calculate the pseudo 
+                %volumetric flow rates
+                [vFlPlusBoPr,vFlMinusBoPr] = calcPseudoVolFlows(vFlBoPr);
 
                 %Obtain the boundary condition for the feed-end of the ith
                 %column under current step in a given PSA cycle
                 vFlBoFe = ones(nRows,1) ...
-                       .* vFlBo{2,i,nS}(params,col,feTa,raTa,exTa,nS,i);           
+                       .* vFlBo{2,i,nS}(params,col,feTa,raTa,exTa,nS,i);  
+                   
+                %Call the helper function to calculate the pseudo 
+                %volumetric flow rates
+                [vFlPlusBoFe,vFlMinusBoFe] = calcPseudoVolFlows(vFlBoFe);
                 %---------------------------------------------------------% 
 
 
@@ -232,46 +256,77 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
 
                 %Get the first order difference between adjacent columns of
                 %the total adsorption rates for the current ith column            
-                rhsVec = -partCoefHp ...
-                      ./ col.(sColNums{i}).gasConsTot(:,2:nVols) ...
-                      .* diff(col.(sColNums{i}).adsRatSum,1,2);
+                rhsVec = (1./cstrHt(2:nVols)) ...
+                      .* col.(sColNums{i}).volAdsRatTot(:,2:nVols) ...
+                       - (1./cstrHt(1:nVols-1)) ...
+                      .* col.(sColNums{i}).volAdsRatTot(:,1:nVols-1);
 
                 %Add the feed-end boundary condition for the ith column in 
                 %nS step in a given PSA cycle
-                rhsVec(:,1) = ...
-                            + rhsVec(:,1) ...
-                            - vFlBoFe/cstrHt(1);
+                rhsVec(:,1) = rhsVec(:,1) ...
+                            + (1/cstrHt(1))*vFlPlusBoFe ...
+                            - (1/cstrHt(1))*vFlMinusBoFe;
 
                 %Add the product-end boundary condition for the ith column 
                 %in nS step in a given PSA cycle
-                rhsVec(:,end) = ...
-                              + rhsVec(:,end) ...
-                              - vFlBoPr/cstrHt(end);                        
+                rhsVec(:,nVols-1) = rhsVec(:,nVols-1) ...
+                                  + (1/cstrHt(nVols))*vFlPlusBoPr ...
+                                  - (1/cstrHt(nVols))*vFlMinusBoPr;                        
                 %---------------------------------------------------------%
 
 
 
                 %---------------------------------------------------------%
-                %Solve for the unknown volumetric flow rates
+                %Calculate the pseudo voluemtric flow rates and save the
+                %results
+  
+                %If we have a co-current
+                if flowDirStep == 0
+                    
+                    %-----------------------------------------------------%
+                    %Solve for the unknown volumetric flow rates
 
-                %Solve L(Ux)=b for y where Ly=b with y = Ux            
-                vFlCol = mldivide(coefMatLo,rhsVec');
+                    %Solve L(Ux)=b for y where Ly=b with y = Ux            
+                    vFlPlusCol = mldivide(loTriVaPr,rhsVec');
 
-                %Solve Ux = y for x                                  
-                vFlCol = mldivide(coefMatUp,vFlCol);
-                %---------------------------------------------------------%
+                    %Solve Ux = y for x                                  
+                    vFlPlusCol = mldivide(upTriVaPr,vFlPlusCol);
+                    
+                    %Concatenate the boundary conditions
+                    vFlPlusCol ...
+                        = [vFlPlusBoFe,vFlPlusCol',vFlPlusBoPr];  
+                    
+                    %Set the negative pseudo volumetric flow rate equal to
+                    %a zero vector
+                    vFlMinusCol = zeros(nRows,nVols+1);
+                    %-----------------------------------------------------%
+                                        
+                %If we have a counter-current
+                elseif flowDirStep == 1
+                                                                                            
+                    %-----------------------------------------------------%
+                    %Solve for the unknown volumetric flow rates
 
+                    %Solve L(Ux)=b for y where Ly=b with y = Ux            
+                    vFlMinusCol = mldivide(loTriVaPr,rhsVec');
 
-
-                %---------------------------------------------------------%
-                %Save the results
-
-                %Concateante the results
-                vFlCol = [vFlBoFe,vFlCol',vFlBoPr];
-                
-                %Call the helper function to calculate the pseudo 
-                %volumetric flow rates
-                [vFlPlusCol,vFlMinusCol] = calcPseudoVolFlows(vFlCol); 
+                    %Solve Ux = y for x                                  
+                    vFlMinusCol = mldivide(upTriVaPr,vFlMinusCol);
+                    
+                    %Make sure that the negative pseudo voluemtric flow 
+                    %rate is positive
+                    vFlMinusCol = abs(vFlMinusCol);
+                    
+                    %Concatenate the boundary conditions
+                    vFlMinusCol ...
+                        = [vFlMinusBoFe,vFlMinusCol',vFlMinusBoPr];               
+                    
+                    %Set the negative pseudo volumetric flow rate equal to
+                    %a zero vector
+                    vFlPlusCol = zeros(nRows,nVols+1);
+                    %-----------------------------------------------------%
+                  
+                end
                 %---------------------------------------------------------%
 
             end
@@ -288,14 +343,21 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
         %For each time point,
         for t = 1 : nRows
             
-            %Check if a vector has all nonzeros
-            vFlPlusZero  = all(vFlPlus(t,:)) ;
-            vFlMinusZero = all(vFlMinus(t,:));
-
-            %Check flow reverasl: if both of the pseudo volumetric flow 
-            %rate vectors are nonzero, then we have a flow reversal       
-            flowDirCheck = vFlPlusZero && ...
-                           vFlMinusZero;
+            %For co-current flow
+            if flowDirStep == 0
+                
+                %Check if the negative pseudo voluemtric flow rate vector 
+                %has all nonzeros      
+                flowDirCheck = all(vFlMinusCol(t,:));
+                
+            %For counter-current flow
+            elseif flowDirStep == 1
+                
+                %Check if the positive pseudo voluemtric flow rate vector 
+                %has all nonzeros      
+                flowDirCheck = all(vFlPlusCol(t,:));
+                
+            end                        
 
             %If flow reversed, then,
             if flowDirCheck == 1

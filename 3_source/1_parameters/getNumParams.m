@@ -65,41 +65,56 @@ function params = getNumParams(params)
     %volumetric flowrate for the time "varying pressure" DAE model.
      
     %Populate A and return Ainv and A
-    tiVaPrMat = getTriDiagMat(nVols,cstrHt);
+    triDiagPlus = getTriDiagMat(nVols,cstrHt);
 
     %Perform LU Decomposition and save the LU factors as fields inside a
     %struct
-    [params.loTrMat,params.upTrMat] = lu(tiVaPrMat);
+    [loTriPlusVaPr,upTriPlusVaPr] = lu(triDiagPlus);
     
     %Save as sparse matrices
-    params.loTrMat  = sparse(params.loTrMat)        ;
-    params.upTrMat  = sparse(params.upTrMat)        ;
-    params.dTriDiag = sparse([-tiVaPrMat,tiVaPrMat]);
+    loTriPlusVaPr = sparse(loTriPlusVaPr)             ;
+    upTriPlusVaPr = sparse(upTriPlusVaPr)             ;
+    dTriDiag      = sparse([triDiagPlus,-triDiagPlus]);
     %---------------------------------------------------------------------%    
     
     
     
     %---------------------------------------------------------------------%        
-    %Pre-compute coefficient matrix for solving Ax=b for dimensionless
+    %Pre-compute coefficient matrices for solving Ax=b for dimensionless
     %volumetric flowrate for the "constant pressure" DAE model.
     
-    %Create a vector for the diagonal at -1 position
-    beloDiag = -ones(1,nVols-1);
-    
-    %Create a coefficient matrix for a specified value of v_0
-    params.coPrFeMat = eye(nVols)+diag(beloDiag,-1);
-    
-    %Save as a sparse matrix
-    params.coPrFeMat = sparse(params.coPrFeMat);
-    
-    %Create a vector for the diagonal at +1 position
-    abovDiag = ones(1,params.nVols-1);
-    
-    %Create a coefficient matrix for a specified value of v_N
-    params.coPrPrMat = -eye(params.nVols)+diag(abovDiag,+1);
-    
-    %Save as a sparse matrix
-    params.coPrPrMat = sparse(params.coPrPrMat);
+        %-----------------------------------------------------------------%
+        %Consider the case when the volumetric flow rate at the feed end is
+        %given
+
+        %Create a vector for the diagonal at -1 position
+        beloDiag = -ones(1,nVols-1);
+
+        %Create a coefficient matrix for a specified value of v_0
+        loTriPlusCoPr = eye(nVols) ...
+                      + diag(beloDiag,-1);
+
+        %Save as a sparse matrix
+        loTriPlusCoPr = sparse(loTriPlusCoPr);
+        %-----------------------------------------------------------------%
+        
+        
+        
+        %-----------------------------------------------------------------%
+        %Consider the case when the volumetric flow rate at the product end
+        %is given
+        
+        %Create a vector for the diagonal at +1 position
+        abovDiag = ones(1,params.nVols-1);
+
+        %Create a coefficient matrix for a specified value of v_N
+        upTriPlusCoPr = diag(abovDiag,+1) ...
+                      - eye(params.nVols);
+
+        %Save as a sparse matrix
+        upTriPlusCoPr = sparse(upTriPlusCoPr);
+        %-----------------------------------------------------------------%
+        
     %---------------------------------------------------------------------%              
     
     
@@ -136,21 +151,21 @@ function params = getNumParams(params)
             if daeModel(j,i) == 1
                 
                 %We assign the lower and upper triangular matrices
-                coefMat{j,i} = {params.loTrMat,params.upTrMat};  
+                coefMat{j,i} = {loTriPlusVaPr,upTriPlusVaPr};  
             
             %If we have a constant pressure DAE model with a CV in the
             %product-end,
             elseif daeModel(j,i) == 0 && prodHasCv
                 
                 %We assign the coefficient matrix for the product-end
-                coefMat{j,i} = {params.coPrPrMat};
+                coefMat{j,i} = {upTriPlusCoPr,-upTriPlusCoPr};
             
             %If we have a constant pressure DAE model with a CV in the
             %feed-end,    
             elseif daeModel(j,i) == 0 && feedHasCv    
                 
                 %We assign the coefficient matrix for the feed-end
-                coefMat{j,i} = {params.coPrFeMat};
+                coefMat{j,i} = {loTriPlusCoPr,-loTriPlusCoPr};
                 
             end            
             %-------------------------------------------------------------%
@@ -166,7 +181,8 @@ function params = getNumParams(params)
     %Store the result inside a struct
     
     %Pack into params
-    params.coefMat = coefMat;            
+    params.coefMat  = coefMat ;   
+    params.dTriDiag = dTriDiag;
     %---------------------------------------------------------------------%              
     
 end

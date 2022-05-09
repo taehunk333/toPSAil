@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/2/18/Friday
-%Code last modified on : 2022/4/13/Wednesday
+%Code last modified on : 2022/5/9/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -69,13 +69,13 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
     daeModCur    = params.daeModel    ; 
     sColNums     = params.sColNums    ;
     nRows        = params.nRows       ;
-    valConT      = params.valConT     ;
     nComs        = params.nComs       ;
     sComNums     = params.sComNums    ;
     cstrHt       = params.cstrHt      ;
     gConsNormCol = params.gConsNormCol;
     htCapCvNorm  = params.htCapCvNorm ;
     htCapCpNorm  = params.htCapCpNorm ; 
+    volFlBoFree  = params.volFlBoFree ;
     
     %Unpack units
     col  = units.col ;
@@ -83,17 +83,6 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
     raTa = units.raTa;
     exTa = units.exTa;
     %---------------------------------------------------------------------%                                                               
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %Initialize solution arrays
-
-    %Initialize numeric arrays for the pseudo volumetric flow rates for the
-    %adsorption columns
-    vFlPlus  = zeros(nRows,nCols*(nVols+1));
-    vFlMinus = zeros(nRows,nCols*(nVols+1));
-    %---------------------------------------------------------------------% 
                                                 
     
     
@@ -101,576 +90,631 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
     %Compute the volumetric flow rates depending on the DAE model being
     %used for a given column undergoing a given step in a given PSA cycle
         
-    %For each column
+    %For each adsorber
     for i = 1 : nCols
         
-        %-----------------------------------------------------------------%        
-        %Compute the shift factor
-                
-        %We shift (nVols+1) number of columns per adsorber
-        shiftFac = (nVols+1)*(i-1);        
         %-----------------------------------------------------------------%
-        
-        
-        
-        %-----------------------------------------------------------------%
-        %If we are dealing with a constant pressure DAE model,
-        if daeModCur(i,nS) == 0
-           
-            %-------------------------------------------------------------%
-            %Decide which boundary condition is given
-            
-            %Check if we have a boundary condition specified at the
-            %feed-end of the ith adsorber
-            feEndBC = valConT(2*(i-1)+1,nS) == 1 && ...
-                      valConT(2*i,nS) ~= 1;
-            %-------------------------------------------------------------%
-            
-                        
-            
-            %-------------------------------------------------------------%                              
-            %Get the right hand side vector at a given time point
-            
-            %Multiply dimensionless total adsorption rates by the 
-            %coefficients that are relevant for the step for ith column            
-            rhsVec = (-1)*col.(sColNums{i}).volAdsRatTot ...
-                   + col.(sColNums{i}).volCorRatTot; 
-            %-------------------------------------------------------------%
-            
-            
-            
-            %-------------------------------------------------------------%
-            %Unpack column states
-            
-            %Unpack the total concentrstion variables
-            gasConsTot = col.(sColNums{i}).gasConsTot;
-            
-            %Unpack the interior temperature variables 
-            cstrTemps = col.(sColNums{i}).temps.cstr;
-            
-            %Define the total concentration variables                
-            cNm1 = [col.(sColNums{i}).feEnd.gasConsTot, ...
-                    gasConsTot(:,1:nVols-1)];
-            cNm0 = gasConsTot(:,1:nVols);  
-            cNp1 = [gasConsTot(:,2:nVols), ...
-                    col.(sColNums{i}).prEnd.gasConsTot];
+        %Calculate the pseudo volumetric flow rates with assumed flow
+        %directions
 
-            %Define the interior temperature variables                
-            Tnm1 = [col.(sColNums{i}).feEnd.temps, ...
-                    cstrTemps(:,1:nVols-1)];
-            Tnm0 = cstrTemps(:,1:nVols);
-            Tnp1 = [cstrTemps(:,2:nVols), ...
-                    col.(sColNums{i}).prEnd.temps];
-
-            %Unpack the overall heat capacity
-            htCOnm0 = col.n1.htCO;                                                  
             %-------------------------------------------------------------%
-            
-            
-            
-            %-------------------------------------------------------------%
-            %Compute the species dependent terms
-                
-            %Initialize the solution arrays
-            termNm1 = zeros(nRows,nVols);
-            termNp1 = zeros(nRows,nVols);
-
-            %Compute the temperature ratio
-            TratNm1 = Tnm1./Tnm0;
-            TratNp1 = Tnp1./Tnm0;
-
-            %Loop over each species
-            for j = 1: nComs                                                                        
-                
-                %Unpack gas species concentration
-                gasConsSpec = col.(sColNums{i}).gasCons. ...
-                              (sComNums{j});
-                
-                %Update the nm1 term
-                termNm1 = termNm1 ...
-                        + (TratNm1*htCapCpNorm(j) ...
-                          -htCapCvNorm(j)) ...
-                       .* [col.(sColNums{i}).feEnd. ...
-                          gasCons.(sComNums{j}), ...
-                          gasConsSpec(:,1:nVols-1)];
-                      
-                %Update the nm1 term
-                termNp1 = termNp1 ...
-                        + (TratNp1*htCapCpNorm(j) ...
-                          -htCapCvNorm(j)) ...
-                       .* [gasConsSpec(:,2:nVols), ...
-                          col.(sColNums{i}).prEnd. ...
-                          gasCons.(sComNums{j})];
-
-            end                                      
-            %-------------------------------------------------------------%
-            
-            
-            
-            %-------------------------------------------------------------%
-            %Define the coefficients
-            %$\forall n \in \left\{ 1, ..., n_c \right\}$
-            
-            %Calculate the first time dependent coefficient:
-            %$\tilde{alpha}_n^{-} \left(t\right)$
-            aMinusNm0 = (-1) ...
-                      * ((cNm1./cNm0) ...
-                      + gConsNormCol ...
-                     .* cstrHt ...
-                     ./ htCOnm0 ...
-                     .* termNm1);
-            
-            %Calculate the second time dependent coefficient:
-            %$\tilde{alpha}_n \left(t\right)$
-            aNoneNm0 = 1 ...
-                     + gConsNormCol ...
-                    .* cstrHt ...
-                    .* cNm0 ...
-                    ./ htCOnm0;
-            
-            %Calculate the third time dependent coefficient:
-            %$\tilde{alpha}_n^{+} \left(t\right)$
-            aPlusNm0 = (-1) ...
-                    .* ((cNp1./cNm0) ...
-                     + gConsNormCol ...
-                    .* cstrHt ...
-                    ./ htCOnm0 ...
-                    .* termNp1);       
-            %-------------------------------------------------------------%
-                
-            
-            
-            %-------------------------------------------------------------%
-            %Depending on the boundary conditions, calculate the pseudo 
-            %volumetric flow rates
-
-            %If we have a boundary condition at the feed-end
-            if feEndBC == 1
+            %If we are dealing with a constant pressure DAE model,
+            if daeModCur(i,nS) == 0
                 
                 %---------------------------------------------------------%
-                %Get boundary conditions
+                %Define the coefficients
 
-                %Take account for the boundary condition on the right hand 
-                %side vector
-                vFlBoRhs = vFlBo{2,i,nS}(params,col,feTa,raTa,exTa,nS,i);
-                
-                %Call the helper function to calculate the pseudo 
-                %volumetric flow rates
-                [vPlusBo,vMinusBo] = calcPseudoVolFlows(vFlBoRhs);
-                
-                %Update the pseudo volumetric flow rate matrices
-                vFlPlus(:,shiftFac+1)  = vPlusBo ; 
-                vFlMinus(:,shiftFac+1) = vMinusBo; 
-                %---------------------------------------------------------%
- 
-                
-                
-                %---------------------------------------------------------%
-                %Calculate the pseudo volumetric flow rates
-                
-                %For each CSTR,
-                for j = 1 : nVols
-                    
-                    %Update the right hand side vector
-                    rhsVecEval = rhsVec(:,j) ...
-                               - aMinusNm0(:,j) ...
-                              .* vFlPlus(:,shiftFac+j) ...
-                               - aNoneNm0(:,j) ...
-                              .* vFlMinus(:,shiftFac+j);
-                      
-                    %Determine the flow direction
-                    flowDir = (rhsVecEval >= 0);
-                    
-                    %Compute the pseudo volumetric flow rates
-                    vFlPlus(:,shiftFac+j+1) ...
-                        = rhsVecEval ... 
-                       ./ aNoneNm0(:,j) ...
-                       .* flowDir ;
-                    vFlMinus(:,shiftFac+j+1) ...
-                        = rhsVecEval ...
-                       ./ aPlusNm0(:,j) ...
-                       .* (1-flowDir);
-                    
-                end        
-                %---------------------------------------------------------%
+                %For a co-current flow,
+                if flowDir(i,nS) == 0  
 
-            %Else, we have a boundary condition at the product-end
-            else
-                
-                %---------------------------------------------------------%
-                %Get boundary conditions
-                
-                %Take account for the boundary condition on the right hand 
-                %side vector
-                vFlBoRhs = vFlBo{1,i,nS}(params,col,feTa,raTa,exTa,nS,i);
-                
-                %Call the helper function to calculate the pseudo 
-                %volumetric flow rates
-                [vPlusBo,vMinusBo] = calcPseudoVolFlows(vFlBoRhs);
-                
-                %Update the pseudo volumetric flow rate matrices
-                vFlPlus(:,(nVols+1)*i)  = vPlusBo ; 
-                vFlMinus(:,(nVols+1)*i) = vMinusBo;
-                %---------------------------------------------------------%
-                
-                
+                    %-----------------------------------------------------%
+                    %Unpack states
 
-                %---------------------------------------------------------%
-                %Calculate the pseudo volumetric flow rates
-                                
-                %For each CSTR,
-                for j = nVols : -1 : 1                                        
-                    
-                    %Update the right hand side vector
-                    rhsVecEval = rhsVec(:,j) ...
-                               - aNoneNm0(:,j) ...
-                              .* vFlPlus(:,shiftFac+j+1) ...
-                               - aPlusNm0(:,j) ...
-                              .* vFlMinus(:,shiftFac+j+1);
-                    
-                    %Determine the flow direction
-                    flowDir = (rhsVecEval >= 0);
-                    
-                    %Compute the pseudo volumetric flow rates
-                    vFlPlus(:,shiftFac+j) ...
-                        = rhsVecEval ...
-                       ./ aMinusNm0(:,j) ...
-                       .* (1-flowDir) ;
-                    vFlMinus(:,shiftFac+j) ...
-                        = rhsVecEval ...
-                       ./ aNoneNm0(:,j) ...
-                       .* flowDir;
-                    
-                end 
+                    %Unpack the total concentration variables  
+
+                    %We have the down stream total concentration of the 
+                    %column to be equal to the total concentration in the 
+                    %first CSTR                
+                    cnm1 = [col.(sColNums{i}).feEnd.gasConsTot, ...
+                           col.(sColNums{i}).gasConsTot(:,1:nVols-1)];
+                    cnm0 = col.(sColNums{i}).gasConsTot(:,1:nVols)   ;
+
+                    %Unpack the interior temperature variables                
+                    Tnm1 = [col.(sColNums{i}).feEnd.temps, ...
+                           col.(sColNums{i}).temps.cstr(:,1:nVols-1)];
+                    Tnm0 = col.(sColNums{i}).temps.cstr(:,1:nVols)   ;
+
+                    %Unpack the overall heat capacity
+                    htCOnm0 = col.n1.htCO;                               
+                    %-----------------------------------------------------%
+
+
+
+                    %-----------------------------------------------------%
+                    %Compute the species dependent terms
+
+                    %Initialize the solution arrays
+                    termnm1 = zeros(nRows,nVols);
+
+                    %Compute the temperature ratio
+                    Tratnm1 = Tnm1./Tnm0;
+
+                    %Loop over each species
+                    for j = 1: nComs                                                                        
+
+                        %Update the nm1 term
+                        termnm1 = termnm1 ...
+                                + (Tratnm1*htCapCpNorm(j) ...
+                                  -htCapCvNorm(j)) ...
+                               .* [col.(sColNums{i}).feEnd. ...
+                                  gasCons.(sComNums{j}), ...
+                                  col.(sColNums{i}).gasCons. ...
+                                  (sComNums{j})(:,1:nVols-1)];
+
+                    end                            
+                    %-----------------------------------------------------%
+
+
+
+                    %-----------------------------------------------------%
+                    %Get the diagonal entries for the both coefficients
+
+                    %Get the diagonal entries
+                    coefnm1 = (-1) ...
+                            * ((cnm1./cnm0) ...
+                            + gConsNormCol ...
+                           .* cstrHt ...
+                           ./ htCOnm0 ...
+                           .* termnm1);                                    
+
+                    %Get the diagonal entries
+                    coefnm0 = 1 ...
+                            + gConsNormCol ...
+                           .* cstrHt ...
+                           .* cnm0 ...
+                           ./ htCOnm0;                                                                 
+                    %-----------------------------------------------------%                                                
+
+                %For a counter-current flow,
+                elseif flowDir(i,nS) == 1         
+
+                    %-----------------------------------------------------%
+                    %Unpack states
+
+                    %Unpack the total concentration variables  
+
+                    %We have the up stream total concentration of the 
+                    %column to be equal to the total concentration in the 
+                    %last CSTR                                
+                    cnm0 = col.(sColNums{i}).gasConsTot(:,1:nVols);
+                    cnp1 = [col.(sColNums{i}).gasConsTot(:,2:nVols), ...
+                            col.(sColNums{i}).prEnd.gasConsTot];
+
+                    %Unpack the interior temperature variables                                
+                    Tnm0 = col.(sColNums{i}).temps.cstr(:,1:nVols);
+                    Tnp1 = [col.(sColNums{i}).temps.cstr(:,2:nVols), ...
+                            col.(sColNums{i}).prEnd.temps];
+
+                    %Unpack the overall heat capacity
+                    htCOnm0 = col.n1.htCO;                               
+                    %-----------------------------------------------------%
+
+
+
+                    %-----------------------------------------------------%
+                    %Compute the species dependent terms
+
+                    %Initialize the solution arrays
+                    termnp1 = zeros(nRows,nVols);
+
+                    %Compute the temperature ratio
+                    Tratnp1 = Tnp1./Tnm0;
+
+                    %Loop over each species
+                    for j = 1: nComs                                                                        
+
+                        %Update the nm1 term
+                        termnp1 = termnp1 ...
+                                + (Tratnp1*htCapCpNorm(j) ...
+                                  -htCapCvNorm(j)) ...
+                               .* [col.(sColNums{i}).gasCons. ...
+                                  (sComNums{j})(:,2:nVols), ...
+                                  col.(sColNums{i}).prEnd. ...
+                                  gasCons.(sComNums{j})];
+
+                    end                            
+                    %-----------------------------------------------------%
+
+
+
+                    %-----------------------------------------------------%
+                    %Get the diagonal entries for the coefficient matrix
+
+                    %Get the diagonal entries
+                    coefnm1 = (-1) ...
+                            * (1+gConsNormCol ...
+                           .*  cstrHt ...
+                           .*  cnm0 ...
+                           ./  htCOnm0);                                    
+
+                    %Get the diagonal entries
+                    coefnm0 = ((cnp1./cnm0) ...
+                            + gConsNormCol ...
+                           .* cstrHt ...
+                           ./ htCOnm0 ...
+                           .* termnp1);                                                                 
+                    %-----------------------------------------------------%
+
+                end
                 %---------------------------------------------------------% 
+                
+                
+                
+                %---------------------------------------------------------%
+                %Decide which boundary condition is given
+
+                %Check if we have a boundary condition specified at the
+                %feed-end of the ith adsorber
+                feEndHasBC = volFlBoFree(i,nS) == 1;
+                %---------------------------------------------------------%
+
+                
+                
+                %---------------------------------------------------------%                              
+                %Get the right hand side vector at a given time point
+
+                %Multiply dimensionless total adsorption rates by the 
+                %coefficients that are relevant for the step for ith column            
+                rhsVec = (-1) ...
+                       * col.(sColNums{i}).volAdsRatTot ...
+                       + col.(sColNums{i}).volCorRatTot;                                                     
+                %---------------------------------------------------------%                                                
+
+
+
+                %---------------------------------------------------------%
+                %Define matrix sparsity pattern and the boundary condition
+
+                %If we have a boundary condition at the feed-end
+                if feEndHasBC == 1
+
+                    %Take account for the boundary condition on the right 
+                    %hand side vector
+                    vFlBoRhs ...
+                        = vFlBo{2,i,nS}(params,col,feTa,raTa,exTa,nS,i);                               
+
+                    %Update the right hand side vector
+                    rhsVec(:,1) = rhsVec(:,1) ...
+                                - coefnm1(:,1) ...
+                               .* vFlBoRhs;
+
+                %Else, we have a boundary condition at the product-end
+                else
+
+                    %Take account for the boundary condition on the right 
+                    %hand side vector
+                    vFlBoRhs ...
+                        = vFlBo{1,i,nS}(params,col,feTa,raTa,exTa,nS,i);
+
+                    %Update the right hand side vector
+                    rhsVec(:,nVols) = rhsVec(:,nVols) ...
+                                    - coefnm0(:,nVols) ...
+                                   .* vFlBoRhs;
+
+                end
+                %---------------------------------------------------------%
+
+
+
+                %---------------------------------------------------------% 
+                %Loop over each time point and compute the volumetric flow
+                %rates around each adsorption column
+
+                %For each time point
+                for t = 1 : nRows
+
+                    %-----------------------------------------------------% 
+                    %Define the coefficient matrix
+
+                    %For a given boundary condition at the feed-end
+                    if feEndHasBC == 1
+
+                        %Combine the main and the off diagonal entries
+                        coefMat = diag(coefnm1(t,2:nVols),-1) ...
+                                + diag(coefnm0(t,:),0);             
+
+                    %For a given boundary condition at the product-end
+                    elseif feEndHasBC == 0                    
+
+                        %Combine the main and the off diagonal entries
+                        coefMat = diag(coefnm0(t,1:nVols-1),+1) ...
+                                + diag(coefnm1(t,:),0);
+
+                    end                        
+                    %-----------------------------------------------------% 
+
+
+
+                    %-----------------------------------------------------%                              
+                    %Solve for the unknown volumetric flow rates 
+
+                    %Solve for dimensionless volumetric flow rates using a 
+                    %linear solver           
+                    vFlCol = mldivide(coefMat, rhsVec(t,:)');            
+                    %-----------------------------------------------------%                              
+
+
+
+                    %-----------------------------------------------------%                              
+                    %Save the results
+
+                    %Concatenate the boundary conditions
+
+                    %If we have a boundary condition at the feed end 
+                    if feEndHasBC == 1
+
+                        %We are specifying a volumetric flow rate at the 
+                        %feed-end
+                        vFlCol = [vFlBoRhs(t), vFlCol'];
+
+                    %Else, we have a boundary condition at the product end     
+                    else
+
+                        %We are specifying a volumetric flow rate at the 
+                        %product-end
+                        vFlCol = [vFlCol', vFlBoRhs(t)];
+
+                    end
+
+                    %Call the helper function to calculate the pseudo 
+                    %volumetric flow rates
+                    [vFlPlusCol,vFlMinusCol] = calcPseudoVolFlows(vFlCol); 
+                    %-----------------------------------------------------%                                    
+
+                end
+                %---------------------------------------------------------%                                                                              
+
+            %-------------------------------------------------------------%
+
+
+
+            %-------------------------------------------------------------%
+            %If we are dealing with a time varying pressure DAE model,
+            elseif daeModCur(i,nS) == 1                        
+
+                %---------------------------------------------------------%
+                %Define the coefficients                   
+
+                %For a co-current flow,
+                if flowDir(i,nS) == 0  
+
+                    %-----------------------------------------------------%
+                    %Unpack states
+
+                    %Unpack the total concentration variables  
+
+                    %We have the down stream total concentration of the 
+                    %column to be equal to the total concentration in the 
+                    %first CSTR
+                    cnm2 = [col.(sColNums{i}).feEnd.gasConsTot, ...
+                            col.(sColNums{i}).gasConsTot(:,1:nVols-2)];                  
+                    cnm1 = col.(sColNums{i}).gasConsTot(:,1:nVols-1)  ;
+                    cnm0 = col.(sColNums{i}).gasConsTot(:,2:nVols)    ;
+
+                    %Unpack the interior temperature variables
+                    Tnm2 = [col.(sColNums{i}).feEnd.temps, ...
+                            col.(sColNums{i}).temps.cstr(:,1:nVols-2)];
+                    Tnm1 = col.(sColNums{i}).temps.cstr(:,1:nVols-1)  ;
+                    Tnm0 = col.(sColNums{i}).temps.cstr(:,2:nVols)    ;
+
+                    %Unpack the overall heat capacity
+                    htCOnm1 = col.n1.htCO(:,1:nVols-1);
+                    htCOnm0 = col.n1.htCO(:,2:nVols)  ;                               
+                    %-----------------------------------------------------%
+
+
+
+                    %-----------------------------------------------------%
+                    %Compute the species dependent terms
+
+                    %Initialize the solution arrays
+                    termnm2 = zeros(nRows,nVols-1);
+                    termnm1 = zeros(nRows,nVols-1);
+
+                    %Compute the temperature ratios
+                    Tratnm2 = Tnm2./Tnm1;
+                    Tratnm1 = Tnm1./Tnm0;
+
+                    %Loop over each species
+                    for j = 1: nComs
+
+                        %Update the nm2 term
+                        termnm2 = termnm2 ...
+                                + (Tratnm2*htCapCpNorm(j) ...
+                                  -htCapCvNorm(j)) ...
+                               .* [col.(sColNums{i}).feEnd. ...
+                                  gasCons.(sComNums{j}), ...
+                                  col.(sColNums{i}).gasCons. ...
+                                  (sComNums{j})(:,1:nVols-2)];                    
+
+                        %Update the nm1 term
+                        termnm1 = termnm1 ...
+                                + (Tratnm1*htCapCpNorm(j) ...
+                                  -htCapCvNorm(j)) ...
+                               .* col.(sColNums{i}).gasCons. ...
+                                  (sComNums{j})(:,1:nVols-1);
+
+                    end                            
+                    %-----------------------------------------------------%
+
+
+
+                    %-----------------------------------------------------%
+                    %Get the diagonal entries
+
+                    %Get the -1 diagonal entries
+                    coefnm2 = (-1) ...
+                            * (cnm2./cnm1./cstrHt(2:nVols) ...
+                            + gConsNormCol./htCOnm0.*termnm2);                                    
+
+                    %Get the diagonal entries
+                    coefnm1 = (cnm1./cnm0./cstrHt(2:nVols) ...
+                            + 1./cstrHt(1:nVols-1) ...
+                            + gConsNormCol.*cnm1./htCOnm1 ...
+                            + gConsNormCol./htCOnm0.*termnm1);                                    
+
+                    %Get the +1 diagonal entries
+                    coefnm0 = (-1) ...
+                            * (1./cstrHt(2:nVols) ...
+                            +  gConsNormCol.*cnm0./htCOnm0);                               
+                    %-----------------------------------------------------%                                                             
+
+                %For a counter-current flow,
+                elseif flowDir(i,nS) == 1
+
+                    %-----------------------------------------------------%
+                    %Unpack states
+
+                    %Unpack the total concentration variables  
+
+                    %We have the up stream total concentration of the 
+                    %column to be equal to the total concentration in the 
+                    %last CSTR                                  
+                    cnm1 = col.(sColNums{i}).gasConsTot(:,1:nVols-1)   ;
+                    cnm0 = col.(sColNums{i}).gasConsTot(:,2:nVols)     ;
+                    cnp1 = [col.(sColNums{i}).gasConsTot(:,3:nVols), ...
+                            col.(sColNums{i}).prEnd.gasConsTot]        ;
+
+                    %Unpack the interior temperature variables                
+                    Tnm1 = col.(sColNums{i}).temps.cstr(:,1:nVols-1)     ;
+                    Tnm0 = col.(sColNums{i}).temps.cstr(:,2:nVols)       ;
+                    Tnp1 = [col.(sColNums{i}).temps.cstr(:,3:nVols), ...
+                            col.(sColNums{i}).prEnd.temps];
+
+                    %Unpack the overall heat capacity
+                    htCOnm1 = col.n1.htCO(:,1:nVols-1);
+                    htCOnm0 = col.n1.htCO(:,2:nVols)  ;                               
+                    %-----------------------------------------------------%
+
+
+
+                    %-----------------------------------------------------%
+                    %Compute the species dependent terms
+
+                    %Initialize the solution arrays
+                    termnm0 = zeros(nRows,nVols-1);
+                    termnp1 = zeros(nRows,nVols-1);
+
+                    %Compute the temperature ratios
+                    Tratnm0 = Tnm0./Tnm1;
+                    Tratnp1 = Tnp1./Tnm0;
+
+                    %Loop over each species
+                    for j = 1: nComs
+
+                        %Update the nm0 term
+                        termnm0 = termnm0 ...
+                                + (Tratnm0*htCapCpNorm(j) ...
+                                  -htCapCvNorm(j)) ...
+                               .* col.(sColNums{i}).gasCons. ...
+                                  (sComNums{j})(:,2:nVols);                    
+
+                        %Update the np1 term
+                        termnp1 = termnp1 ...
+                                + (Tratnp1*htCapCpNorm(j) ...
+                                  -htCapCvNorm(j)) ...
+                               .* [col.(sColNums{i}).gasCons. ...
+                                  (sComNums{j})(:,3:nVols), ...
+                                  col.(sColNums{i}).prEnd. ...
+                                  gasCons.(sComNums{j})];
+
+                    end                            
+                    %-----------------------------------------------------% 
+
+
+
+                    %-----------------------------------------------------%
+                    %Get the diagonal entries
+
+                    %Get the -1 diagonal entries
+                    coefnm2 = (-1) ...
+                            * (1./cstrHt(1:nVols-1) ...
+                            + gConsNormCol.*cnm1./htCOnm1);                                    
+
+                    %Get the diagonal entries
+                    coefnm1 = (1./cstrHt(2:nVols) ...
+                            + cnm0./cnm1./cstrHt(1:nVols-1) ...
+                            + gConsNormCol.*cnm0./htCOnm0 ...
+                            + gConsNormCol./htCOnm1.*termnm0);                                    
+
+                    %Get the +1 diagonal entries
+                    coefnm0 = (-1) ...
+                            * (cnp1./cnm0./cstrHt(2:nVols) ...
+                            + gConsNormCol./htCOnm0.*termnp1);                               
+                    %-----------------------------------------------------% 
+
+                end
+                %---------------------------------------------------------%                                                                        
+
+
+
+                %---------------------------------------------------------%
+                %Define the boundary conditions                                     
+
+                %Obtain the boundary condition for the product-end of the 
+                %ith column under current step in a given PSA cycle           
+                vFlBoPr = ones(nRows,1) ...                    
+                       .* vFlBo{1,i,nS}(params,col,feTa,raTa,exTa,nS,i);                        
+
+                %Obtain the boundary condition for the feed-end of the ith
+                %column under current step in a given PSA cycle
+                vFlBoFe = ones(nRows,1) ...                   
+                       .* vFlBo{2,i,nS}(params,col,feTa,raTa,exTa,nS,i);           
+                %---------------------------------------------------------%
+
+
+
+                %---------------------------------------------------------%
+                %Obtain the right hand side vector for time varying 
+                %pressure DAE model
+
+                %Initialize the right hand side vector for the current time
+                %step, by considering the adsorption as well as the 
+                %correction for the nonisothermal heat effects
+%                 rhsVec = (1./cstrHt(2:nVols)) ...
+%                       .* (col.(sColNums{i}).volAdsRatTot(:,2:nVols) ...
+%                          -col.(sColNums{i}).volCorRatTot(:,2:nVols)) ...
+%                        - (1./cstrHt(1:nVols-1)) ...
+%                       .* (col.(sColNums{i}).volAdsRatTot(:,1:nVols-1) ...
+%                          -col.(sColNums{i}).volCorRatTot(:,1:nVols-1));
+                rhsVec = (1./cstrHt(2:nVols)) ...
+                      .* col.(sColNums{i}).volAdsRatTot(:,2:nVols) ...
+                       - (1./cstrHt(1:nVols-1)) ...
+                      .* col.(sColNums{i}).volAdsRatTot(:,1:nVols-1) ...
+                       + (1./cstrHt(1:nVols-1)) ...
+                      .* col.(sColNums{i}).volCorRatTot(:,1:nVols-1) ...
+                       - (1./cstrHt(2:nVols)) ...
+                      .* col.(sColNums{i}).volCorRatTot(:,2:nVols);
+
+                %Add the feed-end boundary condition for the ith column in
+                %nS step in a given PSA cycle
+                rhsVec(:,1) = rhsVec(:,1) ...
+                            - coefnm2(:,1) ...
+                           .* vFlBoFe;
+
+                %Add the product-end boundary condition for the ith column 
+                %in nS step in a given PSA cycle
+                rhsVec(:,end) = rhsVec(:,end) ...
+                              - coefnm0(:,end) ...
+                             .* vFlBoPr;                       
+                %---------------------------------------------------------%
+
+
+
+                %---------------------------------------------------------% 
+                %Loop over each time point and compute the volumetric flow
+                %rates around each adsorption column
+
+                %For each time point
+                for t = 1 : nRows
+
+                    %-----------------------------------------------------%
+                    %Define the coefficient matrix
+
+                    %Combine the main and the off diagonal entries
+                    coefMat = diag(coefnm2(t,2:end),-1) ...
+                            + diag(coefnm1(t,:),0) ...
+                            + diag(coefnm0(t,1:end-1),+1);                                   
+                    %-----------------------------------------------------%                                   
+
+
+
+                    %-----------------------------------------------------%
+                    %Solve for the unknown volumetric flow rates
+
+                    %Solve the liner system          
+                    vFlCol = mldivide(coefMat,rhsVec(t,:)');
+                    %-----------------------------------------------------%
+
+
+
+                    %-----------------------------------------------------%
+                    %Save the results
+
+                    %Concateante the results
+                    vFlCol = [vFlBoFe(t),vFlCol',vFlBoPr(t)];
+
+                    %Call the helper function to calculate the pseudo 
+                    %volumetric flow rates
+                    [vFlPlusCol,vFlMinusCol] = calcPseudoVolFlows(vFlCol); 
+                    %-----------------------------------------------------%                
+
+                end                                    
+                %---------------------------------------------------------%                        
 
             end
             %-------------------------------------------------------------%
-
+            
         %-----------------------------------------------------------------%
         
         
         
         %-----------------------------------------------------------------%
-        %If we are dealing with a time varying pressure DAE model,
-        elseif daeModCur(i,nS) == 1
-            
-            %-------------------------------------------------------------%
-            %Unpack additional params
-            
-            %Unpack params
-            opts = params.linprog.opts;
-            objs = params.linprog.objs;
-            lbs  = params.linprog.lbs ;
-            ubs  = params.linprog.ubs ;
-            %-------------------------------------------------------------%
-            
-            
-            
-            %-------------------------------------------------------------%
-            %Unpack states
+        %Calculate the pseudo volumetric flow rates with corrected flow
+        %directions (when needed)
 
-            %Unpack the total concentrstion variables
-            gasConsTot = col.(sColNums{i}).gasConsTot;
+        %For each time point,
+        for t = 1 : nRows
             
-            %Unpack the interior temperature variables 
-            cstrTemps = col.(sColNums{i}).temps.cstr;
+            %Check if a vector has all nonzeros
+            vFlPlusZero  = all(vFlPlusCol(t,:)) ;
+            vFlMinusZero = all(vFlMinusCol(t,:));
 
-            %Define the total concentrstion variables
-            cNm2 = [col.(sColNums{i}).feEnd.gasConsTot, ...
-                    gasConsTot(:,1:nVols-2)];                  
-            cNm1 = gasConsTot(:,1:nVols-1);
-            cNm0 = gasConsTot(:,2:nVols);
-            cNp1 = [gasConsTot(:,3:nVols), ...
-                    col.(sColNums{i}).prEnd.gasConsTot];
+            %Check flow reverasl: if both of the pseudo volumetric flow 
+            %rate vectors are nonzero, then we have a flow reversal       
+            flowDirCheck = vFlPlusZero && ...
+                           vFlMinusZero;
 
-            %Define the interior temperature variables 
-            Tnm2 = [col.(sColNums{i}).feEnd.temps, ...
-                    cstrTemps(:,1:nVols-2)];
-            Tnm1 = cstrTemps(:,1:nVols-1);
-            Tnm0 = cstrTemps(:,2:nVols);
-            Tnp1 = [cstrTemps(:,3:nVols), ...
-                    col.(sColNums{i}).prEnd.temps];
-
-            %Unpack the overall heat capacity
-            htCOnm1 = col.n1.htCO(:,1:nVols-1);
-            htCOnm0 = col.n1.htCO(:,2:nVols)  ;                             
-            %-------------------------------------------------------------%
-            
-            
-            
-            %-------------------------------------------------------------%
-            %Compute the species dependent terms
-
-            %Initialize the solution arrays
-            termNm2 = zeros(nRows,nVols-1);
-            termNm1 = zeros(nRows,nVols-1);
-            termNm0 = zeros(nRows,nVols-1);
-            termNp1 = zeros(nRows,nVols-1);
-
-            %Compute the temperature ratios
-            TratNm2 = Tnm2./Tnm1;
-            TratNm1 = Tnm1./Tnm0;
-            TratNm0 = Tnm0./Tnm1;
-            TratNp1 = Tnp1./Tnm0;
-
-            %Loop over each species
-            for j = 1: nComs
-            
-                %Unpack gas species concentration
-                gasConsSpec = col.(sColNums{i}).gasCons. ...
-                              (sComNums{j});
+            %If flow reversed, then,
+            if flowDirCheck == 1
                 
-                %Update the nm2 term
-                termNm2 = termNm2 ...
-                        + (TratNm2*htCapCpNorm(j) ...
-                          -htCapCvNorm(j)) ...
-                       .* [col.(sColNums{i}).feEnd. ...
-                          gasCons.(sComNums{j}), ...
-                          gasConsSpec(:,1:nVols-2)];                    
-
-                %Update the nm1 term
-                termNm1 = termNm1 ...
-                        + (TratNm1*htCapCpNorm(j) ...
-                          -htCapCvNorm(j)) ...
-                       .* gasConsSpec(:,1:nVols-1);
-                      
-                %Update the nm0 term
-                termNm0 = termNm0 ...
-                        + (TratNm0*htCapCpNorm(j) ...
-                          -htCapCvNorm(j)) ...
-                       .* gasConsSpec(:,2:nVols);                    
-
-                %Update the np1 term
-                termNp1 = termNp1 ...
-                        + (TratNp1*htCapCpNorm(j) ...
-                          -htCapCvNorm(j)) ...
-                       .* [gasConsSpec(:,3:nVols), ...
-                          col.(sColNums{i}).prEnd. ...
-                          gasCons.(sComNums{j})];
-
-            end                                                      
-            %-------------------------------------------------------------%
-            
-            
-            
-            %-------------------------------------------------------------%
-            %Define the coefficients:
-            %$\forall n \in \left\{ 2, ..., n_c \right\}$              
-            
-            %Calculate the first time dependent coefficient:
-            %$\tilde{\phi}_{n,n-1}^{-} \left( t \right)$
-            pMinusNm1 = (-1) ...
-                      * (cNm2./cNm1./cstrHt(2:nVols) ...
-                      + gConsNormCol./htCOnm1.*termNm2);
-                        
-            %Calculate the second time dependent coefficient:
-            %$\tilde{\phi}_{n,n-1} \left( t \right)$
-            pNoneNm1 = (1./cstrHt(1:nVols-1) ...
-                     + gConsNormCol.*cNm1./htCOnm1);
-                        
-            %Calculate the third time dependent coefficient:
-            %$\tilde{\phi}_{n,n-1}^{+} \left( t \right)$
-            pPlusNm1 = (cNm1./cNm0./cstrHt(2:nVols)) ...
-                     + gConsNormCol./htCOnm0.*termNm1;
-                        
-            %Calculate the fourth time dependent coefficient:
-            %$\tilde{\phi}_{n,n}^{-} \left( t \right)$
-            pMinusNm0 = (-1) ...
-                      * (cNm0./cNm1./cstrHt(1:nVols-1) ...
-                      + gConsNormCol./htCOnm1.*termNm0);
-                        
-            %Calculate the fifth time dependent coefficient:
-            %$\tilde{\phi}_{n,n} \left( t \right)$
-            pNoneNm0 = (-1) ...
-                     * (1./cstrHt(2:nVols) ...
-                     + gConsNormCol.*cNm0./htCOnm0);
-                                    
-            %Calculate the sixth time dependent coefficient:
-            %$\tilde{\phi}_{n,n}^{+} \left( t \right)$
-            pPlusNm0 = (cNp1./cNm0./cstrHt(2:nVols) ...
-                     + gConsNormCol./htCOnm0.*termNp1);            
-            %-------------------------------------------------------------%                                                                        
-            
-            
-            
-            %-------------------------------------------------------------%
-            %Define the boundary conditions                                     
-            
-            %Obtain the boundary condition for the product-end of the ith
-            %column under current step in a given PSA cycle           
-            vFlBoPr = ones(nRows,1) ...                    
-                   .* vFlBo{1,i,nS}(params,col,feTa,raTa,exTa,nS,i);                        
-                       
-            %Obtain the boundary condition for the feed-end of the ith
-            %column under current step in a given PSA cycle
-            vFlBoFe = ones(nRows,1) ...                   
-                   .* vFlBo{2,i,nS}(params,col,feTa,raTa,exTa,nS,i);           
-            %-------------------------------------------------------------%
-            
-            
-            
-            %-------------------------------------------------------------% 
-            %Convert the boundary conditions into pseudo volumetric flow
-            %rates
-               
-            %Call the helper function to calculate the pseudo volumetric 
-            %flow rates
-            [vFlPlusPr,vFlMinusPr] = calcPseudoVolFlows(vFlBoPr); 
-            [vFlPlusFe,vFlMinusFe] = calcPseudoVolFlows(vFlBoFe);                         
-            %-------------------------------------------------------------% 
-            
-            
-            
-            %-------------------------------------------------------------%
-            %Obtain the right hand side vector for time varying pressure
-            %DAE model
-            
-            %Initialize the right hand side vector for the current time
-            %step, by considering the adsorption as well as the correction
-            %for the nonisothermal heat effects
-            rhsVec = (1./cstrHt(2:nVols)) ...
-                  .* (col.(sColNums{i}).volAdsRatTot(:,2:nVols) ...
-                     -col.(sColNums{i}).volCorRatTot(:,2:nVols)) ...
-                   - (1./cstrHt(1:nVols-1)) ...
-                  .* (col.(sColNums{i}).volAdsRatTot(:,1:nVols-1) ...
-                     -col.(sColNums{i}).volCorRatTot(:,1:nVols-1));                 
-                     
-            %Add the feed-end boundary condition for the ith column in nS
-            %step in a given PSA cycle
-            rhsVec(:,1) = rhsVec(:,1) ...
-                        - pMinusNm1(:,1)...
-                       .* vFlPlusFe ...
-                        - pNoneNm1(:,1)...
-                       .* vFlMinusFe;
-                        
-            %Add the product-end boundary condition for the ith column in
-            %nS step in a given PSA cycle
-            rhsVec(:,nVols-1) = rhsVec(:,nVols-1) ...
-                              - pNoneNm0(:,nVols-1)...
-                             .* vFlPlusPr...
-                              - pPlusNm0(:,nVols-1)...
-                             .* vFlMinusPr;          
-            %-------------------------------------------------------------%
-                                    
-            
-
-            %-------------------------------------------------------------%
-            %Solve for the unknown volumetric flow rates
-                        
-            %A numeric array for the volumetric flow rates for the 
-            %adsorption columns
-            vFlPseudo = zeros(nRows,nCols*2*(nVols-1));
-                                                        
-            %Solve a linear program for each time point
-            for t = 1 : nRows
-                                
-                %---------------------------------------------------------%
-                %Define terms required for formulating the linear program 
-                %(LP)
-
-                %Define the diagonal entries in the positive tri-diagonal
-                %matrix
-                diagDownPos = diag(pMinusNm1(t,2:nVols-1),-1)      ;
-                diagMidPos  = diag((pNoneNm1(t,:)+pPlusNm1(t,:)),0);
-                diagUpPos   = diag(pNoneNm0(t,1:nVols-2),+1)       ;
-
-                %Define the diagonal entries in the negative tri-diagonal
-                %matrix
-                diagDownNeg = diag(pNoneNm1(t,2:nVols-1),-1)        ;
-                diagMidNeg  = diag((pMinusNm0(t,:)+pNoneNm0(t,:)),0);
-                diagUpNeg   = diag(pPlusNm0(t,1:nVols-2),+1)        ;
-
-                %Define the positive tri-diagonal matrix
-                triDiagPos = diagDownPos ...
-                           + diagMidPos ...
-                           + diagUpPos;
-
-                %Define the negative tri-diagonal matrix
-                triDiagNeg = diagDownNeg ...
-                           + diagMidNeg ...
-                           + diagUpNeg;
-
-                %Construct the time dependent double tri-diagonal 
-                %coefficient matrix by concatenating the two coefficient 
-                %matrices.
-                dTriDiag = [triDiagPos,triDiagNeg];
-                %---------------------------------------------------------%
+                %Save nRows 
+                nRowsSave = nRows;
                 
+                %Iterate for a given time point
+                params.nRows = 1;
                 
+                %Calculate the volumetric flow rates but compute the flow 
+                %direction on the fly
+                [vFlPlusCol(t,:),vFlMinusCol(t,:)] ...
+                    = calcVolFlowsDP0DT0Re(params,units,nS,i);
                 
-                %---------------------------------------------------------%
-                %Solve the linear program for the unknown pseudo volumetric
-                %flow rates
-                
-                %Solve the LP using linprog.m
-                vFlPseudo(t,2*(nVols-1)*(i-1)+1:2*(nVols-1)*i) ...
-                    = linprog(objs, ...
-                              [], ...
-                              [], ...
-                              dTriDiag, ...
-                              rhsVec(t,:)', ...
-                              lbs, ...
-                              ubs, ...
-                              opts);
-                %---------------------------------------------------------%    
-                      
-            end
-            
-            %Define the interior pseudo volumetric flow rates
-            vFlPlusIn  = vFlPseudo(:,1:nVols-1)        ;
-            vFlMinusIn = vFlPseudo(:,nVols:2*(nVols-1));
-            %-------------------------------------------------------------%
-            
-            
-            
-            %-------------------------------------------------------------%
-            %Save the results
-            
-            %Save the positive pseudo volumetric flow rates
-            vFlPlus(:,shiftFac+1:(nVols+1)*i)  ...
-                = [vFlPlusFe,vFlPlusIn,vFlPlusPr];
-               
-            %Save the negative pseudo volumetric flow rates
-            vFlMinus(:,shiftFac+1:(nVols+1)*i) ...
-                = [vFlMinusFe,vFlMinusIn,vFlMinusPr];
-            %-------------------------------------------------------------%
-            
+                %Restore the number of rows
+                params.nRows = nRowsSave;
+
+            end    
+        
         end
+        %-----------------------------------------------------------------%    
+        
+        
+        
+        %-----------------------------------------------------------------%
+        %Save the results to units.col
+
+        %Save the pseudo volumetric flow rates
+        units.col.(sColNums{i}).volFlPlus  = vFlPlusCol;
+        units.col.(sColNums{i}).volFlMinus = vFlMinusCol;
+
+        %Save the volumetric flow rates to a struct
+        units.col.(sColNums{i}).volFlRat = vFlPlusCol ...
+                                         - vFlMinusCol;                
         %-----------------------------------------------------------------%
         
     end
     %---------------------------------------------------------------------%    
     
-    
-    
-    %---------------------------------------------------------------------%
-    %Save the results to units.col
-    
-    %Loop through each columns,
-    for i = 1 : nCols
-        
-        %Get the first index
-        n0 = (nVols+1)*(i-1)+1;
-        
-        %Get the last index
-        nf = (nVols+1)*i;
-        
-        vFlPlCol = vFlPlus(:,n0:nf) ;
-        vFlMiCol = vFlMinus(:,n0:nf);
-        
-        %Save the pseudo volumetric flow rates
-        units.col.(sColNums{i}).volFlPlus  = vFlPlCol;
-        units.col.(sColNums{i}).volFlMinus = vFlMiCol;
-        
-        %Save the volumetric flow rates to a struct
-        units.col.(sColNums{i}).volFlRat = vFlPlCol ...
-                                         - vFlMiCol;
-                        
-    end   
-    %---------------------------------------------------------------------%
-    
-    
+
     
     %---------------------------------------------------------------------% 
     %Determine the volumetric flow rates for the rest of the process flow
