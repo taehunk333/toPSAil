@@ -70,9 +70,12 @@ function tiVaPrMat = getTriDiagMat(nVols,cstrHt)
     %Populate the coefficient matrix with entries
     
     %Based on the derivation, creator diagonal entries as row vectors
-    mainDiag = -(1./cstrHt(1:n)+1./cstrHt(2:nVols)); %(1)x(n-1)
-    abovDiag = 1./cstrHt(2:n)                      ; %(1)x(n-2)
-    beloDiag = 1./cstrHt(1:n-1)                    ; %(1)x(n-2)
+    mainDiag = (1./cstrHt(1:n)) ...
+            +  (1./cstrHt(2:nVols)); %(1)x(n-1)
+    abovDiag = (-1) ...
+            .* (1./cstrHt(2:n))    ; %(1)x(n-2)
+    beloDiag = (-1) ...
+            .* (1./cstrHt(1:n-1))  ; %(1)x(n-2)
     
     %Create a tri-diagonal matrix for coefficients for time varying
     %pressure DAE model

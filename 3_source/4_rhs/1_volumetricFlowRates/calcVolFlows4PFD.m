@@ -117,8 +117,6 @@ function units = calcVolFlows4PFD(params,units,nS)
         
         %Get the volumetric flow rates for ith adsorber
         vFlCol = col.(sColNums{i}).volFlRat;
-        
-        
         %-----------------------------------------------------------------%
         
         
