@@ -187,7 +187,7 @@ function volFlowRat ...
               + volCorRatTotNc;
           
     %Check flow direction
-    flowDir = rhsTermNc>0;
+    flowDir = rhsTermNc>=0;
     %---------------------------------------------------------------------%
     
     
