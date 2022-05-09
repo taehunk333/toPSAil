@@ -18,12 +18,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2021/1/24/Sunday
-%Code last modified on : 2022/4/13/Wednesday
+%Code created on       : 2022/5/9/Monday
+%Code last modified on : 2022/5/9/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : calcVolFlowsDP0DT0.m
+%Function   : calcVolFlowsDP0DT0Re.m
 %Source     : common
 %Description: This function calculates volumetric flow rates (algebraic
 %             relationships) that is required to implement either constant
@@ -40,13 +40,13 @@
 %                            the process flow diagram.  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function units = calcVolFlowsDP0DT0(params,units,nS)
+function units = calcVolFlowsDP0DT0Re(params,units,nS)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'calcVolFlowsDP0DT0.m';
+    %funcId = 'calcVolFlowsDP0DT0Re.m';
     
     %Unpack params   
     nCols     = params.nCols     ; 
@@ -346,41 +346,13 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
     
     
     
-    %---------------------------------------------------------------------%
-    %Save the results to units.col
-    
-    %Loop through each columns,
-    for i = 1 : nCols
-        
-        %Get the first index
-        n0 = (nVols+1)*(i-1)+1;
-        
-        %Get the last index
-        nf = (nVols+1)*i;
-        
-        vFlPlCol = vFlPlus(:,n0:nf) ;
-        vFlMiCol = vFlMinus(:,n0:nf);
-        
-        %Save the pseudo volumetric flow rates
-        units.col.(sColNums{i}).volFlPlus  = vFlPlCol;
-        units.col.(sColNums{i}).volFlMinus = vFlMiCol;
-        
-        %Save the volumetric flow rates to a struct
-        units.col.(sColNums{i}).volFlRat = vFlPlCol ...
-                                         - vFlMiCol;
-                        
-    end   
-    %---------------------------------------------------------------------%
-    
-    
-    
     %---------------------------------------------------------------------% 
     %Determine the volumetric flow rates for the rest of the process flow
     %diagram
 
     %Grab the unknown volumetric flow rates from the calculated volumetric
     %flow rates from the adsorption columns
-    units = calcVolFlows4PFD(params,units,nS);
+    units = calcVolFlows4PFD(params,units,vFlPlus,vFlMinus,nS);
     %---------------------------------------------------------------------%                                   
     
 end

@@ -100,9 +100,9 @@ function raTa = makeRaffTank(params,states)
     if bool(5) == 1
         
         %Unpack additional params
-        htCapCvNorm  = params.htCapCvNorm   ;
-        gConsNormTan = params.gasConsNormTan;
-        tankScaleFac = params.tankScaleFac  ;
+        htCapCvNorm  = params.htCapCvNorm ;
+        gConsNormTan = params.gConsNormTan;
+        tankScaleFac = params.tankScaleFac;
     
         %Initialize the overall heat capacity
         htCO0 = 0;

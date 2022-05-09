@@ -101,9 +101,9 @@ function feTa = makeFeedTank(params,states)
     if bool(5) == 1
     
         %Unpack additional params
-        htCapCvNorm  = params.htCapCvNorm   ;
-        gConsNormTan = params.gasConsNormTan;
-        tankScaleFac = params.tankScaleFac  ;
+        htCapCvNorm  = params.htCapCvNorm ;
+        gConsNormTan = params.gConsNormTan;
+        tankScaleFac = params.tankScaleFac;
 
         %Calculate dimensionless overall heat capacity values
 

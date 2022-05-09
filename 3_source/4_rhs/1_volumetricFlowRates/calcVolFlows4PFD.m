@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/2/19/Saturday
-%Code last modified on : 2022/4/11/Monday
+%Code last modified on : 2022/5/9/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -42,7 +42,7 @@
 %                            the process flow diagram. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function units = calcVolFlows4PFD(params,units,vFlPlus,vFlMinus,nS)
+function units = calcVolFlows4PFD(params,units,nS)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
@@ -73,18 +73,7 @@ function units = calcVolFlows4PFD(params,units,vFlPlus,vFlMinus,nS)
     feTa = units.feTa;
     raTa = units.raTa;
     exTa = units.exTa;
-    %---------------------------------------------------------------------%                                                               
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %Calculate the volumetric flow rates from the pseudo volumetric flow
-    %rates
-    
-    %Compute the differene between the positive and the negative pseudo
-    %volumetric flow rates
-    vFlCol = vFlPlus-vFlMinus;
-    %---------------------------------------------------------------------%
+    %---------------------------------------------------------------------%                                                                           
     
     
     
@@ -112,46 +101,61 @@ function units = calcVolFlows4PFD(params,units,vFlPlus,vFlMinus,nS)
     
     
     %---------------------------------------------------------------------% 
-    %Determine flow rates for the feed tank
-    
-    %For all streams around a feed tank coming from or going to an
-    %adsorption column, assign the volumetric flow rate values (volumetric
-    %flow rate is evaluated at the tank pressure)
-
-    %Get the total concentration of the ith feed tank at time t
+    %Determine flow rates for all the tanks units (feed, raffinate, and
+    %extract)
+       
+    %Get the total concentration of the tanks at time t    
     feTaTotCon = feTa.n1.gasConsTot;
+    raTaTotCon = raTa.n1.gasConsTot;
+    exTaTotCon = exTa.n1.gasConsTot;    
 
-    %For a stream associated with jth column,
-    for j = 1 : nCols
-
+    %For a stream associated with ith column,
+    for i = 1 : nCols
+        
+        %-----------------------------------------------------------------%
+        %Unpack units 
+        
+        %Get the volumetric flow rates for ith adsorber
+        vFlCol = col.(sColNums{i}).volFlRat;
+        
+        
+        %-----------------------------------------------------------------%
+        
+        
+        
+        %-----------------------------------------------------------------%
+        %For all streams around a feed tank coming from or going to an
+        %adsorption column, assign the volumetric flow rate values 
+        %(volumetric flow rate is evaluated at the tank pressure)
+        
         %If the flow direction is co-current, and we are interacting with 
         %the feed tank through the feed-end of the jth adsorber 
-        if flowDir(j,nS) == 0 && ... %co-current flow
+        if flowDir(i,nS) == 0 && ... %co-current flow
            valFeeTop(nS) == 0 && ... %feed from the bottom
            valRinBot(nS) == 0 && ... %no rinse at the bottom-end
            valPurBot(nS) == 0        %no purge at the bottom-end           
                 
             %Determine the scale factor for the volumetric flow rate
-            vFlScaleFac = col.(sColNums{j}).gasConsTot(:,1) ...
+            vFlScaleFac = col.(sColNums{i}).gasConsTot(:,1) ...
                        ./ feTaTotCon;                              
 
             %Grab a volumetric flow rate from the feed-end of jth column
-            vFlFeTa(:,j) = vFlCol(:,(nVols+1)*(j-1)+1) ...
+            vFlFeTa(:,i) = vFlCol(:,(nVols+1)*(i-1)+1) ...
                         .* vFlScaleFac; 
         
         %If the flow direction is counter-current, and we are interacting 
         %with the product tank through the product-end of the jth adsorber 
-        elseif flowDir(j,nS) == 1 && ... %counter-current flow
+        elseif flowDir(i,nS) == 1 && ... %counter-current flow
                valFeeTop(nS) == 1        %feed from the top              
                 
             %Determine the scale factor for the volumetric flow rate
-            vFlScaleFac = col.(sColNums{j}).gasConsTot(:,end) ...
+            vFlScaleFac = col.(sColNums{i}).gasConsTot(:,end) ...
                        ./ feTaTotCon;
 
             %Grab a volumetric flow rate from the feed-end of jth column.
             %The flow rate is negated to make the counter-current flow
             %(negative) to become a positive number.
-            vFlFeTa(:,j) = (-1)*vFlCol(:,(nVols+1)*(j)) ...
+            vFlFeTa(:,i) = (-1)*vFlCol(:,(nVols+1)*(i)) ...
                         .* vFlScaleFac; 
         
         %There aren't any other situations to consider as we assume that
@@ -159,255 +163,235 @@ function units = calcVolFlows4PFD(params,units,vFlPlus,vFlMinus,nS)
         %maintained at P_f which is the highest pressure in the system
         
         end
-
-    end
-
-    %The entering valve to the feed tank is always controlled to maintain a
-    %constant pressure inside the feed tank
-
-    %Control the flow rate so that a constant pressure is maintained inside
-    %the feed tank
-    vFlFeTa(:,(nCols+1)) = sum(vFlFeTa(:,1:nCols),2);
-    %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------% 
-    %Determine flow rates for the raffinate product tank
-    
-    %For all streams around the product tank coming from or going to an
-    %adsorption column, assign the volumetric flow rate values (Volumetric
-    %flow rate is evaluated at the tank pressure)
-    
-    %Get the total concentration of the raffinate product tank at time t
-    raTaTotCon = raTa.n1.gasConsTot;
-
-    %For a stream associated with jth column,
-    for j = 1 : nCols
-                                     
+        %-----------------------------------------------------------------%
+        
+        
+        
+        %-----------------------------------------------------------------%
+        %For all streams around the product tank coming from or going to an
+        %adsorption column, assign the volumetric flow rate values 
+        %(Volumetric flow rate is evaluated at the tank pressure)
+        
         %If the flow direction is co-current, the jth adsorber can interact
         %with the raffinate product tank through the bottom-end of the jth 
         %adsorber
-        if flowDir(j,nS) == 0 && ...
+        if flowDir(i,nS) == 0 && ...
            valPurBot(nS) == 1 
             
             %Determine the scale factor for the volumetric flow rate
-            vFlScaleFac = col.(sColNums{j}).gasConsTot(:,1) ...
+            vFlScaleFac = col.(sColNums{i}).gasConsTot(:,1) ...
                        ./ raTaTotCon;
                    
             %Calcualate the volumetric flow rate from the raffinate product 
             %tank to the jth adsorption column. Since this is a co-current 
             %flow "out" from the raffinate product tank, we let the 
             %volumetric flow rate to be a negative value
-            vFlRaTa(:,j) = (-1) ...
-                         * vFlCol(:,(nVols+1)*(j-1)+1) ...
+            vFlRaTa(:,i) = (-1) ...
+                         * vFlCol(:,(nVols+1)*(i-1)+1) ...
                         .* vFlScaleFac;    
         
         %If the flow direction is co-current, and we are interacting with 
         %the raffinate product tank through the product-end of the jth 
         %adsorber 
-        elseif flowDir(j,nS) == 0
+        elseif flowDir(i,nS) == 0
 
             %Determine the scale factor for the volumetric flow rate
-            vFlScaleFac1 = col.(sColNums{j}).gasConsTot(:,end) ...
+            vFlScaleFac1 = col.(sColNums{i}).gasConsTot(:,end) ...
                         ./ raTaTotCon;
-            vFlScaleFac2 = col.(sColNums{j}).gasConsTot(:,end) ...
+            vFlScaleFac2 = col.(sColNums{i}).gasConsTot(:,end) ...
                         ./ pRatAmb;        
 
             %Grab a volumetric flow rate from the product-end of the jth 
             %column to the product tank
-            vFlRaTaVal1 = vFlCol(:,(nVols+1)*j) ...
+            vFlRaTaVal1 = vFlCol(:,(nVols+1)*i) ...
                        .* vFlScaleFac1;   
-            vFlRaTaVal2 = vFlCol(:,(nVols+1)*j) ...
+            vFlRaTaVal2 = vFlCol(:,(nVols+1)*i) ...
                        .* vFlScaleFac2;  
 
             %Update a volumetric flow rate for the stream between the 
             %adsorber and the raffinate product tank       
-            vFlRaTa(:,j) = valRaTa(nS) ...
+            vFlRaTa(:,i) = valRaTa(nS) ...
                          * vFlRaTaVal1;
 
             %Update a volumetric flow rate for the waste stream (at the 
             %ambient pressure)
-            vFlRaWa(:,j) = (1-valRaTa(nS)) ...
+            vFlRaWa(:,i) = (1-valRaTa(nS)) ...
                          * vFlRaTaVal2;
                     
         %If the flow direction is counter-current, and we are interacting
         %with the raffinate product tank through the product-end of the jth 
         %adsorber 
-        elseif flowDir(j,nS) == 1 
+        elseif flowDir(i,nS) == 1 
             
             %Determine the scale factor for the volumetric flow rate
-            vFlScaleFac = col.(sColNums{j}).gasConsTot(:,end) ...
+            vFlScaleFac = col.(sColNums{i}).gasConsTot(:,end) ...
                        ./ raTaTotCon;
 
             %Grab a volumetric flow rate from the product-end of the jth 
             %column to the product tank
-            vFlRaTa(:,j) = vFlCol(:,(nVols+1)*j) ...
+            vFlRaTa(:,i) = vFlCol(:,(nVols+1)*i) ...
                         .* vFlScaleFac;               
                     
-        end
+        end        
+        %-----------------------------------------------------------------%
         
-    end
-    
-    %The exit valve is opened only when the tank pressure equals the
-    %initial product tank pressure       
-
-    %Get the net volumetric flow rate in the product tank from the streams 
-    %associated with the columns
-    vFlNetRaTa = sum(vFlRaTa(:,1:nCols),2);
-
-    %When the product tank pressure is greater than equal to the high
-    %pressure and there is a net flow out, maintain it!
-
-    %For each time point t
-    for t = 1 : nRows                                            
         
-            %Get the sign of the current concentration difference
-            testConc = raTaTotCon(t) ...
-                     - (presRaTa/presBeHi);
         
-            %Obtain the volumetric flow rate out of the check valve
-            vFlRaTa(t,(nCols+1)) = (testConc >= 0) ...
-                                 * max(vFlNetRaTa(t),0);
-
-    end
-    %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------% 
-    %Determine flow rates for the extract product tank
-    
-    %For all streams around the product tank coming from or going to an
-    %adsorption column, assign the volumetric flow rate values (Volumetric
-    %flow rate is evaluated at the tank pressure)
-    
-    %Get the total concentration of the extract product tank at time t
-    exTaTotCon = exTa.n1.gasConsTot;
-
-    %For a stream associated with jth column,
-    for j = 1 : nCols
-                        
+        %-----------------------------------------------------------------%
+        %For all streams around the product tank coming from or going to an
+        %adsorption column, assign the volumetric flow rate values 
+        %(Volumetric flow rate is evaluated at the tank pressure)
+                               
         %If the flow direction is counter-current, and we are interacting
         %with the extract product tank through the top-end of the jth 
         %adsorber 
-        if flowDir(j,nS) == 1 && ...
+        if flowDir(i,nS) == 1 && ...
            valRinTop(nS) == 1   
            
             %Determine the scale factor for the volumetric flow rate
-            vFlScaleFac = col.(sColNums{j}).gasConsTot(:,end) ...
+            vFlScaleFac = col.(sColNums{i}).gasConsTot(:,end) ...
                        ./ exTaTotCon;
 
             %Calcualate the volumetric flow rate from the extract product 
             %tank to the jth adsorption column. Since this is a
             %counter-current flow "out" from the extract product tank, we 
             %let the volumetric flow rate to be a negative value
-            vFlExTa(:,j) = vFlCol(:,(nVols+1)*(j)) ...
+            vFlExTa(:,i) = vFlCol(:,(nVols+1)*(i)) ...
                         .* vFlScaleFac;   
             
         %If the flow direction is co-current, the jth adsorber can interact
         %with the extract product tank through the bottom-end of the jth 
         %adsorber
-        elseif flowDir(j,nS) == 0 && ...
+        elseif flowDir(i,nS) == 0 && ...
                valRinBot(nS) == 1
            
             %Determine the scale factor for the volumetric flow rate
-            vFlScaleFac = col.(sColNums{j}).gasConsTot(:,1) ...
+            vFlScaleFac = col.(sColNums{i}).gasConsTot(:,1) ...
                        ./ exTaTotCon;
 
             %Calcualate the volumetric flow rate from the extract product 
             %tank to the jth adsorption column. Since this is a co-current 
             %flow "out" from the extract product tank, we let the 
             %volumetric flow rate to be a negative value
-            vFlExTa(:,j) = (-1) ...
-                         * vFlCol(:,(nVols+1)*(j-1)+1) ...
+            vFlExTa(:,i) = (-1) ...
+                         * vFlCol(:,(nVols+1)*(i-1)+1) ...
                         .* vFlScaleFac; 
             
         %If the flow direction is counter-current, and we are interacting
         %with the extract product tank through the bottom-end of the jth 
         %adsorber 
-        elseif flowDir(j,nS) == 1 ... %Counter-current flow
+        elseif flowDir(i,nS) == 1 ... %Counter-current flow
         
             %Determine the scale factor for the volumetric flow rate
-            vFlScaleFac1 = col.(sColNums{j}).gasConsTot(:,1) ...
+            vFlScaleFac1 = col.(sColNums{i}).gasConsTot(:,1) ...
                         ./ exTaTotCon;
-            vFlScaleFac2 = col.(sColNums{j}).gasConsTot(:,1) ...
+            vFlScaleFac2 = col.(sColNums{i}).gasConsTot(:,1) ...
                         ./ pRatVac;
 
             %Grab a volumetric flow rate from the feed-end of the jth 
             %column to the extract product tank
-            vFlExTaVal1 = vFlCol(:,(nVols+1)*(j-1)+1) ...
+            vFlExTaVal1 = vFlCol(:,(nVols+1)*(i-1)+1) ...
                        .* vFlScaleFac1;   
-            vFlExTaVal2 = vFlCol(:,(nVols+1)*(j-1)+1) ...
+            vFlExTaVal2 = vFlCol(:,(nVols+1)*(i-1)+1) ...
                        .* vFlScaleFac2;
 
             %Update a volumetric flow rate for the stream between the 
             %adsorber and the extract product tank; the negative sign is 
             %needed because we flip the flow direction on the way and the
             %flow is coming "into" the extract product tank.
-            vFlExTa(:,j) = (-1) ...
+            vFlExTa(:,i) = (-1) ...
                          * valExTa(nS) ...
                          * vFlExTaVal1;
 
             %Update a volumetric flow rate for the waste stream; the 
             %negative sign is needed because we flip the flow direction on 
             %the way and the flow is coming "into" the extract stream.
-            vFlExWa(:,j) = (-1) ...
+            vFlExWa(:,i) = (-1) ...
                          * (1-valExTa(nS)) ...
                          * vFlExTaVal2;
         
-        end
-                  
+        end        
+        %-----------------------------------------------------------------%
+
     end
+    %---------------------------------------------------------------------%
     
-    %The exit valve is opened only when the tank pressure equals the
-    %initial product tank pressure       
-
-    %Get the net volumetric flow rate in the product tank from the streams 
-    %associated with the columns
-    vFlNetExTa = sum(vFlExTa(:,1:nCols),2);
-
-    %When the product tank pressure is greater than equal to the high
-    %pressure and there is a net flow out, maintain it!
-
-    %For each time point t
-    for t = 1 : nRows          
+    
+    
+    %---------------------------------------------------------------------%
+    %Implement control measures
         
-        %Get the sign of the current concentration difference
-        testConc = exTaTotCon(t) ...
-                 - (presExTa/presBeHi);
+        %-----------------------------------------------------------------%
+        %The entering valve to the feed tank is always controlled to 
+        %maintain a constant pressure inside the feed tank
 
-        %Obtain the volumetric flow rate out of the check valve
-        vFlExTa(t,(nCols+1)) = (testConc >= 0) ...
-                             * max(vFlNetExTa(t),0);
-       
-    end
-    %---------------------------------------------------------------------% 
+        %Control the flow rate so that a constant pressure is maintained 
+        %inside the feed tank
+        vFlFeTa(:,(nCols+1)) = sum(vFlFeTa(:,1:nCols),2);
+        %-----------------------------------------------------------------%
+        
+        
+        
+        %-----------------------------------------------------------------%
+        %The exit valve is opened only when the tank pressure equals the
+        %initial product tank pressure       
+
+        %Get the net volumetric flow rate in the product tank from the 
+        %streams associated with the columns
+        vFlNetRaTa = sum(vFlRaTa(:,1:nCols),2);
+
+        %When the product tank pressure is greater than equal to the high
+        %pressure and there is a net flow out, maintain it!
+
+        %For each time point t
+        for t = 1 : nRows                                            
+
+                %Get the sign of the current concentration difference
+                testConc = raTaTotCon(t) ...
+                         - (presRaTa/presBeHi);
+
+                %Obtain the volumetric flow rate out of the check valve
+                vFlRaTa(t,(nCols+1)) = (testConc >= 0) ...
+                                     * max(vFlNetRaTa(t),0);
+
+        end    
+        %-----------------------------------------------------------------%
+        
+        
+        
+        %-----------------------------------------------------------------%
+        %The exit valve is opened only when the tank pressure equals the
+        %initial product tank pressure       
+
+        %Get the net volumetric flow rate in the product tank from the 
+        %streams associated with the columns
+        vFlNetExTa = sum(vFlExTa(:,1:nCols),2);
+
+        %When the product tank pressure is greater than equal to the high
+        %pressure and there is a net flow out, maintain it!
+
+        %For each time point t
+        for t = 1 : nRows          
+
+            %Get the sign of the current concentration difference
+            testConc = exTaTotCon(t) ...
+                     - (presExTa/presBeHi);
+
+            %Obtain the volumetric flow rate out of the check valve
+            vFlExTa(t,(nCols+1)) = (testConc >= 0) ...
+                                 * max(vFlNetExTa(t),0);
+
+        end                
+        %-----------------------------------------------------------------%        
+        
+    %---------------------------------------------------------------------%
     
     
-    
+              
     %---------------------------------------------------------------------% 
     %Save the results to the structs: assign the volumetric flow rates to 
-    %the struct holding column and tank properties
-    
-    %Loop through each columns,
-    for i = 1 : nCols
-        
-        %Get the first index
-        n0 = (nVols+1)*(i-1)+1;
-        
-        %Get the last index
-        nf = (nVols+1)*i;
-        
-        %Save the volumetric flow rates to a struct
-        col.(sColNums{i}).volFlRat = vFlCol(:,n0:nf);
-        
-        %Save the pseudo volumetric flow rates
-        col.(sColNums{i}).volFlPlus  = vFlPlus(:,n0:nf) ;
-        col.(sColNums{i}).volFlMinus = vFlMinus(:,n0:nf);
-        
-    end                     
-    
+    %the struct holding tank properties
+                              
     %Save the volumetric flow rates to a struct
     raTa.n1.volFlRat = vFlRaTa(:,1:(nCols+1));  
     
@@ -430,7 +414,6 @@ function units = calcVolFlows4PFD(params,units,vFlPlus,vFlMinus,nS)
     %Return the updated structure
     
     %Update units
-    units.col  = col ;
     units.feTa = feTa;
     units.raTa = raTa;
     units.exTa = exTa;

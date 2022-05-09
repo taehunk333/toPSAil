@@ -84,14 +84,14 @@ function units = getFeTaEnerBal(params,units)
     %funcId = 'getFeTaEnerBal.m';
     
     %Unpack params
-    nComs          = params.nComs         ;   
-    intHtTrFacTan  = params.intHtTrFacTan ;
-    extHtTrFacTan  = params.extHtTrFacTan ; 
-    ambTempNorm    = params.ambTempNorm   ;
-    gasConsNormTan = params.gasConsNormTan;
-    htCapCpNorm    = params.htCapCpNorm   ;
-    pRatFe         = params.pRatFe        ;
-    yFeC           = params.yFeC          ;
+    nComs         = params.nComs        ;   
+    intHtTrFacTan = params.intHtTrFacTan;
+    extHtTrFacTan = params.extHtTrFacTan;
+    ambTempNorm   = params.ambTempNorm  ;
+    gConsNormTan  = params.gConsNormTan ;
+    htCapCpNorm   = params.htCapCpNorm  ;
+    pRatFe        = params.pRatFe       ;
+    yFeC          = params.yFeC         ;
     %---------------------------------------------------------------------%              
         
     
@@ -161,7 +161,7 @@ function units = getFeTaEnerBal(params,units)
     end            
     
     %Update the term with the prefactors
-    convFlowEner = gasConsNormTan ...
+    convFlowEner = gConsNormTan ...
                  * vnm1*(Tnm1-Tnm0) ...
                  * convFlowEner;    
     %---------------------------------------------------------------------%

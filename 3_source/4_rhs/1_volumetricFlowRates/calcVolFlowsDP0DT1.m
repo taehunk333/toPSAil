@@ -640,7 +640,35 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
         %-----------------------------------------------------------------%
         
     end
-    %---------------------------------------------------------------------%                               
+    %---------------------------------------------------------------------%    
+    
+    
+    
+    %---------------------------------------------------------------------%
+    %Save the results to units.col
+    
+    %Loop through each columns,
+    for i = 1 : nCols
+        
+        %Get the first index
+        n0 = (nVols+1)*(i-1)+1;
+        
+        %Get the last index
+        nf = (nVols+1)*i;
+        
+        vFlPlCol = vFlPlus(:,n0:nf) ;
+        vFlMiCol = vFlMinus(:,n0:nf);
+        
+        %Save the pseudo volumetric flow rates
+        units.col.(sColNums{i}).volFlPlus  = vFlPlCol;
+        units.col.(sColNums{i}).volFlMinus = vFlMiCol;
+        
+        %Save the volumetric flow rates to a struct
+        units.col.(sColNums{i}).volFlRat = vFlPlCol ...
+                                         - vFlMiCol;
+                        
+    end   
+    %---------------------------------------------------------------------%
     
     
     
@@ -650,7 +678,7 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
 
     %Grab the unknown volumetric flow rates from the calculated volumetric
     %flow rates from the adsorption columns
-    units = calcVolFlows4PFD(params,units,vFlPlus,vFlMinus,nS);
+    units = calcVolFlows4PFD(params,units,nS);
     %---------------------------------------------------------------------%  
     
 end
