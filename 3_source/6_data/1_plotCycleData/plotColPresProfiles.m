@@ -173,7 +173,7 @@ function plotColPresProfiles(params,sol)
     %Make any terminal settings
     
     %Resize the figure
-    set(gcf,'Position',[100,25,1000,750]);
+    set(gcf,'Position',[100,25,600,500]);
     
     %Hold off of the figure
     hold off;    

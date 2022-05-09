@@ -113,10 +113,10 @@ function plotExTaPurity(params,sol,exTaNum)
     %Make any terminal settings
     
     %Add entry to the legend
-    legend('n1','Location','NorthEastOutside');
+    legend('n1','Location','NorthWest');
     
     %Resize the figure
-    set(gcf,'Position',[200,200,700,500]);
+    set(gcf,'Position',[100,25,600,500]);
     
     %Turn on the zoom feature
     zoom on;
