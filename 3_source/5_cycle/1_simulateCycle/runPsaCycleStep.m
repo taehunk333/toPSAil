@@ -93,7 +93,7 @@ function [stTime,stStates,flags] ...
         event = odeset('Events',@(t,states) ...
                          funcEve(params,t,states,nS,nCy));
                      
-        %Assign an output function (For testing)
+%         %Assign an output function (For testing)
 %         output = odeset('OutputFcn', ...
 %                         @(time,states,flag) ...
 %                         testDaeConst(time,states,flag,params,nS,nCy));
@@ -102,10 +102,11 @@ function [stTime,stStates,flags] ...
 %                         testFlowReversal(time,states,flag,params,nS,nCy));
                     
 %         %Assign the tolerance values
-%         tols = odeset('RelTol',1e-8,'AbsTol',1e-10);
+%         tols = odeset('RelTol',1e-6,'AbsTol',1e-8);
                      
         %Save the final options (For testing)
         %options = odeset(event,output,tols);
+        %options = odeset(event,output);
         %options = odeset(event,tols);
         options = odeset(event);
         
@@ -123,7 +124,7 @@ function [stTime,stStates,flags] ...
     %When we don't have a specified event, no options are needed
     elseif needEvent == 0
         
-        %Assign an output function (For testing)
+%         %Assign an output function (For testing)
 %         output = odeset('OutputFcn', ...
 %                         @(time,states,flag) ...
 %                         testDaeConst(time,states,flag,params,nS,nCy));
@@ -131,11 +132,12 @@ function [stTime,stStates,flags] ...
 %                         @(time,states,flag) ...
 %                         testFlowReversal(time,states,flag,params,nS,nCy));
                     
-        %Assign the tolerance values
-        %tols = odeset('RelTol',1e-8,'AbsTol',1e-10);
+%         %Assign the tolerance values
+%         tols = odeset('RelTol',1e-6,'AbsTol',1e-8);
         
         %Save the final options (For testing)
         %options = odeset(output,tols);
+        %options = odeset(output);
         %options = odeset(tols);
         options = [];
         

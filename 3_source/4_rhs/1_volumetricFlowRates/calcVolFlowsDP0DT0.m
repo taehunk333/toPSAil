@@ -298,8 +298,6 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
             elseif daeModCur(i,nS) == 1
 
                 %---------------------------------------------------------%
-                %Unpack additional params
-                
                 %Depending on the flow direction, unpack the coefficient
                 %matrices
                 
@@ -355,8 +353,9 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                 %Obtain the right hand side vector for time varying 
                 %pressure DAE model
 
-                %Get the first order difference between adjacent columns of
-                %the total adsorption rates for the current ith column            
+                %Initialize the right hand side vector for the current time
+                %step, by considering the adsorption as well as the 
+                %correction for the nonisothermal heat effects        
                 rhsVec = (1./cstrHt(2:nVols)) ...
                       .* col.(sColNums{i}).volAdsRatTot(:,2:nVols) ...
                        - (1./cstrHt(1:nVols-1)) ...
@@ -365,14 +364,14 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                 %Add the feed-end boundary condition for the ith column in 
                 %nS step in a given PSA cycle
                 rhsVec(:,1) = rhsVec(:,1) ...
-                            + (1/cstrHt(1))*vFlPlusBoFe ...
-                            - (1/cstrHt(1))*vFlMinusBoFe;
+                            + (1/cstrHt(1)).*vFlPlusBoFe ...
+                            - (1/cstrHt(1)).*vFlMinusBoFe;
 
                 %Add the product-end boundary condition for the ith column 
                 %in nS step in a given PSA cycle
                 rhsVec(:,nVols-1) = rhsVec(:,nVols-1) ...
-                                  + (1/cstrHt(nVols))*vFlPlusBoPr ...
-                                  - (1/cstrHt(nVols))*vFlMinusBoPr;                        
+                                  + (1/cstrHt(nVols)).*vFlPlusBoPr ...
+                                  - (1/cstrHt(nVols)).*vFlMinusBoPr;                        
                 %---------------------------------------------------------%
 
 
