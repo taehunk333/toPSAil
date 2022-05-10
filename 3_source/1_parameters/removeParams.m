@@ -105,17 +105,17 @@ function params = removeParams(params)
     %---------------------------------------------------------------------%
     %Remove isothermal simulation parameters for non-isothermal simulations
     
-    %If we are doing a non-isothermal simulation
-    if bool(5) == 1
-    
-        %Remove isothermal parameter
-        params = rmfield(params,'loTrMat')  ;
-        params = rmfield(params,'upTrMat')  ;
-        params = rmfield(params,'coPrFeMat');
-        params = rmfield(params,'coPrPrMat');
-        params = rmfield(params,'coefMat')  ;
-        
-    end      
+%     %If we are doing a non-isothermal simulation
+%     if bool(5) == 1
+%     
+%         %Remove isothermal parameter
+%         params = rmfield(params,'loTrMat')  ;
+%         params = rmfield(params,'upTrMat')  ;
+%         params = rmfield(params,'coPrFeMat');
+%         params = rmfield(params,'coPrPrMat');
+%         params = rmfield(params,'coefMat')  ;
+%         
+%     end      
     %---------------------------------------------------------------------%
     
     
