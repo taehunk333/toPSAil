@@ -689,7 +689,7 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                 %Calculate the volumetric flow rates but compute the flow 
                 %direction on the fly
                 [vFlPlusCol(t,:),vFlMinusCol(t,:)] ...
-                    = calcVolFlowsDP0DT0Re(params,units,nS,i);
+                    = calcVolFlowsDP0DT1Re(params,units,nS,i,t);
                 
                 %Restore the number of rows
                 params.nRows = nRowsSave;
