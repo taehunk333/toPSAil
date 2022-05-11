@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/24/Sunday
-%Code last modified on : 2022/5/9/Monday
+%Code last modified on : 2022/5/11/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -116,7 +116,10 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                 %Multiply dimensionless total adsorption rates by the 
                 %coefficients that are relevant for the step for ith column            
                 rhsVec = (-1) ...
-                       * col.(sColNums{i}).volAdsRatTot;                                                     
+                       * col.(sColNums{i}).volAdsRatTot;  
+                
+                %Save rhsVec inside the params
+                params.rhsVec = rhsVec;
                 %---------------------------------------------------------%                                                 
 
 
@@ -139,6 +142,10 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                     %volumetric flow rates
                     [vFlPlusBoFe,vFlMinusBoFe] ...
                         = calcPseudoVolFlows(vFlBoFe);
+                    
+                    %Save the boundary conditions
+                    params.vFlPlusBoFe  = vFlPlusBoFe ;
+                    params.vFlMinusBoFe = vFlMinusBoFe;
 
                     %Update the right hand side vector
                     rhsVec(:,1) = rhsVec(:,1) ...
@@ -220,7 +227,11 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                     %volumetric flow rates
                     [vFlPlusBoPr,vFlMinusBoPr] ...
                         = calcPseudoVolFlows(vFlBoPr);
-
+                    
+                    %Save the boundary conditions
+                    params.vFlPlusBoPr  = vFlPlusBoPr ;
+                    params.vFlMinusBoPr = vFlMinusBoPr;
+                    
                     %Update the right hand side vector
                     rhsVec(:,nVols) = rhsVec(:,nVols)...
                                     - vFlPlusBoPr ...
@@ -338,6 +349,10 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                 %Call the helper function to calculate the pseudo 
                 %volumetric flow rates
                 [vFlPlusBoPr,vFlMinusBoPr] = calcPseudoVolFlows(vFlBoPr);
+                
+                %Save the boundary conditions
+                params.vFlPlusBoPr  = vFlPlusBoPr ;
+                params.vFlMinusBoPr = vFlMinusBoPr;
 
                 %Obtain the boundary condition for the feed-end of the ith
                 %column under current step in a given PSA cycle
@@ -347,6 +362,10 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                 %Call the helper function to calculate the pseudo 
                 %volumetric flow rates
                 [vFlPlusBoFe,vFlMinusBoFe] = calcPseudoVolFlows(vFlBoFe);
+                
+                %Save the boundary conditions
+                params.vFlPlusBoFe  = vFlPlusBoFe ;
+                params.vFlMinusBoFe = vFlMinusBoFe;
                 %---------------------------------------------------------% 
 
 
@@ -373,7 +392,10 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                 %in nS step in a given PSA cycle
                 rhsVec(:,nVols-1) = rhsVec(:,nVols-1) ...
                                   + (1/cstrHt(nVols)).*vFlPlusBoPr ...
-                                  - (1/cstrHt(nVols)).*vFlMinusBoPr;                        
+                                  - (1/cstrHt(nVols)).*vFlMinusBoPr;   
+                              
+                %Save rhsVec in params
+                params.rhsVec = rhsVec; 
                 %---------------------------------------------------------%
 
 
@@ -478,7 +500,7 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                 %Calculate the volumetric flow rates but compute the flow 
                 %direction on the fly
                 [vFlPlusCol(t,:),vFlMinusCol(t,:)] ...
-                    = calcVolFlowsDP0DT0Re(params,units,nS,i,t);
+                    = calcVolFlowsDP0DT0Re(params,nS,i,t);
                 
                 %Restore the number of rows
                 params.nRows = nRowsSave;

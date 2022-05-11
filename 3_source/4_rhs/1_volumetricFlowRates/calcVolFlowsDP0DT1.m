@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/2/18/Friday
-%Code last modified on : 2022/5/9/Monday
+%Code last modified on : 2022/5/11/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -207,6 +207,17 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                        ./ htCOnm0 ...
                        .* termnp1);                            
             %-------------------------------------------------------------%
+            
+            
+            
+            %-------------------------------------------------------------%
+            %Save the values of the alphas
+            
+            %Save the alpha values into params
+            params.alphaPlusN  = alphaPlusN ;
+            params.alphaZeroN  = alphaZeroN ;
+            params.alphaMinusN = alphaMinusN;
+            %-------------------------------------------------------------%
            
         %-----------------------------------------------------------------%        
         
@@ -237,7 +248,10 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                 %coefficients that are relevant for the step for ith column            
                 rhsVec = (-1) ...
                        * col.(sColNums{i}).volAdsRatTot ...
-                       + col.(sColNums{i}).volCorRatTot;                                                     
+                       + col.(sColNums{i}).volCorRatTot;     
+                   
+                %Save rhsVec inside the params
+                params.rhsVec = rhsVec;
                 %---------------------------------------------------------%                                                
 
 
@@ -536,10 +550,13 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                     = rhsVec(:,nVols-1) ...
                     + (alphaZeroN(:,nVols)/cstrHt(nVols)).*vFlPlusBoPr ...
                     + (alphaMinusN(:,nVols)/cstrHt(nVols)).*vFlMinusBoPr;                     
+
+                %Save rhsVec in params
+                params.rhsVec = rhsVec;                
                 %---------------------------------------------------------%
-
-
-
+                
+                
+                
                 %---------------------------------------------------------%
                 %Calculate the pseudo voluemtric flow rates and save the
                 %results
