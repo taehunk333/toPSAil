@@ -451,14 +451,14 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                 
                 %Check if the negative pseudo voluemtric flow rate vector 
                 %has all nonzeros      
-                flowDirCheck = all(vFlMinusCol(t,:));
+                flowDirCheck = any(vFlMinusCol(t,:));
                 
             %For counter-current flow
             elseif flowDirStep == 1
                 
                 %Check if the positive pseudo voluemtric flow rate vector 
                 %has all nonzeros      
-                flowDirCheck = all(vFlPlusCol(t,:));
+                flowDirCheck = any(vFlPlusCol(t,:));
                 
             end                        
             %-------------------------------------------------------------%
