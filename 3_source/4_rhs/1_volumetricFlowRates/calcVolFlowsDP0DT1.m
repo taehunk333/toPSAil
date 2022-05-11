@@ -621,10 +621,6 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                         vFlMinusColVal ...
                             = mldivide(coefMatMinus,rhsVec(t,:)');
 
-                        %Make sure that the negative pseudo voluemtric flow 
-                        %rate is positive
-                        vFlMinusColVal = abs(vFlMinusColVal);
-
                         %Concatenate the boundary conditions
                         vFlMinusCol(t,:) ...
                             = [vFlMinusBoFe(t), ...
@@ -662,16 +658,16 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
             %For co-current flow
             if flowDirStep == 0
                 
-                %Check if the negative pseudo voluemtric flow rate vector 
-                %has all nonzeros      
-                flowDirCheck = any(vFlMinusCol(t,:));
+                %Check if the positive pseudo voluemtric flow rate vector 
+                %has all nonnegatives      
+                flowDirCheck = all(vFlPlusCol(t,:)>=0);                                
                 
             %For counter-current flow
             elseif flowDirStep == 1
                 
-                %Check if the positive pseudo voluemtric flow rate vector 
-                %has all nonzeros      
-                flowDirCheck = any(vFlPlusCol(t,:));
+                %Check if the negative pseudo voluemtric flow rate vector 
+                %has all nonnegatives      
+                flowDirCheck = all(vFlMinusCol(t,:)>=0);
                 
             end                        
             %-------------------------------------------------------------%
@@ -682,7 +678,7 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
             %Do the recourse measure
             
             %If flow reversed, then,
-            if flowDirCheck == 1
+            if flowDirCheck == 0
                 
                 %Save nRows 
                 nRowsSave = nRows;
