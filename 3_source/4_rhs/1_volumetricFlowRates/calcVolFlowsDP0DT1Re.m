@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/5/9/Monday
-%Code last modified on : 2022/5/9/Monday
+%Code last modified on : 2022/5/11/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -69,6 +69,14 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT1Re(params,units,nS,nC,nTp)
     htCapCpNorm  = params.htCapCpNorm ; 
     volFlBoFree  = params.volFlBoFree ;
     
+    %Unpack the time dependent at nTp
+    alphaPlusN  = params.alphaPlusN(nTp,:) ;
+    alphaZeroN  = params.alphaZeroN(nTp,:) ;
+    alphaMinusN = params.alphaMinusN(nTp,:);
+    
+    %Get the right hand side vector at nTp
+    rhsVec = params.rhsVec(nTp,:);
+    
     %Unpack units
     col  = units.col ;
     feTa = units.feTa;
@@ -106,121 +114,6 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT1Re(params,units,nS,nC,nTp)
 
 
 
-        %-----------------------------------------------------------------%                              
-        %Get the right hand side vector at a given time point
-
-        %Multiply dimensionless total adsorption rates by the 
-        %coefficients that are relevant for the step for ith column            
-        rhsVec = (-1)*col.(sColNums{nC}).volAdsRatTot ...
-               + col.(sColNums{nC}).volCorRatTot; 
-           
-        %Get the rhsVec at the current time point
-        rhsVec = rhsVec(nTp,:);
-        %-----------------------------------------------------------------%
-
-
-
-        %-----------------------------------------------------------------%
-        %Unpack column states at the time point nTp
-
-        %Unpack the total concentrstion variables
-        gasConsTot = col.(sColNums{nC}).gasConsTot(nTp,:);
-
-        %Unpack the interior temperature variables 
-        cstrTemps = col.(sColNums{nC}).temps.cstr(nTp,:);
-
-        %Define the total concentration variables                
-        cNm1 = [col.(sColNums{nC}).feEnd.gasConsTot(nTp,:), ...
-                gasConsTot(nTp,1:nVols-1)];
-        cNm0 = gasConsTot(nTp,1:nVols);  
-        cNp1 = [gasConsTot(nTp,2:nVols), ...
-                col.(sColNums{nC}).prEnd.gasConsTot(nTp,:)];
-
-        %Define the interior temperature variables                
-        Tnm1 = [col.(sColNums{nC}).feEnd.temps(nTp,:), ...
-                cstrTemps(nTp,1:nVols-1)];
-        Tnm0 = cstrTemps(nTp,1:nVols);
-        Tnp1 = [cstrTemps(nTp,2:nVols), ...
-                col.(sColNums{nC}).prEnd.temps(nTp,:)];
-
-        %Unpack the overall heat capacity
-        htCOnm0 = col.n1.htCO(nTp,:);                                                  
-        %-----------------------------------------------------------------%
-
-
-
-        %-----------------------------------------------------------------%
-        %Compute the species dependent terms
-
-        %Initialize the solution arrays
-        termNm1 = zeros(1,nVols);
-        termNp1 = zeros(1,nVols);
-
-        %Compute the temperature ratio
-        TratNm1 = Tnm1./Tnm0;
-        TratNp1 = Tnp1./Tnm0;
-
-        %Loop over each species
-        for j = 1: nComs                                                                        
-
-            %Unpack gas species concentration
-            gasConsSpec = col.(sColNums{nC}). ...
-                          gasCons.(sComNums{j})(nTp,:);
-
-            %Update the nm1 term
-            termNm1 = termNm1 ...
-                    + (TratNm1*htCapCpNorm(j) ...
-                      -htCapCvNorm(j)) ...
-                   .* [col.(sColNums{nC}).feEnd. ...
-                      gasCons.(sComNums{j})(nTp,:), ...
-                      gasConsSpec(nTp,1:nVols-1)];
-
-            %Update the nm1 term
-            termNp1 = termNp1 ...
-                    + (TratNp1*htCapCpNorm(j) ...
-                      -htCapCvNorm(j)) ...
-                   .* [gasConsSpec(nTp,2:nVols), ...
-                      col.(sColNums{nC}).prEnd. ...
-                      gasCons.(sComNums{j})(nTp,:)];
-
-        end                                      
-        %-----------------------------------------------------------------%
-
-
-
-        %-----------------------------------------------------------------%
-        %Define the coefficients
-        %$\forall n \in \left\{ 1, ..., n_c \right\}$
-
-        %Calculate the first time dependent coefficient:
-        %$\tilde{alpha}_n^{-} \left(t\right)$
-        aMinusNm0 = (-1) ...
-                  * ((cNm1./cNm0) ...
-                  + gConsNormCol ...
-                 .* cstrHt ...
-                 ./ htCOnm0 ...
-                 .* termNm1);
-
-        %Calculate the second time dependent coefficient:
-        %$\tilde{alpha}_n \left(t\right)$
-        aNoneNm0 = 1 ...
-                 + gConsNormCol ...
-                .* cstrHt ...
-                .* cNm0 ...
-                ./ htCOnm0;
-
-        %Calculate the third time dependent coefficient:
-        %$\tilde{alpha}_n^{+} \left(t\right)$
-        aPlusNm0 = (-1) ...
-                .* ((cNp1./cNm0) ...
-                 + gConsNormCol ...
-                .* cstrHt ...
-                ./ htCOnm0 ...
-                .* termNp1);       
-        %-----------------------------------------------------------------%
-
-
-
         %-----------------------------------------------------------------%
         %Depending on the boundary conditions, calculate the pseudo 
         %volumetric flow rates
@@ -233,15 +126,17 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT1Re(params,units,nS,nC,nTp)
 
             %Take account for the boundary condition on the right hand 
             %side vector
-            vFlBoRhs = vFlBo{2,nC,nS}(params,col,feTa,raTa,exTa,nS,nC);
+            vFlBoFe ...
+                = vFlBo{2,nC,nS}(params,col,feTa,raTa,exTa,nS,nC);
 
             %Call the helper function to calculate the pseudo 
             %volumetric flow rates
-            [vPlusBo,vMinusBo] = calcPseudoVolFlows(vFlBoRhs);
+            [vFlPlusBoFe,vFlMinusBoFe] ...
+                = calcPseudoVolFlows(vFlBoFe);
 
             %Update the pseudo volumetric flow rate matrices
-            vFlPlus(1)  = vPlusBo(nTp) ; 
-            vFlMinus(1) = vMinusBo(nTp); 
+            vFlPlus(1)  = vFlPlusBoFe(nTp) ; 
+            vFlMinus(1) = vFlMinusBoFe(nTp); 
             %-------------------------------------------------------------%
 
 
@@ -254,9 +149,9 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT1Re(params,units,nS,nC,nTp)
 
                 %Update the right hand side vector
                 rhsVecEval = rhsVec(j) ...
-                           - aMinusNm0(j) ...
+                           - alphaPlusN(j) ...
                           .* vFlPlus(j) ...
-                           - aNoneNm0(j) ...
+                           - alphaZeroN(j) ...
                           .* vFlMinus(j);
 
                 %Determine the flow direction
@@ -265,11 +160,11 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT1Re(params,units,nS,nC,nTp)
                 %Compute the pseudo volumetric flow rates
                 vFlPlus(:,j+1) ...
                     = rhsVecEval ... 
-                   ./ aNoneNm0(:,j) ...
+                   ./ alphaZeroN(:,j) ...
                    .* flowDir ;
                 vFlMinus(:,j+1) ...
                     = rhsVecEval ...
-                   ./ aPlusNm0(:,j) ...
+                   ./ alphaMinusN(:,j) ...
                    .* (1-flowDir);
 
             end        
@@ -283,15 +178,17 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT1Re(params,units,nS,nC,nTp)
 
             %Take account for the boundary condition on the right hand 
             %side vector
-            vFlBoRhs = vFlBo{1,nC,nS}(params,col,feTa,raTa,exTa,nS,nC);
+            vFlBoPr ...
+                = vFlBo{1,nC,nS}(params,col,feTa,raTa,exTa,nS,nC);
 
             %Call the helper function to calculate the pseudo 
             %volumetric flow rates
-            [vPlusBo,vMinusBo] = calcPseudoVolFlows(vFlBoRhs);
+            [vFlPlusBoPr,vFlMinusBoPr] ...
+                = calcPseudoVolFlows(vFlBoPr);
 
             %Update the pseudo volumetric flow rate matrices
-            vFlPlus(nVols+1)  = vPlusBo(nTp) ; 
-            vFlMinus(nVols+1) = vMinusBo(nTp);
+            vFlPlus(nVols+1)  = vFlPlusBoPr(nTp) ; 
+            vFlMinus(nVols+1) = vFlMinusBoPr(nTp);
             %-------------------------------------------------------------%
 
 
@@ -304,9 +201,9 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT1Re(params,units,nS,nC,nTp)
 
                 %Update the right hand side vector
                 rhsVecEval = rhsVec(j) ...
-                           - aNoneNm0(j) ...
+                           - alphaZeroN(j) ...
                           .* vFlPlus(j+1) ...
-                           - aPlusNm0(j) ...
+                           - alphaMinusN(j) ...
                           .* vFlMinus(j+1);
 
                 %Determine the flow direction
@@ -315,11 +212,11 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT1Re(params,units,nS,nC,nTp)
                 %Compute the pseudo volumetric flow rates
                 vFlPlus(:,j) ...
                     = rhsVecEval ...
-                   ./ aMinusNm0(:,j) ...
+                   ./ alphaPlusN(:,j) ...
                    .* (1-flowDir) ;
                 vFlMinus(:,j) ...
                     = rhsVecEval ...
-                   ./ aNoneNm0(:,j) ...
+                   ./ alphaZeroN(:,j) ...
                    .* flowDir;
 
             end 
@@ -345,134 +242,7 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT1Re(params,units,nS,nC,nTp)
         lbs  = params.linprog.lbs ;
         ubs  = params.linprog.ubs ;
         %-----------------------------------------------------------------%
-
-
-
-        %-----------------------------------------------------------------%
-        %Unpack states
-
-        %Unpack the total concentrstion variables
-        gasConsTot = col.(sColNums{nC}).gasConsTot(nTp,:);
-
-        %Unpack the interior temperature variables 
-        cstrTemps = col.(sColNums{nC}).temps.cstr(nTp,:);
-
-        %Define the total concentrstion variables
-        cNm2 = [col.(sColNums{nC}).feEnd.gasConsTot(nTp,:), ...
-                gasConsTot(nTp,1:nVols-2)];                  
-        cNm1 = gasConsTot(nTp,1:nVols-1);
-        cNm0 = gasConsTot(nTp,2:nVols);
-        cNp1 = [gasConsTot(nTp,3:nVols), ...
-                col.(sColNums{nC}).prEnd.gasConsTot(nTp,:)];
-
-        %Define the interior temperature variables 
-        Tnm2 = [col.(sColNums{nC}).feEnd.temps(nTp,:), ...
-                cstrTemps(nTp,1:nVols-2)];
-        Tnm1 = cstrTemps(nTp,1:nVols-1);
-        Tnm0 = cstrTemps(nTp,2:nVols);
-        Tnp1 = [cstrTemps(nTp,3:nVols), ...
-                col.(sColNums{nC}).prEnd.temps(nTp,:)];
-
-        %Unpack the overall heat capacity
-        htCOnm1 = col.n1.htCO(nTp,1:nVols-1);
-        htCOnm0 = col.n1.htCO(nTp,2:nVols)  ;                             
-        %-----------------------------------------------------------------%
-
-
-
-        %-----------------------------------------------------------------%
-        %Compute the species dependent terms
-
-        %Initialize the solution arrays
-        termNm2 = zeros(1,nVols-1);
-        termNm1 = zeros(1,nVols-1);
-        termNm0 = zeros(1,nVols-1);
-        termNp1 = zeros(1,nVols-1);
-
-        %Compute the temperature ratios
-        TratNm2 = Tnm2./Tnm1;
-        TratNm1 = Tnm1./Tnm0;
-        TratNm0 = Tnm0./Tnm1;
-        TratNp1 = Tnp1./Tnm0;
-
-        %Loop over each species
-        for j = 1: nComs
-
-            %Unpack gas species concentration
-            gasConsSpec = col.(sColNums{nC}).gasCons. ...
-                          (sComNums{j})(nTp,:);
-
-            %Update the nm2 term
-            termNm2 = termNm2 ...
-                    + (TratNm2*htCapCpNorm(j) ...
-                      -htCapCvNorm(j)) ...
-                   .* [col.(sColNums{nC}).feEnd. ...
-                      gasCons.(sComNums{j})(nTp,:), ...
-                      gasConsSpec(nTp,1:nVols-2)];                    
-
-            %Update the nm1 term
-            termNm1 = termNm1 ...
-                    + (TratNm1*htCapCpNorm(j) ...
-                      -htCapCvNorm(j)) ...
-                   .* gasConsSpec(nTp,1:nVols-1);
-
-            %Update the nm0 term
-            termNm0 = termNm0 ...
-                    + (TratNm0*htCapCpNorm(j) ...
-                      -htCapCvNorm(j)) ...
-                   .* gasConsSpec(nTp,2:nVols);                    
-
-            %Update the np1 term
-            termNp1 = termNp1 ...
-                    + (TratNp1*htCapCpNorm(j) ...
-                      -htCapCvNorm(j)) ...
-                   .* [gasConsSpec(nTp,3:nVols), ...
-                      col.(sColNums{nC}).prEnd. ...
-                      gasCons.(sComNums{j})(nTp,:)];
-
-        end                                                      
-        %-----------------------------------------------------------------%
-
-
-
-        %-----------------------------------------------------------------%
-        %Define the coefficients:
-        %$\forall n \in \left\{ 2, ..., n_c \right\}$              
-
-        %Calculate the first time dependent coefficient:
-        %$\tilde{\phi}_{n,n-1}^{-} \left( t \right)$
-        pMinusNm1 = (-1) ...
-                  * (cNm2./cNm1./cstrHt(2:nVols) ...
-                  + gConsNormCol./htCOnm1.*termNm2);
-
-        %Calculate the second time dependent coefficient:
-        %$\tilde{\phi}_{n,n-1} \left( t \right)$
-        pNoneNm1 = (1./cstrHt(1:nVols-1) ...
-                 + gConsNormCol.*cNm1./htCOnm1);
-
-        %Calculate the third time dependent coefficient:
-        %$\tilde{\phi}_{n,n-1}^{+} \left( t \right)$
-        pPlusNm1 = (cNm1./cNm0./cstrHt(2:nVols)) ...
-                 + gConsNormCol./htCOnm0.*termNm1;
-
-        %Calculate the fourth time dependent coefficient:
-        %$\tilde{\phi}_{n,n}^{-} \left( t \right)$
-        pMinusNm0 = (-1) ...
-                  * (cNm0./cNm1./cstrHt(1:nVols-1) ...
-                  + gConsNormCol./htCOnm1.*termNm0);
-
-        %Calculate the fifth time dependent coefficient:
-        %$\tilde{\phi}_{n,n} \left( t \right)$
-        pNoneNm0 = (-1) ...
-                 * (1./cstrHt(2:nVols) ...
-                 + gConsNormCol.*cNm0./htCOnm0);
-
-        %Calculate the sixth time dependent coefficient:
-        %$\tilde{\phi}_{n,n}^{+} \left( t \right)$
-        pPlusNm0 = (cNp1./cNm0./cstrHt(2:nVols) ...
-                 + gConsNormCol./htCOnm0.*termNp1);            
-        %-----------------------------------------------------------------%                                                                        
-
+       
 
 
         %-----------------------------------------------------------------%
