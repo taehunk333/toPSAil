@@ -37,6 +37,7 @@
 %                            the process flow diagram. 
 %             nS           - jth step in a given PSA cycle
 %             nC           - the current adsorption column index
+%             nTp          - the current number of time point
 %Outputs    : vFlPlus      - the vector of positive pseudo volumetric flow
 %                            rates. Rows represent the numeber of time
 %                            points, column represents the pseudo
@@ -47,7 +48,7 @@
 %                            volumetric flwo rates for all adsorbers.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT0Re(params,units,nS,nC)
+function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT0Re(params,units,nS,nC,nTp)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
@@ -61,7 +62,6 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT0Re(params,units,nS,nC)
     daeModCur   = params.daeModel   ;
     cstrHt      = params.cstrHt     ; 
     sColNums    = params.sColNums   ;
-    nRows       = params.nRows      ;
     volFlBoFree = params.volFlBoFree;
     
     %Unpack units
@@ -78,8 +78,8 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT0Re(params,units,nS,nC)
             
     %Initialize numeric arrays for the pseudo volumetric flow rates for the
     %adsorption columns
-    vFlPlus  = zeros(nRows,(nVols+1));
-    vFlMinus = zeros(nRows,(nVols+1));
+    vFlPlus  = zeros(1,(nVols+1));
+    vFlMinus = zeros(1,(nVols+1));
     %---------------------------------------------------------------------% 
                                                 
     
@@ -107,6 +107,9 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT0Re(params,units,nS,nC)
         %Multiply dimensionless total adsorption rates by the 
         %coefficients that are relevant for the step for ith column            
         rhsVec = (-1)*col.(sColNums{nC}).volAdsRatTot;
+        
+        %Get the rhsVec at the current time point
+        rhsVec = rhsVec(nTp,:);
         %-----------------------------------------------------------------%                                                 
 
 
@@ -119,7 +122,7 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT0Re(params,units,nS,nC)
         if feEndHasBC == 1
 
             %-------------------------------------------------------------%
-            %Get boundary conditions
+            %Get the boundary conditions
 
             %Take account for the boundary condition on the right hand 
             %side vector
@@ -130,8 +133,8 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT0Re(params,units,nS,nC)
             [vPlusBo,vMinusBo] = calcPseudoVolFlows(vFlBoRhs);
 
             %Update the pseudo volumetric flow rate matrices
-            vFlPlus(:,1)  = vPlusBo ; 
-            vFlMinus(:,1) = vMinusBo; 
+            vFlPlus(1)  = vPlusBo(nTp) ; 
+            vFlMinus(1) = vMinusBo(nTp); 
             %-------------------------------------------------------------%
 
 
@@ -143,9 +146,9 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT0Re(params,units,nS,nC)
             for i = 1 : nVols
 
                 %Update the right hand side vector
-                rhsVecEval = rhsVec(:,i) ...
-                           + vFlPlus(:,i) ...
-                           - vFlMinus(:,i);
+                rhsVecEval = rhsVec(i) ...
+                           + vFlPlus(i) ...
+                           - vFlMinus(i);
 
                 %Determine the flow direction
                 flowDir = (rhsVecEval >= 0);
@@ -176,8 +179,8 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT0Re(params,units,nS,nC)
             [vPlusBo,vMinusBo] = calcPseudoVolFlows(vFlBoRhs);
 
             %Update the pseudo volumetric flow rate matrices
-            vFlPlus(:,(nVols+1))  = vPlusBo ; 
-            vFlMinus(:,(nVols+1)) = vMinusBo;
+            vFlPlus(nVols+1)  = vPlusBo(nTp) ; 
+            vFlMinus(nVols+1) = vMinusBo(nTp);
             %-------------------------------------------------------------%
 
 
@@ -189,9 +192,9 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT0Re(params,units,nS,nC)
             for i = nVols : -1 : 1                                        
 
                 %Update the right hand side vector
-                rhsVecEval = rhsVec(:,i) ...
-                           - vFlPlus(:,i+1) ...
-                           + vFlMinus(:,i+1);
+                rhsVecEval = rhsVec(i) ...
+                           - vFlPlus(i+1) ...
+                           + vFlMinus(i+1);
 
                 %Determine the flow direction
                 flowDir = (rhsVecEval >= 0);
@@ -236,13 +239,11 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT0Re(params,units,nS,nC)
 
         %Obtain the boundary condition for the product-end of the ith
         %column under current step in a given PSA cycle           
-        vFlBoPr = ones(nRows,1) ...
-               .* vFlBo{1,nC,nS}(params,col,feTa,raTa,exTa,nS,nC);                        
+        vFlBoPr = vFlBo{1,nC,nS}(params,col,feTa,raTa,exTa,nS,nC);                        
 
         %Obtain the boundary condition for the feed-end of the ith
         %column under current step in a given PSA cycle
-        vFlBoFe = ones(nRows,1) ...
-               .* vFlBo{2,nC,nS}(params,col,feTa,raTa,exTa,nS,nC);   
+        vFlBoFe = vFlBo{2,nC,nS}(params,col,feTa,raTa,exTa,nS,nC);   
         %-----------------------------------------------------------------% 
 
 
@@ -254,19 +255,27 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT0Re(params,units,nS,nC)
         %Call the helper function to calculate the pseudo volumetric 
         %flow rates
         [vFlPlusPr,vFlMinusPr] = calcPseudoVolFlows(vFlBoPr); 
-        [vFlPlusFe,vFlMinusFe] = calcPseudoVolFlows(vFlBoFe);                         
+        [vFlPlusFe,vFlMinusFe] = calcPseudoVolFlows(vFlBoFe);           
+        
+        %Update the pseudo volumetric flow rate matrices
+        vFlPlusPr  = vFlPlusPr(nTp) ;
+        vFlMinusPr = vFlMinusPr(nTp); 
+        vFlPlusFe  = vFlPlusFe(nTp) ;
+        vFlMinusFe = vFlMinusFe(nTp);        
         %-----------------------------------------------------------------% 
 
 
 
         %-----------------------------------------------------------------%
         %Obtain the right hand side vector for time varying pressure
-        %DAE model
+        %DAE model at the time point nTp
 
         %Calculate the volumic adsorption rate terms
-        rateNm1 = col.(sColNums{nC}).volAdsRatTot(:,1:nVols-1) ...
+        rateNm1 = col.(sColNums{nC}). ...
+                  volAdsRatTot(nTp,1:nVols-1) ...
                ./ cstrHt(:,1:nVols-1);
-        rateNm0 = col.(sColNums{nC}).volAdsRatTot(:,2:nVols) ...
+        rateNm0 = col.(sColNums{nC}). ...
+                  volAdsRatTot(nTp,2:nVols) ...
                ./ cstrHt(:,2:nVols);
 
         %Get the first order difference between adjacent columns of the
@@ -275,15 +284,15 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT0Re(params,units,nS,nC)
 
         %Add the feed-end boundary condition for the ith column in nS
         %step in a given PSA cycle
-        rhsVec(:,1) = rhsVec(:,1) ...
-                    + (vFlPlusFe-vFlMinusFe) ...
-                    / cstrHt(1);
+        rhsVec(1) = rhsVec(1) ...
+                  + (vFlPlusFe-vFlMinusFe) ...
+                  / cstrHt(1);
 
         %Add the product-end boundary condition for the ith column in
         %nS step in a given PSA cycle
-        rhsVec(:,nVols-1) = rhsVec(:,end) ...
-                          + (vFlPlusPr-vFlMinusPr) ...
-                          / cstrHt(nVols-1);
+        rhsVec(nVols-1) = rhsVec(nVols-1) ...
+                        + (vFlPlusPr-vFlMinusPr) ...
+                        / cstrHt(nVols-1);
         %-----------------------------------------------------------------%
 
 
@@ -293,27 +302,27 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT0Re(params,units,nS,nC)
 
         %A numeric array for the volumetric flow rates for the 
         %adsorption columns
-        vFlPseudo = zeros(nRows,2*(nVols-1));
+        vFlPseudo = zeros(1,2*(nVols-1));
 
-        %Solve a linear program for each time point
-        for t = 1 : nRows
-
+        %Solve a linear program
+        
+            %-------------------------------------------------------------%            
             %Solve the LP using linprog.m
-            vFlPseudo(t,:) ...
+            vFlPseudo(1,:) ...
                 = linprog(objs, ...
                           [], ...
                           [], ...
                           dTriDiag, ...
-                          rhsVec(t,:)', ...
+                          rhsVec', ...
                           lbs, ...
                           ubs, ...
                           opts);
 
-        end
-
-        %Define the interior pseudo volumetric flow rates
-        vFlPlusIn  = vFlPseudo(:,1:nVols-1)        ;
-        vFlMinusIn = vFlPseudo(:,nVols:2*(nVols-1));
+            %Define the interior pseudo volumetric flow rates
+            vFlPlusIn  = vFlPseudo(1,1:nVols-1)        ;
+            vFlMinusIn = vFlPseudo(1,nVols:2*(nVols-1));
+            %-------------------------------------------------------------%
+            
         %-----------------------------------------------------------------%
 
 
