@@ -390,9 +390,10 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
 
                 %Add the product-end boundary condition for the ith column 
                 %in nS step in a given PSA cycle
-                rhsVec(:,nVols-1) = rhsVec(:,nVols-1) ...
-                                  + (1/cstrHt(nVols)).*vFlPlusBoPr ...
-                                  - (1/cstrHt(nVols)).*vFlMinusBoPr;   
+                rhsVec(:,nVols-1) ...
+                    = rhsVec(:,nVols-1) ...
+                    + (1/cstrHt(nVols)).*vFlPlusBoPr ...
+                    - (1/cstrHt(nVols)).*vFlMinusBoPr;   
                               
                 %Save rhsVec in params
                 params.rhsVec = rhsVec; 
@@ -460,55 +461,57 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
         %Calculate the pseudo volumetric flow rates with corrected flow
         %directions (when needed)
 
-        %For each time point,
-        for t = 1 : nRows
-            
-            %-------------------------------------------------------------%
-            %Check the flow reversal 
-            
-            %For co-current flow
-            if flowDirStep == 0
-                
-                %Check if the positive pseudo voluemtric flow rate vector 
-                %has all nonnegatives      
-                flowDirCheck = all(vFlPlusCol(t,:)>=0);                                
-                
-            %For counter-current flow
-            elseif flowDirStep == 1
-                
-                %Check if the negative pseudo voluemtric flow rate vector 
-                %has all nonnegatives      
-                flowDirCheck = all(vFlMinusCol(t,:)>=0);
-                
-            end                        
-            %-------------------------------------------------------------%
-            
-            
-            
-            %-------------------------------------------------------------%
-            %Do the recourse measure
-            
-            %If flow reversed, then,
-            if flowDirCheck == 0
-                
-                %Save nRows 
-                nRowsSave = nRows;
-                
-                %Iterate for a given time point
-                params.nRows = 1;
-                
-                %Calculate the volumetric flow rates but compute the flow 
-                %direction on the fly
-                [vFlPlusCol(t,:),vFlMinusCol(t,:)] ...
-                    = calcVolFlowsDP0DT0Re(params,nS,i,t);
-                
-                %Restore the number of rows
-                params.nRows = nRowsSave;
+            %For each time point,
+            for t = 1 : nRows
 
-            end  
+                %---------------------------------------------------------%
+                %Check the flow reversal 
+
+                %For co-current flow
+                if flowDirStep == 0
+
+                    %Check if the positive pseudo voluemtric flow rate 
+                    %vector has all nonnegatives      
+                    flowDirCheck = all(vFlPlusCol(t,:)>=0);                                
+
+                %For counter-current flow
+                elseif flowDirStep == 1
+
+                    %Check if the negative pseudo voluemtric flow rate 
+                    %vector has all nonnegatives      
+                    flowDirCheck = all(vFlMinusCol(t,:)>=0);
+
+                end                        
+                %---------------------------------------------------------%
+
+
+
+                %---------------------------------------------------------%
+                %Do the recourse measure
+
+                %If flow reversed, then,
+                if flowDirCheck == 0
+
+                    %Save nRows 
+                    nRowsSave = nRows;
+
+                    %Iterate for a given time point
+                    params.nRows = 1;
+
+                    %Calculate the volumetric flow rates but compute the 
+                    %flow direction on the fly
+                    [vFlPlusCol(t,:),vFlMinusCol(t,:)] ...
+                        = calcVolFlowsDP0DT0Re(params,nS,i,t);
+
+                    %Restore the number of rows
+                    params.nRows = nRowsSave;
+
+                end  
+                %---------------------------------------------------------%
+
+            end
             %-------------------------------------------------------------%
-        
-        end
+            
         %-----------------------------------------------------------------%
         
         
