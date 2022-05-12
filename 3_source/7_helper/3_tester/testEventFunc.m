@@ -63,12 +63,16 @@ function event = testEventFunc(params,states,func,side,nS,nCy)
     
     %Check if the input states is indeed a vector
     if ~isvector(states) 
+        
         %Write a string of message
         string = '. Initial condition satate vector is a wrong size.';
+        
         %Display the error message
         disp(['ERROR in ',funcId,string]); 
+        
         %Return to the invoking function.
         return;
+        
     end    
     %---------------------------------------------------------------------%
     
@@ -94,11 +98,15 @@ function event = testEventFunc(params,states,func,side,nS,nCy)
     %the event function computes, then the result of division will always
     %be positive.
     if decision < 0
+        
         event = false;
+        
     %If the ratio is greater than 0 (i.e. positive value) the evaluated 
     %value of the event funtion has to start from the positive side
     else 
+        
         event = true ; 
+        
     end
     %---------------------------------------------------------------------%
         

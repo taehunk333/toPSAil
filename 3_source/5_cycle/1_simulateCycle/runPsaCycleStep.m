@@ -31,8 +31,9 @@
 %             state-of-the-art ODE solver(s). The solution technique
 %             implemented here is called the method of lines.
 %Inputs     : params       - a struct containing simulation parameters.
-%             iStates      - an initial state solution row vector containin
-%                            the initial condition to the simulation.
+%             iStates      - an initial state solution row vector
+%                            containing the initial condition to the 
+%                            simulation.
 %             tDom         - a 1 by 2 numerical vector that contains the
 %                            initial and terminal time points for the
 %                            numerical integration.
@@ -72,76 +73,10 @@ function [stTime,stStates,flags] ...
     
         
     %---------------------------------------------------------------------%
-    %Check to see if an event is needed for a given step
+    %Define the options for the ode solver to solver the system of odes
     
-    %Logical statement value for seeing if the event containing cell array
-    %is an empty array or not
-    needEvent = ~isempty(params.funcEve{nS});
-    %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %For the case where there is an event, define additional options for
-    %the numerical integrator for solving ODEs
-    
-    %When we have a specified event, i.e. the cell containing the event
-    %function handle is not an empty cell,
-    if needEvent == 1
-        
-        %Enable the option for an event function
-        event = odeset('Events',@(t,states) ...
-                         funcEve(params,t,states,nS,nCy));
-                     
-%         %Assign an output function (For testing)
-%         output = odeset('OutputFcn', ...
-%                         @(time,states,flag) ...
-%                         testDaeConst(time,states,flag,params,nS,nCy));
-%         output = odeset('OutputFcn', ...
-%                         @(time,states,flag) ...
-%                         testFlowReversal(time,states,flag,params,nS,nCy));
-                    
-%         %Assign the tolerance values
-%         tols = odeset('RelTol',1e-6,'AbsTol',1e-8);
-                     
-        %Save the final options (For testing)
-        %options = odeset(event,output,tols);
-        %options = odeset(event,output);
-        %options = odeset(event,tols);
-        options = odeset(event);
-        
-        %Test to see if the event function will even work before solving 
-        %the ODEs
-        if testEventFunc(params,iStates,funcEve,1,nS,nCy) == 0
-            
-            %Display the error message
-            msg = 'The event will not work with the current initial state';
-            msg = append(funcId,': ',msg);
-            error(msg);              
-            
-        end    
-        
-    %When we don't have a specified event, no options are needed
-    elseif needEvent == 0
-        
-%         %Assign an output function (For testing)
-%         output = odeset('OutputFcn', ...
-%                         @(time,states,flag) ...
-%                         testDaeConst(time,states,flag,params,nS,nCy));
-%         output = odeset('OutputFcn', ...
-%                         @(time,states,flag) ...
-%                         testFlowReversal(time,states,flag,params,nS,nCy));
-                    
-%         %Assign the tolerance values
-%         tols = odeset('RelTol',1e-6,'AbsTol',1e-8);
-        
-        %Save the final options (For testing)
-        %options = odeset(output,tols);
-        %options = odeset(output);
-        %options = odeset(tols);
-        options = [];
-        
-    end    
+    %Get the ode solver option from setOdeSolverOpts.m
+    options = setOdeSolverOpts(params,iStates,nS,nCy);
     %---------------------------------------------------------------------%
     
     
@@ -154,49 +89,49 @@ function [stTime,stStates,flags] ...
     if numIntSolv == "ode45"
     
         %Call the solver
-        sol = ode45(funcRhs,tDom,iStates,options);                    
+        sol = ode45(funcRhs,tDom,iStates',options);                    
     
     %Nonstiff and low accuracy: If using crude error tolerances or solving 
     %moderately stiff problems.
     elseif numIntSolv == "ode23" 
     
         %Call the solver
-        sol = ode23(funcRhs,tDom,iStates,options);   
+        sol = ode23(funcRhs,tDom,iStates',options);   
                        
     %Nonstiff and low to high accuracy: If using stringent error tolerances
     %or solving a computationally intensive ODE file.
     elseif numIntSolv == "ode113"
         
         %Call the solver
-        sol = ode113(funcRhs,tDom,iStates,options);
+        sol = ode113(funcRhs,tDom,iStates',options);
     
     %Stiff and low to medium accuracy: If ode45 is slow because the problem
     %is stiff.
     elseif numIntSolv == "ode15s"
     
         %Call the solver
-        sol = ode15s(funcRhs,tDom,iStates,options);  
+        sol = ode15s(funcRhs,tDom,iStates',options);  
     
     %Stiff and low accuracy: If using crude error tolerances to solve stiff
     %systems and the mass matrix is constant.
     elseif numIntSolv == "ode23s"
         
         %Call the solver
-        sol = ode23s(funcRhs,tDom,iStates,options); 
+        sol = ode23s(funcRhs,tDom,iStates',options); 
     
     %Moderately stiff and low accuracy: If the problem is only moderately 
     %stiff and you need a solution without numerical damping.
     elseif numIntSolv == "ode23t"
         
         %Call the solver
-        sol = ode23t(funcRhs,tDom,iStates,options); 
+        sol = ode23t(funcRhs,tDom,iStates',options); 
     
     %Stiff and low accuracy: If using crude error tolerances to solve stiff
     %systems.
     elseif numIntSolv == "ode23tb"
         
         %Call the solver
-        sol = ode23tb(funcRhs,tDom,iStates,options); 
+        sol = ode23tb(funcRhs,tDom,iStates',options); 
     
     end
     %---------------------------------------------------------------------%
