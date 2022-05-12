@@ -321,7 +321,7 @@ function params = getSimParams(exampleFolder)
     params.initStates = getInitialStates(params);
     %---------------------------------------------------------------------%
     
-    
+   
     
     %---------------------------------------------------------------------%
     %Remove any unnecessary fields in params
