@@ -143,7 +143,7 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT0Re(params,nS,nC,nTp)
         else
 
             %-------------------------------------------------------------%
-            %Get boundary conditions
+            %Get the boundary conditions
 
             %Unpack the boundary conditions
             vFlPlusBoPr  = params.vFlPlusBoPr ;

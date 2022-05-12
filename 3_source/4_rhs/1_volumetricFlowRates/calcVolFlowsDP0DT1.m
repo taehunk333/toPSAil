@@ -123,14 +123,14 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
             %column to be equal to the total concentration in the 
             %first CSTR                
             cnm1 = [col.(sColNums{i}).feEnd.gasConsTot, ...
-                   col.(sColNums{i}).gasConsTot(:,1:nVols-1)];
+                    col.(sColNums{i}).gasConsTot(:,1:nVols-1)];
             cnm0 = col.(sColNums{i}).gasConsTot(:,1:nVols)   ;
             cnp1 = [col.(sColNums{i}).gasConsTot(:,2:nVols), ...
                         col.(sColNums{i}).prEnd.gasConsTot]  ;
 
             %Unpack the interior temperature variables                
             Tnm1 = [col.(sColNums{i}).feEnd.temps, ...
-                   col.(sColNums{i}).temps.cstr(:,1:nVols-1)];
+                    col.(sColNums{i}).temps.cstr(:,1:nVols-1)];
             Tnm0 = col.(sColNums{i}).temps.cstr(:,1:nVols)   ;
             Tnp1 = [col.(sColNums{i}).temps.cstr(:,2:nVols), ...
                     col.(sColNums{i}).prEnd.temps]           ;
@@ -275,6 +275,10 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                     [vFlPlusBoFe,vFlMinusBoFe] ...
                         = calcPseudoVolFlows(vFlBoFe);
                     
+                    %Save the boundary conditions
+                    params.vFlPlusBoFe  = vFlPlusBoFe ;
+                    params.vFlMinusBoFe = vFlMinusBoFe;
+                    
                     %Update the right hand side vector
                     rhsVec(:,1) = rhsVec(:,1) ...
                                 - alphaPlusN(1).*vFlPlusBoFe ...
@@ -386,6 +390,10 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                     %volumetric flow rates
                     [vFlPlusBoPr,vFlMinusBoPr] ...
                         = calcPseudoVolFlows(vFlBoPr);
+                    
+                    %Save the boundary conditions
+                    params.vFlPlusBoPr  = vFlPlusBoPr ;
+                    params.vFlMinusBoPr = vFlMinusBoPr;
                                     
                     %Update the right hand side vector
                     rhsVec(:,nVols) = rhsVec(:,nVols) ...
@@ -495,7 +503,17 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
             %-------------------------------------------------------------%
             %If we are dealing with a time varying pressure DAE model,
             elseif daeModCur(i,nS) == 1                        
-
+                
+                %---------------------------------------------------------%
+                %Initialize solution arrays
+                
+                %Define numerical arrays for the coefficient matrices
+                coefMatPlus3D  = zeros(nVols-1,nVols-1,nRows); 
+                coefMatMinus3D = zeros(nVols-1,nVols-1,nRows); 
+                %---------------------------------------------------------%
+                
+                
+                
                 %---------------------------------------------------------%
                 %Define the boundary conditions and the pseudo volumetric 
                 %flow rates                                   
@@ -507,7 +525,11 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
 
                 %Call the helper function to calculate the pseudo 
                 %volumetric flow rates
-                [vFlPlusBoPr,vFlMinusBoPr] = calcPseudoVolFlows(vFlBoPr);   
+                [vFlPlusBoPr,vFlMinusBoPr] = calcPseudoVolFlows(vFlBoPr);  
+                
+                %Save the boundary conditions
+                params.vFlPlusBoPr  = vFlPlusBoPr ;
+                params.vFlMinusBoPr = vFlMinusBoPr;
                                     
                 %Obtain the boundary condition for the feed-end of the ith
                 %column under current step in a given PSA cycle
@@ -516,7 +538,11 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                    
                 %Call the helper function to calculate the pseudo 
                 %volumetric flow rates
-                [vFlPlusBoFe,vFlMinusBoFe] = calcPseudoVolFlows(vFlBoFe);                                         
+                [vFlPlusBoFe,vFlMinusBoFe] = calcPseudoVolFlows(vFlBoFe); 
+                
+                %Save the boundary conditions
+                params.vFlPlusBoFe  = vFlPlusBoFe ;
+                params.vFlMinusBoFe = vFlMinusBoFe;
                 %---------------------------------------------------------%
 
 
@@ -556,20 +582,17 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                 %---------------------------------------------------------%
                 
                 
-                
+        
                 %---------------------------------------------------------%
                 %Calculate the pseudo voluemtric flow rates and save the
                 %results
-  
-                %For each time step t,
-                for t = 1 : nRows
-                         
-                    %-----------------------------------------------------%
-                    %Compute the pseudo volumetric flow rates
-                    
-                    %If we have a co-current
-                    if flowDirStep == 0
-                        
+
+                %If we have a co-current
+                if flowDirStep == 0
+
+                    %For each time step t,
+                    for t = 1 : nRows
+
                         %-------------------------------------------------%
                         %Define the coefficient matrix
 
@@ -585,9 +608,12 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                                     + diag(-alphaZeroN(t,2:nVols-1) ...
                                          ./cstrHt(2:nVols-1) ...
                                          ,+1);
+                                     
+                        %Save the coefficient matrix
+                        coefMatPlus3D(:,:,t) = coefMatPlus;
                         %-------------------------------------------------%
-                        
-                        
+
+
 
                         %-------------------------------------------------%
                         %Solve for the unknown volumetric flow rates
@@ -608,12 +634,17 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                         %(Already initialized as zero)
                         %-------------------------------------------------%
 
-                    %If we have a counter-current
-                    elseif flowDirStep == 1
-                        
+                    end
+
+                %If we have a counter-current
+                elseif flowDirStep == 1
+
+                    %For each time step t,
+                    for t = 1 : nRows
+
                         %-------------------------------------------------%
                         %Define the coefficient matrix
-                        
+
                         %Define the negative coefficient matrix
                         coefMatMinus = diag(alphaMinusN(t,1:nVols-1) ...
                                           ./cstrHt(1:nVols-1)  ...
@@ -626,10 +657,13 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                                      + diag(-alphaMinusN(t,2:nVols-1) ...
                                           ./cstrHt(2:nVols-1) ...
                                           ,+1); 
+                                      
+                        %Save the coefficient matrix
+                        coefMatMinus3D(:,:,t) = coefMatMinus;
                         %-------------------------------------------------%
-                        
-                        
-             
+
+
+
                         %-------------------------------------------------%
                         %Solve for the unknown volumetric flow rates
 
@@ -651,8 +685,19 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
 
                     end
                     %-----------------------------------------------------% 
-                    
+
                 end
+                %---------------------------------------------------------%
+                
+                
+                
+                %---------------------------------------------------------%
+                %Save the coefficient matrices for the recourse
+                %calculations
+                
+                %Save the coefficient matrices into params
+                params.coefMatPlus3D  = coefMatPlus3D ;
+                params.coefMatMinus3D = coefMatMinus3D;
                 %---------------------------------------------------------%
                                        
             end
@@ -666,55 +711,57 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
         %Calculate the pseudo volumetric flow rates with corrected flow
         %directions (when needed)
 
-        %For each time point,
-        for t = 1 : nRows
-            
-            %-------------------------------------------------------------%
-            %Check the flow reversal 
-            
-            %For co-current flow
-            if flowDirStep == 0
-                
-                %Check if the positive pseudo voluemtric flow rate vector 
-                %has all nonnegatives      
-                flowDirCheck = all(vFlPlusCol(t,:)>=0);                                
-                
-            %For counter-current flow
-            elseif flowDirStep == 1
-                
-                %Check if the negative pseudo voluemtric flow rate vector 
-                %has all nonnegatives      
-                flowDirCheck = all(vFlMinusCol(t,:)>=0);
-                
-            end                        
-            %-------------------------------------------------------------%
-            
-            
-            
-            %-------------------------------------------------------------%
-            %Do the recourse measure
-            
-            %If flow reversed, then,
-            if flowDirCheck == 0
-                
-                %Save nRows 
-                nRowsSave = nRows;
-                
-                %Iterate for a given time point
-                params.nRows = 1;
-                
-                %Calculate the volumetric flow rates but compute the flow 
-                %direction on the fly
-                [vFlPlusCol(t,:),vFlMinusCol(t,:)] ...
-                    = calcVolFlowsDP0DT1Re(params,units,nS,i,t);
-                
-                %Restore the number of rows
-                params.nRows = nRowsSave;
+            %For each time point,
+            for t = 1 : nRows
 
-            end    
-            %-------------------------------------------------------------%
-        
-        end
+                %---------------------------------------------------------%
+                %Check the flow reversal 
+
+                %For co-current flow
+                if flowDirStep == 0
+
+                    %Check if the positive pseudo voluemtric flow rate 
+                    %vector has all nonnegatives      
+                    flowDirCheck = all(vFlPlusCol(t,:)>=0);                                
+
+                %For counter-current flow
+                elseif flowDirStep == 1
+
+                    %Check if the negative pseudo voluemtric flow rate 
+                    %vector has all nonnegatives      
+                    flowDirCheck = all(vFlMinusCol(t,:)>=0);
+
+                end                        
+                %---------------------------------------------------------%
+
+
+
+                %---------------------------------------------------------%
+                %Do the recourse measure
+
+                %If flow reversed, then,
+                if flowDirCheck == 0
+
+                    %Save nRows 
+                    nRowsSave = nRows;
+
+                    %Iterate for a given time point
+                    params.nRows = 1;
+
+                    %Calculate the volumetric flow rates but compute the 
+                    %flow direction on the fly
+                    [vFlPlusCol(t,:),vFlMinusCol(t,:)] ...
+                        = calcVolFlowsDP0DT1Re(params,nS,i,t);
+
+                    %Restore the number of rows
+                    params.nRows = nRowsSave;
+
+                end    
+                %---------------------------------------------------------%
+
+            end
+            %-------------------------------------------------------------%    
+            
         %-----------------------------------------------------------------%    
         
         
