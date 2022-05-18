@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/18/Monday
-%Code last modified on : 2022/1/24/Monday
+%Code last modified on : 2022/5/18/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -415,9 +415,10 @@ function sol = runPsaCycle(params)
                 %---------------------------------------------------------%
                 %Print a step information
 
-                %Print the simulation information
-                fprintf("Cycle No.%d, Step No.%d is finished! \n",nCy,nS) 
-                fprintf("*Adsorption Column Step(s): ") 
+                %Print the simulation information                
+                fprintf("\n*******************************************\n"); 
+                fprintf("Cycle No.%d, Step No.%d is finished. \n",nCy,nS) ;
+                fprintf("*Adsorber Steps : ")                            ;
                 
                 %For each adsorption column,
                 for i = 1 : nCols
@@ -426,7 +427,7 @@ function sol = runPsaCycle(params)
                     fprintf("%s ",params.sStep(i,nS));
                     
                 end                        
-                
+                                                
                 %Print if an event happened?
                 
                 %Find the event column number
@@ -443,27 +444,27 @@ function sol = runPsaCycle(params)
                 if flags.event == 0 && eCol ~= 0
                      
                     %Print the information
-                    fprintf("\n*Step duration: %d(%d) seconds",eTi,eTi0)
-                    fprintf("\n*No event happened for the step")                    
+                    fprintf("\n*Step duration  : %d(%d) seconds",eTi,eTi0);
+                    fprintf("\n*No event happened for the step")          ;          
                 
                 %No Event was requested
                 elseif flags.event == 0 && eCol == 0
                     
                     %Print the information
-                    fprintf("\n*Step duration: %d(%d) seconds",eTi,eTi0)
-                    fprintf("\n*The step was a time driven step")                    
+                    fprintf("\n*Step duration  : %d(%d) seconds",eTi,eTi0);
+                    fprintf("\n*The step was a time driven step")         ;           
                     
                 %Event did happen
                 elseif flags.event == 1                                        
                     
                     %Print the information
-                    fprintf("\n*Step duration: %d(%d) seconds",eTi,eTi0)
-                    fprintf("\n*Event happened in column No.%d",eCol)
+                    fprintf("\n*Step duration  : %d(%d) seconds",eTi,eTi0);
+                    fprintf("\n*Event happened in column No.%d",eCol)     ;
                     
                 end                
                 
-                %Skip a line at the end
-                fprintf("\n\n");
+                %Print the line divider
+                fprintf("\n*******************************************\n");
                 %---------------------------------------------------------%                                
 
             end
@@ -473,7 +474,9 @@ function sol = runPsaCycle(params)
         elseif sol.css(nCy) < numZero            
             
             %Print the simulation information
-            fprintf("CSS convergence attained at %d!. \n\n",sol.css(nCy))    
+            fprintf("\n*******************************************\n")   ;
+            fprintf("CSS convergence at %dth PSA Cycle. \n",sol.css(nCy));    
+            fprintf("*******************************************\n")     ;
             
             %Save the information about the last step
             sol.lastStep = currStep-1;
@@ -496,7 +499,9 @@ function sol = runPsaCycle(params)
     %been simulated without attaining the cyclic steady state
     
     %Print the simulation information
-    fprintf("Simulated %d PSA cycles w/o a CSS convergence!. \n\n",nCy)     
+    fprintf("\n*******************************************\n");
+    fprintf("Simulated %d PSA cycles. \n",nCy)                ;
+    fprintf("*******************************************\n")  ;
     %---------------------------------------------------------------------%                
     
     

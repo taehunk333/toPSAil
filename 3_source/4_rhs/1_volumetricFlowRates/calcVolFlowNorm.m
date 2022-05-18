@@ -91,10 +91,10 @@ function volFlowNorm = calcVolFlowNorm(params)
     %column 1
     
     %logical statement for checking a valve-constant at the feed-end
-    hasCvFeedEnd = valConT(1,findHp) == 1 && valConT(2,findHp) ~= 0;
+    hasCvFeedEnd = valConT(2,findHp) ~= 1 && valConT(2,findHp) ~= 0;
     
     %logical statement for checking a valve-constant at the product-end
-    hasCvProdEnd = valConT(1,findHp) ~= 0 && valConT(2,findHp) == 1;
+    hasCvProdEnd = valConT(1,findHp) ~= 0 && valConT(1,findHp) ~= 1;
     
     %If we have a valve constant specified at the feed-end, 
     if hasCvFeedEnd

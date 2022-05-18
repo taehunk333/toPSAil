@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/3/12/Saturday
-%Code last modified on : 2022/4/18/Monday
+%Code last modified on : 2022/5/14/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -47,12 +47,12 @@ function units = calcVolFlowsDP1ER(params,units,nS)
     %funcId = 'calcVolFlowsDP1ER.m';
     
     %Unpack params   
-    nCols       = params.nCols      ; 
-    nVols       = params.nVols      ;        
-    vFlBo       = params.volFlBo    ;   
-    sColNums    = params.sColNums   ;
-    nRows       = params.nRows      ;
-    coefLinNorm = params.coefLinNorm;
+    nCols       = params.nCols                 ; 
+    nVols       = params.nVols                 ;        
+    vFlBo       = params.volFlBo               ;    
+    sColNums    = params.sColNums              ;
+    nRows       = params.nRows                 ;
+    coefLinNorm = params.coefLinNorm(1:nVols-1);
             
     %Unpack units
     col  = units.col ;
@@ -69,10 +69,6 @@ function units = calcVolFlowsDP1ER(params,units,nS)
     %A numeric array for the volumetric flow rates for the adsorption
     %columns
     vFlCol = zeros(nRows,nCols*(nVols+1));
-    
-    %A numeric array for the linear coefficients in the Ergun equation
-    coefLinNorm = coefLinNorm ...
-                * ones(nRows,(nVols-1));
     %---------------------------------------------------------------------% 
                                                 
     
@@ -101,11 +97,7 @@ function units = calcVolFlowsDP1ER(params,units,nS)
         %Define the interior temperature variables from the 1st CSTR to
         %(nVols-1)th CSTR       
         Tnm0 = cstrTemps(:,1:nVols-1);        
-        Tnp1 = cstrTemps(:,2:nVols)  ;   
-        
-        %Unpack quadratic coefficient for ith adsorber for the 1st through
-        %n_c-1 CSTRs
-        coefQuadNorm = col.(sColNums{i}).quadCoeff(1:nVols-1);
+        Tnp1 = cstrTemps(:,2:nVols)  ;                   
         %-----------------------------------------------------------------%
         
         
@@ -113,33 +105,60 @@ function units = calcVolFlowsDP1ER(params,units,nS)
         %-----------------------------------------------------------------%
         %Calculate the volumetric flow rates
         
-        %Compute the product of the total concentrations with the interior
-        %temperature
-        coefConNorm = cNm0.*Tnm0 ...
-                    - cNp1.*Tnp1;        
-
-        %Determine the sign of the volumetric flows in the interior of the
-        %CIS model
-        flowDir = sign(-coefConNorm);
+        %For each time point t
+        for t = 1 : nRows
         
-        %Take the absolute value and negate deltaP
-        coefConNorm = -abs(coefConNorm);
-           
-        %Evaluate the quadratic dependence of the pressure and compute the 
-        %volumetric flow rates         
-        vFl = flowDir ...
-            * 2 ...
-           .* coefConNorm ...
-           ./ (coefLinNorm.^2 ...
-            + sqrt(coefLinNorm.^2 ...
-            - 4*coefQuadNorm ...
-           .* coefConNorm));
-      
-        %Save vFl to col structure for the call in the boundary condition
-        %calculations
-        col.vFl = vFl;
-        %-----------------------------------------------------------------%
+            %Unpack quadratic coefficient for ith adsorber for the 1st 
+            %through n_c-1 CSTRs
+            coefQuadNorm = col.(sColNums{i}). ...
+                           quadCoeff(t,1:nVols-1);
+                        
+            %Compute the product of the total concentrations with the 
+            %interior temperature
+            coefConNorm = cNm0(t,:).*Tnm0(t,:) ...
+                        - cNp1(t,:).*Tnp1(t,:);        
 
+            %Determine the sign of the volumetric flows in the interior of 
+            %the CIS model
+            flowDir = sign(-coefConNorm);
+
+            %Take the absolute value and negate deltaP
+            coefConNorm = -abs(coefConNorm);
+
+            %Evaluate the quadratic dependence of the pressure and compute
+            %the volumetric flow rates         
+            vFlInterior ...
+                = flowDir ...
+               .* 2 ...
+               .* coefConNorm ...
+               ./ (coefLinNorm ...
+                + sqrt(coefLinNorm.^2 ...
+                - 4.*coefQuadNorm ...
+               .* coefConNorm));            
+            %-------------------------------------------------------------%
+
+
+            
+            %-------------------------------------------------------------%
+            %Save the results for the interior volumetric flow rates
+
+            %Save the volumetric flow rate calculation results
+            vFlCol(t,(nVols+1)*(i-1)+2:(nVols+1)*i-1) = vFlInterior;
+            %-------------------------------------------------------------%
+            
+        end
+        %-----------------------------------------------------------------%
+        
+        
+        
+        %-----------------------------------------------------------------%
+        %Save the interior volumetric flow rates to be used in the boundary
+        %condition calculations
+        
+        %Save the interior volumetric flow rates
+        col.vFlInterior = vFlCol(:,2:(nVols+1)*(i-1)+2:(nVols+1)*i-1);
+        %-----------------------------------------------------------------%
+        
         
         
         %-----------------------------------------------------------------%
@@ -153,27 +172,19 @@ function units = calcVolFlowsDP1ER(params,units,nS)
         %Obtain the boundary condition for the feed-end of the ith
         %column under current step in a given PSA cycle
         vFlBoFe = ones(nRows,1) ...                   
-               .* vFlBo{2,i,nS}(params,col,feTa,raTa,exTa,nS,i); 
-           
-        %Remove col.vFl from struct
-        col = rmfield(col,'vFl');
+               .* vFlBo{2,i,nS}(params,col,feTa,raTa,exTa,nS,i);            
         %-----------------------------------------------------------------%
         
         
         
         %-----------------------------------------------------------------%
-        %Save the results
+        %Save the results for the boundary conditions
 
-        %For each time point
-        for t = 1 : nRows
-
-            %Save the volumetric flow rate calculation results
-            vFlCol(t,(nVols+1)*(i-1)+1:(nVols+1)*i) ...
-                = [vFlBoFe(t),vFl(t,:),vFlBoPr(t)];
-
-        end
+        %Save the volumetric flow rate calculation results
+        vFlCol(:,(nVols+1)*(i-1)+1) = vFlBoFe;
+        vFlCol(:,(nVols+1)*i)       = vFlBoPr;
         %-----------------------------------------------------------------%
-        
+               
     end
     %---------------------------------------------------------------------% 
     
@@ -181,10 +192,26 @@ function units = calcVolFlowsDP1ER(params,units,nS)
     
     %---------------------------------------------------------------------% 
     %Compute the pseudo volumetric flow rates
+        
+    %Get the current set of volumetric flow rates for ith adsorber
+    vFlColCurr = vFlCol(:,(nVols+1)*(i-1)+1:(nVols+1)*i);
     
     %Call the helper function to calculate the pseudo volumetric flow rates
-    [vFlPlus,vFlMinus] = calcPseudoVolFlows(vFlCol); 
+    [vFlPlusColCurr,vFlMinusColCurr] = calcPseudoVolFlows(vFlColCurr); 
     %---------------------------------------------------------------------% 
+    
+    
+    
+    %---------------------------------------------------------------------%
+    %Save the results to units.col
+
+    %Save the pseudo volumetric flow rates
+    units.col.(sColNums{i}).volFlPlus  = vFlPlusColCurr ;
+    units.col.(sColNums{i}).volFlMinus = vFlMinusColCurr;
+
+    %Save the volumetric flow rates to a struct
+    units.col.(sColNums{i}).volFlRat = vFlColCurr;                
+    %---------------------------------------------------------------------%
     
     
     
@@ -194,7 +221,7 @@ function units = calcVolFlowsDP1ER(params,units,nS)
 
     %Grab the unknown volumetric flow rates from the calculated volumetric
     %flow rates from the adsorption columns
-    units = calcVolFlows4PFD(params,units,vFlPlus,vFlMinus,nS);
+    units = calcVolFlows4PFD(params,units,nS);
     %---------------------------------------------------------------------% 
     
 end

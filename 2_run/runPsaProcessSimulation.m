@@ -120,14 +120,17 @@ function runPsaProcessSimulation(folderName)
     if params.nSteps == 1
         
         %We are doing a breakthrough simulation
-        fprintf('Beginning a breakthrough simulation...\n\n');
+        fprintf("\n*******************************************\n");
+        fprintf('Beginning a breakthrough simulation...\n\n')     ;
+        fprintf("*******************************************\n")  ;
     
     %If more than a single step, 
     else
         
         %We are doing a PSA cycle simulation
-        fprintf('Beginning a PSA cycle simulation...\n\n');
-        
+        fprintf("\n*******************************************\n");
+        fprintf('Beginning a PSA cycle simulation...\n')        ;
+        fprintf("*******************************************\n")  ;
     end            
     
     %Run the timer
@@ -137,25 +140,30 @@ function runPsaProcessSimulation(folderName)
     sol = runPsaCycle(params);        
       
     %Print out the section header
-    fprintf('\n For the cycle simulation, \n');
+    fprintf("\n*******************************************\n");
+    fprintf('For the cycle simulation, \n');
 
     %Finish running the timer
     finishFuncTimer(initime,time);
     
     %Enter a line
-    fprintf("\n\n");
+    fprintf("*******************************************\n");    
     
     %If we have a single step,
     if params.nSteps == 1
         
         %We are doing a breakthrough simulation
-        fprintf('The breakthrough simulation has finished! \n\n'); 
+        fprintf("\n*******************************************\n");
+        fprintf('The breakthrough simulation has finished! \n')   ; 
+        fprintf("*******************************************\n")  ;
     
     %If more than a single step, 
     else
         
         %We are doing a PSA cycle simulation
-        fprintf('The PSA cycle simulation has finished! \n\n'); 
+        fprintf("\n*******************************************\n");
+        fprintf('The PSA cycle simulation has finished! \n')      ; 
+        fprintf("*******************************************\n")  ;
         
     end               
     %---------------------------------------------------------------------%
@@ -166,13 +174,17 @@ function runPsaProcessSimulation(folderName)
     %Perform post simulation data analysis        
     
     %Insert a preamlbe for the command window output
-    fprintf('Begin plotting simulation results...\n\n');
+    fprintf("\n*******************************************\n");
+    fprintf('Begin plotting simulation results... \n')           ;
+    fprintf("*******************************************\n")  ;
     
     %Plot the simulation results
     plotPsaSimulationResults(params,sol);    
     
     %Insert a conclusion for the command window output
-    fprintf('The plotting has finished! \n\n'); 
+    fprintf("\n*******************************************\n");
+    fprintf('The plotting has finished! \n')                     ; 
+    fprintf("*******************************************\n")  ;
     %---------------------------------------------------------------------%
     
     
@@ -181,13 +193,17 @@ function runPsaProcessSimulation(folderName)
     %Save simulation results
     
     %Insert a preamlbe for the command window output
-    fprintf('Saving simulation results...\n\n');
+    fprintf("\n*******************************************\n");
+    fprintf('Saving simulation results... \n')                ;
+    fprintf("*******************************************\n")  ;
     
     %Save simulation outputs into excel files
     savePsaSimulationResults(params,sol,exampleFolder);
     
     %Insert a conclusion for the command window output
-    fprintf('Check the example folder! \n\n'); 
+    fprintf("\n*******************************************\n");
+    fprintf('Check the example folder! \n')                   ; 
+    fprintf("*******************************************\n")  ;
     %---------------------------------------------------------------------%                
     
     

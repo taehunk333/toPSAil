@@ -81,7 +81,8 @@ function params = getScaleFacs(params)
                        * params.tempAmbi ...
                        / params.volScaleFac;
                      
-    %Define scaling factor for volume for tanks [-]
+    %Define scaling factor for volume for tanks [-]; actually this is the
+    %inverse of the tank scale factor derived in the derivation.
     params.tankScaleFac = params.overVoid ...
                         * params.colVol ...
                         / params.taVol;

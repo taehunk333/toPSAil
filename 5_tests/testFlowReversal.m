@@ -39,7 +39,7 @@
 %Outputs    : status       - 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function status = testFlowReversal(t,y,flag,varargin)
+function status = testFlowReversal(t,y,flags,varargin)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
@@ -58,7 +58,7 @@ function status = testFlowReversal(t,y,flag,varargin)
     %input, we just impelement odeprint which is a default OutputFnc in
     %MATLAB
     %odeprint(t,y) or odeprint(t,y,'')
-    if nargin < 3 && isempty(flag) 
+    if nargin < 3 && isempty(flags) 
         
         %Clear the Command Window
         clc
@@ -70,7 +70,7 @@ function status = testFlowReversal(t,y,flag,varargin)
     %When we are dealing with an additional input struct, we would like to
     %evaluate a specific quantity using the state solution from a
     %successful or "correct" numerical integration of the ODEs at time t
-    elseif nargin == 6 && isempty(flag) 
+    elseif nargin == 6 && isempty(flags) 
         
         %-----------------------------------------------------------------% 
         %Unpack additional params
@@ -86,7 +86,7 @@ function status = testFlowReversal(t,y,flag,varargin)
 
         %Unpack params              
         funcVol = params.funcVol;
-        nSteps  = params.nSteps ;
+        flowDir = params.flowDir(1,nS); %In the first adsorber
 
         %Save needed quantity: We are just concerned with a single time
         %point inside the RhS function
@@ -144,7 +144,8 @@ function status = testFlowReversal(t,y,flag,varargin)
         
         %Call the helper function to calculate the pseudo volumetric flow 
         %rates
-        [vFlPlus,vFlMinus] = calcPseudoVolFlows(units.col.n1.volFlRat);        
+        vFlPlus  = units.col.n1.volFlPlus ;
+        vFlMinus = units.col.n1.volFlMinus;        
         %-----------------------------------------------------------------%
         
         
@@ -152,26 +153,21 @@ function status = testFlowReversal(t,y,flag,varargin)
         %-----------------------------------------------------------------%
         %Check to see if there is flow reversal
        
-        %Compute the sums
-        sumPlus  = sum(vFlPlus);
-        sumMinus = sum(vFlMinus);
+        %Check for the signs in the pseudo volumetric flow rates
+        signPlus  = any(vFlPlus>0) ;
+        signMinus = any(vFlMinus>0);
         
         %Compare the sum and see if at least one of them is zero
         
-        %If the sum of the positive pseudo volumetric flow rates is zero
-        if sumPlus == 0 
+        %If both pseudo volumetric flow rate vectors contain positive
+        %entries
+        if signPlus == 1 && signMinus == 1
             
             %Print unity
             1
-            
-        %If the sum of the negative pseudo volumetric flow rates is zero    
-        elseif sumMinus == 0
-            
-            %Print a negative unity
-            -1
-            
-        %If no sums for the pseudo volumetric flow rates are zero
-        else
+           
+        %Otherwise, no flow directions switched
+        else 
             
             %Print zero
             0
@@ -181,18 +177,17 @@ function status = testFlowReversal(t,y,flag,varargin)
      
     %When there is a flag that is non-empty
     else
-        
-        
+                
         %Check the flag data type
-        if isstring(flag) && isscalar(flag)
+        if isstring(flags) && isscalar(flags)
 
-          %Convert the data type into a character
-          flag = char(flag);
+            %Convert the data type into a character
+            flags = char(flags);
 
         end
       
         %Switch among several cases based on expression
-        switch(flag)
+        switch(flags)
        
         %odeprint(tspan,y0,'init')
         case 'init'               

@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/5/3/Tuesday
-%Code last modified on : 2022/5/3/Tuesday
+%Code last modified on : 2022/5/13/Friday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -48,8 +48,7 @@
 %Outputs    : volFlowRat   - a volumetric flow rate after the valve
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function volFlowRat ...
-    = calcVolFlowValOneConPrCo(params,col,~,raTa,~,~,nCo)
+function volFlowRat = calcVolFlowValOneConPrCo(params,col,~,~,~,~,nCo)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
@@ -83,17 +82,17 @@ function volFlowRat ...
     %Unpack units
     
     %Dimensionless total concentrations     
-    cNcM1 = col.(sColNums{nCo}).gasConsTot(:,nVols-1); %nc-1
-    cNcM0 = col.(sColNums{nCo}).gasConsTot(:,nVols)  ; %nc
-    cNcP1 = raTa.n1.gasConsTot                       ; %Raffinate tank     
+    cNcm1 = col.(sColNums{nCo}).gasConsTot(:,nVols-1); %nc-1
+    cNcm0 = col.(sColNums{nCo}).gasConsTot(:,nVols)  ; %nc
+    cNcp1 = col.(sColNums{nCo}).prEnd.gasConsTot     ; %Raffinate tank     
     
     %Dimensionless temperatures
     TnCm1 = col.(sColNums{nCo}).temps.cstr(:,nVols-1); %nc-1
     TnCm0 = col.(sColNums{nCo}).temps.cstr(:,nVols)  ; %nc
-    TnCp1 = raTa.n1.temps.cstr                       ; %Raffinate tank 
+    TnCp1 = col.(sColNums{nCo}).prEnd.temps          ; %Raffinate tank 
     
     %Dimensionless volumetric flow rate at (nc-1)th stream
-    vFlNcM1 = col.vFl(:,nVols-1);
+    vFlNcM1 = col.vFlInterior(:,nVols-1);
     
     %Dimensionless total adsorption rate inside (nc)th CSTR
     volAdsRatTotNc = col.(sColNums{nCo}).volAdsRatTot(:,nVols);
@@ -122,7 +121,7 @@ function volFlowRat ...
     
     %Get the dimensionless pseudo volumetric flow rates associated with 
     %(nc)th CSTR
-    [vFlNcM1Pl,vFlNcM1Mi] = calcPseudoVolFlows(vFlNcM1);
+    [vFlNcm1Pl,vFlNcm1Mi] = calcPseudoVolFlows(vFlNcM1);
     
     %If non-isothermal
     if bool(5) == 1
@@ -133,7 +132,8 @@ function volFlowRat ...
             %Get the species concentrations
             gasSpecConNcM1 = col.(sColNums{nCo}). ...
                              gasCons.(sComNums{i})(:,nVols-1);
-            gasSpecConNcP1 = raTa.n1.gasCons.(sComNums{i});
+            gasSpecConNcP1 = col.(sColNums{nCo}).prEnd. ...
+                             gasCons.(sComNums{i});
 
             %Update the species dependent term for the plus coefficient
             sumTermNcPl = sumTermNcPl ...
@@ -151,7 +151,7 @@ function volFlowRat ...
 
         %Dimensionless time dependent coefficient with a positive 
         %superscript. i.e., $\alpha_{n_c}^{+}$
-        alphaNcPl = -( (cNcM1./cNcM0) ...
+        alphaNcPl = -( (cNcm1./cNcm0) ...
                      + gConsNormCol.*cstrHt(nVols)./htCOnC ...
                     .* sumTermNcPl );
 
@@ -159,20 +159,26 @@ function volFlowRat ...
         %superscript. i.e., $\alpha_{n_c}$
         alphaNc00 = 1 ...
                   + gConsNormCol.*cstrHt(nVols)./htCOnC ...
-                 .* cNcM0;
+                 .* cNcm0;
 
         %Dimensionless time dependent coefficient with a negative 
         %superscript. i.e., $\alpha_{n_c}^{-}$
-        alphaNcMi = -( (cNcP1./cNcM0) ...
+        alphaNcMi = -( (cNcp1./cNcm0) ...
                      + gConsNormCol.*cstrHt(nVols)./htCOnC ...
                     .* sumTermNcMi ); 
+                
+        %Compute the right hand side term for (nc)th CSTR
+        rhsTermNc = -alphaNcPl.*vFlNcm1Pl ...
+                  + -alphaNc00.*vFlNcm1Mi ...
+                  - volAdsRatTotNc ...
+                  + volCorRatTotNc;
                  
     %If isothermal,           
     else
         
         %Dimensionless time dependent coefficient with a positive 
         %superscript. i.e., $\alpha_{n_c}^{+}$
-        alphaNcPl = -1*ones(nRows,1);
+        alphaNcPl = -cNcm1./cNcm0;
 
         %Dimensionless time dependent coefficient with a neutral 
         %superscript. i.e., $\alpha_{n_c}$
@@ -180,15 +186,14 @@ function volFlowRat ...
 
         %Dimensionless time dependent coefficient with a negative 
         %superscript. i.e., $\alpha_{n_c}^{-}$
-        alphaNcMi = -1*ones(nRows,1); 
-                
-    end
-             
-    %Compute the right hand side term for (nc)th CSTR
-    rhsTermNc = -alphaNcPl.*vFlNcM1Pl ...
-              + -alphaNc00.*vFlNcM1Mi ...
-              - volAdsRatTotNc ...
-              + volCorRatTotNc;
+        alphaNcMi = -cNcp1./cNcm0; 
+        
+        %Compute the right hand side term for (nc)th CSTR
+        rhsTermNc = -alphaNcPl.*vFlNcm1Pl ...
+                  + -alphaNc00.*vFlNcm1Mi ...
+                  - volAdsRatTotNc;
+              
+    end                
           
     %Check flow direction
     flowDir = rhsTermNc>=0;
@@ -203,7 +208,7 @@ function volFlowRat ...
     volFlowRat = rhsTermNc ...
               .* ( -(1./alphaNcMi) ...
                  + (1./alphaNc00 + 1./alphaNcMi) ...
-                .* flowDir);
+                  .*flowDir );
     %---------------------------------------------------------------------%
   
 end
