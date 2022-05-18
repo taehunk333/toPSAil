@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/4/17/Sunday
-%Code last modified on : 2022/5/3/Tuesday
+%Code last modified on : 2022/5/14/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -47,12 +47,12 @@ function units = calcVolFlowsDP1KC(params,units,nS)
     %funcId = 'calcVolFlowsDP1KC.m';
     
     %Unpack params   
-    nCols         = params.nCols        ; 
-    nVols         = params.nVols        ;        
-    vFlBo         = params.volFlBo      ;   
-    sColNums      = params.sColNums     ;
-    nRows         = params.nRows        ;
-    preFacLinFlow = params.preFacLinFlow;
+    nCols         = params.nCols                     ; 
+    nVols         = params.nVols                     ;        
+    vFlBo         = params.volFlBo                   ;   
+    sColNums      = params.sColNums                  ;
+    nRows         = params.nRows                     ;
+    preFacLinFlow = params.preFacLinFlow(1,1:nVols-1);
     
     %Unpack units
     col  = units.col ;
@@ -61,17 +61,7 @@ function units = calcVolFlowsDP1KC(params,units,nS)
     exTa = units.exTa;
     %---------------------------------------------------------------------%                                                               
     
-    
-    
-    %---------------------------------------------------------------------%
-    %Initialize solution arrays
-    
-    %A numeric array for the volumetric flow rates for the adsorption
-    %columns
-    vFlCol = zeros(nRows,nCols*(nVols+1));
-    %---------------------------------------------------------------------% 
-                                                
-    
+      
     
     %---------------------------------------------------------------------%                            
     %Compute the volumetric flow rates depending on the DAE model being
@@ -79,7 +69,7 @@ function units = calcVolFlowsDP1KC(params,units,nS)
         
     %For each column
     for i = 1 : nCols
-                                                       
+        
         %-----------------------------------------------------------------%
         %Unpack states
         
@@ -112,14 +102,13 @@ function units = calcVolFlowsDP1KC(params,units,nS)
 
         %Evaluate the linear difference in the pressure and compute the 
         %volumetric flow rates         
-        vFl = 0.001*preFacLinFlow ...
-            * deltaP;
+        vFlInterior = preFacLinFlow ...
+                   .* deltaP;     
+               
+        %Save the interior volumetric flow rates
+        col.vFlInterior = vFlInterior;
+        %-----------------------------------------------------------------%        
         
-        %Save vFl to col structure for the call in the boundary condition
-        %calculations
-        col.vFl = vFl;
-        %-----------------------------------------------------------------%
-
         
         
         %-----------------------------------------------------------------%
@@ -134,24 +123,38 @@ function units = calcVolFlowsDP1KC(params,units,nS)
         %column under current step in a given PSA cycle
         vFlBoFe = ones(nRows,1) ...                   
                .* vFlBo{2,i,nS}(params,col,feTa,raTa,exTa,nS,i); 
-           
-        %Remove col.vFl from struct
-        col = rmfield(col,'vFl');
         %-----------------------------------------------------------------%
         
         
         
         %-----------------------------------------------------------------%
-        %Save the results
+        %Save the results for the boundary conditions
+        
+        %Save the volumetric flow rate calculation results
+        vFlCol = [vFlBoFe,vFlInterior,vFlBoPr];
+        %-----------------------------------------------------------------%
+        
+        
+        
+        %-----------------------------------------------------------------% 
+        %Compute the pseudo volumetric flow rates        
+        
+        %Call the helper function to calculate the pseudo volumetric flow 
+        %rates
+        [vFlPlusCol,vFlMinusCol] = calcPseudoVolFlows(vFlCol); 
+        %-----------------------------------------------------------------% 
+        
+        
+        
+        %-----------------------------------------------------------------%
+        %Save the results to units.col
 
-        %For each time point
-        for t = 1 : nRows
+        %Save the pseudo volumetric flow rates
+        units.col.(sColNums{i}).volFlPlus  = vFlPlusCol ;
+        units.col.(sColNums{i}).volFlMinus = vFlMinusCol;
 
-            %Save the volumetric flow rate calculation results
-            vFlCol(t,(nVols+1)*(i-1)+1:(nVols+1)*i) ...
-                = [vFlBoFe(t),vFl(t,:),vFlBoPr(t)];
-
-        end
+        %Save the volumetric flow rates to a struct
+        units.col.(sColNums{i}).volFlRat = vFlCol;                
         %-----------------------------------------------------------------%
         
     end
@@ -160,21 +163,12 @@ function units = calcVolFlowsDP1KC(params,units,nS)
 
     
     %---------------------------------------------------------------------% 
-    %Compute the pseudo volumetric flow rates
-    
-    %Call the helper function to calculate the pseudo volumetric flow rates
-    [vFlPlus,vFlMinus] = calcPseudoVolFlows(vFlCol); 
-    %---------------------------------------------------------------------% 
-    
-    
-    
-    %---------------------------------------------------------------------% 
     %Determine the volumetric flow rates for the rest of the process flow
     %diagram
 
     %Grab the unknown volumetric flow rates from the calculated volumetric
     %flow rates from the adsorption columns
-    units = calcVolFlows4PFD(params,units,vFlPlus,vFlMinus,nS);
+    units = calcVolFlows4PFD(params,units,nS);
     %---------------------------------------------------------------------% 
     
 end

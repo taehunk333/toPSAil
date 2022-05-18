@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/5/3/Tuesday
-%Code last modified on : 2022/5/3/Tuesday
+%Code last modified on : 2022/5/13/Friday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -48,8 +48,7 @@
 %Outputs    : volFlowRat   - a volumetric flow rate after the valve
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function volFlowRat ...
-    = calcVolFlowValSixConPrCu(params,col,~,~,exTa,~,nCo)
+function volFlowRat = calcVolFlowValSixConPrCu(params,col,~,~,~,~,nCo)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
@@ -81,17 +80,17 @@ function volFlowRat ...
     %Unpack units
     
     %Dimensionless total concentrations     
-    c0 = exTa.n1.gasConsTot                 ; %nc-1
-    c1 = col.(sColNums{nCo}).gasConsTot(:,1); %nc
-    c2 = col.(sColNums{nCo}).gasConsTot(:,2); %Raffinate tank     
+    c0 = col.(sColNums{nCo}).feEnd.gasConsTot; %nc-1
+    c1 = col.(sColNums{nCo}).gasConsTot(:,1) ; %nc
+    c2 = col.(sColNums{nCo}).gasConsTot(:,2) ; %Raffinate tank     
     
     %Dimensionless temperatures
-    T0 = exTa.n1.temps.cstr                 ; %nc-1
+    T0 = col.(sColNums{nCo}).feEnd.temps    ; %nc-1
     T1 = col.(sColNums{nCo}).temps.cstr(:,1); %nc
     T2 = col.(sColNums{nCo}).temps.cstr(:,2); %Raffinate tank 
     
     %Dimensionless volumetric flow rate at 1st stream
-    vFl1 = col.vFl(:,1);
+    vFl1 = col.vFlInterior(:,1);
     
     %Dimensionless total adsorption rate inside 1st CSTR
     volAdsRatTotNc = col.(sColNums{nCo}).volAdsRatTot(:,1);
@@ -129,7 +128,8 @@ function volFlowRat ...
         for i = 1 : nComs
 
             %Get the species concentrations
-            gasSpecCon0 = exTa.n1.gasCons.(sComNums{i});
+            gasSpecCon0 = col.(sColNums{nCo}).feEnd. ...
+                          gasCons.(sComNums{i});
             gasSpecCon2 = col.(sColNums{nCo}). ...
                           gasCons.(sComNums{i})(:,2);
 
@@ -199,7 +199,7 @@ function volFlowRat ...
     volFlowRat = rhsTermNc ...
               .* ( (1./alpha1Pl) ...
                  + -(1./alpha1Pl + 1./alpha100) ...
-                .* flowDir);
+                   .*flowDir);
     %---------------------------------------------------------------------%
   
 end

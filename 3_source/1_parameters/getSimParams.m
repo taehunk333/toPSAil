@@ -49,7 +49,9 @@ function params = getSimParams(exampleFolder)
     
     %Print the statement saying that we have successfully initialized the
     %simulation environment and are ready for a simulation
-    fprintf('\n\nThe simulator started the initialization...\n\n');         
+    fprintf("\n*******************************************\n");
+    fprintf('The simulator started the initialization... \n') ;         
+    fprintf("*******************************************\n")  ;
     %---------------------------------------------------------------------%     
     
     
@@ -223,6 +225,15 @@ function params = getSimParams(exampleFolder)
     
    
     %---------------------------------------------------------------------%
+    %Compute dimensionless quantities
+    
+    %Grab dimensionless quantities
+    params = getDimLessParams(params);                           
+    %---------------------------------------------------------------------%
+    
+    
+    
+    %---------------------------------------------------------------------%
     %Get parameters for conservation laws (if needed)
     
     %Get Parameters for Energy Balance       
@@ -242,16 +253,7 @@ function params = getSimParams(exampleFolder)
     end
     %---------------------------------------------------------------------%
     
-    
-    
-    %---------------------------------------------------------------------%
-    %Compute dimensionless quantities
-    
-    %Grab dimensionless quantities
-    params = getDimLessParams(params);                           
-    %---------------------------------------------------------------------%
-    
-    
+
     
     %---------------------------------------------------------------------%
     %Perform mass transfer zone theory based calculations          
@@ -269,7 +271,9 @@ function params = getSimParams(exampleFolder)
     %equilibrium calculations above for the high pressure feed step 
     %duration and the maximum moles of raffinate product produced.
     %[=] cc/sec
-    params.volFlowEq = params.maxMolFe/params.maxTiFe/params.gConScaleFac; 
+    params.volFlowEq = params.maxMolFe ...
+                     / params.maxTiFe ...
+                     / params.gConScaleFac; 
     %---------------------------------------------------------------------%
 
     
@@ -337,7 +341,9 @@ function params = getSimParams(exampleFolder)
     
     %Print the statement saying that we have successfully initialized the
     %simulation environment and are ready for a simulation
-    fprintf('The simulator has successfully initialized!\n\n');         
+    fprintf("\n*******************************************\n");
+    fprintf('The simulator has successfully initialized!\n')  ;   
+    fprintf("*******************************************\n")  ;
     %---------------------------------------------------------------------%            
     
 end

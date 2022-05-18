@@ -114,31 +114,41 @@ function options = setOdeSolverOpts(params,iStates,nS,nCy)
     
     
                 
-%     %---------------------------------------------------------------------%    
-%     %Define a structure for the jacobian sparsity pattern
-%     
-%     %Evaluate the right hand side function at the initial condition
-%     rhsEval = defineRhsFunc(0,iStates,params);
-%     
-%     %Define options for the Jacobian
-%     jacOpts = struct('diffvar', 2, ...
-%                       'vectvars', [], ...
-%                       'thresh', 1e-8, ...
-%                       'fac', []);
-%     
-%     %Get the jacobian matrix at the initial condition
-%     jacMat = odenumjac(@defineRhsFunc, ...
-%                        {0 iStates' params}, ...
-%                        rhsEval, ...
-%                        jacOpts); 
-%     
-%     %Get the sparsity pattern for the Jacobian matrix for the right hand
-%     %side function
-%     spyPat = sparse(jacMat~=0.0);
-%     
+    %---------------------------------------------------------------------%    
+    %Define a structure for the jacobian sparsity pattern
+    
+    %Evaluate the right hand side function at the initial condition
+    rhsEval = defineRhsFunc(0,iStates,params);
+    
+    %Define options for the Jacobian
+    jacOpts = struct('diffvar', 2, ...
+                      'vectvars', [], ...
+                      'thresh', 1e-8, ...
+                      'fac', []);
+    
+    %Get the jacobian matrix at the initial condition
+    jacMat = odenumjac(@defineRhsFunc, ...
+                       {0 iStates' params}, ...
+                       rhsEval, ...
+                       jacOpts); 
+    
+    %Get the sparsity pattern for the Jacobian matrix for the right hand
+    %side function
+    spyPat = sparse(jacMat~=0.0);
+    
     %Save the options
-    %spy = odeset('JPattern',spyPat);
-    spy = [];
+    spy = odeset('JPattern',spyPat);
+%     spy = [];
+    %---------------------------------------------------------------------%
+    
+    
+    
+    %---------------------------------------------------------------------%
+    %Set the solver stats
+    
+    %Let us print the solver statistics
+%     stats = odeset('Stats','on');
+    stats = [];
     %---------------------------------------------------------------------%
     
     
@@ -150,7 +160,8 @@ function options = setOdeSolverOpts(params,iStates,nS,nCy)
     options = odeset(event, ...
                      output, ...
                      tols, ...
-                     spy);
+                     spy, ...
+                     stats);
     %---------------------------------------------------------------------%
     
 end

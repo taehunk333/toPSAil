@@ -83,7 +83,7 @@ function [stTime,stStates,flags] ...
     
     %---------------------------------------------------------------------%
     %Simulate all the steps in a scheduled PSA cycle        
-      
+          
     %Nonstiff and medium accuracy: Most of the time. This should be the 
     %first solver you try.
     if numIntSolv == "ode45"
@@ -134,6 +134,24 @@ function [stTime,stStates,flags] ...
         sol = ode23tb(funcRhs,tDom,iStates',options); 
     
     end
+    %---------------------------------------------------------------------%
+    
+    
+    
+    %---------------------------------------------------------------------%
+    %Print numerical integration summary
+    
+    %Print a divider line
+    fprintf("\n*******************************************\n")           ;
+    fprintf("Numerical Integration Summary. \n")                         ;
+    fprintf("*Solver                         : %s \n",numIntSolv)        ;
+    fprintf("*Number of Successful Steps     : %d \n",sol.stats.nsteps)  ;
+    fprintf("*Number of Failed Steps         : %d \n",sol.stats.nfailed) ;
+    fprintf("*Number of Function Evaluations : %d \n",sol.stats.nfevals) ;   
+    fprintf("*Number of Jacobian Evaluations : %d \n",sol.stats.npds)    ;
+    fprintf("*Number of LU Decompositions    : %d \n",sol.stats.ndecomps);
+    fprintf("*Number of Linear Solves        : %d \n",sol.stats.nsolves) ;
+    fprintf("*******************************************\n")             ;
     %---------------------------------------------------------------------%
     
     
