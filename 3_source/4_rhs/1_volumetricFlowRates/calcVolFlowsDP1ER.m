@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/3/12/Saturday
-%Code last modified on : 2022/5/14/Saturday
+%Code last modified on : 2022/5/23/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -118,23 +118,18 @@ function units = calcVolFlowsDP1ER(params,units,nS)
             coefConNorm = cNm0(t,:).*Tnm0(t,:) ...
                         - cNp1(t,:).*Tnp1(t,:);        
 
-            %Determine the sign of the volumetric flows in the interior of 
-            %the CIS model
-            flowDir = sign(-coefConNorm);
-
             %Take the absolute value and negate deltaP
-            coefConNorm = -abs(coefConNorm);
+            coefConNorm2 = -abs(coefConNorm);
 
             %Evaluate the quadratic dependence of the pressure and compute
             %the volumetric flow rates         
             vFlInterior ...
-                = flowDir ...
-               .* 2 ...
+                = 2 ...
                .* coefConNorm ...
                ./ (coefLinNorm ...
                 + sqrt(coefLinNorm.^2 ...
                 - 4.*coefQuadNorm ...
-               .* coefConNorm));            
+               .* coefConNorm2));            
             %-------------------------------------------------------------%
 
 

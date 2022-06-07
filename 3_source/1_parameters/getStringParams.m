@@ -124,7 +124,7 @@ function params = getStringParams(params)
     %---------------------------------------------------------------------%
     %Unpack strings related to cycle information and store them as needed
     
-    %Splite the string variable containing the tank interaction boolean
+    %Split the string variable containing the tank interaction boolean
     %variables
     valRaTa   = split(valRaTa)  ;
     valExTa   = split(valExTa)  ;

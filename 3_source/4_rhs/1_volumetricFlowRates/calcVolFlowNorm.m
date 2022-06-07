@@ -82,6 +82,17 @@ function volFlowNorm = calcVolFlowNorm(params)
     %Find an index of the high pressure step; note that we are getting the
     %index for the first column
     findHp = find(findHp,1);
+    
+    %If there is no high pressure feed, we print the error message
+    if isempty(findHp) == 1
+        
+        %Print out the message
+        msg1 = 'We do not have a high pressure feed step ';
+        msg2 = 'in the first adsorber.';
+        msg = append(funcId,': ',msg1, msg2);
+        error(msg);     
+        
+    end
     %---------------------------------------------------------------------%
     
     
