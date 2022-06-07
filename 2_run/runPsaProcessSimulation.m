@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2019/2/4/Monday
-%Code last modified on : 2022/2/17/Thursday
+%Code last modified on : 2022/5/18/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -56,15 +56,15 @@ function runPsaProcessSimulation(folderName)
     
     
     
-    %---------------------------------------------------------------------%
-    %Print out the license related information
-    
-    %Read the remark file
-    S = fileread('remarks.txt');
-    
-    %Display the strings
-    disp(S);    
-    %---------------------------------------------------------------------%
+%     %---------------------------------------------------------------------%
+%     %Print out the license related information
+%     
+%     %Read the remark file
+%     S = fileread('remarks.txt');
+%     
+%     %Display the strings
+%     disp(S);    
+%     %---------------------------------------------------------------------%
     
     
     
@@ -121,7 +121,7 @@ function runPsaProcessSimulation(folderName)
         
         %We are doing a breakthrough simulation
         fprintf("\n*******************************************\n");
-        fprintf('Beginning a breakthrough simulation...\n\n')     ;
+        fprintf('Beginning a single step simulation...\n\n')      ;
         fprintf("*******************************************\n")  ;
     
     %If more than a single step, 
