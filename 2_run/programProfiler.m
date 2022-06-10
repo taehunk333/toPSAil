@@ -47,7 +47,7 @@ function programProfiler()
     %Define the first folder name
     %name = "test_2_cols_isothermal_no_pres_drop_o2_n2_zeolite_5a_time_and_event";
     %name = "test_1_col_isothermal_no_pres_drop_o2_n2_zeolite_5a_time_and_event";
-    name = "testNonIsothermal";
+    %name = "testNonIsothermal";
     %name = "testIsothermal";
     %name = "testIsothermalMomentumErgun";
     %name = "testIsothermalMomentumKozenyCarman";
@@ -55,6 +55,7 @@ function programProfiler()
     
 %     name = "testIsothermalMomentumKozenyCarmanDebugProductEnd";
 %     name = "testIsothermalMomentumKozenyCarmanDebugFeedEnd";
+    name = "development";
     %---------------------------------------------------------------------%
     
     

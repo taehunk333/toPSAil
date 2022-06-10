@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2019/2/4/Monday
-%Code last modified on : 2022/1/21/Friday
+%Code last modified on : 2022/6/10/Friday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -60,8 +60,126 @@ function params = getSimParams(exampleFolder)
     %Read simulation inputs from an excel file & create a struct named
     %"params"
     
-    %Obtain the initial set of simulation input parameters
-    params = getExcelParams(exampleFolder);
+        %-----------------------------------------------------------------%
+        %Define known information
+        
+        %Define the sub-folder names
+        subFolderNames = ["0_settings", ...
+                          "1_physical_properties", ...
+                          "2_stream_properties", ...
+                          "3_unit_properties", ...
+                          "4_cycle_organization"];                          
+
+        %Define the excel spreadsheet names for each sub-folder
+        subFolder0 = ["0.1_simulation_configurations.xlsm", ...
+                      "0.2_numerical_methods.xlsm", ...
+                      "0.3_simulation_outputs.xlsm"];
+        subFolder1 = ["1.1_natural_constants.xlsm", ...
+                      "1.2_adsorbate_properties.xlsm", ...
+                      "1.3_adsorbent_properties.xlsm"];
+        subFolder2 = ["2.1_feed_stream_properties.xlsm", ...
+                      "2.2_raffinate_stream_properties.xlsm", ...
+                      "2.3_extract_stream_properties.xlsm"];
+        subFolder3 = ["3.1_adsorber_properties.xlsm", ...
+                      "3.2_feed_tank_properties.xlsm", ...
+                      "3.3_raffinate_tank_properties.xlsm", ...
+                      "3.4_extract_tank_properties.xlsm", ...
+                      "3.5_feed_compressor_properties.xlsm", ...
+                      "3.6_extract_compressor_properties.xlsm", ...
+                      "3.7_vacuum_pump_properties.xlsm"];
+        subFolder4 = ["4.1_cycle_organization.xlsm"];
+        %-----------------------------------------------------------------%
+        
+        
+        
+        %-----------------------------------------------------------------%
+        %Calculate needed quantities
+        
+        %Determine the number of sub-folders
+        numSubFolders = length(subFolderNames);
+        
+        %Determine the number of excel spreadsheets in each subfolders
+        numSubFolder0ExFiles = length(subFolder0);
+        numSubFolder1ExFiles = length(subFolder1);
+        numSubFolder2ExFiles = length(subFolder2);
+        numSubFolder3ExFiles = length(subFolder3);
+        numSubFolder4ExFiles = length(subFolder4);
+        
+        %Get the total number of excel spreadsheet files
+        totNumExFiles = numSubFolder0ExFiles ...
+                      + numSubFolder1ExFiles ...
+                      + numSubFolder2ExFiles ...
+                      + numSubFolder3ExFiles ...
+                      + numSubFolder4ExFiles;
+                  
+        %Define the excel spreadsheet number numeric array
+        numExFilesFolder = [numSubFolder0ExFiles, ...
+                            numSubFolder1ExFiles, ...
+                            numSubFolder2ExFiles, ...
+                            numSubFolder3ExFiles, ...
+                            numSubFolder4ExFiles];
+        %-----------------------------------------------------------------%
+        
+        
+        
+        %-----------------------------------------------------------------%
+        %Initialize arrays
+                
+        %Initialize the cell array to store the structures
+        structCell = cell(totNumExFiles,1);
+        
+        %Initialize the counter
+        k = 0;
+        %-----------------------------------------------------------------%
+    
+        
+        
+        %-----------------------------------------------------------------%
+        %Get the structures from the excel spreadsheets
+        
+        %For each sub-folder,
+        for i = 1 : numSubFolders
+
+            %For each excel file
+            for j = 1 : numExFilesFolder(i)
+                
+                %Update the counter
+                k = k + 1;                                
+                
+                %Get the corresponding excel file names
+                exFileNames = eval(append('subFolder',int2str(i-1)));
+                
+                %Obtain the initial set of simulation input parameters
+                structCell{k} ...
+                    = getExcelParams(exampleFolder, ...
+                                     subFolderNames{i}, ...
+                                     exFileNames{j});
+
+            end
+
+        end    
+        %-----------------------------------------------------------------%
+        
+        
+        
+        %-----------------------------------------------------------------%
+        %Concatenate the structures
+        
+        %Initialize an empty structure
+        params = struct([]);
+        
+        %For each entries in the cell containing the structures
+        for i = 1 : length(structCell)
+        
+            %Get the current struct
+            currParams = structCell{i};
+            
+            %Merge the two structures
+            params = merge2Structures(params,currParams);
+            
+        end
+        %-----------------------------------------------------------------%
+        
     %---------------------------------------------------------------------%
     
                

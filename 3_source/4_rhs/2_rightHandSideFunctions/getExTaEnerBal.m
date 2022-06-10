@@ -86,18 +86,18 @@ function units = getExTaEnerBal(params,units,nS)
     %funcId = 'getExTaEnerBal.m';
     
     %Unpack params     
-    nComs         = params.nComs        ;       
-    intHtTrFacTan = params.intHtTrFacTan;
-    extHtTrFacTan = params.extHtTrFacTan;    
-    ambTempNorm   = params.ambTempNorm  ;    
-    nCols         = params.nCols        ;
-    sColNums      = params.sColNums     ;
-    sComNums      = params.sComNums     ;
-    flowDir       = params.flowDir      ;    
-    gConsNormTan  = params.gConsNormTan ;
-    valRinTop     = params.valRinTop    ;
-    valRinBot     = params.valRinBot    ;
-    htCapCpNorm   = params.htCapCpNorm  ;
+    nComs          = params.nComs         ;       
+    intHtTrFacExTa = params.intHtTrFacExTa;
+    extHtTrFacExTa = params.extHtTrFacExTa;    
+    ambTempNorm    = params.ambTempNorm   ;    
+    nCols          = params.nCols         ;
+    sColNums       = params.sColNums      ;
+    sComNums       = params.sComNums      ;
+    flowDir        = params.flowDir       ;    
+    gConsNormExTa  = params.gConsNormExTa ;
+    valRinTop      = params.valRinTop     ;
+    valRinBot      = params.valRinBot     ;
+    htCapCpNorm    = params.htCapCpNorm   ;
     %---------------------------------------------------------------------%                                                 
     
     
@@ -114,8 +114,8 @@ function units = getExTaEnerBal(params,units,nS)
            - exTa.n1.temps.wall;    
 
     %Save ith feed tank wall energy balance into the struct
-    exTa.n1.wallEnBal = extHtTrFacTan*dQnwdt ...
-                      - intHtTrFacTan*dQndt;
+    exTa.n1.wallEnBal = extHtTrFacExTa*dQnwdt ...
+                      - intHtTrFacExTa*dQndt;
     %---------------------------------------------------------------------%  
     
     
@@ -213,10 +213,10 @@ function units = getExTaEnerBal(params,units,nS)
         end
         
         %Scale the terms with the relevant pre-factors
-        presDeltaEner = gConsNormTan ...
+        presDeltaEner = gConsNormExTa ...
                       * exTa.n1.temps.cstr ...
                       * netMolarFlow;
-        convFlowEner = gConsNormTan ...
+        convFlowEner = gConsNormExTa ...
                      * convFlowEner;
         
     end                                                                   

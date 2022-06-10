@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/19/Friday
-%Code last modified on : 2022/3/14/Monday
+%Code last modified on : 2022/6/9/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -48,12 +48,14 @@ function units = getVacWorkRate(params,units,nS)
     %funcId = 'getVacWorkRate.m';    
     
     %Unpack params       
-    gamma      = params.htCapRatioFe;    
-    enScaleFac = params.enScaleFac  ;            
-    pRat       = params.pRat        ;
-    nCols      = params.nCols       ;
-    sColNums   = params.sColNums    ;
-    flowDir    = params.flowDir     ;
+    gamma        = params.htCapRatioFe;    
+    compFacFe    = params.compFacFe   ;    
+    isEntEffPump = params.isEntEffPump;           
+    pRat         = params.pRat        ;
+    nCols        = params.nCols       ;
+    sColNums     = params.sColNums    ;
+    flowDir      = params.flowDir     ;
+    ambTempNorm  = params.ambTempNorm ;
     
     %Unpack units
     col = units.col;
@@ -80,27 +82,39 @@ function units = getVacWorkRate(params,units,nS)
         %pull down the outlet pressure to the lowest pressure (specified)
         %in an adsorption column
         presOut = pRat;
-
+        
+        %Calculate the outlet temperature; assumed to be an ambient
+        %temperature
+        tempOut = ambTempNorm;
+                        
+        %Get the adsorption column concentration from the bottom CSTR
+        consIn = col.(sColNums{i}).gasConsTot(:,1);
+        
+        %Get the adsorption column temperature from the bottom CSTR
+        tempIn = col.(sColNums{i}).temps.cstr(:,1);
+                        
         %Get the adsorption column pressure from the bottom CSTR
-        presIn = col.(sColNums{i}).gasConsTot(:,1);
+        presIn = consIn ...
+               * tempIn;                
 
         %Get the absolute value of the inlet volumetric flow rate to the 
         %compressor; we take an absolute value of the volumetric flow rate
         %because we care about the magnitude of the work rate.
-        molFlIn = presIn ...
+        molFlIn = consIn ...
                 * abs(col.(sColNums{i}).volFlRat(:,1)) ...
                 * flowDir(i,nS);            
             
         %Compute the driving force for the compression
-        drivingForce = (presOut/(presIn)) ...
-                     ^ ((gamma-1)/gamma) ...
-                     - 1;
+        drivingForce = tempOut ...
+                     * ((presOut/(presIn))^((gamma-1)/gamma)-1);
 
         %Evaluate the work rate and store it inside the struct
         cumEnerRhs = cumEnerRhs ...
-                   + enScaleFac ...
-                   * molFlIn ...
-                   * drivingForce;
+                   + compFacFe ...
+                   * (gamma/(gamma-1)) ...
+                   / isEntEffPump ...
+                   * drivingForce ...
+                   * molFlIn;
            
     end
     

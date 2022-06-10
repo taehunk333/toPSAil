@@ -84,14 +84,14 @@ function units = getFeTaEnerBal(params,units)
     %funcId = 'getFeTaEnerBal.m';
     
     %Unpack params
-    nComs         = params.nComs        ;   
-    intHtTrFacTan = params.intHtTrFacTan;
-    extHtTrFacTan = params.extHtTrFacTan;
-    ambTempNorm   = params.ambTempNorm  ;
-    gConsNormTan  = params.gConsNormTan ;
-    htCapCpNorm   = params.htCapCpNorm  ;
-    pRatFe        = params.pRatFe       ;
-    yFeC          = params.yFeC         ;
+    nComs          = params.nComs         ;   
+    intHtTrFacFeTa = params.intHtTrFacFeTa;
+    extHtTrFacFeTa = params.extHtTrFacFeTa;
+    ambTempNorm    = params.ambTempNorm   ;
+    gConsNormFeTa  = params.gConsNormFeTa ;
+    htCapCpNorm    = params.htCapCpNorm   ;
+    pRatFe         = params.pRatFe        ;
+    yFeC           = params.yFeC          ;
     %---------------------------------------------------------------------%              
         
     
@@ -108,8 +108,8 @@ function units = getFeTaEnerBal(params,units)
            - feTa.n1.temps.wall;    
 
     %Save ith feed tank wall energy balance into the struct
-    feTa.n1.wallEnBal = extHtTrFacTan*dQnwdt ...
-                      - intHtTrFacTan*dQndt;
+    feTa.n1.wallEnBal = extHtTrFacFeTa*dQnwdt ...
+                      - intHtTrFacFeTa*dQndt;
     %---------------------------------------------------------------------%    
 
 
@@ -161,7 +161,7 @@ function units = getFeTaEnerBal(params,units)
     end            
     
     %Update the term with the prefactors
-    convFlowEner = gConsNormTan ...
+    convFlowEner = gConsNormFeTa ...
                  * vnm1*(Tnm1-Tnm0) ...
                  * convFlowEner;    
     %---------------------------------------------------------------------%

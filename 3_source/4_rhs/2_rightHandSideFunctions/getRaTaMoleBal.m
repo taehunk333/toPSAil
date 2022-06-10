@@ -48,7 +48,7 @@ function units = getRaTaMoleBal(params,units,nS)
     nComs         = params.nComs        ;
     nCols         = params.nCols        ;
     colIntActRaff = params.colIntActRaff;
-    tankScaleFac  = params.tankScaleFac ;
+    raTaScaleFac  = params.raTaScaleFac ;
     sColNums      = params.sColNums     ;
     sComNums      = params.sComNums     ;
     valRaTa       = params.valRaTa      ;
@@ -148,7 +148,7 @@ function units = getRaTaMoleBal(params,units,nS)
         %Save the species j result (acconting for all columns)
         
         %Do the mole balance on the ith tank for species j
-        raTa.n1.moleBal.(sComNums{j}) = tankScaleFac ...
+        raTa.n1.moleBal.(sComNums{j}) = raTaScaleFac ...
                                      .* (convInVal1 ...
                                       + convOutVal2 ...
                                       + convOutVal5 ...

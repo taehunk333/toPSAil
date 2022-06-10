@@ -100,9 +100,9 @@ function exTa = makeExtrTank(params,states)
     if bool(5) == 1
         
         %Unpack additional parameters
-        htCapCvNorm  = params.htCapCvNorm ;
-        gConsNormTan = params.gConsNormTan;
-        tankScaleFac = params.tankScaleFac;
+        htCapCvNorm   = params.htCapCvNorm  ;
+        gConsNormExTa = params.gConsNormExTa;
+        exTaScaleFac  = params.exTaScaleFac ;
     
         %Initialize the overall heat capacity
         htCO0 = 0;
@@ -120,8 +120,8 @@ function exTa = makeExtrTank(params,states)
         end
         
         %Save the overall heat capacity to a struct 
-        exTa.n1.htCO = gConsNormTan ...
-                    ./ tankScaleFac ...
+        exTa.n1.htCO = gConsNormExTa ...
+                    ./ exTaScaleFac ...
                      * htCO0;
         
     %If isothermal,

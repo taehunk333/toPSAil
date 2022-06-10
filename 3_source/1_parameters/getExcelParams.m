@@ -39,7 +39,7 @@
 %Outputs    : params       - a struct containing simulation parameters.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function params = getExcelParams(exFolder)
+function params = getExcelParams(exFolder,nameFolder,nameExcelFile)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
@@ -53,11 +53,8 @@ function params = getExcelParams(exFolder)
     %---------------------------------------------------------------------%    
     %Import simulation data from the excel file
     
-    %We will read thd data from specifySimulationParameters.xlsm
-    nameExcelFile = 'specifySimulationParameters.xlsm';
-    
     %Define a string variable denoting the directory path to the Excel file
-    locExcelFile  = append(exFolder,'\',nameExcelFile);
+    locExcelFile  = append(exFolder,'\',nameFolder,'\',nameExcelFile);
     
     %Import the table containing the data    
     params = readtable(locExcelFile,'Sheet','Data(Transposed)');  
@@ -149,11 +146,14 @@ function params = getExcelParams(exFolder)
     %Initialize a column vector to store the field numbers
     store = zeros(length(fns),1);
     
-    %Initialize the first entry with one
-    store(1) = 1;
+    %Initialize the first entry with the first entry from fns
+    store(1) = fns(1);
     
     %Initialize the switch counter
-    j = 0;          
+    j = 0;      
+    
+    %Initialize an empty numericl array
+    saveData = [];
     
     %Begin for-loop and update saveData to find out the indices for testing
     %out the redundancy in the field names
@@ -245,7 +245,7 @@ function params = getExcelParams(exFolder)
         %the next set of fields to be combined into a vector
         elseif fns(i) == 1 && fns(i-1) == 1
             
-            %We just started counting fields, so assign 1 for the stored 
+            %We just started counting fields, so assign 1 for the store 
             store(i) = 1;
             
             %Update the switch counter
@@ -273,7 +273,7 @@ function params = getExcelParams(exFolder)
             
             %The current field number should be zero because we have yet
             %another scalar field
-            store(i-1) = 0;
+            store(i) = 0;
             
         end
         
@@ -293,9 +293,12 @@ function params = getExcelParams(exFolder)
     %Initialize a new struct
     newParams = [];
     
+    %Get the dimension of saveData
+    [nRows,~] = size(saveData);
+    
     %Begin For-Loop for creating a new struct. In this for-loop, we will
     %grab all the field variables that are vectors.
-    for i = 1 : length(saveData)
+    for i = 1 : nRows
         
         %Determine the name of the vectorized variable
         varName = fns{saveData(i,2)};
