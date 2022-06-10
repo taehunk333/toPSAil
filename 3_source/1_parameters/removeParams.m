@@ -64,10 +64,22 @@ function params = removeParams(params)
     params = rmfield(params,'crsAreaOutCol') ;
     params = rmfield(params,'crsAreaWallCol');
     params = rmfield(params,'aspRatioCol')   ;
-    params = rmfield(params,'crsAreaInTan')  ;
-    params = rmfield(params,'crsAreaOutTan') ;
-    params = rmfield(params,'crsAreaWallTan');
-    params = rmfield(params,'aspRatioTan')   ;
+    
+    params = rmfield(params,'crsAreaInFeTa')  ;
+    params = rmfield(params,'crsAreaInRaTa')  ;
+    params = rmfield(params,'crsAreaInExTa')  ;
+    
+    params = rmfield(params,'crsAreaOutFeTa') ;
+    params = rmfield(params,'crsAreaOutRaTa') ;
+    params = rmfield(params,'crsAreaOutExTa') ;
+    
+    params = rmfield(params,'crsAreaWallFeTa');
+    params = rmfield(params,'crsAreaWallRaTa');
+    params = rmfield(params,'crsAreaWallExTa');
+    
+    params = rmfield(params,'aspRatioFeTa')   ;
+    params = rmfield(params,'aspRatioRaTa')   ;
+    params = rmfield(params,'aspRatioExTa')   ;
     %---------------------------------------------------------------------%
     
     

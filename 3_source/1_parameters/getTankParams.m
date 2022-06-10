@@ -40,10 +40,16 @@ function params = getTankParams(params)
     %funcId = 'getTankParams.m';
     
     %Unpack params
-    radInTan  = params.radInTan ;
-    radOutTan = params.radOutTan;
-    heightTa  = params.heightTa ;
-    colVol    = params.colVol   ;
+    radInFeTa  = params.radInFeTa ;
+    radInRaTa  = params.radInRaTa ;
+    radInExTa  = params.radInExTa ;
+    radOutFeTa = params.radOutFeTa;
+    radOutRaTa = params.radOutRaTa;
+    radOutExTa = params.radOutExTa;
+    heightFeTa = params.heightFeTa;
+    heightRaTa = params.heightRaTa;
+    heightExTa = params.heightExTa;
+    colVol     = params.colVol    ;
     %---------------------------------------------------------------------% 
     
     
@@ -54,21 +60,39 @@ function params = getTankParams(params)
     
     %Calculate the interior and exterior cross-sectional area of the 
     %feed or profuct tank [=] cm^2
-    params.crsAreaInTan   = pi()*radInTan^2 ;    
-    params.crsAreaOutTan  = pi()*radOutTan^2;
-    params.crsAreaWallTan = params.crsAreaOutTan ...
-                          - params.crsAreaInTan;
+    params.crsAreaInFeTa   = pi()*radInFeTa^2 ;
+    params.crsAreaInRaTa   = pi()*radInRaTa^2 ;
+    params.crsAreaInExTa   = pi()*radInExTa^2 ;
+    
+    params.crsAreaOutFeTa  = pi()*radOutFeTa^2;
+    params.crsAreaOutRaTa  = pi()*radOutRaTa^2;
+    params.crsAreaOutExTa  = pi()*radOutExTa^2;    
+    
+    params.crsAreaWallFeTa = params.crsAreaOutFeTa ...
+                           - params.crsAreaInFeTa;
+    params.crsAreaWallRaTa = params.crsAreaOutRaTa ...
+                           - params.crsAreaInRaTa;
+    params.crsAreaWallExTa = params.crsAreaOutExTa ...
+                           - params.crsAreaInExTa;
     
     %Calculate the aspect ratio: defined by a column height divided by a 
     %cross sectional area [=] -
-    params.aspRatioTan = heightTa ...
-                       / sqrt(4*params.crsAreaInTan/pi());  
+    params.aspRatioFeTa = heightFeTa ...
+                        / sqrt(4*params.crsAreaInFeTa/pi());  
+    params.aspRatioRaTa = heightRaTa ...
+                        / sqrt(4*params.crsAreaInRaTa/pi());  
+    params.aspRatioExTa = heightExTa ...
+                        / sqrt(4*params.crsAreaInExTa/pi());  
             
     %Calculate the volume of a single adsorption column [=] cm^3
-    params.taVol = params.crsAreaInTan*heightTa;   
+    params.feTaVol = params.crsAreaInFeTa*heightFeTa;   
+    params.raTaVol = params.crsAreaInRaTa*heightRaTa;   
+    params.exTaVol = params.crsAreaInExTa*heightExTa;   
     
     %Calcualte the height of a single tank
-    params.taVolNorm = params.taVol/colVol;
+    params.feTaVolNorm = params.feTaVol/colVol;
+    params.raTaVolNorm = params.raTaVol/colVol;
+    params.exTaVolNorm = params.exTaVol/colVol;
     %---------------------------------------------------------------------%                                               
     
 end

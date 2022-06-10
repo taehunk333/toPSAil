@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/13/Wednesday
-%Code last modified on : 2022/2/26/Saturday
+%Code last modified on : 2022/6/9/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -42,37 +42,53 @@ function params = getEnergyBalanceParams(params)
     %funcId = 'getEnergyBalanceParams.m';
     
     %Unpack params    
-    gConScaleFac   = params.gConScaleFac  ;
-    aConScaleFac   = params.aConScaleFac  ;
-    volScaleFac    = params.volScaleFac   ;
-    htTrCoInCol    = params.htTrCoInCol   ;
-    htTrCoOutCol   = params.htTrCoOutCol  ;
-    htTrCoInTa     = params.htTrCoInTa    ;
-    htTrCoOutTa    = params.htTrCoOutTa   ; 
-    tiScaleFac     = params.tiScaleFac    ;
-    crsAreaInCol   = params.crsAreaInCol  ;
-    crsAreaOutCol  = params.crsAreaOutCol ;
-    crsAreaInTan   = params.crsAreaInTan  ;
-    crsAreaOutTan  = params.crsAreaOutTan ;
-    teScaleFac     = params.teScaleFac    ;
-    waDensCol      = params.waDensCol     ;
-    htCapCol       = params.htCapCol      ;
-    crsAreaWallCol = params.crsAreaWallCol;
-    crsAreaWallTan = params.crsAreaWallTan;
-    oneCstrHt      = params.oneCstrHt     ;
-    waDensTa       = params.waDensTa      ;
-    htCapTa        = params.htCapTa       ;
-    heightTa       = params.heightTa      ;
-    tempFeed       = params.tempFeed      ;
-    tempRefIso     = params.tempRefIso    ;
-    tempRaTa       = params.tempRaTa      ;
-    tempExTa       = params.tempExTa      ;
-    tempFeTa       = params.tempFeTa      ;
-    gasCons        = params.gasCons       ;
-    htCapCpC       = params.htCapCpC      ;
-    htCapCvC       = params.htCapCvC      ;
-    htCapSol       = params.htCapSol      ;
-    isoStHtC       = params.isoStHtC      ;
+    gConScaleFac    = params.gConScaleFac   ;
+    aConScaleFac    = params.aConScaleFac   ;
+    volScaleFac     = params.volScaleFac    ;
+    htTrCoInCol     = params.htTrCoInCol    ;
+    htTrCoOutCol    = params.htTrCoOutCol   ;
+    htTrCoInFeTa    = params.htTrCoInFeTa   ;
+    htTrCoInRaTa    = params.htTrCoInRaTa   ;
+    htTrCoInExTa    = params.htTrCoInExTa   ;
+    htTrCoOutFeTa   = params.htTrCoOutFeTa  ; 
+    htTrCoOutRaTa   = params.htTrCoOutRaTa  ; 
+    htTrCoOutExTa   = params.htTrCoOutExTa  ; 
+    tiScaleFac      = params.tiScaleFac     ;
+    crsAreaInCol    = params.crsAreaInCol   ;
+    crsAreaOutCol   = params.crsAreaOutCol  ;
+    crsAreaInFeTa   = params.crsAreaInFeTa  ;
+    crsAreaInRaTa   = params.crsAreaInRaTa  ;
+    crsAreaInExTa   = params.crsAreaInExTa  ;
+    crsAreaOutFeTa  = params.crsAreaOutFeTa ;
+    crsAreaOutRaTa  = params.crsAreaOutRaTa ;
+    crsAreaOutExTa  = params.crsAreaOutExTa ;
+    teScaleFac      = params.teScaleFac     ;
+    waDensCol       = params.waDensCol      ;
+    htCapCol        = params.htCapCol       ;
+    crsAreaWallCol  = params.crsAreaWallCol ;
+    crsAreaWallFeTa = params.crsAreaWallFeTa;
+    crsAreaWallRaTa = params.crsAreaWallRaTa;
+    crsAreaWallExTa = params.crsAreaWallExTa;
+    oneCstrHt       = params.oneCstrHt      ;
+    waDensFeTa      = params.waDensFeTa     ;
+    waDensRaTa      = params.waDensRaTa     ;
+    waDensExTa      = params.waDensExTa     ;
+    htCapFeTa       = params.htCapFeTa      ;
+    htCapRaTa       = params.htCapRaTa      ;
+    htCapExTa       = params.htCapExTa      ;
+    heightFeTa      = params.heightFeTa     ;
+    heightRaTa      = params.heightRaTa     ;
+    heightExTa      = params.heightExTa     ;
+    tempFeed        = params.tempFeed       ;
+    tempRefIso      = params.tempRefIso     ;
+    tempRaTa        = params.tempRaTa       ;
+    tempExTa        = params.tempExTa       ;
+    tempFeTa        = params.tempFeTa       ;
+    gasCons         = params.gasCons        ;
+    htCapCpC        = params.htCapCpC       ;
+    htCapCvC        = params.htCapCvC       ;
+    htCapSol        = params.htCapSol       ;
+    isoStHtC        = params.isoStHtC       ;
     %---------------------------------------------------------------------%                                                          
     
     
@@ -107,8 +123,12 @@ function params = getEnergyBalanceParams(params)
     %Define the dimensionless ideal gas constant for an adsorption column
     %Ideal gas constant in [J/mol-K]. Since the area is in cm^2, we convert
     %it into m^2 by using the factor of 10,000.
-    params.gConsNormTan = ((gasCons/10)*gConScaleFac*volScaleFac)...
-                        / (htTrCoInTa*crsAreaInTan/10000);               
+    params.gConsNormFeTa = ((gasCons/10)*gConScaleFac*volScaleFac)...
+                         / (htTrCoInFeTa*crsAreaInFeTa/10000);            
+    params.gConsNormRaTa = ((gasCons/10)*gConScaleFac*volScaleFac)...
+                         / (htTrCoInRaTa*crsAreaInRaTa/10000);   
+    params.gConsNormExTa = ((gasCons/10)*gConScaleFac*volScaleFac)...
+                         / (htTrCoInExTa*crsAreaInExTa/10000);   
                    
     %Define the dimensionless heat capacities for the gas phase species
     %Ideal gas constant in [J/mol-K]
@@ -157,15 +177,27 @@ function params = getEnergyBalanceParams(params)
     
     %Dimensionless heat transfer coefficient (interior); the factor of 
     %10,000 comes from the area conversion from cm^2 to m^2
-    params.intHtTrFacTan = (crsAreaInTan/crsAreaWallTan) ...
-                         * (htTrCoInTa*tiScaleFac) ...
-                         / ((10000)*waDensTa*htCapTa*heightTa);
+    params.intHtTrFacFeTa = (crsAreaInFeTa/crsAreaWallFeTa) ...
+                          * (htTrCoInFeTa*tiScaleFac) ...
+                          / ((10000)*waDensFeTa*htCapFeTa*heightFeTa);
+    params.intHtTrFacRaTa = (crsAreaInRaTa/crsAreaWallRaTa) ...
+                          * (htTrCoInRaTa*tiScaleFac) ...
+                          / ((10000)*waDensRaTa*htCapRaTa*heightRaTa);
+    params.intHtTrFacExTa = (crsAreaInExTa/crsAreaWallExTa) ...
+                          * (htTrCoInExTa*tiScaleFac) ...
+                          / ((10000)*waDensExTa*htCapExTa*heightExTa);
     
     %Dimensionless heat transfer coefficient (exterior); the factor of 
     %10,000 comes from the area conversion from cm^2 to m^2
-    params.extHtTrFacTan = (crsAreaOutTan/crsAreaWallTan) ...
-                         * (htTrCoOutTa*tiScaleFac) ...
-                         / ((10000)*waDensTa*htCapTa*heightTa);               
+    params.extHtTrFacFeTa = (crsAreaOutFeTa/crsAreaWallFeTa) ...
+                          * (htTrCoOutFeTa*tiScaleFac) ...
+                          / ((10000)*waDensFeTa*htCapFeTa*heightFeTa); 
+    params.extHtTrFacRaTa = (crsAreaOutRaTa/crsAreaWallRaTa) ...
+                          * (htTrCoOutRaTa*tiScaleFac) ...
+                          / ((10000)*waDensRaTa*htCapRaTa*heightRaTa); 
+    params.extHtTrFacExTa = (crsAreaOutExTa/crsAreaWallExTa) ...
+                          * (htTrCoOutExTa*tiScaleFac) ...
+                          / ((10000)*waDensExTa*htCapExTa*heightExTa); 
     %---------------------------------------------------------------------%                        
     
 end

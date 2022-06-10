@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/1/26/Wednesday
-%Code last modified on : 2022/1/26/Wednesday
+%Code last modified on : 2022/6/9/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -39,6 +39,16 @@ function params = getScaleFacs(params)
     
     %Name the function ID
     %funcId = 'getScaleFacs.m';
+    overVoid     = params.overVoid    ;
+    colVol       = params.colVol      ;
+    volFlowFeed  = params.volFlowFeed ;
+    gasConT      = params.gasConT     ;
+    adsConT      = params.adsConT     ;
+    tempAmbi     = params.tempAmbi    ;
+    gasCons      = params.gasCons     ;
+    feFeVol      = params.feTaVol     ;
+    feRaVol      = params.raTaVol     ;
+    feExVol      = params.exTaVol     ;
     %---------------------------------------------------------------------% 
     
     
@@ -48,25 +58,25 @@ function params = getScaleFacs(params)
     
     %Define a term to scale dimensional time to non-dimensional time. i.e.
     %the residence time Tau [sec]
-    params.tiScaleFac = params.overVoid ...
-                      * params.colVol ...
-                      / params.volFlowFeed;        
+    params.tiScaleFac = overVoid ...
+                      * colVol ...
+                      / volFlowFeed;        
     
     %Define a term to scale dimensional gas phase concentrations to 
     %non-dimensional concentrations [mol/cc]
-    params.gConScaleFac = params.gasConT; 
+    params.gConScaleFac = gasConT; 
     
     %Define a term to scale dimensional adsorbed phase concentrations to
     %non-dimensional concentrations [mol/kg]
-    params.aConScaleFac = params.adsConT; 
+    params.aConScaleFac = adsConT; 
     
     %Define a term to scale dimensional volumetric flowrates to
     %non-dimensional volumetric flowrates [cc/sec]
-    params.volScaleFac = params.volFlowFeed;
+    params.volScaleFac = volFlowFeed;
     
     %Define a term to scale dimensional temperature variables to 
     %non-dimensional temperature variables [K]
-    params.teScaleFac = params.tempAmbi;
+    params.teScaleFac = tempAmbi;
     
     %Define scaling factor for maximum moles (initialize it with zero).
     %This will be updated after the equilibrium theory calculation. [mol]
@@ -77,15 +87,21 @@ function params = getScaleFacs(params)
     %Define a factor to be multiplied to a valve constant so that the valve
     %constant becomes dimensionless quantity [bar-sec/kmol]
     params.valScaleFac = 1000 ...
-                       * params.gasCons ...
-                       * params.tempAmbi ...
+                       * gasCons ...
+                       * tempAmbi ...
                        / params.volScaleFac;
                      
     %Define scaling factor for volume for tanks [-]; actually this is the
     %inverse of the tank scale factor derived in the derivation.
-    params.tankScaleFac = params.overVoid ...
-                        * params.colVol ...
-                        / params.taVol;
+    params.feTaScaleFac = overVoid ...
+                        * colVol ...
+                        / feFeVol;
+    params.raTaScaleFac = overVoid ...
+                        * colVol ...
+                        / feRaVol;
+    params.exTaScaleFac = overVoid ...
+                        * colVol ...
+                        / feExVol;
        
     %Define scaling factor for the energy [J]
     %Energy scaling factor = $\tau 0.1 z R T_{amb} 
@@ -100,16 +116,12 @@ function params = getScaleFacs(params)
     %            constant volumen heat capacity
     % c_0 [=] the feed gas total concentration
     % v_0 [=] the feed volumetric flow rate
-    params.enScaleFac = (1/10) ...
-                      * params.compFacFe ...
+    params.enScaleFac = (1/10) ...                      
                       * params.gasCons ...
                       * params.teScaleFac ...
                       * params.tiScaleFac ...
                       * params.volScaleFac ...
-                      * params.gConScaleFac ...
-                      * params.htCapRatioFe ...                      
-                      / (params.htCapRatioFe-1) ...
-                      / params.isEntEff;    
+                      * params.gConScaleFac;             
     %---------------------------------------------------------------------%                                               
     
 end

@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/19/Friday
-%Code last modified on : 2022/3/14/Monday
+%Code last modified on : 2022/6/9/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -44,12 +44,14 @@ function units = getCompWorkRate(params,units)
     %funcId = 'getCompWorkRate.m';    
     
     %Unpack params       
-    gamma      = params.htCapRatioFe;    
-    enScaleFac = params.enScaleFac  ;    
-    pRatAmb    = params.pRatAmb     ;
-    pRat       = params.pRat        ;
-    nCols      = params.nCols       ;
-    sColNums   = params.sColNums    ;
+    gamma          = params.htCapRatioFe  ;       
+    compFacFe      = params.compFacFe     ; 
+    isEntEffFeComp = params.isEntEffFeComp;
+    isEntEffExComp = params.isEntEffExComp;
+    pRatAmb        = params.pRatAmb       ;
+    pRat           = params.pRat          ;
+    nCols          = params.nCols         ;
+    sColNums       = params.sColNums      ;
     
     %Unpack units
     col  = units.col ;
@@ -64,26 +66,34 @@ function units = getCompWorkRate(params,units)
     %calculate the necessary terms and evaluate the work rate expression
     %for the compressor.
     
+    %Get outlet concentration
+    concOut = feTa.n1.gasConsTot;
+    
+    %Get outlet temperature
+    tempOut = feTa.n1.temps.cstr;
+    
     %Get the dimensionless tank pressure (i.e., dimensionless total
-    %concentration)
-    presOut = feTa.n1.gasConsTot;
-
+    %concentration times dimensionless temperature)
+    presOut = concOut ...
+            * tempOut;
+  
     %Get inlet pressure
     presIn = pRatAmb;
 
     %Get the inlet volumetric flow rate to the compressor
-    molFlIn = presOut ...
+    molFlIn = concOut ...
             * feTa.n1.volFlRat(:,end);
 
     %Compute the driving force for the compression
-    drivingForce = (presOut/presIn) ...
-                 ^ ((gamma-1)/gamma) ...
-                 - 1;
+    drivingForce = tempOut ...
+                 * ((presOut/presIn)^((gamma-1)/gamma)-1);
 
     %Evaluate the work rate and store it inside the struct
-    comp.n1.workRat = enScaleFac ...
-                    * molFlIn ...
-                    * drivingForce;
+    comp.n1.workRat = compFacFe ...
+                    * (gamma/(gamma-1)) ...
+                    / isEntEffFeComp ...
+                    * drivingForce ...
+                    * molFlIn;
     %---------------------------------------------------------------------%
     
     
@@ -93,10 +103,17 @@ function units = getCompWorkRate(params,units)
     %product tank, calculate the necessary terms and evaluate the work rate
     %expression for the compressor.
     
+    %Get outlet concentration
+    concOut = exTa.n1.gasConsTot;
+    
+    %Get outlet temperature
+    tempOut = exTa.n1.temps.cstr;
+    
     %Get the dimensionless extract product tank pressure (i.e., 
     %dimensionless total concentration)
-    presOut = exTa.n1.gasConsTot;
-
+    presOut = concOut ...
+            * tempOut;
+    
     %Get the dimensionless extract stream pressure
     presIn = pRat;
 
@@ -119,14 +136,16 @@ function units = getCompWorkRate(params,units)
     end
 
     %Compute the driving force for the compression
-    drivingForce = (presOut/presIn) ...
-                 ^ ((gamma-1)/gamma) ...
-                 - 1;
+    drivingForce = tempOut ...
+                 * ((presOut/presIn)^((gamma-1)/gamma)- 1);
 
     %Evaluate the work rate and store it inside the struct
-    comp.n2.workRat = enScaleFac ...
-                    * molFlIn ...
-                    * drivingForce;
+    comp.n2.workRat = compFacFe ...
+                    * gamma ...
+                    / (gamma-1) ...
+                    / isEntEffExComp ...
+                    * drivingForce ...
+                    * molFlIn;
     %---------------------------------------------------------------------%
     
     
