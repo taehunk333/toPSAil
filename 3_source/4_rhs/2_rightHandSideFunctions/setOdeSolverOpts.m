@@ -76,7 +76,7 @@ function options = setOdeSolverOpts(params,iStates,nS,nCy)
         
         %Enable the option for an event function
         event = odeset('Events',@(t,states) ...
-                         funcEve(params,t,states,nS,nCy));  
+                        funcEve(params,t,states,nS,nCy));  
         
     %When we don't have a specified event, no options are needed
     elseif needEvent == 0

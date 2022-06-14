@@ -97,7 +97,8 @@ function newStates = calcIsothermLinear(params,states,nAds)
                        
         %Get the affinity parameter matrix at a specified CSTR temperature 
         %for all CSTRs
-        bC = getAdsAffConstant(params,states,nRows,nAds);       
+%         bC = getAdsAffConstant(params,states,nRows,nAds);       
+        bC = repmat(bC0,nRows,1);
         
     %For non-isothermal operation,
     else

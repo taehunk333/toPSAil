@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/2/18/Friday
-%Code last modified on : 2022/5/11/Wednesday
+%Code last modified on : 2022/6/14/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -564,7 +564,7 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                       .* col.(sColNums{i}).volCorRatTot(:,2:nVols);
 
                 %Add the feed-end boundary condition for the ith column in 
-                %nS step in a given PSA cycle
+                %(nS)th step in a given PSA cycle
                 rhsVec(:,1) ...
                     = rhsVec(:,1) ...
                     - (alphaPlusN(:,1)/cstrHt(1)).*vFlPlusBoFe ...
@@ -584,9 +584,66 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                 
         
                 %---------------------------------------------------------%
+                %Obtain the coefficient matrices for each time point
+                %For each time step t,
+                for t = 1 : nRows
+
+                    %-----------------------------------------------------%
+                    %Define the coefficient matrix
+
+                    %Define the positive coefficient matrix
+                    coefMatPlus = diag(alphaZeroN(t,1:nVols-1) ...
+                                     ./cstrHt(1:nVols-1) ...
+                                      -alphaPlusN(t,2:nVols) ...
+                                     ./cstrHt(2:nVols) ...
+                                     ,0) ...
+                                + diag(alphaPlusN(t,2:nVols-1) ...
+                                     ./cstrHt(2:nVols-1) ...
+                                     ,-1) ...
+                                + diag(-alphaZeroN(t,2:nVols-1) ...
+                                     ./cstrHt(2:nVols-1) ...
+                                     ,+1);
+
+                    %Define the negative coefficient matrix
+                    coefMatMinus = diag(alphaMinusN(t,1:nVols-1) ...
+                                      ./cstrHt(1:nVols-1)  ...
+                                       -alphaZeroN(t,2:nVols) ...
+                                      ./cstrHt(2:nVols) ...
+                                      ,0) ...                              
+                                 + diag(alphaZeroN(t,2:nVols-1) ...
+                                      ./cstrHt(2:nVols-1) ...
+                                      ,-1) ...
+                                 + diag(-alphaMinusN(t,2:nVols-1) ...
+                                      ./cstrHt(2:nVols-1) ...
+                                      ,+1); 
+
+                    %Save the coefficient matrix
+                    coefMatPlus3D(:,:,t) = coefMatPlus;
+
+                    %Save the coefficient matrix
+                    coefMatMinus3D(:,:,t) = coefMatMinus;
+                    %-----------------------------------------------------%
+
+                end
+                %---------------------------------------------------------%
+
+
+
+                %---------------------------------------------------------%
+                %Save the coefficient matrices for the recourse
+                %calculations
+
+                %Save the coefficient matrices into params
+                params.coefMatPlus3D  = coefMatPlus3D ;
+                params.coefMatMinus3D = coefMatMinus3D;
+                %---------------------------------------------------------%
+                
+                    
+                    
+                %---------------------------------------------------------%
                 %Calculate the pseudo voluemtric flow rates and save the
                 %results
-
+                                                                                
                 %If we have a co-current
                 if flowDirStep == 0
 
@@ -594,34 +651,12 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                     for t = 1 : nRows
 
                         %-------------------------------------------------%
-                        %Define the coefficient matrix
-
-                        %Define the positive coefficient matrix
-                        coefMatPlus = diag(alphaZeroN(t,1:nVols-1) ...
-                                         ./cstrHt(1:nVols-1) ...
-                                          -alphaPlusN(t,2:nVols) ...
-                                         ./cstrHt(2:nVols) ...
-                                         ,0) ...
-                                    + diag(alphaPlusN(t,2:nVols-1) ...
-                                         ./cstrHt(2:nVols-1) ...
-                                         ,-1) ...
-                                    + diag(-alphaZeroN(t,2:nVols-1) ...
-                                         ./cstrHt(2:nVols-1) ...
-                                         ,+1);
-                                     
-                        %Save the coefficient matrix
-                        coefMatPlus3D(:,:,t) = coefMatPlus;
-                        %-------------------------------------------------%
-
-
-
-                        %-------------------------------------------------%
                         %Solve for the unknown volumetric flow rates
 
                         %Solve the tridiagonal system for the positive 
                         %pseudo volumetric flow rates            
                         vFlPlusColVal ...
-                            = mldivide(coefMatPlus,rhsVec(t,:)');
+                            = mldivide(coefMatPlus3D(:,:,t),rhsVec(t,:)');
 
                         %Concatenate the boundary conditions
                         vFlPlusCol(t,:) ...
@@ -643,34 +678,12 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                     for t = 1 : nRows
 
                         %-------------------------------------------------%
-                        %Define the coefficient matrix
-
-                        %Define the negative coefficient matrix
-                        coefMatMinus = diag(alphaMinusN(t,1:nVols-1) ...
-                                          ./cstrHt(1:nVols-1)  ...
-                                           -alphaZeroN(t,2:nVols) ...
-                                          ./cstrHt(2:nVols) ...
-                                          ,0) ...                              
-                                     + diag(alphaZeroN(t,2:nVols-1) ...
-                                          ./cstrHt(2:nVols-1) ...
-                                          ,-1) ...
-                                     + diag(-alphaMinusN(t,2:nVols-1) ...
-                                          ./cstrHt(2:nVols-1) ...
-                                          ,+1); 
-                                      
-                        %Save the coefficient matrix
-                        coefMatMinus3D(:,:,t) = coefMatMinus;
-                        %-------------------------------------------------%
-
-
-
-                        %-------------------------------------------------%
                         %Solve for the unknown volumetric flow rates
 
                         %Solve the tridiagonal system for the negative 
                         %pseudo volumetric flow rates                                    
                         vFlMinusColVal ...
-                            = mldivide(coefMatMinus,rhsVec(t,:)');
+                            = mldivide(coefMatMinus3D(:,:,t),rhsVec(t,:)');
 
                         %Concatenate the boundary conditions
                         vFlMinusCol(t,:) ...
@@ -687,17 +700,6 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                     %-----------------------------------------------------% 
 
                 end
-                %---------------------------------------------------------%
-                
-                
-                
-                %---------------------------------------------------------%
-                %Save the coefficient matrices for the recourse
-                %calculations
-                
-                %Save the coefficient matrices into params
-                params.coefMatPlus3D  = coefMatPlus3D ;
-                params.coefMatMinus3D = coefMatMinus3D;
                 %---------------------------------------------------------%
                                        
             end
