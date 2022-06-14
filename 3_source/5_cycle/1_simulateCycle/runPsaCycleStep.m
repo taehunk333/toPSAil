@@ -147,11 +147,21 @@ function [stTime,stStates,flags] ...
     fprintf("*Solver                         : %s \n",numIntSolv)        ;
     fprintf("*Number of Successful Steps     : %d \n",sol.stats.nsteps)  ;
     fprintf("*Number of Failed Steps         : %d \n",sol.stats.nfailed) ;
-    fprintf("*Number of Function Evaluations : %d \n",sol.stats.nfevals) ;   
-    fprintf("*Number of Jacobian Evaluations : %d \n",sol.stats.npds)    ;
-    fprintf("*Number of LU Decompositions    : %d \n",sol.stats.ndecomps);
-    fprintf("*Number of Linear Solves        : %d \n",sol.stats.nsolves) ;
-    fprintf("*******************************************\n")             ;
+    fprintf("*Number of Function Evaluations : %d \n",sol.stats.nfevals) ;
+    
+    %When using an implicit solver, print additional statistics
+    if numIntSolv ~= "ode45" && ...
+       numIntSolv ~= "ode23" && ...
+       numIntSolv ~= "ode113"
+        fprintf("*Number of Jacobian Evaluations : %d \n", ...
+                sol.stats.npds);
+        fprintf("*Number of LU Decompositions    : %d \n", ...
+                sol.stats.ndecomps);
+        fprintf("*Number of Linear Solves        : %d \n", ...
+                sol.stats.nsolves);
+    end
+    
+    fprintf("*******************************************\n");
     %---------------------------------------------------------------------%
     
     
