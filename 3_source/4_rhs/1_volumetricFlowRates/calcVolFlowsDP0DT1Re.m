@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/5/9/Monday
-%Code last modified on : 2022/5/11/Wednesday
+%Code last modified on : 2022/6/14/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -56,8 +56,7 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT1Re(params,nS,nC,nTp)
     
     %Unpack params    
     nVols       = params.nVols      ;          
-    daeModCur   = params.daeModel   ; 
-    cstrHt      = params.cstrHt     ; 
+    daeModCur   = params.daeModel   ;  
     volFlBoFree = params.volFlBoFree;
     flowDir     = params.flowDir    ;
     
@@ -79,16 +78,7 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT1Re(params,nS,nC,nTp)
     %adsorption columns
     vFlPlus  = zeros(1,(nVols+1));
     vFlMinus = zeros(1,(nVols+1));
-    %---------------------------------------------------------------------% 
-                                                
-    
-    
-    %---------------------------------------------------------------------%
-    %Obtain the information about the adsorber
-
-    %Get the flow direction for (nC)th adsorber at (nS)th step       
-    flowDirStep = flowDir(nC,nS);
-    %---------------------------------------------------------------------%
+    %---------------------------------------------------------------------%                                               
         
         
         
@@ -260,44 +250,7 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT1Re(params,nS,nC,nTp)
         %Solve a linear program
 
             %-------------------------------------------------------------%
-            %Define terms required for formulating the linear program (LP)
-            
-            %Compute the other coefficient matrix
-            
-            %If co-current,
-            if flowDirStep == 0
-                
-                %Get the negative coefficient matrix at nTp
-                coefMatMinus = diag(alphaMinusN(1:nVols-1) ...
-                                  ./cstrHt(1:nVols-1)  ...
-                                   -alphaZeroN(2:nVols) ...
-                                  ./cstrHt(2:nVols) ...
-                                  ,0) ...                              
-                             + diag(alphaZeroN(2:nVols-1) ...
-                                  ./cstrHt(2:nVols-1) ...
-                                  ,-1) ...
-                             + diag(-alphaMinusN(2:nVols-1) ...
-                                  ./cstrHt(2:nVols-1) ...
-                                  ,+1); 
-                
-            %If counter-current
-            elseif flowDirStep == 1
-                
-                %Get the positive coefficient matrix at nTp
-                %Define the positive coefficient matrix
-                coefMatPlus = diag(alphaZeroN(1:nVols-1) ...
-                                 ./cstrHt(1:nVols-1) ...
-                                  -alphaPlusN(2:nVols) ...
-                                 ./cstrHt(2:nVols) ...
-                                 ,0) ...
-                            + diag(alphaPlusN(2:nVols-1) ...
-                                 ./cstrHt(2:nVols-1) ...
-                                 ,-1) ...
-                            + diag(-alphaZeroN(2:nVols-1) ...
-                                 ./cstrHt(2:nVols-1) ...
-                                 ,+1);
-                
-            end            
+            %Define terms required for formulating the linear program (LP)                              
             
             %Construct the time dependent double tri-diagonal 
             %coefficient matrix by concatenating the two coefficient 

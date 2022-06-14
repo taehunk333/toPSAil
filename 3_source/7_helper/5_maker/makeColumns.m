@@ -238,7 +238,7 @@ function col = makeColumns(params,states)
         %Calculate relevant quantities for the system with a given momentum
         %balance equation
                 
-        %Calculate only when the system is non-isothermal
+        %Calculate only when there is an axial pressure drop
         if bool(6) == 1 && modSp(6) == 2
         
             %-------------------------------------------------------------%
