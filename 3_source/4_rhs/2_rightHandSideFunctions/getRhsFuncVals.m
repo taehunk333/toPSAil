@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/28/Thursday
-%Code last modified on : 2022/3/14/Monday
+%Code last modified on : 2022/6/14/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -133,16 +133,12 @@ function  rhsVals = getRhsFuncVals(params,units)
         %For each temperatures
                     
         %Grab the energy balances for the CSTRs
-%         rhsVals(s+nColSt*(i-1)+2*nComs+1:nSt:s+nColSt*i-nSt+2*nComs+1) ...
-%             = col.(sCols{i}).cstrEnBal;
         rhsVals(s+nColSt*(i-1)+2*nComs+1:nSt:s+nColSt*i-nSt+2*nComs+1) ...
-            = zeros(nVols,1);
-
+            = col.(sCols{i}).cstrEnBal;
+        
         %Grab the energy balances for the CSTR walls
-%         rhsVals(s+nColSt*(i-1)+2*nComs+2:nSt:s+nColSt*i-nSt+2*nComs+2) ...
-%             = col.(sCols{i}).wallEnBal;
         rhsVals(s+nColSt*(i-1)+2*nComs+2:nSt:s+nColSt*i-nSt+2*nComs+2) ...
-            = zeros(nVols,1);
+            = col.(sCols{i}).wallEnBal;
         %-----------------------------------------------------------------%
         
     end        
@@ -170,12 +166,10 @@ function  rhsVals = getRhsFuncVals(params,units)
     %For each temperatures
 
     %Grab the energy balances for the CSTRs
-%     rhsVals(inShFeTa+nComs+1) = feTa.n1.cstrEnBal;
-    rhsVals(inShFeTa+nComs+1) = 0;
+    rhsVals(inShFeTa+nComs+1) = feTa.n1.cstrEnBal;
 
     %Grab the energy balances for the CSTR walls
-%     rhsVals(inShFeTa+nComs+2) = feTa.n1.wallEnBal;
-    rhsVals(inShFeTa+nComs+2) = 0;
+    rhsVals(inShFeTa+nComs+2) = feTa.n1.wallEnBal;
     %---------------------------------------------------------------------% 
     
     
@@ -206,12 +200,10 @@ function  rhsVals = getRhsFuncVals(params,units)
     %For each temperatures
 
     %Grab the energy balances for the CSTRs
-%     rhsVals(inShRaTa+nComs+1) = raTa.n1.cstrEnBal;
-    rhsVals(inShRaTa+nComs+1) = 0;
+    rhsVals(inShRaTa+nComs+1) = raTa.n1.cstrEnBal;
 
     %Grab the energy balances for the CSTR walls
-%     rhsVals(inShRaTa+nComs+2) = raTa.n1.wallEnBal;  
-    rhsVals(inShRaTa+nComs+2) = 0;
+    rhsVals(inShRaTa+nComs+2) = raTa.n1.wallEnBal;  
     %---------------------------------------------------------------------%
     
     
@@ -242,12 +234,10 @@ function  rhsVals = getRhsFuncVals(params,units)
     %For each temperatures
 
     %Grab the energy balances for the CSTRs
-%     rhsVals(inShExTa+nComs+1) = exTa.n1.cstrEnBal;
-    rhsVals(inShExTa+nComs+1) = 0;
+    rhsVals(inShExTa+nComs+1) = exTa.n1.cstrEnBal;
 
     %Grab the energy balances for the CSTR walls
-%     rhsVals(inShExTa+nComs+2) = exTa.n1.wallEnBal;  
-    rhsVals(inShExTa+nComs+2) = 0;  
+    rhsVals(inShExTa+nComs+2) = exTa.n1.wallEnBal;  
     %---------------------------------------------------------------------% 
     
     
