@@ -165,7 +165,22 @@ function runPsaProcessSimulation(folderName)
         fprintf('The PSA cycle simulation has finished! \n')      ; 
         fprintf("*******************************************\n")  ;
         
-    end               
+    end      
+    %---------------------------------------------------------------------%
+    
+    
+    
+    %---------------------------------------------------------------------%
+    %Save the paths for saving figures and data to a data structure
+            
+    %Save the example folder location to save the simulation outputs to a
+    %data structure called sol
+    sol.path.figs = fullfile(exampleFolder, ...
+                             '5_simulation_outputs', ...
+                             '1_figs');
+    sol.path.data = fullfile(exampleFolder, ...
+                             '5_simulation_outputs', ...
+                             '2_data');
     %---------------------------------------------------------------------%
     
     

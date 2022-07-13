@@ -18,55 +18,46 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2011/2/4/Thursday
-%Code last modified on : 2022/2/17/Thursday
+%Code created on       : 2022/7/12/Tuesday
+%Code last modified on : 2022/7/12/Tuesday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : programProfiler.m
+%Function   : saveFigs2Eps.m
 %Source     : common
-%Description: this is a function that calls runPsaProcessSimulation.m so
-%             that MATLAB's profiler can be used to optimize the program.
-%                            folder
+%Description: This .m function saves the currently active plot into .eps
+%             file format under the example folder subdirectory:
+%             \5_simulation_outputs\1_figs
+%Inputs     : figObj       - using the gcf.m, grab the current figure
+%                            handle
+%             figPath      - A string for the path to the folder where we
+%                            will save the figure
+%             figName      - A string designating the name of the figure
+%Outputs    : a .eps file in the designated folder.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function programProfiler()        
-    
-    %---------------------------------------------------------------------%    
+function saveFigs2Eps(figObj,figPath,figName)
+  
+    %---------------------------------------------------------------------%
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'programProfiler.m';
-    %---------------------------------------------------------------------%    
+    %funcId = 'saveFigs2Eps.m';
+    %---------------------------------------------------------------------%           
     
+    
+    
+    %---------------------------------------------------------------------%
+    %Save the figure into a .eps file
 
-    
-    %---------------------------------------------------------------------%
-    %Profile the main function
-    
-    %Define the first folder name
-%     name = "development";
-    name = "developmentIsothermal";
-    %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %Get the final folder name
-    
-    %Append the name
-    name = append(name);
-    %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %Profile the code
-    
-    %Run the PSA process simulator
-    runPsaProcessSimulation(name);
-    %---------------------------------------------------------------------%            
-    
+    %Get the full filename
+    fileName = fullfile(figPath,figName); 
+
+    %Export the figure as a .eps file. Make sure we are saving as a vector
+    %graphic file.
+    exportgraphics(figObj,fileName,'ContentType','vector');
+    %---------------------------------------------------------------------%             
+        
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
