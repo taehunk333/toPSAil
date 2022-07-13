@@ -42,8 +42,9 @@ function plotPsaSimulationResults(params,sol)
     %funcId = 'plotPsaSimulationResults';
     
     %Unpack Params
-    plot  = params.plot ;
-    nCols = params.nCols;
+    plot    = params.plot  ;
+    nCols   = params.nCols ;
+    figPath = sol.path.figs;
     
     %Get simulation plotting params
     params = getSimPlotParams(params);
@@ -68,6 +69,15 @@ function plotPsaSimulationResults(params,sol)
         
         %Plot the pressure profiles for the adsorption column(s)
         plotColPresProfiles(params,sol);
+        
+        %Get the current figure and its information
+        figObj = gcf;
+        
+        %Get the full filename
+        figName = 'colPresProfile.eps'; 
+                
+        %Save the figure to a .eps file
+        saveFigs2Eps(figObj,figPath,figName);
                 
     end              
     %---------------------------------------------------------------------%
@@ -83,8 +93,26 @@ function plotPsaSimulationResults(params,sol)
         %Plot the pressure profiles for the raffinate product receiver tank
         plotRaTaPresProfiles(params,sol);
         
+        %Get the current figure and its information
+        figObj = gcf;
+        
+        %Get the full filename
+        figName = 'raTaPresProfile.eps'; 
+                
+        %Save the figure to a .eps file
+        saveFigs2Eps(figObj,figPath,figName);
+        
         %Plot the pressure profiles for the extract product receiver tank
         plotExTaPresProfiles(params,sol);
+        
+        %Get the current figure and its information
+        figObj = gcf;
+        
+        %Get the full filename
+        figName = 'exTaPresProfile.eps'; 
+                
+        %Save the figure to a .eps file
+        saveFigs2Eps(figObj,figPath,figName);
                         
     end              
     %---------------------------------------------------------------------%  
@@ -103,6 +131,17 @@ function plotPsaSimulationResults(params,sol)
             %Plot gas phase concentrations for all species for all 
             %adsorption columns
             plotGasConsHighPresFeed(params,sol,i);
+            
+            %Get the current figure and its information
+            figObj = gcf;
+
+            %Get the full filename
+            figName = strcat('gasConsCol', ...
+                             int2str(i), ...
+                             '.eps'); 
+
+            %Save the figure to a .eps file
+            saveFigs2Eps(figObj,figPath,figName);
             
         end
                 
@@ -124,6 +163,17 @@ function plotPsaSimulationResults(params,sol)
             %adsorption columns
             plotAdsConsHighPresFeed(params,sol,i);
             
+            %Get the current figure and its information
+            figObj = gcf;
+
+            %Get the full filename
+            figName = strcat('adsConsCol', ...
+                             int2str(i), ...
+                             '.eps'); 
+
+            %Save the figure to a .eps file
+            saveFigs2Eps(figObj,figPath,figName);
+            
         end
                         
     end              
@@ -143,6 +193,17 @@ function plotPsaSimulationResults(params,sol)
             %Plot the breakthrough curve for ith adsorption column
             plotBreakThroughCurve(params,sol,i);
             
+            %Get the current figure and its information
+            figObj = gcf;
+
+            %Get the full filename
+            figName = strcat('brkThrCol', ...
+                             int2str(i), ...
+                             '.eps'); 
+
+            %Save the figure to a .eps file
+            saveFigs2Eps(figObj,figPath,figName);
+            
         end 
                         
     end              
@@ -159,8 +220,26 @@ function plotPsaSimulationResults(params,sol)
         %Plot product purity inside the raffinate product tank
         plotRaTaPurity(params,sol,1);
         
+        %Get the current figure and its information
+        figObj = gcf;
+        
+        %Get the full filename
+        figName = 'raTaPurity.eps'; 
+                
+        %Save the figure to a .eps file
+        saveFigs2Eps(figObj,figPath,figName);
+        
         %Plot product purity inside the extract product tank
         plotExTaPurity(params,sol,1);
+        
+        %Get the current figure and its information
+        figObj = gcf;
+        
+        %Get the full filename
+        figName = 'exTaPurity.eps'; 
+                
+        %Save the figure to a .eps file
+        saveFigs2Eps(figObj,figPath,figName);
      
     end              
     %---------------------------------------------------------------------%  
@@ -180,9 +259,31 @@ function plotPsaSimulationResults(params,sol)
             %adsorption column
             plotColCstrTempProfiles(params,sol,i);
             
+            %Get the current figure and its information
+            figObj = gcf;
+
+            %Get the full filename
+            figName = strcat('cstrTempCol', ...
+                             int2str(i), ...
+                             '.eps'); 
+
+            %Save the figure to a .eps file
+            saveFigs2Eps(figObj,figPath,figName);
+            
             %Plot temperature profile for the cstr walls associated with a
             %given adsorption column
             plotColWallTempProfiles(params,sol,i);
+            
+            %Get the current figure and its information
+            figObj = gcf;
+
+            %Get the full filename
+            figName = strcat('wallTempCol', ...
+                             int2str(i), ...
+                             '.eps'); 
+
+            %Save the figure to a .eps file
+            saveFigs2Eps(figObj,figPath,figName);
             
         end        
                         
@@ -200,6 +301,15 @@ function plotPsaSimulationResults(params,sol)
         %Plot Product Purity Profile
         plotProductPurity(params,sol);
         
+        %Get the current figure and its information
+        figObj = gcf;
+        
+        %Get the full filename
+        figName = 'productPurity.eps'; 
+                
+        %Save the figure to a .eps file
+        saveFigs2Eps(figObj,figPath,figName);
+        
     end       
     %---------------------------------------------------------------------%   
     
@@ -213,6 +323,15 @@ function plotPsaSimulationResults(params,sol)
         
         %Plot Product Purity Profile
         plotProductRecovery(params,sol);
+        
+        %Get the current figure and its information
+        figObj = gcf;
+        
+        %Get the full filename
+        figName = 'productRecovery.eps'; 
+                
+        %Save the figure to a .eps file
+        saveFigs2Eps(figObj,figPath,figName);
         
     end       
     %---------------------------------------------------------------------% 
@@ -228,6 +347,15 @@ function plotPsaSimulationResults(params,sol)
         %Plot Product Purity Profile
         plotProductivity(params,sol);
         
+        %Get the current figure and its information
+        figObj = gcf;
+        
+        %Get the full filename
+        figName = 'productivity.eps'; 
+                
+        %Save the figure to a .eps file
+        saveFigs2Eps(figObj,figPath,figName);
+        
     end       
     %---------------------------------------------------------------------% 
     
@@ -242,6 +370,15 @@ function plotPsaSimulationResults(params,sol)
         %Plot Product Purity Profile
         plotEnergyConsumption(params,sol);
         
+        %Get the current figure and its information
+        figObj = gcf;
+        
+        %Get the full filename
+        figName = 'energyConsumption.eps'; 
+                
+        %Save the figure to a .eps file
+        saveFigs2Eps(figObj,figPath,figName);
+        
     end       
     %---------------------------------------------------------------------% 
     
@@ -255,6 +392,15 @@ function plotPsaSimulationResults(params,sol)
         
         %Plot Product Purity Profile
         plotCssConv(params,sol);
+        
+        %Get the current figure and its information
+        figObj = gcf;
+        
+        %Get the full filename
+        figName = 'css.eps'; 
+                
+        %Save the figure to a .eps file
+        saveFigs2Eps(figObj,figPath,figName);
         
     end       
     %---------------------------------------------------------------------% 

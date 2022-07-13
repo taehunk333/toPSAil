@@ -75,15 +75,15 @@ function testLinProgExample(x,params)
     %Define the center of the random number
     lowerBoundRandGasCon = 1  ;
     lowerBoundRandAdsCon = 1  ;  
-    lowerBoundRandInTemp = 1  ;
-    lowerBoundRandWaTemp = 1  ;   
+    lowerBoundRandInTemp = 0.5  ;
+    lowerBoundRandWaTemp = 0.5  ;   
     lowerBoundRandPres   = 0.1;
     
     %Define the spread of the random number
     spreadRandGasCon = 0.25;    
     spreadRandAdsCon = 0.25; 
-    spreadRandInTemp = 0.25; 
-    spreadRandWaTemp = 0.25; 
+    spreadRandInTemp = 1.00; 
+    spreadRandWaTemp = 1.00; 
     spreadRandPres   = 0.25;
     
     %Define the rank 1 update of the state row vector

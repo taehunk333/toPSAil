@@ -109,7 +109,7 @@ function bC = getAdsAffConstant(params,states,nRows,nAds)
     %Unpack states
    
     %Grab dimensionless CSTR temperatures from the struct
-    colTemps = convert2ColTemps(params,states,nAds);
+    temps = convert2ColTemps(params,states,nAds);
     %---------------------------------------------------------------------%
     
     
@@ -125,7 +125,7 @@ function bC = getAdsAffConstant(params,states,nRows,nAds)
             = affConsMat(:,nVols*(i-1)+1:nVols*i) ...
            .* exp(-isoStHtMat(:,nVols*(i-1)+1:nVols*i) ...
            ./ (gasCons/10*tempRefIso) ...
-           .* (1-refTempNorm./colTemps.cstr));
+           .* (1-refTempNorm./temps.cstr));
                 
     end            
     %---------------------------------------------------------------------%            

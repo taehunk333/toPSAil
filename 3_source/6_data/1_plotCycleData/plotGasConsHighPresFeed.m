@@ -81,7 +81,7 @@ function plotGasConsHighPresFeed(params,sol,colNum)
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');
-    set(gca,'FontSize',14)                 ;                
+    set(gca,'FontSize',10)                 ;                
     %---------------------------------------------------------------------%
     
     

@@ -61,7 +61,6 @@ function  rhsVals = getRhsFuncVals(params,units)
     sComs    = params.sComNums;
     inShComp = params.inShComp;
     inShVac  = params.inShVac ;
-    nVols    = params.nVols   ;
     
     %Unpack units
     col  = units.col ;
