@@ -67,20 +67,20 @@ function plotAdsConsHighPresFeed(params,sol,colNum)
     %Get the string for the title
     strTitle = append('Column ', ...
                       int2str(colNum), ...
-                      ' Adsorbed Phase Concentration Profile');
+                      ' Adsorbed Phase Conc. Profile');
     
     %Set the title for the figure
-    title(strTitle);
+    %title(strTitle);
 
     %Determine x-axis (ordinate) label
     xlabel('Height [=] cm');
 
     %Determine y-axis (absicissa) label
-    ylabel('Concentration [=] mol/kg');
+    ylabel('Conc. [=] mol/kg');
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');
-    set(gca,'FontSize',10)                 ;                
+    set(gca,'FontSize',14)                 ;                
     %---------------------------------------------------------------------%
     
     
@@ -131,7 +131,7 @@ function plotAdsConsHighPresFeed(params,sol,colNum)
     legend(sCom,'Location','SouthWest');
     
     %Resize the figure
-    set(gcf,'Position',[100,25,600,500]);
+    set(gcf,'Position',[100,25,600,250]);
     
     %Set the limit on the x-axis
     xlim([0,heightCol]);

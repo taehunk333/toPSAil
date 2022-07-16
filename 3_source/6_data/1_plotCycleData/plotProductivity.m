@@ -110,23 +110,23 @@ function plotProductivity(params,sol)
     strTitle = 'Productivity vs. Cycle';
     
     %Set the title for the figure
-    title(strTitle);
+    %title(strTitle);
 
     %Determine x-axis (ordinate) label
     xlabel('Cycle Number [=] -');
 
     %Determine y-axis (absicissa) label
-    ylabel('Productivity [=] mmol/kg-sec');
+    ylabel('Prod. [=] mmol/kg-sec');
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');
-    set(gca,'FontSize',10)                 ;     
+    set(gca,'FontSize',14)                 ;     
     
     %Add entry to the legend
     legend('Raffinate','Extract','Location','NorthWest');
     
     %Resize the figure
-    set(gcf,'Position',[100,25,600,500]);
+    set(gcf,'Position',[100,25,600,250]);
     
     %Set the limit on the x-axis
     %xlim([1,laststep/nSteps]);

@@ -213,7 +213,7 @@ function runPsaProcessSimulation(folderName)
     fprintf("*******************************************\n")  ;
     
     %Save simulation outputs into excel files
-    savePsaSimulationResults(params,sol,exampleFolder);
+    savePsaSimulationResults(params,sol,sol.path.data);
     
     %Insert a conclusion for the command window output
     fprintf("\n*******************************************\n");

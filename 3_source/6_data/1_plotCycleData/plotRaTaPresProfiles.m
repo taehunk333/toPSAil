@@ -60,7 +60,7 @@ function plotRaTaPresProfiles(params,sol)
     figure(figNum);
     
     %Set the title for the figure
-    title('Raffinate Product Tank Pressure Profile');
+    %title('Raffinate Product Tank Pressure Profile');
 
     %Determine x-axis (ordinate) label
     xlabel('Time [=] sec');
@@ -70,7 +70,7 @@ function plotRaTaPresProfiles(params,sol)
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');
-    set(gca,'FontSize',10)                 ;                
+    set(gca,'FontSize',14)                 ;                
     %---------------------------------------------------------------------%
     
     
@@ -114,7 +114,7 @@ function plotRaTaPresProfiles(params,sol)
     legend('n1','Location','SouthEast');
     
     %Resize the figure
-    set(gcf,'Position',[100,25,600,500]);
+    set(gcf,'Position',[100,25,600,250]);
     
     %Hold off of the figure
     hold off;    
