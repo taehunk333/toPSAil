@@ -65,17 +65,17 @@ function plotRaTaPurity(params,sol,raTaNum)
                ' Product Purity Profile');
     
     %Set the title for the figure
-    title(strTitle);
+    %title(strTitle);
 
     %Determine x-axis (ordinate) label
     xlabel('Time [=] sec');
 
     %Determine y-axis (absicissa) label
-    ylabel('Purity [=] -');
+    ylabel('LK purity [=] -');
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');
-    set(gca,'FontSize',10)                 ;                
+    set(gca,'FontSize',14)                 ;                
     %---------------------------------------------------------------------%
         
     
@@ -116,7 +116,7 @@ function plotRaTaPurity(params,sol,raTaNum)
     legend('n1','Location','NorthWest');
     
     %Resize the figure
-    set(gcf,'Position',[100,25,600,500]);
+    set(gcf,'Position',[100,25,600,250]);
     
     %Turn on the zoom feature
     zoom on;

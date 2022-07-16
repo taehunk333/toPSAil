@@ -57,7 +57,7 @@ function plotCssConv(params,sol)
     lastCycNo = laststep/nSteps;
     
     %Create a linearly spaces cycle number vectors
-    cycleNums = linspace(1,lastCycNo+1,lastCycNo+1)';
+    cycleNums = linspace(2,lastCycNo+1,lastCycNo+1)';
     
     %Create a numerical zero vector
     numZeros = ones(1,lastCycNo+1)*numZero;
@@ -81,7 +81,7 @@ function plotCssConv(params,sol)
     %Plot the CSS convergence values over the cycles for all species
                                   
     %Plot the CSS convergence data
-    loglog(cycleNums,[1;css(2:lastCycNo+1)],'-x','LineWidth',2.0);
+    loglog(cycleNums,[2;css(2:lastCycNo+1)],'-x','LineWidth',2.0);
     
     %Hold on to the figure
     hold on;
@@ -105,20 +105,20 @@ function plotCssConv(params,sol)
     str1 = 'CSS convergence ';
     
     %Append the strings
-    strTitle = append(str1,'(Type ',int2str(modSp(7)),') ',' vs. Cycle');
+    %strTitle = append(str1,'(Type ',int2str(modSp(7)),') ',' vs. Cycle');
     
     %Set the title for the figure
-    title(strTitle);
+    %title(strTitle);
 
     %Determine x-axis (ordinate) label
-    xlabel('Beginning of a PSA Cycle [=] -');
+    xlabel('Start of the n^{th} PSA Cycle [=] -');
 
     %Determine y-axis (absicissa) label
-    ylabel('Squared L2-Norm of the difference between ICs [=] -');
+    ylabel('L2-Norm Diff. [=] -');
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');
-    set(gca,'FontSize',10)                 ;                
+    set(gca,'FontSize',14)                 ;                
     %---------------------------------------------------------------------%
     
     
@@ -130,10 +130,10 @@ function plotCssConv(params,sol)
     str2 = append('modSp7 = ',int2str(modSp(7)));
     
     %Add entry to the legend
-    legend(str2,'Location','SouthWest');
+    %legend(str2,'Location','SouthWest');
     
     %Resize the figure
-    set(gcf,'Position',[100,25,600,500]);    
+    set(gcf,'Position',[100,25,600,250]);    
     
     %Set integer spacing
     set(gca,'xtick',0:laststep/nSteps);

@@ -68,20 +68,20 @@ function plotGasConsHighPresFeed(params,sol,colNum)
     strTitle = ...
         append('Column ', ...
                int2str(colNum), ...
-               ' Gas Phase Concentration Profile');
+               ' Gas Phase Conc. Profile');
     
     %Set the title for the figure
-    title(strTitle);
+    %title(strTitle);
 
     %Determine x-axis (ordinate) label
     xlabel('Height [=] cm');
 
     %Determine y-axis (absicissa) label
-    ylabel('Concentration [=] mol/cc');
+    ylabel('Conc. [=] mol/cc');
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');
-    set(gca,'FontSize',10)                 ;                
+    set(gca,'FontSize',14)                 ;                
     %---------------------------------------------------------------------%
     
     
@@ -134,7 +134,7 @@ function plotGasConsHighPresFeed(params,sol,colNum)
     legend(sCom,'Location','SouthWest');
     
     %Resize the figure
-    set(gcf,'Position',[100,25,600,500]);
+    set(gcf,'Position',[100,25,600,250]);
     
     %Set the limit on the x-axis
     xlim([0,heightCol]);

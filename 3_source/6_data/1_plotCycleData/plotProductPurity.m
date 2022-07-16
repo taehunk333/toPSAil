@@ -104,7 +104,7 @@ function plotProductPurity(params,sol)
     strTitle = 'Product Purity vs. Cycle';
     
     %Set the title for the figure
-    title(strTitle);
+    %title(strTitle);
 
     %Determine x-axis (ordinate) label
     xlabel('Cycle Number [=] -');
@@ -114,13 +114,13 @@ function plotProductPurity(params,sol)
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');
-    set(gca,'FontSize',10)                 ;    
+    set(gca,'FontSize',14)                 ;    
     
     %Add entry to the legend
     legend(sCom,'Location','NorthWest');
     
     %Resize the figure
-    set(gcf,'Position',[100,25,600,500]);
+    set(gcf,'Position',[100,25,600,250]);
     
     %Set the limit on the x-axis
     %xlim([1,laststep/nSteps]);

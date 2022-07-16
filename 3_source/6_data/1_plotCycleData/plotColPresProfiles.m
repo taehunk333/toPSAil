@@ -147,7 +147,7 @@ function plotColPresProfiles(params,sol)
                           ' Average Pressure Profile');
             
             %Set the title for the figure
-            title(titleStr);
+            %title(titleStr);
 
             %Determine x-axis (ordinate) label
             xlabel('Time [=] sec');
@@ -157,7 +157,7 @@ function plotColPresProfiles(params,sol)
 
             %Set the style of the axis font as LaTeX type
             set(gca,'TickLabelInterpreter','latex');
-            set(gca,'FontSize',10)                 ; 
+            set(gca,'FontSize',14)                 ; 
             
             %Set the limit on th y-axis
             ylim([0,yLimUp]);
@@ -173,7 +173,7 @@ function plotColPresProfiles(params,sol)
     %Make any terminal settings
     
     %Resize the figure
-    set(gcf,'Position',[100,25,600,500]);
+    set(gcf,'Position',[100,25,600,250]);
     
     %Hold off of the figure
     hold off;    
