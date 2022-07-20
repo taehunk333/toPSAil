@@ -61,6 +61,9 @@ function bC = getAdsAffConstant(params,states,nRows,nAds)
     tempAmbi   = params.tempAmbi  ;
     tempRefIso = params.tempRefIso;
     nComs      = params.nComs     ;    
+    
+    %Calculate needed quantities
+    scaleGasCons = gasCons/10*tempRefIso;
     %---------------------------------------------------------------------%
     
     
@@ -124,7 +127,7 @@ function bC = getAdsAffConstant(params,states,nRows,nAds)
         bC(:,nVols*(i-1)+1:nVols*i) ...
             = affConsMat(:,nVols*(i-1)+1:nVols*i) ...
            .* exp(-isoStHtMat(:,nVols*(i-1)+1:nVols*i) ...
-           ./ (gasCons/10*tempRefIso) ...
+           ./ scaleGasCons ...
            .* (1-refTempNorm./temps.cstr));
                 
     end            

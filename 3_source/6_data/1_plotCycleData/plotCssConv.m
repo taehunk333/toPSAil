@@ -57,10 +57,10 @@ function plotCssConv(params,sol)
     lastCycNo = laststep/nSteps;
     
     %Create a linearly spaces cycle number vectors
-    cycleNums = linspace(2,lastCycNo+1,lastCycNo+1)';
+    cycleNums = linspace(2,lastCycNo+1,lastCycNo)';
     
     %Create a numerical zero vector
-    numZeros = ones(1,lastCycNo+1)*numZero;
+    numZeros = ones(1,lastCycNo)*numZero;
     %---------------------------------------------------------------------%
     
     
@@ -81,7 +81,7 @@ function plotCssConv(params,sol)
     %Plot the CSS convergence values over the cycles for all species
                                   
     %Plot the CSS convergence data
-    loglog(cycleNums,[2;css(2:lastCycNo+1)],'-x','LineWidth',2.0);
+    loglog(cycleNums,css(2:lastCycNo+1),'-x','LineWidth',2.0);
     
     %Hold on to the figure
     hold on;
@@ -136,7 +136,7 @@ function plotCssConv(params,sol)
     set(gcf,'Position',[100,25,600,250]);    
     
     %Set integer spacing
-    set(gca,'xtick',0:laststep/nSteps);
+    set(gca,'xtick',0:laststep/nSteps+1);
     
     %Hold off of the figure
     hold off;    
