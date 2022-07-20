@@ -19,20 +19,19 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/14/Thursday
-%Code last modified on : 2022/4/28/Thursday
+%Code last modified on : 2022/7/20/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : defineRhsFunc.m
 %Source     : common
-%Description: a function that defines the right hand side functions for all
-%             steps involved inside a given PSA simulation.
-%Inputs     : t            - a scalar value of a current time point 
-%             x            - a state solution row vector containing all
-%                            the state variables associated with the
-%                            current step inside a given PSA cycle.
-%             params       - a struct containing simulation parameters.
-%Outputs    : xDot         - evaluated values for the right hand side 
+%Description: a function that returns a column vector comprised of each
+%             entry corresponding to the evaluated right hand side first
+%             derivative value for a given state variable.
+%Inputs     : params       - a struct containing simulation parameters.
+%             units        - a nested structure containing all the units in
+%                            the process flow diagram.
+%Outputs    : rhsVals      - evaluated values for the right hand side 
 %                            function for a given step inside a PSA cycle.
 %                            This is a column vector.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -193,8 +192,8 @@ function xDot = defineRhsFunc(~,x,params)
     %produce the final output (a column vector) for the right hand side 
     %function
     xDot = getRhsFuncVals(params,units); 
-    %---------------------------------------------------------------------%
-    
+    %---------------------------------------------------------------------%                        
+         
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

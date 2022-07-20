@@ -115,7 +115,7 @@ function options = setOdeSolverOpts(params,iStates,nS,nCy)
     
                 
     %---------------------------------------------------------------------%    
-    %Define a structure for the jacobian sparsity pattern
+    %Specify information about the Jacobian matrix
     
 %     %Evaluate the right hand side function at the initial condition
 %     rhsEval = defineRhsFunc(0,iStates,params);
@@ -136,9 +136,17 @@ function options = setOdeSolverOpts(params,iStates,nS,nCy)
 %     %side function
 %     spyPat = sparse(jacMat~=0.0);
 %     
-%     %Save the options
+%     %Specify the sparsity pattern for the Jacobian matrix
 %     spy = odeset('JPattern',spyPat);
-    spy = [];
+
+%     %Do not specify anything about the Jacobian matrix
+%     spy = [];
+
+    %Define the Jacobian matrix evaluation function
+    funcJacobMat = @(t,x) getJacobianMatrix(t,x,params);
+    
+    %Specify the Jacobian matrix in the ode solver option
+    spy = odeset('Jacobian',funcJacobMat);
     %---------------------------------------------------------------------%
     
     
