@@ -64,10 +64,10 @@ function [stTime,stStates,flags] ...
     
     %Update the data structure with integration specific information
     params.nRows = 1  ;
-    params.nS    = nS ; 
-
+    params.nS    = nS ;              
+   
     %Define the right hand side function
-    funcRhs = @(t,y) defineRhsFunc(t,y,params);
+    funcRhs = @(t,x) defineRhsFunc(t,x,params);
     %---------------------------------------------------------------------%
     
     
