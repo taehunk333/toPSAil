@@ -45,8 +45,10 @@ function programProfiler()
     %Profile the main function
     
     %Define the first folder name
-%     name = "development";
-    name = "developmentIsothermal";
+%     name = "developmentKozenyCarman";
+%     name = "developmentErgun";
+    name = "development";
+%     name = "developmentIsothermal";
     %---------------------------------------------------------------------%
     
     

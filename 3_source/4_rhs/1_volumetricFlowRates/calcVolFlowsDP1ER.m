@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/3/12/Saturday
-%Code last modified on : 2022/5/23/Monday
+%Code last modified on : 2022/7/18/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -109,27 +109,22 @@ function units = calcVolFlowsDP1ER(params,units,nS)
         for t = 1 : nRows
         
             %Unpack quadratic coefficient for ith adsorber for the 1st 
-            %through n_c-1 CSTRs
-            coefQuadNorm = col.(sColNums{i}). ...
-                           quadCoeff(t,1:nVols-1);
+            %through (n_c-1)th CSTRs
+            coefQuadNorm = col.(sColNums{i}).quadCoeff(t,1:nVols-1);
                         
             %Compute the product of the total concentrations with the 
             %interior temperature
-            coefConNorm = cNm0(t,:).*Tnm0(t,:) ...
-                        - cNp1(t,:).*Tnp1(t,:);        
-
-            %Take the absolute value and negate deltaP
-            coefConNorm2 = -abs(coefConNorm);
+            coefConNorm = -(cNm0(t,:).*Tnm0(t,:)-cNp1(t,:).*Tnp1(t,:));        
 
             %Evaluate the quadratic dependence of the pressure and compute
             %the volumetric flow rates         
             vFlInterior ...
-                = 2 ...
+                = -2 ...
                .* coefConNorm ...
                ./ (coefLinNorm ...
                 + sqrt(coefLinNorm.^2 ...
-                - 4.*coefQuadNorm ...
-               .* coefConNorm2));            
+                + 4.*coefQuadNorm ...
+               .* abs(coefConNorm)));            
             %-------------------------------------------------------------%
 
 
@@ -150,8 +145,9 @@ function units = calcVolFlowsDP1ER(params,units,nS)
         %Save the interior volumetric flow rates to be used in the boundary
         %condition calculations
         
-        %Save the interior volumetric flow rates
-        col.vFlInterior = vFlCol(:,2:(nVols+1)*(i-1)+2:(nVols+1)*i-1);
+        %Save the interior volumetric flow rates to be used in the boundary
+        %condition calculations
+        col.vFlInterior = vFlCol(:,(nVols+1)*(i-1)+2:(nVols+1)*i-1);
         %-----------------------------------------------------------------%
         
         

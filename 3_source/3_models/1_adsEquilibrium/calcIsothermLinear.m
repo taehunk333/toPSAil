@@ -1,3 +1,4 @@
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Project Sponsors :
 %U.S. Department of Energy 
@@ -66,6 +67,9 @@ function newStates = calcIsothermLinear(params,states,nAds)
     bool         = params.bool        ;
     nRows        = params.nRows       ;
     bC0          = params.bC0         ;
+
+    %Calculate needed quantities
+    conScaleFacRat = gConScaleFac/aConScaleFac;   
     %---------------------------------------------------------------------%
     
     
@@ -97,7 +101,7 @@ function newStates = calcIsothermLinear(params,states,nAds)
                        
         %Get the affinity parameter matrix at a specified CSTR temperature 
         %for all CSTRs
-%         bC = getAdsAffConstant(params,states,nRows,nAds);       
+%         bC = getAdsAffConstant(params,states,nRows,nAds);               
         bC = repmat(bC0,nRows,1);
         
     %For non-isothermal operation,
@@ -141,7 +145,7 @@ function newStates = calcIsothermLinear(params,states,nAds)
         %Calculate the adsoption equilibrium loading
         loading = (bC(:,nVols*(i-1)+1:nVols*i) ...
                 * qSatC(i) ...
-                * gConScaleFac/aConScaleFac) ...
+                * conScaleFacRat) ...
                .* colGasCons.(sComNums{i});
         
         %Get the beginning index

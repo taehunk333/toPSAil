@@ -459,7 +459,7 @@ function sol = runPsaCycle(params)
                     
                     %Print the information
                     fprintf("\n*Step duration  : %d(%d) seconds",eTi,eTi0);
-                    fprintf("\n*Event happened in column No.%d",eCol)     ;
+                    fprintf("\n*An event happened in column No.%d",eCol)  ;
                     
                 end                
                 
