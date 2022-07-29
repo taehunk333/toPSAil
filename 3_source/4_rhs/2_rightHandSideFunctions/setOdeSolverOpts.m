@@ -46,6 +46,7 @@ function options = setOdeSolverOpts(params,iStates,nS,nCy)
     
     %Unpack params              
     funcEve = params.funcEve{nS};
+    bool    = params.bool       ;
     %---------------------------------------------------------------------%                            
    
     
@@ -117,36 +118,31 @@ function options = setOdeSolverOpts(params,iStates,nS,nCy)
     %---------------------------------------------------------------------%    
     %Specify information about the Jacobian matrix
     
-%     %Evaluate the right hand side function at the initial condition
-%     rhsEval = defineRhsFunc(0,iStates,params);
-%     
-%     %Define options for the Jacobian
-%     jacOpts = struct('diffvar', 2, ...
-%                       'vectvars', [], ...
-%                       'thresh', 1e-8, ...
-%                       'fac', []);
-%     
-%     %Get the jacobian matrix at the initial condition
-%     jacMat = odenumjac(@defineRhsFunc, ...
-%                        {0 iStates' params}, ...
-%                        rhsEval, ...
-%                        jacOpts); 
-%     
-%     %Get the sparsity pattern for the Jacobian matrix for the right hand
-%     %side function
-%     spyPat = sparse(jacMat~=0.0);
-%     
-%     %Specify the sparsity pattern for the Jacobian matrix
-%     spy = odeset('JPattern',spyPat);
+    %When there is an axial pressure drop, let us spcify the sparsity
+    %pattern for the Jacobian matrix, once before the numerical integration
+    if bool(6) == 1
+        
+        %Call the helper function to obtain the jacobian matrix and its
+        %sparsity pattern
+        [~,spyPat] = calcJacMatFiniteDiff(0,iStates,params);       
 
-%     %Do not specify anything about the Jacobian matrix
-%     spy = [];
-
-    %Define the Jacobian matrix evaluation function
-    funcJacobMat = @(t,x) getJacobianMatrix(t,x,params);
+        %Specify the sparsity pattern for the Jacobian matrix
+        jacOpts = odeset('JPattern',spyPat);
     
-    %Specify the Jacobian matrix in the ode solver option
-    spy = odeset('Jacobian',funcJacobMat);
+    %When there is no axial pressure drop, let us specify a function handle
+    %for the Jacobian matrix, once before the numerical inetgration
+    elseif bool(6) == 0
+        
+        %Do not specify anything about the Jacobian matrix
+        jacOpts = [];
+
+%         %Define the Jacobian matrix evaluation function
+%         funcJacobMat = @(t,x) defineJacobMat(t,x,params);
+% 
+%         %Specify the Jacobian matrix in the ode solver option
+%         jacOpts = odeset('Jacobian',funcJacobMat);
+        
+    end       
     %---------------------------------------------------------------------%
     
     
@@ -168,7 +164,7 @@ function options = setOdeSolverOpts(params,iStates,nS,nCy)
     options = odeset(event, ...
                      output, ...
                      tols, ...
-                     spy, ...
+                     jacOpts, ...
                      stats);
     %---------------------------------------------------------------------%
     

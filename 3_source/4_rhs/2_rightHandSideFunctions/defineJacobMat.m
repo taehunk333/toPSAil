@@ -32,20 +32,24 @@
 %                            the state variables associated with the
 %                            current step inside a given PSA cycle.
 %             params       - a struct containing simulation parameters.
-%Outputs    : Jac          - the analytical expression for the Jacobian
+%Outputs    : dfdx         - the analytical expression for the Jacobian
 %                            matrix, evaluated at (t,x).
+%             dfdxp        - (for ode15i only) the analytical expression
+%                            for the 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function Jac = defineJacobMat(~,x,params)
+function [dfdx,dfdxp]  = defineJacobMat(t,x,params)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
-    
+        
     %Name the function ID
-    %funcId = 'defineJacobMat.m';    
+    %funcId = 'defineRhsFunc.m';    
     
-    
-    %---------------------------------------------------------------------%                            
+    %Unpack params              
+    funcVol = params.funcVol;
+    nS      = params.nS     ;
+    %---------------------------------------------------------------------%   
     
     
     
@@ -59,11 +63,69 @@ function Jac = defineJacobMat(~,x,params)
 
     
     %---------------------------------------------------------------------%
+    %Given a state vector, convert it to respective state variables
+    %associated with each columns and tanks    
+    
+    %Create an object for the columns
+    units.col = makeColumns(params,x);
+    
+    %Create an object for the feed tanks
+    units.feTa = makeFeedTank(params,x);
+    
+    %Create an object for the raffinate product tanks
+    units.raTa = makeRaffTank(params,x);  
+    
+    %Create an object for the extract product tanks
+    units.exTa = makeExtrTank(params,x); 
+    %---------------------------------------------------------------------%
+    
+    
+    
+    %---------------------------------------------------------------------%
+    %Define the inter-unit interactions in a given process flow diagram    
+    
+    %Update adsorption column structures to contain interactions between 
+    %units down or upstream
+    units = makeCol2Interact(params,units,nS);
+    
+    %Based on the volumetric flow function handle, obtain the corresponding
+    %volumetric flow rates associated with the adsorption columns
+    units = funcVol(params,units,nS);
+    %---------------------------------------------------------------------%  
+    
+    
+    
+    %---------------------------------------------------------------------%
     %
     
     
     
     
+    
+    %---------------------------------------------------------------------%
+    
+    
+    
+    %---------------------------------------------------------------------%
+    %Return the function outputs
+    
+    %Save dfdx
+    dfdx = [];
+    
+    %Save dfdxp. For now, 
+    dfdxp = [];
+    %---------------------------------------------------------------------%
+    
+    
+    
+    %---------------------------------------------------------------------%
+    %Test and compare against the finite difference code
+    
+    %Obtain the jacobian matrix using the finite difference method.
+    [dfdxFD,~] = calcJacMatFiniteDiff(t,x,params);    
+    
+    %Compare the elements of the two matricex
+    isequal(dfdx,dfdxFD)
     %---------------------------------------------------------------------%
     
 end
