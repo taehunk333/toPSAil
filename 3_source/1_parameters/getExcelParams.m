@@ -53,8 +53,33 @@ function params = getExcelParams(exFolder,nameFolder,nameExcelFile)
     %---------------------------------------------------------------------%    
     %Import simulation data from the excel file
     
-    %Define a string variable denoting the directory path to the Excel file
-    locExcelFile  = append(exFolder,'\',nameFolder,'\',nameExcelFile);
+    %Check if we are on a PC
+    if ispc
+        
+        %Define a string variable denoting the directory path to the Excel 
+        %file
+        locExcelFile  = append(exFolder,'\',nameFolder,'\',nameExcelFile);
+
+    %Check if we are on a Mac
+    elseif ismac
+
+        %Define a string variable denoting the directory path to the Excel 
+        %file
+        locExcelFile  = append(exFolder,'/',nameFolder,'/',nameExcelFile);
+
+    %Check if we are on a Linux
+    elseif isunix
+
+        %Let the user know that the platform is not supported
+        error('Platform not supported')
+
+    %Otherwise the platform is not supported
+    else
+
+        %Let the user know that the platform is not supported
+        error('Platform not supported')
+
+    end
     
     %Import the table containing the data    
     params = readtable(locExcelFile,'Sheet','Data(Transposed)');  
