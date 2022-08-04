@@ -1,4 +1,3 @@
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Project Sponsors :
 %U.S. Department of Energy 
@@ -101,8 +100,7 @@ function newStates = calcIsothermLinear(params,states,nAds)
                        
         %Get the affinity parameter matrix at a specified CSTR temperature 
         %for all CSTRs
-%         bC = getAdsAffConstant(params,states,nRows,nAds);               
-        bC = repmat(bC0,nRows,1);
+        bC = getAdsAffConstant(params,states,nRows,nAds);               
         
     %For non-isothermal operation,
     else
