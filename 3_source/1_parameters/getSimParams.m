@@ -64,7 +64,7 @@ function params = getSimParams(exampleFolder)
         %Define known information
         
         %Define the sub-folder names
-        subFolderName = ["1_simulation_inputs"];                          
+        subFolderName = "1_simulation_inputs";                          
 
         %Define the excel spreadsheet names for each sub-folder
         subFolder0 = ["0.1_simulation_configurations.xlsm", ...
