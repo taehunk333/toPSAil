@@ -57,7 +57,7 @@ function volFlowRat = calcVolFlowValRaEqCu(params,col,~,~,~,nS,nCo)
     %funcId = 'calcVolFlowValRaEqCu.m';      
     
     %Unpack Params       
-    valConNorm   = params.valConNorm  ;
+    valProdCol   = params.valProdCol  ;
     nAdsVals     = params.nAdsVals    ;
     colIntActTop = params.colIntActTop;
     sColNums     = params.sColNums    ;
@@ -67,7 +67,7 @@ function volFlowRat = calcVolFlowValRaEqCu(params,col,~,~,~,nS,nCo)
     nC2 = colIntActTop(nCo,nS);    
     
     %Get the valve constant associated with the current adsorption column
-    valConCurr = valConNorm(nAdsVals*(nCo-1)+3,nS);
+    valConCurr = valProdCol(nCo,nS);
     
     %For an open valve, grab a corresponding valve constant from the other
     %interacting column 

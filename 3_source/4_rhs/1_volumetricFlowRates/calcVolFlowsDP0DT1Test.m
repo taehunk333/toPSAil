@@ -72,7 +72,7 @@ function units = calcVolFlowsDP0DT1Test(params,units,nS)
     htCapCvNorm  = params.htCapCvNorm ;
     htCapCpNorm  = params.htCapCpNorm ; 
     volFlBoFree  = params.volFlBoFree ;
-    flowDir      = params.flowDir     ;
+    flowDirCol   = params.flowDirCol  ;
     
     %Unpack units
     col  = units.col ;
@@ -104,7 +104,7 @@ function units = calcVolFlowsDP0DT1Test(params,units,nS)
         %Obtain the information about the adsorber
         
         %Get the flow direction for (i)th adsorber at (nS)th step       
-        flowDirStep = flowDir(i,nS);
+        flowDirStep = flowDirCol(i,nS);
         %-----------------------------------------------------------------%
         
         

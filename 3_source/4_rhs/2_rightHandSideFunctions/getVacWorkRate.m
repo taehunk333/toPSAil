@@ -54,7 +54,7 @@ function units = getVacWorkRate(params,units,nS)
     pRat         = params.pRat        ;
     nCols        = params.nCols       ;
     sColNums     = params.sColNums    ;
-    flowDir      = params.flowDir     ;
+    flowDirCol   = params.flowDirCol  ;
     ambTempNorm  = params.ambTempNorm ;
     
     %Unpack units
@@ -102,7 +102,7 @@ function units = getVacWorkRate(params,units,nS)
         %because we care about the magnitude of the work rate.
         molFlIn = consIn ...
                 * abs(col.(sColNums{i}).volFlRat(:,1)) ...
-                * flowDir(i,nS);            
+                * flowDirCol(i,nS);            
             
         %Compute the driving force for the compression
         drivingForce = tempOut ...

@@ -56,8 +56,7 @@ function volFlowRat = calcVolFlowValSix2ExWa(params,col,~,~,~,nS,nCo)
     %funcId = 'calcVolFlowValSix2ExWa.m';      
     
     %Unpack Params    
-    valConNorm   = params.valConNorm  ;
-    nAdsVals     = params.nAdsVals    ;
+    valFeedCol   = params.valFeedCol  ;
     pRatVac      = params.pRatVac     ;
     sColNums     = params.sColNums    ;
     funcVal      = params.funcVal     ;
@@ -65,7 +64,7 @@ function volFlowRat = calcVolFlowValSix2ExWa(params,col,~,~,~,nS,nCo)
             
     %Get a dimensionless valve constant value for the waste valve (i.e. 
     %valve 6)
-    val6Con = valConNorm(nAdsVals*nCo,nS);        
+    val6Con = valFeedCol(nCo,nS);        
     %---------------------------------------------------------------------%                
       
     

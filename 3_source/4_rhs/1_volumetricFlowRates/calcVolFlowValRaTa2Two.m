@@ -56,14 +56,13 @@ function volFlowRat = calcVolFlowValRaTa2Two(params,col,~,raTa,~,nS,nCo)
     %funcId = 'calcVolFlowValRaTa2Two.m';      
     
     %Unpack Params       
-    valConNorm = params.valConNorm;
-    nAdsVals   = params.nAdsVals  ;
+    valFeedCol = params.valFeedCol;
     sColNums   = params.sColNums  ;
     funcVal    = params.funcVal   ;
     
     %Get a dimensionless valve constant value for the feed valve (i.e. 
     %valve 2)
-    val2Con = valConNorm(nAdsVals*(nCo-1)+2,nS);
+    val2Con = valFeedCol(nCo,nS);
     %---------------------------------------------------------------------%                
   
     

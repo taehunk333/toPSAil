@@ -47,18 +47,19 @@ function volFlowNorm = calcVolFlowNorm(params)
     funcId = 'calcVolFlowNorm.m';
     
     %Unpack Params
-    sStep    = params.sStep   ;
-    valConT  = params.valConT ;    
-    funcVal  = params.funcVal ;
-    funcEos  = params.funcEos ;
-    tempAmbi = params.tempAmbi;
-    presBeHi = params.presBeHi;
-    presFeTa = params.presFeTa;  
-    presRaTa = params.presRaTa;
-    gasCons  = params.gasCons ;
-    numZero  = params.numZero ;
-    tempCol  = params.tempCol ;
-    tempFeTa = params.tempFeTa;
+    sStepCol   = params.sStepCol  ; 
+    valFeedCol = params.valFeedCol;
+    valProdCol = params.valProdCol;
+    funcVal    = params.funcVal   ;
+    funcEos    = params.funcEos   ;
+    tempAmbi   = params.tempAmbi  ;
+    presBeHi   = params.presBeHi  ;
+    presFeTa   = params.presFeTa  ;  
+    presRaTa   = params.presRaTa  ;
+    gasCons    = params.gasCons   ;
+    numZero    = params.numZero   ;
+    tempCol    = params.tempCol   ;
+    tempFeTa   = params.tempFeTa  ;
     
     %Define scale factors for using valve equation in a dimensional form
     valScaleFac = 1000 ...
@@ -76,8 +77,19 @@ function volFlowNorm = calcVolFlowNorm(params)
     %adsorption column (by default)
     
     %Compare the strings inside a string array that contains the names of
-    %the steps in a given PSA cycle; Just look at the first column.
-    findHp = strcmp(sStep(1,:),"HP");
+    %the steps in a given PSA cycle; Just look at the first column. We can
+    %look for the feed entering from the feed-end and exiting either to the
+    %raffinate tank or to the atmosphere. And also look for the feed
+    %entering form the product end and exiting to the atmosphere.
+    findHp1 = strcmp(sStepCol(1,:),"HP-FEE-RAF");
+    findHp2 = strcmp(sStepCol(1,:),"HP-FEE-ATM");    
+    findHp3 = strcmp(sStepCol(1,:),"HP-ATM-FEE");    
+
+    %Add the indices
+    findHp = findHp1 + findHp2 + findHp3;
+    
+    %Set the nonzero indices equal to ones
+    findHp(1,findHp>0) = 1;
     
     %Find an index of the high pressure step; note that we are getting the
     %index for the first column
@@ -99,20 +111,20 @@ function volFlowNorm = calcVolFlowNorm(params)
     
     %---------------------------------------------------------------------%
     %Determine the valve constant associated with the high pressure feed in
-    %column 1
+    %"adsorption column 1"
     
     %logical statement for checking a valve-constant at the feed-end
-    hasCvFeedEnd = valConT(2,findHp) ~= 1 && valConT(2,findHp) ~= 0;
+    hasCvFeedEnd = sum(findHp1) ~= 0 || sum(findHp2) ~= 0;
     
     %logical statement for checking a valve-constant at the product-end
-    hasCvProdEnd = valConT(1,findHp) ~= 0 && valConT(1,findHp) ~= 1;
+    hasCvProdEnd = sum(findHp3) ~= 0;
     
     %If we have a valve constant specified at the feed-end, 
     if hasCvFeedEnd
     
         %Calculate the dimensionless valve constant; note that the feed 
         %valve for the first column is always valve 1
-        valConHp = valConT(2,findHp) ...
+        valConHp = valFeedCol(1,findHp) ...
                  * valScaleFac;
     
     %If we have a valve constant specified at the product-end,
@@ -120,7 +132,7 @@ function volFlowNorm = calcVolFlowNorm(params)
         
         %Calculate the dimensionless valve constant; note that the feed 
         %valve for the first column is always valve 1
-        valConHp = valConT(1,findHp) ...
+        valConHp = valProdCol(1,findHp) ...
                  * valScaleFac;
     
     %Otherwise, prompt the user to specify the valve constant correctly    

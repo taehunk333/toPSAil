@@ -43,14 +43,14 @@ function plotGasConsHighPresFeed(params,sol,colNum)
     %funcId = 'plotGasConsHighPresFeed';
     
     %Unpack Params
-    nComs        = params.nComs          ;  
-    lastStep     = sol.lastStep          ;
-    gConScaleFac = params.gConScaleFac   ;
-    heightCol    = params.heightCol      ;
-    nVols        = params.nVols          ;
-    sStep        = params.sStep(colNum,:); %For the current column
-    nSteps       = params.nSteps         ;
-    sCom         = params.sCom           ;
+    nComs        = params.nComs             ;  
+    lastStep     = sol.lastStep             ;
+    gConScaleFac = params.gConScaleFac      ;
+    heightCol    = params.heightCol         ;
+    nVols        = params.nVols             ;
+    sStepCol     = params.sStepCol(colNum,:); %For the current column
+    nSteps       = params.nSteps            ;
+    sCom         = params.sCom              ;
     %---------------------------------------------------------------------%
 
   
@@ -93,7 +93,7 @@ function plotGasConsHighPresFeed(params,sol,colNum)
     height = linspace(1,heightCol,nVols);
     
     %Find the high pressure step
-    indHp = find(sStep=="HP");
+    indHp = find(sStepCol=="HP");
     
     %Find the last high pressure step
     indHpEnd = lastStep ...

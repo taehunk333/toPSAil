@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/18/Monday
-%Code last modified on : 2022/3/3/Thursday
+%Code last modified on : 2022/8/8/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -56,16 +56,16 @@ function [event,isterminal,direction] = getEqEvent1(params,~,states,nS,~)
     %funcId = 'getEqEvent1.m';
     
     %Unpack params
-    presDiff = params.presDiff            ;
-    presBeHi = params.presBeHi            ;
-    eveColNo = params.eveColNo(nS)        ;
-    nComs    = params.nComs               ;
-    nColStT  = params.nColStT             ;
-    eveEqThr = params.eveEqThr            ;
-    valConT  = params.valConT             ;
-    flowDir  = params.flowDir(eveColNo,nS);
-    maxNoBC  = params.maxNoBC             ;
-    pRat     = params.pRat                ;
+    presDiff   = params.presDiff               ;
+    presBeHi   = params.presBeHi               ;
+    eveColNo   = params.eveColNo(nS)           ;
+    nComs      = params.nComs                  ;
+    nColStT    = params.nColStT                ;
+    eveEqThr   = params.eveEqThr               ;
+    valFeedCol = params.valFeedCol             ;
+    valProdCol = params.valProdCol             ;
+    flowDirCol = params.flowDirCol(eveColNo,nS);   
+    pRat       = params.pRat                   ;
     
     %Convert the states into a row vector
     states = states(:).';
@@ -87,14 +87,15 @@ function [event,isterminal,direction] = getEqEvent1(params,~,states,nS,~)
     %---------------------------------------------------------------------%
     %Determine the event termination criteria        
     
-    %Is one of the product-end valves open?
-    valProdOpen = valConT(maxNoBC*(eveColNo-1)+1,nS)~=0;
-    
     %Is one of the feed-end valves open?
-    valFeedOpen = valConT(maxNoBC*eveColNo,nS)~=0;
+    valFeedOpen = valFeedCol(eveColNo,nS)~=0;
+
+    %Is one of the product-end valves open?
+    valProdOpen = valProdCol(eveColNo,nS)~=0;        
     
     %Pressure will increase
-    if (valProdOpen && flowDir == 1) || (valFeedOpen && flowDir == 0)
+    if (valProdOpen && flowDirCol == 1) || ...
+       (valFeedOpen && flowDirCol == 0)
         
         %-----------------------------------------------------------------%
         %Get the event criteria
@@ -114,13 +115,14 @@ function [event,isterminal,direction] = getEqEvent1(params,~,states,nS,~)
         %-----------------------------------------------------------------%
                 
     %Pressure will decrease
-    elseif (valProdOpen && flowDir == 0) || (valFeedOpen && flowDir == 1)
+    elseif (valProdOpen && flowDirCol == 0) || ...
+           (valFeedOpen && flowDirCol == 1)
         
         %-----------------------------------------------------------------%
         %Get the event criteria
         
         %Calculate the intermediate pressure (dimensionless)
-        eveTotConInt = 1-eveEqThr*presDiff/presBeHi;
+        eveTotConInt = 1 - eveEqThr*presDiff/presBeHi;
         %-----------------------------------------------------------------%
         
         
@@ -130,7 +132,7 @@ function [event,isterminal,direction] = getEqEvent1(params,~,states,nS,~)
 
         %Total concentration differnce between the current pressure of the 
         %1st CSTR and the event intermediate pressure
-        event = gasConTot1-eveTotConInt;
+        event = gasConTot1 - eveTotConInt;
         %-----------------------------------------------------------------%
     
     end

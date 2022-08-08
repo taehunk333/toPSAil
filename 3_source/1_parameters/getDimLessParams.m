@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/5/Tuesday
-%Code last modified on : 2022/4/17/Sunday
+%Code last modified on : 2022/8/8/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -56,7 +56,8 @@ function params = getDimLessParams(params)
     ldfMtc       = params.ldfMtc      ;   
     gasCons      = params.gasCons     ;
     valScaleFac  = params.valScaleFac ;
-    valCon       = params.valCon      ;
+    valFeedCol   = params.valFeedCol  ;
+    valProdCol   = params.valProdCol  ;
     %---------------------------------------------------------------------%    
     
     
@@ -104,12 +105,11 @@ function params = getDimLessParams(params)
                   * teScaleFac ...
                   / presBeHi;
               
-    %Define dimensionless valve constants
-    valConNorm = valCon ...
+    %Define dimensionless valve constants (replaced valConNorm)
+    valFeedCol = valFeedCol ...
               .* valScaleFac;
-    
-    %Recover the unity values
-    valConNorm(valConNorm==valScaleFac) = 1;
+    valProdCol = valProdCol ...
+              .* valScaleFac;
     %---------------------------------------------------------------------%               
     
 
@@ -121,7 +121,8 @@ function params = getDimLessParams(params)
     params.partCoefHp    = partCoefHp   ;    
     params.damkoNo       = damkoNo      ;
     params.gasConsNormEq = gasConsNormEq;
-    params.valConNorm    = valConNorm   ;
+    params.valFeedCol    = valFeedCol   ;
+    params.valProdCol    = valProdCol   ;
     %---------------------------------------------------------------------%   
     
 end

@@ -56,14 +56,13 @@ function volFlowRat = calcVolFlowValRaTa2Fiv(params,col,~,raTa,~,nS,nCo)
     %funcId = 'calcVolFlowValRaTa2Fiv.m';      
     
     %Unpack Params       
-    valConNorm = params.valConNorm;
-    nAdsVals   = params.nAdsVals  ;
+    valProdCol = params.valProdCol;    
     sColNums   = params.sColNums  ;
     funcVal    = params.funcVal   ;
     
     %Get a dimensionless valve constant value for the purge/pressurization
     %valve (i.e., valve 5)
-    val5Con = valConNorm(nAdsVals*(nCo-1)+5,nS);
+    val5Con = valProdCol(Co,nS);
     %---------------------------------------------------------------------%                
   
     

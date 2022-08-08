@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/2/7/Monday
-%Code last modified on : 2022/3/3/Thursday
+%Code last modified on : 2022/8/8/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -56,8 +56,7 @@ function volFlowRat = calcVolFlowValOne2RaWa(params,col,~,~,~,nS,nCo)
     %funcId = 'calcVolFlowValOne2RaWa.m';      
     
     %Unpack Params    
-    valConNorm   = params.valConNorm  ;
-    nAdsVals     = params.nAdsVals    ;
+    valProdCol   = params.valProdCol  ;   
     sColNums     = params.sColNums    ;
     pRatAmb      = params.pRatAmb     ;
     funcVal      = params.funcVal     ;
@@ -65,7 +64,7 @@ function volFlowRat = calcVolFlowValOne2RaWa(params,col,~,~,~,nS,nCo)
     
     %Get a dimensionless valve constant value for the product valve (i.e. 
     %valve 1)
-    val1Con = valConNorm(nAdsVals*(nCo-1)+1,nS);
+    val1Con = valProdCol(nCo,nS);
     %---------------------------------------------------------------------%                
   
     

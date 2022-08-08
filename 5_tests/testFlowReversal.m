@@ -82,11 +82,11 @@ function status = testFlowReversal(t,y,flags,varargin)
         nS = varargin{2};
         
         %Unpack the current cycle number
-        nCy = varargin{3};
+%         nCy = varargin{3};
 
         %Unpack params              
-        funcVol = params.funcVol;
-        flowDir = params.flowDir(1,nS); %In the first adsorber
+        funcVol    = params.funcVol;
+%         flowDirCol = params.flowDirCol(1,nS); %In the first adsorber
 
         %Save needed quantity: We are just concerned with a single time
         %point inside the RhS function

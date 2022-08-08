@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/26/Tuesday
-%Code last modified on : 2022/3/3/Thursday
+%Code last modified on : 2022/8/8/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -28,7 +28,7 @@
 %Description: a function that calculates a volumetric flow rate after a
 %             linear valve located in the lower pressure adsorption column
 %             of a pair of two adsorption columns undergoing a pressure
-%             equalization in the product-end. This function should be used
+%             equalization at the product-end. This function should be used
 %             for a co-current flow direction.
 %Inputs     : params       - a struct containing simulation parameters.
 %             col          - a struct containing state variables and
@@ -57,7 +57,7 @@ function volFlowRat = calcVolFlowValRaEqCo(params,col,~,~,~,nS,nCo)
     %funcId = 'calcVolFlowValRaEqCo.m';      
     
     %Unpack Params      
-    valConNorm   = params.valConNorm  ;
+    valProdCol   = params.valProdCol  ;
     nAdsVals     = params.nAdsVals    ;
     colIntActTop = params.colIntActTop;
     sColNums     = params.sColNums    ;
@@ -67,7 +67,7 @@ function volFlowRat = calcVolFlowValRaEqCo(params,col,~,~,~,nS,nCo)
     nC2 = colIntActTop(nCo,nS);    
     
     %Get the valve constant associated with the current adsorption column
-    valConCurr = valConNorm(nAdsVals*(nCo-1)+3,nS);
+    valConCurr = valProdCol(nCo,nS);
     
     %For an open valve, grab a corresponding valve constant from the other
     %interacting column 

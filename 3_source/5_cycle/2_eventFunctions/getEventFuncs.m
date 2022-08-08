@@ -43,11 +43,11 @@ function funcEve = getEventFuncs(params)
     funcId = 'getEventFuncs.m';
     
     %Unpack params
-    nSteps   = params.nSteps  ;     
-    sStep    = params.sStep   ;    
-    eveStep  = params.eveStep ;
-    eveColNo = params.eveColNo;
-    flowDir  = params.flowDir ;
+    nSteps     = params.nSteps    ;     
+    sStepCol   = params.sStepCol  ;      
+    eveStep    = params.eveStep   ;
+    eveColNo   = params.eveColNo  ;
+    flowDirCol = params.flowDirCol;
     %---------------------------------------------------------------------%                                  
     
     
@@ -93,7 +93,7 @@ function funcEve = getEventFuncs(params)
         else
             
             %Define the flow direction in the column undergoing the event
-            eveFlowDir = flowDir(eveColNoCurr,i);
+            eveFlowDir = flowDirCol(eveColNoCurr,i);
             
         end
         %-----------------------------------------------------------------%
@@ -114,7 +114,7 @@ function funcEve = getEventFuncs(params)
 
         %-----------------------------------------------------------------%
         %If the step is a re-pressurization step            
-        elseif sStep{eveColNoCurr,i} == "RP"
+        elseif sStepCol{eveColNoCurr,i} == "RP"
             
             %If not a event driven mode,
             if eveStep(i) == 0
@@ -173,7 +173,7 @@ function funcEve = getEventFuncs(params)
 
         %-----------------------------------------------------------------%            
         %If the step is a high pressure feed step
-        elseif sStep{eveColNoCurr,i} == "HP" 
+        elseif sStepCol{eveColNoCurr,i} == "HP" 
 
             %If not a event driven mode,
             if eveStep(i) == 0
@@ -248,7 +248,7 @@ function funcEve = getEventFuncs(params)
 
         %-----------------------------------------------------------------%
         %If the step is a depressurization step
-        elseif sStep{eveColNoCurr,i} == "DP" 
+        elseif sStepCol{eveColNoCurr,i} == "DP" 
             
             %If not a event driven mode,
             if eveStep(i) == 0
@@ -307,7 +307,7 @@ function funcEve = getEventFuncs(params)
 
         %-----------------------------------------------------------------%
         %If the step is a low pressure purge step
-        elseif sStep{eveColNoCurr,i} == "LP" 
+        elseif sStepCol{eveColNoCurr,i} == "LP" 
             
             %If not a event driven mode,
             if eveStep(i) == 0
@@ -374,7 +374,7 @@ function funcEve = getEventFuncs(params)
 
         %-----------------------------------------------------------------%
         %If the step is a pressure equalization step
-        elseif sStep{eveColNoCurr,i} == "EQ"
+        elseif sStepCol{eveColNoCurr,i} == "EQ"
             
             %If not a event driven mode,
             if eveStep(i) == 0
@@ -433,7 +433,7 @@ function funcEve = getEventFuncs(params)
 
         %-----------------------------------------------------------------%
         %If the step is a rest step
-        elseif sStep{eveColNoCurr,i} == "RT" 
+        elseif sStepCol{eveColNoCurr,i} == "RT" 
 
             %If not a event driven mode,
             if eveStep(i) == 0
@@ -484,7 +484,7 @@ function funcEve = getEventFuncs(params)
         
         %-----------------------------------------------------------------%
         %If the step is a rinse step
-        elseif sStep{eveColNoCurr,i} == "RN" 
+        elseif sStepCol{eveColNoCurr,i} == "RN" 
 
             %If not a event driven mode,
             if eveStep(i) == 0

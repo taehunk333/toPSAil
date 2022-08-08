@@ -41,7 +41,7 @@ function params = getCycleOrg(params)
     
     %Unpack Params
     nSteps      = params.nSteps     ;  
-    sStep       = params.sStep      ;
+    sStepCol    = params.sStepCol   ;
     nCols       = params.nCols      ;
     nAdsVals    = params.nAdsVals   ;    
     valConNorm  = params.valConNorm ;
@@ -97,19 +97,19 @@ function params = getCycleOrg(params)
             
             %For re-pressurization, depressurization, equalization, and
             %rest, use time varying pressure DAE model
-            if sStep{i,j}=="RP" || ...
-               sStep{i,j}=="DP" || ...
-               sStep{i,j}=="EQ" || ...
-               sStep{i,j}=="RT"
+            if sStepCol{i,j}=="RP" || ...
+               sStepCol{i,j}=="DP" || ...
+               sStepCol{i,j}=="EQ" || ...
+               sStepCol{i,j}=="RT"
                 
                 %Assign the DAE model
                 params.daeModel(i,j) = 1;       
   
             %For high pressure feed, low pressure purge, and rinse, use a
             %constant pressure DAE model
-            elseif sStep{i,j}=="HP" || ...
-                   sStep{i,j}=="LP" || ...
-                   sStep{i,j}=="RN"
+            elseif sStepCol{i,j}=="HP" || ...
+                   sStepCol{i,j}=="LP" || ...
+                   sStepCol{i,j}=="RN"
                 
                 %Assign the DAE model
                 params.daeModel(i,j) = 0;

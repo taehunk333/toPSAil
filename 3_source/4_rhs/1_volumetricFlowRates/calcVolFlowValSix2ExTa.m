@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/26/Tuesday
-%Code last modified on : 2022/3/3/Thursday
+%Code last modified on : 2022/8/8/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -56,14 +56,13 @@ function volFlowRat = calcVolFlowValSix2ExTa(params,col,~,~,exTa,nS,nCo)
     %funcId = 'calcVolFlowValSix2ExTa.m';      
     
     %Unpack Params    
-    valConNorm = params.valConNorm;
-    nAdsVals   = params.nAdsVals  ;
+    valFeedCol = params.valFeedCol;
     sColNums   = params.sColNums  ;
     funcVal    = params.funcVal   ;
             
     %Get a dimensionless valve constant value for the waste valve (i.e. 
     %valve 6)
-    val6Con = valConNorm(nAdsVals*nCo,nS);        
+    val6Con = valFeedCol(nCo,nS);        
     %---------------------------------------------------------------------%                
       
     

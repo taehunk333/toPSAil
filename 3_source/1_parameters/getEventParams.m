@@ -41,7 +41,7 @@ function params = getEventParams(params)
     
     %Unpack params
     eveVal   = params.eveVal  ;
-    sStep    = params.sStep   ;
+    sStepCol = params.sStepCol;
     eveCol   = params.eveColNo;
     eveStep  = params.eveStep ;
     nSteps   = params.nSteps  ;
@@ -69,7 +69,7 @@ function params = getEventParams(params)
         %Obtain threshold values for the event functions
 
         %If the event is happening for re-pressurization step,
-        if eveColNoCurr ~=0 && sStep{eveColNoCurr,i} == "RP"
+        if eveColNoCurr ~=0 && sStepCol{eveColNoCurr,i} == "RP"
                 
             %-------------------------------------------------------------%    
             %For the first event criteria
@@ -97,7 +97,7 @@ function params = getEventParams(params)
             
         %-----------------------------------------------------------------%    
         %If the event is happening for high pressure feed step,
-        elseif eveColNoCurr ~=0 && sStep{eveColNoCurr,i} == "HP" 
+        elseif eveColNoCurr ~=0 && sStepCol{eveColNoCurr,i} == "HP" 
             
             %-------------------------------------------------------------%    
             %For the first event criteria
@@ -127,7 +127,7 @@ function params = getEventParams(params)
             
         %-----------------------------------------------------------------%    
         %If the event is happening for depressurization step,
-        elseif eveColNoCurr ~=0 && sStep{eveColNoCurr,i} == "DP" 
+        elseif eveColNoCurr ~=0 && sStepCol{eveColNoCurr,i} == "DP" 
             
             %-------------------------------------------------------------%    
             %For the first event criteria
@@ -155,7 +155,7 @@ function params = getEventParams(params)
             
         %-----------------------------------------------------------------%
         %If the event is happening for low pressure purge step,
-        elseif eveColNoCurr ~=0 && sStep{eveColNoCurr,i} == "LP"
+        elseif eveColNoCurr ~=0 && sStepCol{eveColNoCurr,i} == "LP"
             
             %-------------------------------------------------------------%    
             %For the first event criteria
@@ -186,7 +186,7 @@ function params = getEventParams(params)
             
         %-----------------------------------------------------------------%                            
         %If the event is happening for equalization step,
-        elseif eveColNoCurr ~=0 && sStep{eveColNoCurr,i} == "EQ"
+        elseif eveColNoCurr ~=0 && sStepCol{eveColNoCurr,i} == "EQ"
             
             %-------------------------------------------------------------%    
             %For the first event criteria
@@ -214,7 +214,7 @@ function params = getEventParams(params)
             
         %-----------------------------------------------------------------%                
         %If the event is happening for rest step,
-        elseif eveColNoCurr ~=0 && sStep{eveColNoCurr,i} == "RT"
+        elseif eveColNoCurr ~=0 && sStepCol{eveColNoCurr,i} == "RT"
             
             %-------------------------------------------------------------%    
             %For the first event criteria
@@ -241,7 +241,7 @@ function params = getEventParams(params)
         
         %-----------------------------------------------------------------%                
         %If the event is happening for rinse step,
-        elseif eveColNoCurr ~=0 && sStep{eveColNoCurr,i} == "RN"
+        elseif eveColNoCurr ~=0 && sStepCol{eveColNoCurr,i} == "RN"
             
             %-------------------------------------------------------------%    
             %For the first event criteria

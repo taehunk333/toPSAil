@@ -58,7 +58,7 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT1Re(params,nS,nC,nTp)
     nVols       = params.nVols      ;          
     daeModCur   = params.daeModel   ;  
     volFlBoFree = params.volFlBoFree;
-    flowDir     = params.flowDir    ;
+%     flowDirCol  = params.flowDirCol ;
     
     %Unpack the time dependent at nTp
     alphaPlusN  = params.alphaPlusN(nTp,:) ;
@@ -134,17 +134,17 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT1Re(params,nS,nC,nTp)
                           .* vFlMinus(i);
 
                 %Determine the flow direction
-                flowDir = (rhsVecEval >= 0);
+                flowDirCol = (rhsVecEval >= 0);
 
                 %Compute the pseudo volumetric flow rates
                 vFlPlus(:,i+1) ...
                     = rhsVecEval ... 
                    ./ alphaZeroN(:,i) ...
-                   .* flowDir ;
+                   .* flowDirCol ;
                 vFlMinus(:,i+1) ...
                     = rhsVecEval ...
                    ./ alphaMinusN(:,i) ...
-                   .* (1-flowDir);
+                   .* (1-flowDirCol);
 
             end        
             %-------------------------------------------------------------%
@@ -180,17 +180,17 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT1Re(params,nS,nC,nTp)
                           .* vFlMinus(i+1);
 
                 %Determine the flow direction
-                flowDir = (rhsVecEval >= 0);
+                flowDirCol = (rhsVecEval >= 0);
 
                 %Compute the pseudo volumetric flow rates
                 vFlPlus(:,i) ...
                     = rhsVecEval ...
                    ./ alphaPlusN(:,i) ...
-                   .* (1-flowDir) ;
+                   .* (1-flowDirCol) ;
                 vFlMinus(:,i) ...
                     = rhsVecEval ...
                    ./ alphaZeroN(:,i) ...
-                   .* flowDir;
+                   .* flowDirCol;
 
             end 
             %-------------------------------------------------------------% 
