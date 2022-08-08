@@ -56,14 +56,13 @@ function volFlowRat = calcVolFlowValOne2RaTa(params,col,~,raTa,~,nS,nCo)
     %funcId = 'calcVolFlowValOne2RaTa.m';      
     
     %Unpack Params    
-    valConNorm = params.valConNorm; 
-    nAdsVals   = params.nAdsVals  ;
+    valProdCol = params.valProdCol;
     sColNums   = params.sColNums  ;
     funcVal    = params.funcVal   ;
     
     %Get a dimensionless valve constant value for the product valve (i.e. 
     %valve 1)
-    val1Con = valConNorm(nAdsVals*(nCo-1)+1,nS);
+    val1Con = valProdCol(nCo,nS);
     %---------------------------------------------------------------------%                
   
     

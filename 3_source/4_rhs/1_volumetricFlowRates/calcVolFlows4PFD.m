@@ -51,22 +51,22 @@ function units = calcVolFlows4PFD(params,units,nS)
     %funcId = 'calcVolFlows4PFD.m';
     
     %Unpack params   
-    nCols     = params.nCols    ; 
-    nVols     = params.nVols    ;        
-    presBeHi  = params.presBeHi ;
-    presRaTa  = params.presRaTa ;
-    presExTa  = params.presExTa ;
-    sColNums  = params.sColNums ;
-    valRaTa   = params.valRaTa  ;
-    valExTa   = params.valExTa  ;
-    nRows     = params.nRows    ;
-    flowDir   = params.flowDir  ;
-    valRinTop = params.valRinTop;
-    valRinBot = params.valRinBot;
-    valPurBot = params.valPurBot;
-    valFeeTop = params.valFeeTop;
-    pRatAmb   = params.pRatAmb  ;
-    pRatVac   = params.pRatVac  ;
+    nCols      = params.nCols     ; 
+    nVols      = params.nVols     ;        
+    presBeHi   = params.presBeHi  ;
+    presRaTa   = params.presRaTa  ;
+    presExTa   = params.presExTa  ;
+    sColNums   = params.sColNums  ;
+    valRaTa    = params.valRaTa   ;
+    valExTa    = params.valExTa   ;
+    nRows      = params.nRows     ;
+    flowDirCol = params.flowDirCol;
+    valRinTop  = params.valRinTop ;
+    valRinBot  = params.valRinBot ;
+    valPurBot  = params.valPurBot ;
+    valFeeTop  = params.valFeeTop ;
+    pRatAmb    = params.pRatAmb   ;
+    pRatVac    = params.pRatVac   ;
     
     %Unpack units
     col  = units.col ;
@@ -128,7 +128,7 @@ function units = calcVolFlows4PFD(params,units,nS)
         
         %If the flow direction is co-current, and we are interacting with 
         %the feed tank through the feed-end of the jth adsorber 
-        if flowDir(i,nS) == 0 && ... %co-current flow
+        if flowDirCol(i,nS) == 0 && ... %co-current flow
            valFeeTop(nS) == 0 && ... %feed from the bottom
            valRinBot(nS) == 0 && ... %no rinse at the bottom-end
            valPurBot(nS) == 0        %no purge at the bottom-end           
@@ -143,7 +143,7 @@ function units = calcVolFlows4PFD(params,units,nS)
         
         %If the flow direction is counter-current, and we are interacting 
         %with the product tank through the product-end of the jth adsorber 
-        elseif flowDir(i,nS) == 1 && ... %counter-current flow
+        elseif flowDirCol(i,nS) == 1 && ... %counter-current flow
                valFeeTop(nS) == 1        %feed from the top              
                 
             %Determine the scale factor for the volumetric flow rate
@@ -173,7 +173,7 @@ function units = calcVolFlows4PFD(params,units,nS)
         %If the flow direction is co-current, the jth adsorber can interact
         %with the raffinate product tank through the bottom-end of the jth 
         %adsorber
-        if flowDir(i,nS) == 0 && ...
+        if flowDirCol(i,nS) == 0 && ...
            valPurBot(nS) == 1 
             
             %Determine the scale factor for the volumetric flow rate
@@ -191,7 +191,7 @@ function units = calcVolFlows4PFD(params,units,nS)
         %If the flow direction is co-current, and we are interacting with 
         %the raffinate product tank through the product-end of the jth 
         %adsorber 
-        elseif flowDir(i,nS) == 0
+        elseif flowDirCol(i,nS) == 0
 
             %Determine the scale factor for the volumetric flow rate
             vFlScaleFac1 = col.(sColNums{i}).gasConsTot(:,end) ...
@@ -219,7 +219,7 @@ function units = calcVolFlows4PFD(params,units,nS)
         %If the flow direction is counter-current, and we are interacting
         %with the raffinate product tank through the product-end of the jth 
         %adsorber 
-        elseif flowDir(i,nS) == 1 
+        elseif flowDirCol(i,nS) == 1 
             
             %Determine the scale factor for the volumetric flow rate
             vFlScaleFac = col.(sColNums{i}).gasConsTot(:,end) ...
@@ -243,7 +243,7 @@ function units = calcVolFlows4PFD(params,units,nS)
         %If the flow direction is counter-current, and we are interacting
         %with the extract product tank through the top-end of the jth 
         %adsorber 
-        if flowDir(i,nS) == 1 && ...
+        if flowDirCol(i,nS) == 1 && ...
            valRinTop(nS) == 1   
            
             %Determine the scale factor for the volumetric flow rate
@@ -260,7 +260,7 @@ function units = calcVolFlows4PFD(params,units,nS)
         %If the flow direction is co-current, the jth adsorber can interact
         %with the extract product tank through the bottom-end of the jth 
         %adsorber
-        elseif flowDir(i,nS) == 0 && ...
+        elseif flowDirCol(i,nS) == 0 && ...
                valRinBot(nS) == 1
            
             %Determine the scale factor for the volumetric flow rate
@@ -278,7 +278,7 @@ function units = calcVolFlows4PFD(params,units,nS)
         %If the flow direction is counter-current, and we are interacting
         %with the extract product tank through the bottom-end of the jth 
         %adsorber 
-        elseif flowDir(i,nS) == 1 ... %Counter-current flow
+        elseif flowDirCol(i,nS) == 1 ... %Counter-current flow
         
             %Determine the scale factor for the volumetric flow rate
             vFlScaleFac1 = col.(sColNums{i}).gasConsTot(:,1) ...

@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/18/Monday
-%Code last modified on : 2022/5/18/Wednesday
+%Code last modified on : 2022/8/8/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -49,7 +49,7 @@ function sol = runPsaCycle(params)
     nCycles    = params.nCycles   ;
     nSteps     = params.nSteps    ;
     nTiPts     = params.nTiPts    ;    
-    sStep      = params.sStep     ;
+    sStepCol   = params.sStepCol  ;
     nStatesT   = params.nStatesT  ;
     numZero    = params.numZero   ;
     timeSpan   = params.timeSpan  ;
@@ -302,7 +302,7 @@ function sol = runPsaCycle(params)
                 for i = 1 : nCols  
                     
                     %Update the time flag
-                    timeFlags(:,i) = {sStep{i,currStepNum}}; 
+                    timeFlags(:,i) = {sStepCol{i,currStepNum}}; 
                     
                 end
                 %---------------------------------------------------------%
@@ -424,7 +424,7 @@ function sol = runPsaCycle(params)
                 for i = 1 : nCols
                     
                     %Print a step name associated with ith column
-                    fprintf("%s ",params.sStep(i,nS));
+                    fprintf("%s ",sStepCol(i,nS));
                     
                 end                        
                                                 

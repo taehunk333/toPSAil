@@ -94,7 +94,7 @@ function units = getRaTaEnerBal(params,units,nS)
     nCols          = params.nCols         ;
     sColNums       = params.sColNums      ;
     sComNums       = params.sComNums      ;
-    flowDir        = params.flowDir       ;    
+    flowDirCol     = params.flowDirCol    ;    
     valRaTa        = params.valRaTa       ;
     valPurBot      = params.valPurBot     ;
     gConsNormRaTa  = params.gConsNormRaTa ;
@@ -152,7 +152,7 @@ function units = getRaTaEnerBal(params,units,nS)
 
         %If we have a counter-current flow in the current adsorber (i.e., 
         %we are doing a purge or pressurization at the product end)
-        if flowDir(i,nS) == 1 
+        if flowDirCol(i,nS) == 1 
             
             %Update the net molar flow (since the flow is in a negative
             %direction, the voluemtric flow is negative)
@@ -165,7 +165,7 @@ function units = getRaTaEnerBal(params,units,nS)
                                     
         %If we have a co-current flow in the current adosrber and we are
         %doing co-current purge or co-current pressurization
-        elseif flowDir(i,nS) == 0 && valPurBot(nS) == 1
+        elseif flowDirCol(i,nS) == 0 && valPurBot(nS) == 1
             
             %Update the net molar flow (since the flow is in a negative
             %direction, the voluemtric flow is negative)
@@ -178,7 +178,7 @@ function units = getRaTaEnerBal(params,units,nS)
 
         %If we have a co-current flow in the current adsorber and we are
         %collecting the raffinate product
-        elseif flowDir(i,nS) == 0 && valRaTa(nS) == 1
+        elseif flowDirCol(i,nS) == 0 && valRaTa(nS) == 1
 
             %Update the net molar flow (since the flow is in a negative
             %direction, the voluemtric flow is negative)

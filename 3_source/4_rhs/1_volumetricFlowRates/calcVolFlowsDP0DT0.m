@@ -57,7 +57,7 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
     sColNums    = params.sColNums   ;
     nRows       = params.nRows      ;
     volFlBoFree = params.volFlBoFree;
-    flowDir     = params.flowDir    ;
+    flowDirCol  = params.flowDirCol ;
     
     %Unpack units
     col  = units.col ;
@@ -79,7 +79,7 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
         %Obtain the information about the adsorber
         
         %Get the flow direction for (i)th adsorber at (nS)th step       
-        flowDirStep = flowDir(i,nS);
+        flowDirStep = flowDirCol(i,nS);
         %-----------------------------------------------------------------%
         
         

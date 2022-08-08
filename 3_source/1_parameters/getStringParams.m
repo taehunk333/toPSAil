@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/22/Friday
-%Code last modified on : 2022/1/31/Monday
+%Code last modified on : 2022/8/8/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -37,58 +37,39 @@ function params = getStringParams(params)
     %Define known quantities
     
     %Name the function ID
-    funcId = 'getStringParams.m';
+    %funcId = 'getStringParams.m';
     
     %Unpack params
-    valOneCol  = params.valOneCol ;
-    valTwoCol  = params.valTwoCol ;
-    valThrCol  = params.valThrCol ;
-    valFouCol  = params.valFouCol ;
-    valFivCol  = params.valFivCol ;
-    valSixCol  = params.valSixCol ;    
-    eveColNo   = params.eveColNo  ;
     nSteps     = params.nSteps    ;    
-    nCols      = params.nCols     ;
-    sStepCol   = params.sStepCol  ;
-    flowDirCol = params.flowDirCol;
-    nAdsValsT  = params.nAdsValsT ;    
-    nAdsVals   = params.nAdsVals  ;
-    maxNoBC    = params.maxNoBC   ; 
+    nCols      = params.nCols     ;    
     nComs      = params.nComs     ;
-    valRaTa    = params.valRaTa   ;
-    valExTa    = params.valExTa   ;
-    valRinTop  = params.valRinTop ;
-    valRinBot  = params.valRinBot ;
-    valPurBot  = params.valPurBot ;
-    valFeeTop  = params.valFeeTop ;
+    durStep    = params.durStep   ;
+    eveVal     = params.eveVal    ;
+    eveUnit    = params.eveUnit   ;
+    eveLoc     = params.eveLoc    ;
+    sStepCol   = params.sStepCol  ;
+    sTypeCol   = params.sTypeCol  ;
+    valFeedCol = params.valFeedCol;
+    valProdCol = params.valProdCol;
+    flowDirCol = params.flowDirCol;
     %---------------------------------------------------------------------%                                                        
     
     
     
     %---------------------------------------------------------------------%
-    %Initialize solution arrays
+    %Initialize solution arrays   
     
-    %Initialize a string array that stores step names
-    sStep = strings(nCols,nSteps);      
-    
-    %Initialize a numeric array that stores flow directions
+    %Initialize a numeric array that stores the flow directions for all
+    %columns, for all steps
     flowDir = zeros(nCols,nSteps);
-    
-    %Initialize a numeric array that stores the valve constant values. The
-    %first 6*nCols columns represent constant valve values.
-    valConVals = zeros(nAdsValsT,nSteps);        
-    
-    %Initialize a numeric array that is smaller than valConVals because we
-    %added valve constants for 1, 3, and 5 and 2, 4, and 6
-    valConValsT = zeros(maxNoBC*nCols,nSteps); 
-    
-    %Intialize a cell array for holding the name of chemical species in the
-    %system
-    sComNums = cell(nComs,1);
-    
-    %Intialize a cell array for holding the name of the adsorption columns
-    %inside the system
-    sColNums = cell(nCols,1);        
+
+    %Initialize a numeric array that stores the type of the DAE model,
+    %i.e., time-varying pressure (1) vs. constant pressure (0)
+    typeCol = zeros(nCols,nSteps);
+
+    %Initialize cell arrays that stores differents
+    sComNums = cell(nComs,1)     ; %a column vector (nComs x 1)
+    sColNums = cell(nCols,1)     ; %a column vector (nComs x 1)
     %---------------------------------------------------------------------%    
         
     
@@ -122,180 +103,52 @@ function params = getStringParams(params)
         
     
     %---------------------------------------------------------------------%
-    %Unpack strings related to cycle information and store them as needed
+    %Unpack strings and store them as needed
     
-    %Split the string variable containing the tank interaction boolean
-    %variables
-    valRaTa   = split(valRaTa)  ;
-    valExTa   = split(valExTa)  ;
-    valRinTop = split(valRinTop);
-    valRinBot = split(valRinBot);
-    valPurBot = split(valPurBot);
-    valFeeTop = split(valFeeTop);
+    %Split the string variables
+    durStep    = split(durStep)   ; %a row vector (1 x nSteps)
+    eveVal     = split(eveVal)    ; %a row vector (1 x nSteps)    
+    valFeedCol = split(valFeedCol); %a matrix (nCols x nSteps)
+    valProdCol = split(valProdCol); %a matrix (nCols x nSteps)
+    eveUnit    = split(eveUnit)'  ; %a row vector (1 x nSteps)
+    eveLoc     = split(eveLoc)'   ; %a row vector (1 x nSteps)
+    sStepCol   = split(sStepCol)  ; %a matrix (nCols x nSteps)
+    sTypeCol   = split(sTypeCol)  ; %a matrix (nCols x nSteps)
+    flowDirCol = split(flowDirCol); %a matrix (nCols x nSteps)
     
     %Convert the cell array containing the splitted strings into a
     %numerical array and store it as a row vector
-    valRaTa   = str2double(valRaTa)'  ;
-    valExTa   = str2double(valExTa)'  ;   
-    valRinTop = str2double(valRinTop)';
-    valRinBot = str2double(valRinBot)';
-    valPurBot = str2double(valPurBot)';
-    valFeeTop = str2double(valFeeTop)';
-    
+    durStep    = str2double(durStep)'  ;
+    eveVal     = str2double(eveVal)'   ;
+    valFeedCol = str2double(valFeedCol); %a matrix (nCols x nSteps)
+    valProdCol = str2double(valProdCol); %a matrix (nCols x nSteps)
+      
     %For each columns,
-    for i = 1 : nCols
-        
-        %-----------------------------------------------------------------%
-        %Get the ith column step names
-        
-        %Access the strings for step names in the ith column, split the 
-        %strings, and save it in ith row of sStep
-        sStep(i,:) = split(sStepCol{i})';        
-        %-----------------------------------------------------------------%
-        
-        
+    for i = 1 : nCols         
         
         %-----------------------------------------------------------------%
         %Get the ith column flow directions
-        
-        %For the string containing the flow directions and break it up.
-        testVal = split(flowDirCol{i})';
-        
+                
         %Find the indices for the counter-currents
-        indCou = find(testVal=="1");                
+        indNegFlowDir = find(flowDirCol(i,:)=="1_(negative)");                
         
         %Save the flow directions
-        flowDir(i,indCou) = ones(1,length(indCou));        
-        %-----------------------------------------------------------------% 
-        
-        
-        
-        %-----------------------------------------------------------------% 
-        %From the user defined inputs, obtain valve constant values inside
-        %numerical arrays
-        
-        %Obtain the valve constant values for all steps and store them in       
-        %the row corresponding for aa 6 valves
-        val1ColVals = str2double(split(valOneCol{i}))';
-        val2ColVals = str2double(split(valTwoCol{i}))';
-        val3ColVals = str2double(split(valThrCol{i}))';
-        val4ColVals = str2double(split(valFouCol{i}))';
-        val5ColVals = str2double(split(valFivCol{i}))';
-        val6ColVals = str2double(split(valSixCol{i}))';
-        %-----------------------------------------------------------------% 
-        
-        
-        
-        %-----------------------------------------------------------------% 
-        %Check for any user input errors
-        
-        %Check to see if the user has specified a right number of valve
-        %constant values for a given valve
-        if nSteps ~= length(val1ColVals)
-            
-            %Print the error message
-            msg1 = 'Please provide a right number of valve constants';
-            msg2 = ' for valve 1 in column %d.'                      ;
-            msg3 = 'i.e. equal to the number of the steps.'          ;
-            msg  = append(funcId,': ',msg1,msg2,msg3)                ;
-            error(msg,i);   
-            
-        elseif nSteps ~= length(val2ColVals)
-            
-            %Print the error message
-            msg1 = 'Please provide a right number of valve constants';
-            msg2 = ' for valve 2 in column %d.'                      ;
-            msg3 = 'i.e. equal to the number of the steps.'          ;
-            msg  = append(funcId,': ',msg1,msg2,msg3)                ;
-            error(msg,i)                                             ; 
-            
-        elseif nSteps ~= length(val3ColVals)
-            
-            %Print the error message
-            msg1 = 'Please provide a right number of valve constants';
-            msg2 = ' for valve 3 in column %d.'                      ;
-            msg3 = 'i.e. equal to the number of the steps.'          ;
-            msg  = append(funcId,': ',msg1,msg2,msg3)                ;
-            error(msg,i)                                             ; 
-            
-        elseif nSteps ~= length(val4ColVals)
-            
-            %Print the error message
-            msg1 = 'Please provide a right number of valve constants';
-            msg2 = ' for valve 4 in column %d.'                      ;
-            msg3 = 'i.e. equal to the number of the steps.'          ;
-            msg  = append(funcId,': ',msg1,msg2,msg3)                ;
-            error(msg,i)                                             ;  
-            
-        elseif nSteps ~= length(val5ColVals)
-            
-            %Print the error message
-            msg1 = 'Please provide a right number of valve constants';
-            msg2 = ' for valve 5 in column %d.'                      ;
-            msg3 = 'i.e. equal to the number of the steps.'          ;
-            msg  = append(funcId,': ',msg1,msg2,msg3)                ;
-            error(msg,i)                                             ;  
-            
-        elseif nSteps ~= length(val6ColVals)
-            
-            %Print the error message
-            msg1 = 'Please provide a right number of valve constants';
-            msg2 = ' for valve 6 in column %d.'                      ;
-            msg3 = 'i.e. equal to the number of the steps.'          ;
-            msg  = append(funcId,': ',msg1,msg2,msg3)                ;
-            error(msg,i)                                             ; 
-            
-        end
-        %-----------------------------------------------------------------% 
-        
-        
-        
-        %-----------------------------------------------------------------% 
-        %Save the results to the numeric array;
-        
-        %Save the valve constants for linear valves
-        valConVals(nAdsVals*(i-1)+1,:) = val1ColVals;
-        valConVals(nAdsVals*(i-1)+2,:) = val2ColVals;
-        valConVals(nAdsVals*(i-1)+3,:) = val3ColVals;
-        valConVals(nAdsVals*(i-1)+4,:) = val4ColVals;
-        valConVals(nAdsVals*(i-1)+5,:) = val5ColVals;
-        valConVals(nAdsVals*i,:)       = val6ColVals;
-        %-----------------------------------------------------------------% 
-        
-    end
-    
-    %For each column, combine the valve constants for the product end and
-    %respectively for the feed end; we can do this because, at the most, 
-    %one valve per one end is active at any given step in a given PSA cycle
-    for i = 1 : nCols
-        
-        %-----------------------------------------------------------------% 
-        %Get relevant indices
-        
-        %Get the original indices for the current column product-end
-        indOrgPr = nAdsVals*(i-1)+1:2:nAdsVals*(i)-1;
-        
-        %Get the original indices for the current column feed-end
-        indOrgFe = nAdsVals*(i-1)+2:2:nAdsVals*(i);
-        %-----------------------------------------------------------------% 
-        
-        
-        
-        %-----------------------------------------------------------------% 
-        %Calculate the sum of the valves for the respective ends and store
-        %the values; for an ith column
-        
-        %Product-end valve values for the ith column
-        valConValsT(maxNoBC*(i-1)+1,:) = sum(valConVals(indOrgPr,:),1);
-        
-        %Feed-end valve values for the ith column
-        valConValsT(maxNoBC*i,:) = sum(valConVals(indOrgFe,:),1);
-        %-----------------------------------------------------------------% 
+        flowDir(i,indNegFlowDir) = ones(1,length(indNegFlowDir));        
+        %-----------------------------------------------------------------%       
+
+
+
+        %-----------------------------------------------------------------%
+        %Get the ith DAE model type
                 
-    end
-    
-    %For each step, identify the columns on which an event would work on
-    eveColNo = str2double(split(eveColNo))';                
+        %Find the indices for the counter-currents
+        indDaeVarPres = find(sTypeCol(i,:)=="varying_pressure");                
+        
+        %Save the flow directions
+        typeCol(i,indDaeVarPres) = ones(1,length(indDaeVarPres));        
+        %-----------------------------------------------------------------% 
+        
+    end           
     %---------------------------------------------------------------------%                                   
     
     
@@ -303,36 +156,29 @@ function params = getStringParams(params)
     %---------------------------------------------------------------------%
     %Save function outputs 
     
-    %Save inside params
-    params.sStep     = sStep      ;         
-    params.flowDir   = flowDir    ;  
-    params.eveColNo  = eveColNo   ;
-    params.valCon    = valConVals ;
-    params.valConT   = valConValsT;   
-    params.sComNums  = sComNums   ;
-    params.sColNums  = sColNums   ;
-    params.valRaTa   = valRaTa    ;
-    params.valExTa   = valExTa    ;
-    params.valRinTop = valRinTop  ;
-    params.valRinBot = valRinBot  ;
-    params.valPurBot = valPurBot  ;
-    params.valFeeTop = valFeeTop  ;
+    %Save the string results inside params
+    params.sStepCol = sStepCol; 
+    params.sComNums = sComNums;
+    params.sColNums = sColNums;
+    params.eveUnit  = eveUnit ;
+    params.eveLoc   = eveLoc  ;
+    
+    %Save the numerical array results
+    params.durStep    = durStep   ;
+    params.eveVal     = eveVal    ;
+    params.valFeedCol = valFeedCol;
+    params.valProdCol = valProdCol;
+    params.flowDirCol = flowDir   ;
+    params.typeCol    = typeCol   ;
     %---------------------------------------------------------------------%
-    
-    
-    
+
+
+
     %---------------------------------------------------------------------%
-    %Remove any unused fields
-    
-    %Remove the strings that are no longer needed
-    params = rmfield(params,"sStepCol")  ;
-    params = rmfield(params,"flowDirCol");
-    params = rmfield(params,"valOneCol") ;
-    params = rmfield(params,"valTwoCol") ;
-    params = rmfield(params,"valThrCol") ;
-    params = rmfield(params,"valFouCol") ;
-    params = rmfield(params,"valFivCol") ;
-    params = rmfield(params,"valSixCol") ;
+    %Review the params and reorganize the data structure as needed
+
+    %Remove any unused params
+    params = rmfield(params,'sTypeCol');
     %---------------------------------------------------------------------%
     
 end

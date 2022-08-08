@@ -43,14 +43,14 @@ function plotAdsConsHighPresFeed(params,sol,colNum)
     %funcId = 'plotAdsConsHighPresFeed';
     
     %Unpack Params
-    nComs        = params.nComs          ;  
-    lastStep     = sol.lastStep          ;
-    aConScaleFac = params.aConScaleFac   ;
-    heightCol    = params.heightCol      ;
-    nVols        = params.nVols          ;
-    sStep        = params.sStep(colNum,:); %For the current column
-    nSteps       = params.nSteps         ;
-    sCom         = params.sCom           ;
+    nComs        = params.nComs             ;  
+    lastStep     = sol.lastStep             ;
+    aConScaleFac = params.aConScaleFac      ;
+    heightCol    = params.heightCol         ; 
+    nVols        = params.nVols             ;
+    sStepCol     = params.sStepCol(colNum,:); %For the current column
+    nSteps       = params.nSteps            ;
+    sCom         = params.sCom              ;
     %---------------------------------------------------------------------%
 
   
@@ -92,7 +92,7 @@ function plotAdsConsHighPresFeed(params,sol,colNum)
     height = linspace(1,heightCol,nVols);
     
     %Find the high pressure step
-    indHp = find(sStep=="HP");
+    indHp = find(sStepCol=="HP");
     
     %Find the last high pressure step
     indHpEnd = lastStep-nSteps+indHp(end);

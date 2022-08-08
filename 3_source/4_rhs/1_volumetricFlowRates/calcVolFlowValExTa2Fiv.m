@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/2/7/Monday
-%Code last modified on : 2022/3/3/Thursday
+%Code last modified on : 2022/8/8/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -56,14 +56,13 @@ function volFlowRat = calcVolFlowValExTa2Fiv(params,col,~,~,exTa,nS,nCo)
     %funcId = 'calcVolFlowValExTa2Fiv.m';      
     
     %Unpack Params       
-    valConNorm = params.valConNorm;
-    nAdsVals   = params.nAdsVals  ;
+    valProdCol = params.valProdCol;
     sColNums   = params.sColNums  ;
     funcVal    = params.funcVal   ;
     
     %Get a dimensionless valve constant value for the purge/pressurization
     %valve (i.e., valve 5)
-    val5Con = valConNorm(nAdsVals*(nCo-1)+5,nS);
+    val5Con = valProdCol(nCo,nS);
     %---------------------------------------------------------------------%                
   
     

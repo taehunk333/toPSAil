@@ -51,7 +51,7 @@ function [indHpEnd,eveCount] = grabHighPresFeedEvent(params,sol,colNum)
     
     %Unpack params
     lastStep = sol.lastStep   ;
-    sStep    = params.sStep   ;
+    sStepCol = params.sStepCol;
     nSteps   = params.nSteps  ;  
     eveColNo = params.eveColNo;
     %---------------------------------------------------------------------%           
@@ -62,7 +62,7 @@ function [indHpEnd,eveCount] = grabHighPresFeedEvent(params,sol,colNum)
     %Grab the high pressure feed step
     
     %Find the high pressure step
-    indHp = find(sStep(colNum,:)=="HP");
+    indHp = find(sStepCol(colNum,:)=="HP");
          
     %Get the nubmer of remaining high pressure feed
     lenHp = length(indHp);

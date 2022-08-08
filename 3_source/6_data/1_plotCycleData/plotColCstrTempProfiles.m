@@ -44,12 +44,12 @@ function plotColCstrTempProfiles(params,sol,colNum)
     %funcId = 'plotColCstrTempProfiles';
     
     %Unpack Params    
-    lastStep   = sol.lastStep          ;    
-    heightCol  = params.heightCol      ;
-    nVols      = params.nVols          ;
-    sStep      = params.sStep(colNum,:); %For the current column
-    nSteps     = params.nSteps         ;
-    teScaleFac = params.teScaleFac     ;
+    lastStep   = sol.lastStep             ;    
+    heightCol  = params.heightCol         ;
+    nVols      = params.nVols             ;
+    sStepCol   = params.sStepCol(colNum,:); %For the current column
+    nSteps     = params.nSteps            ;
+    teScaleFac = params.teScaleFac        ;
     %---------------------------------------------------------------------%
 
   
@@ -92,7 +92,7 @@ function plotColCstrTempProfiles(params,sol,colNum)
     height = linspace(1,heightCol,nVols);
     
     %Find the high pressure step
-    indHp = find(sStep=="HP");
+    indHp = find(sStepCol=="HP");
     
     %Find the last high pressure step
     indHpEnd = lastStep ...

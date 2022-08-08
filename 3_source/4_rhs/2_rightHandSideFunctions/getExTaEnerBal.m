@@ -93,7 +93,7 @@ function units = getExTaEnerBal(params,units,nS)
     nCols          = params.nCols         ;
     sColNums       = params.sColNums      ;
     sComNums       = params.sComNums      ;
-    flowDir        = params.flowDir       ;    
+    flowDirCol     = params.flowDirCol    ;    
     gConsNormExTa  = params.gConsNormExTa ;
     valRinTop      = params.valRinTop     ;
     valRinBot      = params.valRinBot     ;
@@ -152,7 +152,7 @@ function units = getExTaEnerBal(params,units,nS)
         %If we have a counter-current flow and no rinse step is going
         %on, we may be pressurizing the extract product tank with the
         %extract product stream from the column
-        if flowDir(i,nS) == 1 && ...
+        if flowDirCol(i,nS) == 1 && ...
            valRinTop(nS) == 0 && ...
            valRinBot(nS) == 0
        
@@ -184,7 +184,7 @@ function units = getExTaEnerBal(params,units,nS)
 
         %If we have a counter-current flow, we can have a rinse going on
         %from the top-end of the adsorption column
-        elseif flowDir(i,nS) == 1 && ...
+        elseif flowDirCol(i,nS) == 1 && ...
                valRinTop(nS) == 1
         
             %Update the net molar flow (since the flow is in a negative
@@ -195,7 +195,7 @@ function units = getExTaEnerBal(params,units,nS)
         
         %If we have a co-current flow, we can have a rinse going on form
         %the bottom-end of the adsorption column
-        elseif flowDir(i,nS) == 0 && ...
+        elseif flowDirCol(i,nS) == 0 && ...
                valRinBot(nS) == 1
             
            %Update the net molar flow (since the flow is in a negative

@@ -40,13 +40,15 @@ function params = getNumParams(params)
     %funcId = 'getNumParams.m';
     
     %Unpack params
-    nVols    = params.nVols   ;
-    cstrHt   = params.cstrHt  ;
-    daeModel = params.daeModel;    
-    nCols    = params.nCols   ;
-    nSteps   = params.nSteps  ;
-    valConT  = params.valConT ;
-    maxNoBC  = params.maxNoBC ;
+    nVols      = params.nVols     ;
+    cstrHt     = params.cstrHt    ;
+    daeModel   = params.daeModel  ;    
+    nCols      = params.nCols     ;
+    nSteps     = params.nSteps    ;
+    valConT    = params.valConT   ;
+    valFeedCol = params.valFeedCol;
+    valProdCol = params.valProdCol;
+    maxNoBC    = params.maxNoBC   ;
     %---------------------------------------------------------------------%    
     
     
@@ -133,12 +135,12 @@ function params = getNumParams(params)
             %Determine logical statements
             
             %See if the product-end of the column has a Cv            
-            prodHasCv = valConT(maxNoBC*(j-1)+1,i) ~= 1 && ...
-                        valConT(maxNoBC*(j-1)+1,i) ~= 0;
+            prodHasCv = valProdCol(j,i) ~= 1 && ...
+                        valProdCol(j,i) ~= 0;  
             
             %See if the feed-end of the column has a Cv
-            feedHasCv = valConT(maxNoBC*j,i) ~= 1 && ...
-                        valConT(maxNoBC*j,i) ~= 0;                        
+            feedHasCv = valFeedCol(j,i) ~= 1 && ...
+                        valFeedCol(j,i) ~= 0;                        
             %-------------------------------------------------------------%
             
             

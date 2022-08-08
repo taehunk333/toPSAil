@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/26/Tuesday
-%Code last modified on : 2022/2/3/Thursday
+%Code last modified on : 2022/8/8/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -56,14 +56,13 @@ function volFlowRat = calcVolFlowValFeTa2Two(params,col,feTa,~,~,nS,nCo)
     %funcId = 'calcVolFlowValFeTa2Two.m';      
     
     %Unpack Params       
-    valConNorm = params.valConNorm;
-    nAdsVals   = params.nAdsVals  ;
+    valFeedCol = params.valFeedCol;
     sColNums   = params.sColNums  ;
     funcVal    = params.funcVal   ;
     
     %Get a dimensionless valve constant value for the feed valve (i.e. 
     %valve 2)
-    val2Con = valConNorm(nAdsVals*(nCo-1)+2,nS);
+    val2Con = valFeedCol(nCo,nS);
     %---------------------------------------------------------------------%                
   
     

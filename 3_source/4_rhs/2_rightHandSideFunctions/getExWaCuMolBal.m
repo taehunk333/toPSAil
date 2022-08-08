@@ -44,12 +44,12 @@ function units = getExWaCuMolBal(params,units,nS)
     %funcId = 'getExWaCuMolBal.m';
     
     %Unpack params
-    nComs   = params.nComs   ;
-    nCols   = params.nCols   ;
-    sComs   = params.sComNums;  
-    sCols   = params.sColNums;
-    valExTa = params.valExTa ;
-    flowDir = params.flowDir ;
+    nComs      = params.nComs     ;
+    nCols      = params.nCols     ;
+    sComs      = params.sComNums  ;  
+    sCols      = params.sColNums  ;
+    valExTa    = params.valExTa   ;
+    flowDirCol = params.flowDirCol;
     
     %Unpack units
     col = units.col;
@@ -77,7 +77,7 @@ function units = getExWaCuMolBal(params,units,nS)
                 + col.(sCols{i}).gasCons.(sComs{j})(:,1) ...
                 * col.(sCols{i}).volFlRat(:,1) ...
                 * (1-valExTa(nS)) ...
-                * flowDir(nS);
+                * flowDirCol(nS);
 
         end
     
