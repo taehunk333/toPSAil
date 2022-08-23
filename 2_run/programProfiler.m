@@ -21,13 +21,12 @@
 %Code created on       : 2011/2/4/Thursday
 %Code last modified on : 2022/2/17/Thursday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : programProfiler.m
 %Source     : common
 %Description: this is a function that calls runPsaProcessSimulation.m so
 %             that MATLAB's profiler can be used to optimize the program.
-%                            folder
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function programProfiler()        

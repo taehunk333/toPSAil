@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/2/3/Thursday
-%Code last modified on : 2022/2/3/Thursday
+%Code last modified on : 2022/8/16/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -40,114 +40,129 @@ function params = removeParams(params)
     
     %Name the function ID
     %funcId = 'removeParams.m';
-    bool = params.bool;
     %---------------------------------------------------------------------%
     
     
     
     %---------------------------------------------------------------------%
-    %Remove unused fields for initialization of the simulation environment
-    %in the params
+    %Remove any unnecessary fields for the numerical integration
+        
+    %Remove any integer parameters
+    params = rmfield(params,'nRows');
+    
+    %Remove any scale factors
+    params = rmfield(params,'volScaleFac');
+    params = rmfield(params,'valScaleFac');
+    
+    %Remove initial conditions
     params = rmfield(params,'maTrRes')  ;
     params = rmfield(params,'inConFeTa'); 
     params = rmfield(params,'inConRaTa');
     params = rmfield(params,'inConExTa');
     params = rmfield(params,'inConBed') ;
-    %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %Remove unused fields in params for describing the geometry of the 
-    %apparatus in the flow sheet
-    params = rmfield(params,'crsAreaInCol')  ;
-    params = rmfield(params,'crsAreaOutCol') ;
-    params = rmfield(params,'crsAreaWallCol');
-    params = rmfield(params,'aspRatioCol')   ;
-    
-    params = rmfield(params,'crsAreaInFeTa')  ;
-    params = rmfield(params,'crsAreaInRaTa')  ;
-    params = rmfield(params,'crsAreaInExTa')  ;
-    
-    params = rmfield(params,'crsAreaOutFeTa') ;
-    params = rmfield(params,'crsAreaOutRaTa') ;
-    params = rmfield(params,'crsAreaOutExTa') ;
-    
-    params = rmfield(params,'crsAreaWallFeTa');
-    params = rmfield(params,'crsAreaWallRaTa');
-    params = rmfield(params,'crsAreaWallExTa');
-    
-    params = rmfield(params,'aspRatioFeTa')   ;
-    params = rmfield(params,'aspRatioRaTa')   ;
-    params = rmfield(params,'aspRatioExTa')   ;
-    %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %Remove isotherm and bulk gas related fields in the field
-    params = rmfield(params,'gasConT');
-    params = rmfield(params,'nRows')  ;
-    params = rmfield(params,'adsConT');
-    %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %Remove mass transfer zone calculations related unused fields in params
-    params = rmfield(params,'mtz');
-    %---------------------------------------------------------------------%
 
+    %Remove dimensional temperatures
+    params = rmfield(params,'tempAmbi');
+    params = rmfield(params,'tempStan');
+    params = rmfield(params,'tempRefIso');
+    params = rmfield(params,'tempFeed');
+    params = rmfield(params,'tempCol');
+    params = rmfield(params,'tempFeTa');
+    params = rmfield(params,'tempRaTa');
+    params = rmfield(params,'tempExTa');
     
+    %Remove dimensional pressures
+    params = rmfield(params,'presStan'); 
+    params = rmfield(params,'presBeLo');
+    params = rmfield(params,'presFeTa');
+    params = rmfield(params,'presRaTa');
+    params = rmfield(params,'presExTa');
+    params = rmfield(params,'presBeHi');
+    params = rmfield(params,'presAmbi');
+    params = rmfield(params,'presExTaFull');
+    params = rmfield(params,'presExTaSet');
+    params = rmfield(params,'presRaTaFull');
+    params = rmfield(params,'presRaTaSet');    
     
-    %---------------------------------------------------------------------%
-    %Remove dimensional valve Constants
-    params = rmfield(params,'valCon');
-    %---------------------------------------------------------------------%
+    %Remove adsorber packing related information
+    params = rmfield(params,'voidFracBed');
+    params = rmfield(params,'overVoid');
     
+    %Remove adsorbent physical properties
+    params = rmfield(params,'skelDens');
+    params = rmfield(params,'pellDens');
+    params = rmfield(params,'bulkDens');
     
+    %Remove feed gas properties
+    params = rmfield(params,'compFacC');
+    params = rmfield(params,'molVolIdg');    
+
+    %Remove cstr related parameters
+    params = rmfield(params,'oneCstrHt');
     
-    %---------------------------------------------------------------------%
-    %Remove dimensional LDF mass transfer coefficients
-    params = rmfield(params,'ldfMtc');
-    %---------------------------------------------------------------------%
+    %Remove adsorption column geometry parameters
+    params = rmfield(params,'crsAreaInCol');
+    params = rmfield(params,'crsAreaOutCol');
+    params = rmfield(params,'crsAreaWallCol');
+    params = rmfield(params,'aspRatioCol');
+    params = rmfield(params,'radInCol');
+    params = rmfield(params,'radOutCol');
+    params = rmfield(params,'heightCol');
+    params = rmfield(params,'waDensCol');
+    params = rmfield(params,'colVol');
     
+    %Remove feed tank geometry parameters
+    params = rmfield(params,'crsAreaInFeTa');
+    params = rmfield(params,'crsAreaOutFeTa');
+    params = rmfield(params,'crsAreaWallFeTa');
+    params = rmfield(params,'aspRatioFeTa');
+    params = rmfield(params,'radInFeTa');
+    params = rmfield(params,'radOutFeTa');
+    params = rmfield(params,'heightFeTa');
+    params = rmfield(params,'waDensFeTa'); 
+    params = rmfield(params,'feTaVol');
     
+    %Remove raffinate product tank geometry parameters
+    params = rmfield(params,'crsAreaInRaTa');
+    params = rmfield(params,'crsAreaOutRaTa');
+    params = rmfield(params,'crsAreaWallRaTa');
+    params = rmfield(params,'aspRatioRaTa');
+    params = rmfield(params,'radInRaTa');
+    params = rmfield(params,'radOutRaTa');
+    params = rmfield(params,'heightRaTa'); 
+    params = rmfield(params,'waDensRaTa');
+    params = rmfield(params,'raTaVol');
     
-    %---------------------------------------------------------------------%
-    %Remove isothermal simulation parameters for non-isothermal simulations
+    %Remove extract product tank geometry parameters
+    params = rmfield(params,'crsAreaInExTa');
+    params = rmfield(params,'crsAreaOutExTa');
+    params = rmfield(params,'crsAreaWallExTa');
+    params = rmfield(params,'aspRatioExTa');
+    params = rmfield(params,'radInExTa');
+    params = rmfield(params,'radOutExTa');
+    params = rmfield(params,'heightExTa');
+    params = rmfield(params,'exTaVol');
     
-%     %If we are doing a non-isothermal simulation
-%     if bool(5) == 1
-%     
-%         %Remove isothermal parameter
-%         params = rmfield(params,'loTrMat')  ;
-%         params = rmfield(params,'upTrMat')  ;
-%         params = rmfield(params,'coPrFeMat');
-%         params = rmfield(params,'coPrPrMat');
-%         params = rmfield(params,'coefMat')  ;
-%         
-%     end      
-    %---------------------------------------------------------------------%
+    %Remove equilibrium related parameters
+    params = rmfield(params,'gasConT');    
+    params = rmfield(params,'adsConT');
     
+    %Remove mass transfer related parameters    
+    params = rmfield(params,'mtz');
+    params = rmfield(params,'ldfMtc');    
+    params = rmfield(params,'massAds');
+    params = rmfield(params,'waDensExTa');
+
+    %Remove plotting information (don't need this for the numerical
+    %integration)
+    params = rmfield(params,'plot');
     
-    
-    %---------------------------------------------------------------------%
-    %Remove unused fields for
-%     params = rmfield(params,'');
-%     params = rmfield(params,'');
-%     params = rmfield(params,'');
-%     params = rmfield(params,'');
-%     params = rmfield(params,'');
-%     params = rmfield(params,'');
-%     params = rmfield(params,'');
-%     params = rmfield(params,'');
-%     params = rmfield(params,'');
-%     params = rmfield(params,'');
-%     params = rmfield(params,'');
-%     params = rmfield(params,'');
-%     params = rmfield(params,'');    
-    %---------------------------------------------------------------------%                                                                                                                  
+    %Remove dimensional valve parameters          
+    params = rmfield(params,'valProdCol');
+    params = rmfield(params,'valFeedCol');
+    params = rmfield(params,'valRaTaFull');
+    params = rmfield(params,'valExTaFull');   
+    %---------------------------------------------------------------------%   
     
 end
 

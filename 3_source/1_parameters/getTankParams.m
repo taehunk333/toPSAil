@@ -49,7 +49,6 @@ function params = getTankParams(params)
     heightFeTa = params.heightFeTa;
     heightRaTa = params.heightRaTa;
     heightExTa = params.heightExTa;
-    colVol     = params.colVol    ;
     %---------------------------------------------------------------------% 
     
     
@@ -87,12 +86,7 @@ function params = getTankParams(params)
     %Calculate the volume of a single adsorption column [=] cm^3
     params.feTaVol = params.crsAreaInFeTa*heightFeTa;   
     params.raTaVol = params.crsAreaInRaTa*heightRaTa;   
-    params.exTaVol = params.crsAreaInExTa*heightExTa;   
-    
-    %Calcualte the height of a single tank
-    params.feTaVolNorm = params.feTaVol/colVol;
-    params.raTaVolNorm = params.raTaVol/colVol;
-    params.exTaVolNorm = params.exTaVol/colVol;
+    params.exTaVol = params.crsAreaInExTa*heightExTa; 
     %---------------------------------------------------------------------%                                               
     
 end

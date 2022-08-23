@@ -19,50 +19,44 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/2/Saturday
-%Code last modified on : 2022/3/3/Thursday
+%Code last modified on : 2022/8/9/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : calcLinValveFlow.m
 %Source     : common
 %Description: Based on a given value of valve constants, the pressure
-%             values around the valve, compute a volumetric flow rate after
-%             the valve at the outlet pressure. The expression is written
-%             in the co-current (i.e., positive) direction. For the counter
-%             current flow direction, swap tCon1 and tCon2, evaluate this
-%             function, and negate the function output, i.e., -volFlow.
+%             values around the valve, compute the molar flow rate across
+%             the valve at the outlet stream pressure. 
 %Inputs     : valCoeff     - a dimensionless valve coefficient value for a 
 %                            given valve with the unit of [-].
-%             c1           - a total gas concentration; can be constant or
-%                            time varying. [-]
-%             c2           - a total gas concentration; can be constant or
-%                            time varying. [-]
-%             T1           - a CSTR temperature; can be constant or
-%                            time varying. [-]
-%             T2           - a CSTR temperature; can be constant or
-%                            time varying. [-]
-%Outputs    : volFlow      - a volumetric flow rate after the valve [-].
+%             cUp          - the total dimensionless gas concentration 
+%                            at the upstream (south) of the valve [-]
+%             cDown        - the total dimensionless gas concentration at
+%                            the downstream (north) of the valve [-]
+%             TUp          - the dimensionless CSTR temperature at the
+%                            upstream (south) of the valve [-]
+%             TDown        - the dimensionless CSTR temperature at the
+%                            downstream (north) of the valve [-]
+%Outputs    : molFlow      - a molar flow rate across the valve [-]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function volFlow = calcLinValveFlow(valCoeff,c1,c2,T1,T2)
+function molFlow = calcLinValveMolFlow(valCoeff,cUp,cDown,TUp,TDown)
 
     %---------------------------------------------------------------------%
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'calcLinValveFlow';        
+    %funcId = 'calcLinValveMolFlow';        
     %---------------------------------------------------------------------%
             
     
     
     %---------------------------------------------------------------------%
-    %Calculate the dimensionless volumetric flow rate after the valve
+    %Calculate the dimensionless molar flow rate after the valve
     
-    %Calculate the volumetric flow rate after the valve for the co-current
-    %flow
-    volFlow = valCoeff ...
-            * (T2.*c2-T1.*c1) ...
-           ./ c1;
+    %Calculate the molar flow rate after the valve for the co-current flow
+    molFlow = valCoeff * (TDown.*cDown - TUp.*cUp);
     %---------------------------------------------------------------------%
     
 end

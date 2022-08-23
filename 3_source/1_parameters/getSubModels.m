@@ -361,7 +361,7 @@ function models = getSubModels(params)
     %Specify a valve model number
     modNo4 = 4;
     
-    %Based on the user specification, globally define an equation of states
+    %Based on the user specification, globally define the valve model
     
     %Define a custom valve model
     if modSp(modNo4) == 0 && bool(3) == 0 
@@ -376,7 +376,7 @@ function models = getSubModels(params)
         
         %Define the linear valve model
         models{modNo4} = @(valCoeff,c1,c2,T1,T2) ...
-                         calcLinValveFlow(valCoeff,c1,c2,T1,T2);
+                         calcLinValveMolFlow(valCoeff,c1,c2,T1,T2);
      
     %TBD
     elseif modSp(modNo4) == 2 && bool(3) == 0
@@ -567,7 +567,7 @@ function models = getSubModels(params)
     modNo6 = 6;
     
     %Based on the user specification, globally define a model for
-    %calculating volumteric flow rate
+    %calculating the volumteric flow rate associated with the CIS model
     
     %No axial pressure drop and isothermal
     if modSp(modNo6) == 0 && ... %No axial pressure drop

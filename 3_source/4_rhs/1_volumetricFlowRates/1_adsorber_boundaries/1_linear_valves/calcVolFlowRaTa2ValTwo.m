@@ -19,11 +19,11 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/7/Monday
-%Code last modified on : 2022/3/3/Thursday
+%Code last modified on : 2022/8/9/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : calcVolFlowValRaTa2Two.m
+%Function   : calcVolFlowRaTa2ValTwo.m
 %Source     : common
 %Description: a function that calculates a volumetric flow rate after a
 %             linear valve located in the feed-end of an adsorption
@@ -47,22 +47,22 @@
 %Outputs    : volFlowRat   - a volumetric flow rate after the valve
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function volFlowRat = calcVolFlowValRaTa2Two(params,col,~,raTa,~,nS,nCo)
+function volFlowRat = calcVolFlowRaTa2ValTwo(params,col,~,raTa,~,nS,nCo)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'calcVolFlowValRaTa2Two.m';      
+    %funcId = 'calcVolFlowRaTa2ValTwo.m';      
     
     %Unpack Params       
-    valFeedCol = params.valFeedCol;
-    sColNums   = params.sColNums  ;
-    funcVal    = params.funcVal   ;
+    valFeedColNorm = params.valFeedColNorm;
+    sColNums       = params.sColNums      ;
+    funcVal        = params.funcVal       ;
     
     %Get a dimensionless valve constant value for the feed valve (i.e. 
     %valve 2)
-    val2Con = valFeedCol(nCo,nS);
+    val2Con = valFeedColNorm(nCo,nS);
     %---------------------------------------------------------------------%                
   
     
@@ -94,12 +94,15 @@ function volFlowRat = calcVolFlowValRaTa2Two(params,col,~,raTa,~,nS,nCo)
     %---------------------------------------------------------------------%
     %Compute the function output
     
-    %Calculate the volumetric flow rate after the valve      
-    volFlowRat = funcVal(val2Con, ...
+    %Calculate the molar flow rate after the valve      
+    molFlowRat = funcVal(val2Con, ...
                          gasConTotCol, ...
                          gasConTotRaTa, ...
                          cstrTempCol, ...
                          cstrTempRaTa);
+                     
+    %Calculate the voluemtric flow rate at the valve downstream
+    volFlowRat = molFlowRat ./ gasConTotCol;
     %---------------------------------------------------------------------%
   
 end

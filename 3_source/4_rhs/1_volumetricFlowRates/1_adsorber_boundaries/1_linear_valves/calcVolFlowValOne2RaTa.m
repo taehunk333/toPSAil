@@ -19,17 +19,16 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/26/Tuesday
-%Code last modified on : 2022/8/8/Monday
+%Code last modified on : 2022/8/9/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : calcVolFlowValRaEqCo.m
+%Function   : calcVolFlowValOne2RaTa.m
 %Source     : common
 %Description: a function that calculates a volumetric flow rate after a
-%             linear valve located in the lower pressure adsorption column
-%             of a pair of two adsorption columns undergoing a pressure
-%             equalization at the product-end. This function should be used
-%             for a co-current flow direction.
+%             linear valve located in the product-end of an adsorption
+%             column. The flow direction is from an adsorption column to
+%             the raffinate product tank.
 %Inputs     : params       - a struct containing simulation parameters.
 %             col          - a struct containing state variables and
 %                            calculated quantities associated with
@@ -48,39 +47,22 @@
 %Outputs    : volFlowRat   - a volumetric flow rate after the valve
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function volFlowRat = calcVolFlowValRaEqCo(params,col,~,~,~,nS,nCo)
+function volFlowRat = calcVolFlowValOne2RaTa(params,col,~,raTa,~,nS,nCo)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'calcVolFlowValRaEqCo.m';      
+    %funcId = 'calcVolFlowValOne2RaTa.m';      
     
-    %Unpack Params      
-    valProdCol   = params.valProdCol  ;
-    nAdsVals     = params.nAdsVals    ;
-    colIntActTop = params.colIntActTop;
-    sColNums     = params.sColNums    ;
-    funcVal      = params.funcVal     ;
+    %Unpack Params    
+    valProdColNorm = params.valProdColNorm;
+    sColNums       = params.sColNums      ;
+    funcVal        = params.funcVal       ;
     
-    %Find the corresponding valve constant for the other adsorption column
-    nC2 = colIntActTop(nCo,nS);    
-    
-    %Get the valve constant associated with the current adsorption column
-    valConCurr = valProdCol(nCo,nS);
-    
-    %For an open valve, grab a corresponding valve constant from the other
-    %interacting column 
-    if valConCurr == 1
-        
-        %Get the corresponding valve constant
-        valConCurr = valConNorm(nAdsVals*(nC2-1)+3,nS);                
-        
-    end
-    
-    %Get a dimensionless valve constant value for the product-end 
-    %equalization valve (i.e., valve 3)    
-    val3Con = valConCurr;
+    %Get a dimensionless valve constant value for the product valve (i.e. 
+    %valve 1)
+    val1Con = valProdColNorm(nCo,nS);
     %---------------------------------------------------------------------%                
   
     
@@ -88,13 +70,11 @@ function volFlowRat = calcVolFlowValRaEqCo(params,col,~,~,~,nS,nCo)
     %---------------------------------------------------------------------%
     %Get the total concentrations
     
-    %Dimensionless total concentration for the Nth CSTR for the current
-    %column uncergoing pressure equalization
-    gasConTotHiPr = col.(sColNums{nCo}).gasConsTot(:,end);
+    %Dimensionless total concentration for the Nth CSTR
+    gasConTotCol = col.(sColNums{nCo}).gasConsTot(:,end);
     
-    %Dimensionless total concentration for the Nth CSTR for the other
-    %column uncergoing pressure equalization
-    gasConTotLoPr = col.(sColNums{nC2}).gasConsTot(:,end);            
+    %Dimensionless total concentration for the raffinate product tank
+    gasConTotRaTa = raTa.n1.gasConsTot(:,end);            
     %---------------------------------------------------------------------%
     
     
@@ -102,29 +82,28 @@ function volFlowRat = calcVolFlowValRaEqCo(params,col,~,~,~,nS,nCo)
     %---------------------------------------------------------------------%
     %Get the dimensionless temperatures
         
-    %Dimensionless temperature for the high pressure column
-    cstrTempHiPr = col.(sColNums{nCo}).temps.cstr(:,end);
+    %Dimensionless temperature for the last CSTR
+    cstrTempCol = col.(sColNums{nCo}).temps.cstr(:,end);
     
-    %Dimensionless temperature for the low pressure column
-    cstrTempLoPr = col.(sColNums{nC2}).temps.cstr(:,end); 
+    %Dimensionless temperature for the product tank
+    cstrTempRaTa = raTa.n1.temps.cstr;  
     %---------------------------------------------------------------------%
     
     
-
+    
     %---------------------------------------------------------------------%
     %Compute the function output
     
-    %Calculate the volumetric flow rate after the valve      
-    volFlowRat = funcVal(val3Con, ...
-                         gasConTotLoPr, ...
-                         gasConTotHiPr, ...
-                         cstrTempLoPr, ...
-                         cstrTempHiPr);
+    %Calculate the molar flow rate after the valve      
+    molFlowRat = funcVal(val1Con, ...
+                         gasConTotRaTa, ...
+                         gasConTotCol, ...
+                         cstrTempRaTa, ...
+                         cstrTempCol);
     
-    %Calculate the volumetric flow rate for the adsorber at the product-end
-    volFlowRat = volFlowRat ...
-              .* gasConTotLoPr ...
-              ./ gasConTotHiPr;
+    %Calculate the volumetric flow rate coming out from the adsorber at the
+    %product-end
+    volFlowRat = molFlowRat ./ gasConTotCol;
     %---------------------------------------------------------------------%
   
 end

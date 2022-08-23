@@ -56,16 +56,15 @@ function [event,isterminal,direction] = getEqEvent1(params,~,states,nS,~)
     %funcId = 'getEqEvent1.m';
     
     %Unpack params
-    presDiff   = params.presDiff               ;
-    presBeHi   = params.presBeHi               ;
-    eveColNo   = params.eveColNo(nS)           ;
-    nComs      = params.nComs                  ;
-    nColStT    = params.nColStT                ;
-    eveEqThr   = params.eveEqThr               ;
-    valFeedCol = params.valFeedCol             ;
-    valProdCol = params.valProdCol             ;
-    flowDirCol = params.flowDirCol(eveColNo,nS);   
-    pRat       = params.pRat                   ;
+    pDiffRat       = params.pDiffRat               ;    
+    eveColNo       = params.eveColNo(nS)           ;
+    nComs          = params.nComs                  ;
+    nColStT        = params.nColStT                ;
+    eveEqThr       = params.eveEqThr               ;
+    valFeedColNorm = params.valFeedColNorm         ;
+    valProdColNorm = params.valProdColNorm         ;
+    flowDirCol     = params.flowDirCol(eveColNo,nS);   
+    pRat           = params.pRat                   ;
     
     %Convert the states into a row vector
     states = states(:).';
@@ -88,10 +87,10 @@ function [event,isterminal,direction] = getEqEvent1(params,~,states,nS,~)
     %Determine the event termination criteria        
     
     %Is one of the feed-end valves open?
-    valFeedOpen = valFeedCol(eveColNo,nS)~=0;
+    valFeedOpen = valFeedColNorm(eveColNo,nS)~=0;
 
     %Is one of the product-end valves open?
-    valProdOpen = valProdCol(eveColNo,nS)~=0;        
+    valProdOpen = valProdColNorm(eveColNo,nS)~=0;        
     
     %Pressure will increase
     if (valProdOpen && flowDirCol == 1) || ...
@@ -101,7 +100,7 @@ function [event,isterminal,direction] = getEqEvent1(params,~,states,nS,~)
         %Get the event criteria
         
         %Calculate the intermediate pressure (dimensionless)
-        eveTotConInt = pRat+eveEqThr*presDiff/presBeHi;
+        eveTotConInt = pRat+eveEqThr*pDiffRat;
         %-----------------------------------------------------------------%
         
         
@@ -122,7 +121,7 @@ function [event,isterminal,direction] = getEqEvent1(params,~,states,nS,~)
         %Get the event criteria
         
         %Calculate the intermediate pressure (dimensionless)
-        eveTotConInt = 1 - eveEqThr*presDiff/presBeHi;
+        eveTotConInt = 1 - eveEqThr*pDiffRat;
         %-----------------------------------------------------------------%
         
         

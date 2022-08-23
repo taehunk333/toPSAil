@@ -39,13 +39,16 @@ function params = getPresRats(params)
     %funcId = 'getPresRats.m';
     
     %Unpack params
-    presFeTa = params.presFeTa;
-    presRaTa = params.presRaTa;
-    presExTa = params.presExTa;
-    presStan = params.presStan;
-    presBeLo = params.presBeLo;
-    presBeHi = params.presBeHi;
-    presDoSt = params.presDoSt;
+    presFeTa     = params.presFeTa    ;
+    presRaTa     = params.presRaTa    ;
+    presExTa     = params.presExTa    ;
+    presAmbi     = params.presAmbi    ;
+    presBeLo     = params.presBeLo    ;
+    presBeHi     = params.presBeHi    ;
+    presExTaFull = params.presExTaFull;
+    presExTaSet  = params.presExTaSet ;
+    presRaTaFull = params.presRaTaFull;
+    presRaTaSet  = params.presRaTaSet ;
     %---------------------------------------------------------------------% 
       
     
@@ -54,11 +57,14 @@ function params = getPresRats(params)
     %Calculate pressure values related to the adsorption columns         
     
     %Calculate the pressure ratio. i.e. (low-pressure)/(high-pressure)
-    params.pRat = (presBeLo/presBeHi);    
+    params.pRat = presBeLo ...
+                / presBeHi;    
     
     %Calculate pressure swing
-    params.presDiff = presBeHi ...
-                    - presBeLo;
+    presDiff = presBeHi-presBeLo;
+                
+    %Calcualte the pressure difference ratio
+    params.pDiffRat = presDiff/presBeHi;
     %---------------------------------------------------------------------%
     
     
@@ -86,13 +92,30 @@ function params = getPresRats(params)
     
     %Calculate the ambient pressure ratio, i.e., 
     %(ambient pressure)/(high-pressure)
-    params.pRatAmb = (presStan/presBeHi);
+    params.pRatAmb = (presAmbi/presBeHi);
     
-    %Calculate the vacuum pressure ratio, i.e., 
-    %(ambient pressure)/(high-pressure)
-    params.pRatVac = (presDoSt/presBeHi);
+    %Calculate the downstream pressure ratio, i.e., 
+    %(vacuum pressure)/(high-pressure)
+    params.pRatDoSt = (presBeLo/presBeHi);
     %---------------------------------------------------------------------%
     
+    
+    
+    %---------------------------------------------------------------------%
+    %Calculate the pressure ratios for the pressure regulators for the
+    %product tanks
+    
+    %Get the dimensionless pressure for the raffinate tank pressure
+    %regulator valve
+    params.pRatRaTaFull = (presRaTaFull/presBeHi);
+    params.pRatRaTaSet  = (presRaTaSet/presBeHi) ;
+    
+    %Get the dimensionless pressure for the extract tank pressure regulator
+    %valve
+    params.pRatExTaFull = (presExTaFull/presBeHi);
+    params.pRatExTaSet  = (presExTaSet/presBeHi) ;
+    %---------------------------------------------------------------------%
+        
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

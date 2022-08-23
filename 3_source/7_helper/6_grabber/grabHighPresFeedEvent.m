@@ -53,7 +53,7 @@ function [indHpEnd,eveCount] = grabHighPresFeedEvent(params,sol,colNum)
     lastStep = sol.lastStep   ;
     sStepCol = params.sStepCol;
     nSteps   = params.nSteps  ;  
-    eveColNo = params.eveColNo;
+    eveLoc   = params.eveLoc  ;
     %---------------------------------------------------------------------%           
     
     
@@ -61,8 +61,11 @@ function [indHpEnd,eveCount] = grabHighPresFeedEvent(params,sol,colNum)
     %---------------------------------------------------------------------%
     %Grab the high pressure feed step
     
+    %Get the string representing the current step in a adsorption column
+    sStepColCurr = sStepCol{colNum,:};
+    
     %Find the high pressure step
-    indHp = find(sStepCol(colNum,:)=="HP");
+    indHp = contains(sStepColCurr,"HP");
          
     %Get the nubmer of remaining high pressure feed
     lenHp = length(indHp);
@@ -77,7 +80,7 @@ function [indHpEnd,eveCount] = grabHighPresFeedEvent(params,sol,colNum)
     for i = 1 : lenHp
 
         %If the event happened in the current Hp step
-        if eveColNo(indHp(i)) == colNum
+        if strcmp(eveLoc{i},sStepColCurr)
 
             %Find the last high pressure step with the event
             indHpEnd(i) = lastStep ...

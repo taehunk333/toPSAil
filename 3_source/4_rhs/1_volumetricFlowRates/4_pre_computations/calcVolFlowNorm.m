@@ -47,7 +47,7 @@ function volFlowNorm = calcVolFlowNorm(params)
     funcId = 'calcVolFlowNorm.m';
     
     %Unpack Params
-    sStepCol   = params.sStepCol  ; 
+    sStepCol   = params.sStepCol  ;   
     valFeedCol = params.valFeedCol;
     valProdCol = params.valProdCol;
     funcVal    = params.funcVal   ;

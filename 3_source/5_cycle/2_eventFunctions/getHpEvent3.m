@@ -52,9 +52,9 @@ function [event,isterminal,direction] = getHpEvent3(params,~,states,~,~)
     %funcId = 'getHpEvent3.m';
     
     %Unpack params
-    nComs       = params.nComs      ;           
-    inShRaTa    = params.inShRaTa   ;
-    evePrdMolFr = params.evePrdMolFr;
+    nComs        = params.nComs       ;           
+    inShRaTa     = params.inShRaTa    ;
+    eveLkMolFrac = params.eveLkMolFrac;
     
     %Convert the states into a row vector
     states = states(:).';
@@ -76,7 +76,7 @@ function [event,isterminal,direction] = getHpEvent3(params,~,states,~,~)
     %Compute the event criteria 
     
     %Purity of the product above a threshold
-    event = gasMoleFrPrTa-evePrdMolFr;
+    event = gasMoleFrPrTa-eveLkMolFrac;
     %---------------------------------------------------------------------%
     
     

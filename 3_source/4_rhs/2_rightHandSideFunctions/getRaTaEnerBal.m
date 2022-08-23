@@ -42,11 +42,7 @@ function units = getRaTaEnerBal(params,units,nS)
     
     %Unpack minimal number of params
     bool = params.bool;    
-    
-    %Unpack units
-    col  = units.col ;
-    raTa = units.raTa;
-    
+            
     %If isothermal model
     if bool(5) == 0
         
@@ -86,19 +82,24 @@ function units = getRaTaEnerBal(params,units,nS)
     %funcId = 'getRaTaEnerBal.m';
     
     %Unpack params
-    nComs          = params.nComs         ;
-    htCapCpNorm    = params.htCapCpNorm   ;
-    intHtTrFacRaTa = params.intHtTrFacRaTa;
-    extHtTrFacRaTa = params.extHtTrFacRaTa;    
-    ambTempNorm    = params.ambTempNorm   ;    
-    nCols          = params.nCols         ;
-    sColNums       = params.sColNums      ;
-    sComNums       = params.sComNums      ;
-    flowDirCol     = params.flowDirCol    ;    
-    valRaTa        = params.valRaTa       ;
-    valPurBot      = params.valPurBot     ;
-    gConsNormRaTa  = params.gConsNormRaTa ;
-    nVols          = params.nVols         ;
+    nComs            = params.nComs           ;
+    htCapCpNorm      = params.htCapCpNorm     ;
+    intHtTrFacRaTa   = params.intHtTrFacRaTa  ;
+    extHtTrFacRaTa   = params.extHtTrFacRaTa  ;    
+    ambTempNorm      = params.ambTempNorm     ;    
+    nCols            = params.nCols           ;
+    sColNums         = params.sColNums        ;
+    sComNums         = params.sComNums        ;           
+    gConsNormRaTa    = params.gConsNormRaTa   ;
+    nVols            = params.nVols           ;
+    valRaTa2AdsPrEnd = params.valRaTa2AdsPrEnd;
+    valRaTa2AdsFeEnd = params.valRaTa2AdsFeEnd;
+    valAdsPrEnd2RaWa = params.valAdsPrEnd2RaWa;
+    valAdsPrEnd2RaTa = params.valAdsPrEnd2RaTa;
+    
+    %Unpack units
+    col  = units.col ;
+    raTa = units.raTa;
     %---------------------------------------------------------------------%                                                  
     
     
@@ -134,11 +135,12 @@ function units = getRaTaEnerBal(params,units,nS)
     %---------------------------------------------------------------------%           
     %Do the CSTR interior energy balance for the feed tank
               
-    %Initialize the convective flow energy term
-    convFlowEner = 0;
+    %Initialize the convective flow energy terms
+    convFlowEnerIn  = 0;
     
     %Initialize the net molar flow in the raffinate product tank
-    netMolarFlow = 0;
+    netMolarFlowIn  = 0;  
+    netMolarFlowOut = 0;
     %---------------------------------------------------------------------%
     
     
@@ -147,44 +149,39 @@ function units = getRaTaEnerBal(params,units,nS)
     %Evaluate the species dependent terms, based on the flow direction and
     %the interacting boundary
 
-    %For all each column,
+    %MOLAR FLOW RATE INTO THE RAFFINATE TANK
+           
+    %For each column,
     for i = 1 : nCols
-
+    
+        %FLOW OUT FROM THE RAFFINATE TANK INTO THE PRODUCT-ENDS OF THE
+        %ADSORBERS
         %If we have a counter-current flow in the current adsorber (i.e., 
-        %we are doing a purge or pressurization at the product end)
-        if flowDirCol(i,nS) == 1 
+        %we are doing a purge or pressurization at the product-end) or if
+        %we have a co-current flow in the current adsorber (i.e., we are
+        %doing co-current purge or co-current pressurization)
+        if valRaTa2AdsPrEnd(i,nS) == 1 || ...
+           valRaTa2AdsFeEnd(i,nS) == 1
             
             %Update the net molar flow (since the flow is in a negative
             %direction, the voluemtric flow is negative)
-            netMolarFlow = netMolarFlow ...
-                         + raTa.n1.volFlRat(i) ...
-                         * raTa.n1.gasConsTot;
-                     
-            %There is no convective flow-in contribution when there is
-            %counter-current purge going on.                     
-                                    
-        %If we have a co-current flow in the current adosrber and we are
-        %doing co-current purge or co-current pressurization
-        elseif flowDirCol(i,nS) == 0 && valPurBot(nS) == 1
-            
-            %Update the net molar flow (since the flow is in a negative
-            %direction, the voluemtric flow is negative)
-            netMolarFlow = netMolarFlow ...
-                         + raTa.n1.volFlRat(i) ...
-                         * raTa.n1.gasConsTot;
-            
-            %There is no convective flow-in contribution when there is
-            %co-current purge going on.   
+            netMolarFlowOut = netMolarFlowOut ...
+                            + min(raTa.n1.volFlRat(:,i),0) ...
+                            * raTa.n1.gasConsTot;                                                                                              
 
+        %FLOW INTO THE RAFFINATE TANK
         %If we have a co-current flow in the current adsorber and we are
         %collecting the raffinate product
-        elseif flowDirCol(i,nS) == 0 && valRaTa(nS) == 1
+        elseif valAdsPrEnd2RaTa(i,nS) == 1
 
-            %Update the net molar flow (since the flow is in a negative
-            %direction, the voluemtric flow is negative)
-            netMolarFlow = netMolarFlow ...
-                         + col.(sColNums{i}).volFlRat(:,nVols) ...
-                         * col.(sColNums{i}).gasConsTot(:,nVols);
+            %Update the net molar flow (since the flow is in the positive
+            %direction, the voluemtric flow is positive). When we are
+            %throwing away the product to the waste stream, we mave a zero
+            %net molar flow rate coming into the raffinate tank.
+            netMolarFlowIn = netMolarFlowIn ...
+                           + max(0,valAdsPrEnd2RaWa(i,nS) ... 
+                           * col.(sColNums{i}).volFlRat(:,nVols+1) ...
+                           * col.(sColNums{i}).gasConsTot(:,nVols));
                      
             %Evaluate the species dependent terms
             for j = 1 : nComs
@@ -192,19 +189,20 @@ function units = getRaTaEnerBal(params,units,nS)
                %Update the summation term for the product of the component
                %heat capacity and the species concentration in the gas
                %phase
-               convFlowEner = convFlowEner ...
-                            + htCapCpNorm(j) ...
-                            * col.(sColNums{i}).gasCons. ...
-                              (sComNums{j})(:,nVols);
-
+               convFlowEnerIn = convFlowEnerIn ...
+                              + htCapCpNorm(j) ...
+                              * col.(sColNums{i}).gasCons. ...
+                                (sComNums{j})(:,nVols);
+  
             end
             
             %Multiply the updated term with the volumetric flow rate and
             %the temperature difference
-            convFlowEner = col.(sColNums{i}).volFlRat(:,nVols) ...
-                         * (col.(sColNums{i}).temps.cstr(:,nVols)...
-                           -raTa.n1.temps.cstr) ...
-                         * convFlowEner;
+            convFlowEnerIn ...
+                = max(0,col.(sColNums{i}).volFlRat(:,nVols+1)) ...
+                * (col.(sColNums{i}).temps.cstr(:,nVols)...
+                  -raTa.n1.temps.cstr) ...
+                * convFlowEnerIn;
         
         %Otherwise, we don't have to do anything as there is no interaction
         %with the raffinate product tank
@@ -214,14 +212,17 @@ function units = getRaTaEnerBal(params,units,nS)
             
         end
         
+        %Calculate the net change in the total moles inside the tank
+        netChangeInMoles = (netMolarFlowIn+netMolarFlowOut);
+        
         %Scale the terms with the relevant pre-factors
         presDeltaEner = gConsNormRaTa ...
                       * raTa.n1.temps.cstr ...
-                      * netMolarFlow;
-        convFlowEner = gConsNormRaTa ...
-                     * convFlowEner;
+                      * netChangeInMoles;
+        convFlowEnerIn = gConsNormRaTa ...
+                       * convFlowEnerIn;
 
-    end            
+    end     
     %---------------------------------------------------------------------%
     
     
@@ -232,7 +233,7 @@ function units = getRaTaEnerBal(params,units,nS)
     %Update the existing field
     raTa.n1.cstrEnBal = (raTa.n1.cstrEnBal ...
                         +presDeltaEner ...
-                        +convFlowEner) ...
+                        +convFlowEnerIn) ...
                       / raTa.n1.htCO;        
     %---------------------------------------------------------------------%
     

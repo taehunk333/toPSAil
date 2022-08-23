@@ -18,17 +18,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2021/1/26/Tuesday
-%Code last modified on : 2022/8/8/Monday
+%Code created on       : 2022/2/10/Thursday
+%Code last modified on : 2022/8/9/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : calcVolFlowValSix2ExTa.m
+%Function   : calcVolFlowFeTa2ValFiv.m
 %Source     : common
 %Description: a function that calculates a volumetric flow rate after a
-%             linear valve located in the feed-end of an adsorption
-%             column. The flow direction is from an adsorption colum down
-%             to the waste stream.
+%             linear valve located in the product-end of an adsorption
+%             column. The flow direction is from the feed tank to an
+%             adsorption column.
 %Inputs     : params       - a struct containing simulation parameters.
 %             col          - a struct containing state variables and
 %                            calculated quantities associated with
@@ -47,34 +47,34 @@
 %Outputs    : volFlowRat   - a volumetric flow rate after the valve
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function volFlowRat = calcVolFlowValSix2ExTa(params,col,~,~,exTa,nS,nCo)
+function volFlowRat = calcVolFlowFeTa2ValFiv(params,col,feTa,~,~,nS,nCo)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'calcVolFlowValSix2ExTa.m';      
+    %funcId = 'calcVolFlowFeTa2ValFiv.m';      
     
-    %Unpack Params    
-    valFeedCol = params.valFeedCol;
-    sColNums   = params.sColNums  ;
-    funcVal    = params.funcVal   ;
-            
-    %Get a dimensionless valve constant value for the waste valve (i.e. 
-    %valve 6)
-    val6Con = valFeedCol(nCo,nS);        
+    %Unpack Params           
+    valProdColNorm = params.valProdColNorm;
+    sColNums       = params.sColNums      ;
+    funcVal        = params.funcVal       ;
+    
+    %Get a dimensionless valve constant value for the purge/pressurization
+    %valve (i.e., valve 5)
+    val5Con = valProdColNorm(nCo,nS);
     %---------------------------------------------------------------------%                
-      
+  
     
     
     %---------------------------------------------------------------------%
     %Get the total concentrations
         
-    %Dimensionless total concentration for the 1st CSTR
-    gasConTotCol = col.(sColNums{nCo}).gasConsTot(:,1);
+    %Dimensionless total concentration for the Nth CSTR
+    gasConTotCol = col.(sColNums{nCo}).gasConsTot(:,end);
     
-    %Dimensionless total concentration for the waste stream
-    gasConTotExTa = exTa.n1.gasConsTot;  
+    %Dimensionless total concentration for the product tank
+    gasConTotFeTa = feTa.n1.gasConsTot;  
     %---------------------------------------------------------------------%
     
     
@@ -82,11 +82,11 @@ function volFlowRat = calcVolFlowValSix2ExTa(params,col,~,~,exTa,nS,nCo)
     %---------------------------------------------------------------------%
     %Get the dimensionless temperatures
         
-    %Dimensionless temperature for the 1st CSTR
-    cstrTempCol = col.(sColNums{nCo}).temps.cstr(:,1);
+    %Dimensionless temperature for the last CSTR
+    cstrTempCol = col.(sColNums{nCo}).temps.cstr(:,end);
     
-    %Dimensionless temperature for the product tank
-    cstrTempExTa = exTa.n1.temps.cstr;  
+    %Dimensionless temperature for the feed tank
+    cstrTempFeTa = feTa.n1.temps.cstr;  
     %---------------------------------------------------------------------%
     
     
@@ -94,17 +94,15 @@ function volFlowRat = calcVolFlowValSix2ExTa(params,col,~,~,exTa,nS,nCo)
     %---------------------------------------------------------------------%
     %Compute the function output
     
-    %Calculate the volumetric flow rate after the valve      
-    volFlowRat = -funcVal(val6Con, ...
-                          gasConTotExTa, ...
-                          gasConTotCol, ...
-                          cstrTempExTa, ...
-                          cstrTempCol);
-    
-    %Get the volumetric flow rate coming out from the adsorber
-    volFlowRat = volFlowRat ...
-              .* gasConTotExTa ...
-              ./ gasConTotCol;
+    %Calculate the molar flow rate after the valve      
+    molFlowRat = funcVal(val5Con, ...                         
+                         gasConTotFeTa, ...
+                         gasConTotCol, ...                         
+                         cstrTempFeTa, ...
+                         cstrTempCol);
+                      
+    %Calculate the volumetric flow rate at the valve outlet
+    volFlowRat = molFlowRat ./ gasConTotCol;
     %---------------------------------------------------------------------%
   
 end

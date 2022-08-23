@@ -44,11 +44,12 @@ function units = getRaWaCuMolBal(params,units,nS)
     %funcId = 'getRaWaCuMolBal.m';
     
     %Unpack params
-    nComs   = params.nComs   ;
-    nCols   = params.nCols   ;
-    sComs   = params.sComNums;  
-    sCols   = params.sColNums;
-    valRaTa = params.valRaTa ;
+    nComs            = params.nComs           ;
+    nCols            = params.nCols           ;
+    sComs            = params.sComNums        ;  
+    sCols            = params.sColNums        ;
+    nVols            = params.nVols           ;
+    valAdsPrEnd2RaWa = params.valAdsPrEnd2RaWa;
     
     %Unpack units
     col = units.col;
@@ -73,9 +74,9 @@ function units = getRaWaCuMolBal(params,units,nS)
             %out as the raffinate waste
             raWa.n1.cumMolBal.waste.(sComs{j}) ...
                 = raWa.n1.cumMolBal.waste.(sComs{j}) ...
-                + col.(sCols{i}).gasCons.(sComs{j})(:,end) ...
-                * col.(sCols{i}).volFlRat(:,end) ...
-                * (1-valRaTa(nS));
+                + col.(sCols{i}).gasCons.(sComs{j})(:,nVols) ...
+                * col.(sCols{i}).volFlRat(:,nVols+1) ...
+                * (1-valAdsPrEnd2RaWa(i,nS));
 
         end
     

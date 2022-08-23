@@ -55,7 +55,7 @@ function [event,isterminal,direction] ...
     eveColNo      = params.eveColNo(nS) ;
     nComs         = params.nComs        ;
     nColStT       = params.nColStT      ;
-    eveTotPresDp  = params.eveTotPresDp ;
+    eveTotPres    = params.eveTotPres   ;
     gasConsNormEq = params.gasConsNormEq;
     
     %Convert the states into a row vector
@@ -97,7 +97,7 @@ function [event,isterminal,direction] ...
     
     %Total pressure differnce between the current pressure of the 1st
     %CSTR vs. the low pressure
-    event = gasTotPres1-eveTotPresDp;
+    event = gasTotPres1-eveTotPres;
     %---------------------------------------------------------------------%
     
     

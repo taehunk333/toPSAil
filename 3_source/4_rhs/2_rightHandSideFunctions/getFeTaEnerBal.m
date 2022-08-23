@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/28/Thursday
-%Code last modified on : 2022/3/14/Monday
+%Code last modified on : 2022/8/22/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -84,14 +84,22 @@ function units = getFeTaEnerBal(params,units)
     %funcId = 'getFeTaEnerBal.m';
     
     %Unpack params
-    nComs          = params.nComs         ;   
+    nComs          = params.nComs         ;
+    nCols          = params.nCols         ;
+    sColNums       = params.sColNums      ;
     intHtTrFacFeTa = params.intHtTrFacFeTa;
     extHtTrFacFeTa = params.extHtTrFacFeTa;
     ambTempNorm    = params.ambTempNorm   ;
     gConsNormFeTa  = params.gConsNormFeTa ;
     htCapCpNorm    = params.htCapCpNorm   ;
-    pRatFe         = params.pRatFe        ;
     yFeC           = params.yFeC          ;
+    pRatFe         = params.pRatFe        ;
+    gasConsNormEq  = params.gasConsNormEq ;
+    tempFeedNorm   = params.tempFeedNorm  ;
+    
+    %Unpack units
+    col  = units.col ;
+    feTa = units.feTa; 
     %---------------------------------------------------------------------%              
         
     
@@ -119,7 +127,10 @@ function units = getFeTaEnerBal(params,units)
   
     %Save the heat transfer rate to the column wall from CSTR in the 
     %right hand side of the dTn/dt
-    feTa.n1.cstrEnBal = dQndt;              
+    feTa.n1.cstrEnBal = dQndt;    
+    
+    %Net molar flow rate out of the feed tank
+    netMolarFlowOut = 0;
     %---------------------------------------------------------------------%               
     
     
@@ -128,18 +139,20 @@ function units = getFeTaEnerBal(params,units)
     %Unpack states    
     
     %Unpack the volumetric flow rates
-    vnm1 = feTa.n1.volFlRat(:,end) ;                
-
+    vnm1 = feTa.n1.volFlRat(:,end);
+    
     %Unpack the interior temperature variables
     
-    %Assume that the temperature of the compressed feed remains the same
-    Tnm1 = ambTempNorm; 
+    %Assume that the heat exchanger H-1 is capable of controlling its
+    %outlet temperature to a specified value; in this case at the feed
+    %temperature
+    Tnm1 = tempFeedNorm;
     
     %Get the current temperature of the feed tank
     Tnm0 = feTa.n1.temps.cstr;                
-
+    
     %Unpack the overall heat capacity                
-    htCOnm0 = feTa.n1.htCO;                                                               
+    htCOnm0 = feTa.n1.htCO;                    
     %---------------------------------------------------------------------% 
     
     
@@ -150,17 +163,42 @@ function units = getFeTaEnerBal(params,units)
     %Initialize the convective energy flow term
     convFlowEner = 0;
     
+    %For the feed stream of the feed tank, update the net molar flow (since
+    %the flow is in a negative direction, the voluemtric flow is negative)
+    netMolarFlowIn = feTa.n1.volFlRat(end) ...
+                   * pRatFe/(gasConsNormEq*tempFeedNorm);
+    
+    %For each adsorber
+    for i = 1 : nCols
+                                                                        
+        %FLOW OUT OF THE FEED TANK
+        %If we have a co-current flow in the current adsorber and we are
+        %collecting the raffinate product      
+
+        %Update the net molar flow (since the flow is in a negative
+        %direction, the voluemtric flow is negative)
+        netMolarFlowOut = netMolarFlowOut ...
+                        + col.(sColNums{i}).volFlRat(:,1) ...
+                        * feTa.n1.gasConsTot;        
+        
+    end
+    
+    %Compute the net molar flow rate across the feed tank
+    netMolarFlow = (netMolarFlowIn-netMolarFlowOut);
+        
     %For each species
     for j = 1 : nComs
         
         %Update the first term
         convFlowEner = convFlowEner ...
-                     + htCapCpNorm(j) ...
-                     * (pRatFe*yFeC(j));    
+                     + htCapCpNorm(j)*(pRatFe*yFeC(j));    
         
     end            
     
-    %Update the term with the prefactors
+    %Update the term with the prefactors    
+    presDeltaEner = gConsNormFeTa ...
+                  * feTa.n1.temps.cstr ...
+                  * netMolarFlow;    
     convFlowEner = gConsNormFeTa ...
                  * vnm1*(Tnm1-Tnm0) ...
                  * convFlowEner;    
@@ -175,10 +213,10 @@ function units = getFeTaEnerBal(params,units)
     %be maintained and the highest pressure in the system.
     
     %Evaluate the right hand side for the interior temperature for the feed
-    %tank by accounting for the flow term
-    feTa.n1.cstrEnBal = (feTa.n1.cstrEnBal ...
-                        +convFlowEner) ...
-                      / htCOnm0;
+    %tank by accounting for the flow term.
+    feTa.n1.cstrEnBal ...
+        = (feTa.n1.cstrEnBal+presDeltaEner+convFlowEner) ...
+        / htCOnm0;
     %---------------------------------------------------------------------%
     
     

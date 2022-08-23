@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/4/10/Monday
-%Code last modified on : 2022/4/11/Tuesday
+%Code last modified on : 2022/8/16/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -30,12 +30,11 @@
 %Inputs     : params       - a struct containing simulation parameters.
 %             units        - a nested structure containing all the units in
 %                            the process flow diagram.
-%             nS           - jth step in a given PSA cycle
 %Outputs    : units        - a nested structure containing all the units in
 %                            the process flow diagram.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function units = getFeTaMoleBal(params,units,nS)
+function units = getFeTaMoleBal(params,units)
     
     %---------------------------------------------------------------------%
     %Define known quantities
@@ -44,13 +43,14 @@ function units = getFeTaMoleBal(params,units,nS)
     %funcId = 'getFeTaMoleBal.m';
     
     %Unpack params    
-    nComs         = params.nComs        ;
-    nCols         = params.nCols        ;
-    colIntActFeed = params.colIntActFeed;
-    yFeC          = params.yFeC         ;
-    feTaScaleFac  = params.feTaScaleFac ;
-    pRatFe        = params.pRatFe       ;   
-    sComNums      = params.sComNums     ;
+    nComs        = params.nComs       ;
+    nCols        = params.nCols       ;
+    yFeC         = params.yFeC        ;
+    feTaScaleFac = params.feTaScaleFac;
+    pRatFe       = params.pRatFe      ;   
+    sComNums     = params.sComNums    ;
+    tempColNorm  = params.tempColNorm ;
+    tempFeedNorm = params.tempFeedNorm;
     
     %Unpack units
     feTa = units.feTa;
@@ -62,7 +62,7 @@ function units = getFeTaMoleBal(params,units,nS)
     %Initialize solution arrays
     
     %Initialize the convective flow after the feed valve (i.e., valve 2) 
-    convOutVal2 = 0;        
+    convOutToAds = 0;        
     %---------------------------------------------------------------------%    
     
     
@@ -81,34 +81,22 @@ function units = getFeTaMoleBal(params,units,nS)
         for k = 1 : nCols
 
             %-------------------------------------------------------------%    
-            %Calculate molar flow rates around the feed tank                                
+            %Calculate the molar flow rates from the feed tank, heading to
+            %the adsorbers.
 
-            %If the interaction b/t kth column and the feed tank
-            %is through valve 2
-            if colIntActFeed(k,nS) == 2
-
-                %Convective flow out through valve 2 (into kth adsorption 
-                %column). Note that the pressure is reduced after the valve 
-                %to P_high. However, the mole fraction of the gas remains
-                %the same
-                convOutVal2 = convOutVal2 ...
-                            + feTa.n1.volFlRat(:,k) ...
-                           .* feTa.n1.gasCons.(sComNums{j});
-
-            %If there is no interaction with kth column and the ith
-            %feed tank, for nS step,                            
-            else
-
-                %No need to update anything
-
-            end
+            %Molar flow coming out from the feed tank, heading to the kth
+            %adsorber.
+            convOutToAds = convOutToAds ...
+                         + feTa.n1.volFlRat(:,k) ...
+                        .* feTa.n1.gasCons.(sComNums{j});                                    
             %-------------------------------------------------------------%    
 
         end
 
-        %Convective flow into the ith feed tank from the feed reservoir
+        %Convective flow into the ith feed tank from the feed reservoir. We
+        %have c_{feed}/c_{high} = P_{feed}/P_{high} * T_{high}/T_{Feed}.
         convfromFeRes = feTa.n1.volFlRat(:,end) ...
-                      * pRatFe*yFeC(j);
+                      * pRatFe*tempColNorm/tempFeedNorm*yFeC(j);
         %-----------------------------------------------------------------%    
 
 
@@ -119,10 +107,10 @@ function units = getFeTaMoleBal(params,units,nS)
         %Do the mole balance on the ith tank for species j
         feTa.n1.moleBal.(sComNums{j}) ...
             = feTaScaleFac ...
-           .* (convfromFeRes-convOutVal2);    
+           .* (convfromFeRes-convOutToAds);    
 
         %Initialize the molar flow rates for the next iteration
-        convOutVal2 = 0;                     
+        convOutToAds = 0;                     
         %-----------------------------------------------------------------%                
 
     end

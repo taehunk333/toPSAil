@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/2/18/Friday
-%Code last modified on : 2022/3/14/Monday
+%Code last modified on : 2022/8/20/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -46,17 +46,18 @@ function units = makeCol2Interact(params,units,nS)
     %funcId = 'makeCol2Interact.m';
     
     %Unpack params       
-    nCols        = params.nCols       ;
-    nComs        = params.nComs       ;
-    sColNums     = params.sColNums    ;
-    sComNums     = params.sComNums    ;
-    colIntActTop = params.colIntActTop;
-    colIntActBot = params.colIntActBot;
-    valRinTop    = params.valRinTop   ;
-    valRinBot    = params.valRinBot   ;
-    valFeeTop    = params.valFeeTop   ;
-    valPurBot    = params.valPurBot   ;
-    
+    nCols            = params.nCols           ;
+    nComs            = params.nComs           ;
+    sColNums         = params.sColNums        ;
+    sComNums         = params.sComNums        ;
+    numAdsEqPrEnd    = params.numAdsEqPrEnd   ;
+    numAdsEqFeEnd    = params.numAdsEqFeEnd   ;        
+    valFeTa2AdsPrEnd = params.valFeTa2AdsPrEnd;  
+    valRaTa2AdsFeEnd = params.valRaTa2AdsFeEnd;
+    valExTa2AdsPrEnd = params.valExTa2AdsPrEnd; 
+    valExTa2AdsFeEnd = params.valExTa2AdsFeEnd;
+    valAdsFeEnd2ExTa = params.valAdsFeEnd2ExTa;
+       
     %Unpack units
     col  = units.col ;
     feTa = units.feTa;
@@ -81,35 +82,34 @@ function units = makeCol2Interact(params,units,nS)
             %Define product-end interactions
 
             %Check for any pressure equalization at the product-end
-            colEq = colIntActTop(i,nS);
+            numColEqStep = numAdsEqPrEnd(i,nS);
 
             %If the upstream is another adsorption column at the
             %product-end
-            if colEq ~= 0                    
+            if numColEqStep ~= 0                    
 
+                %---------------------------------------------------------%
                 %Get the total concentration of the other equalizing 
                 %adsorption column (in the Nth CSTR)
                 gasConTotPrEnd ...
-                    = col.(sColNums{colEq}). ...
+                    = col.(sColNums{numColEqStep}). ...
                       gasConsTot(:,end);
 
                 %Get the jth species concentration inside the 
                 %equalizing adsorption column (in the Nth CSTR)
                 gasConSpePrEnd ...
-                    = col.(sColNums{colEq}). ...
+                    = col.(sColNums{numColEqStep}). ...
                       gasCons.(sComNums{j})(:,end);
 
                 %Get the current total concentration of the Nth CSTR in the
                 %ith adsorption column
                 gasConTotCstr ...
-                    = col.(sColNums{i}). ...
-                      gasConsTot(:,end);
+                    = col.(sColNums{i}).gasConsTot(:,end);
 
                 %Get the concentration of species at the product end of
                 %the adsorber
                 units.col.(sColNums{i}).prEnd.gasCons.(sComNums{j}) ...
-                    = (gasConSpePrEnd ...
-                      /gasConTotPrEnd) ...
+                    = (gasConSpePrEnd/gasConTotPrEnd) ...
                     * gasConTotCstr;
                 
                 %Get the total concentration of species at the product end
@@ -120,14 +120,15 @@ function units = makeCol2Interact(params,units,nS)
                 %Get the upstream temperatures from the other column
                 %undergoing the equalization
                 col.(sColNums{i}).prEnd.temps ...
-                    = col.(sColNums{colEq}).temps.cstr(:,end);                                    
+                    = col.(sColNums{numColEqStep}).temps.cstr(:,end);  
+                %---------------------------------------------------------%
 
             %If the upstream is the extract product tank, i.e., we are 
             %doing a rinse step.
-            elseif valRinTop(nS) == 1
+            elseif valExTa2AdsPrEnd(i,nS) == 1
 
-                %Get the total concentration of the extract product 
-                %tank
+                %---------------------------------------------------------%
+                %Get the total concentration of the extract product tank
                 gasConTotPrEnd ...
                     = exTa.n1.gasConsTot;
 
@@ -146,8 +147,7 @@ function units = makeCol2Interact(params,units,nS)
                 %Get the concentration of species at the product end of the
                 %ith adsorber
                 col.(sColNums{i}).prEnd.gasCons.(sComNums{j}) ...
-                    = (gasConSpePrEnd/ ...
-                      gasConTotPrEnd) ...
+                    = (gasConSpePrEnd/gasConTotPrEnd) ...
                     * gasConTotCstr;
                 
                 %Get the total concentration of species at the product end
@@ -158,10 +158,12 @@ function units = makeCol2Interact(params,units,nS)
                 %Get the upstream temperature from the extract product tank
                 col.(sColNums{i}).prEnd.temps ...
                     = exTa.n1.temps.cstr; 
+                %---------------------------------------------------------%
 
             %If the upstream is the feed tank 
-            elseif valFeeTop(nS) == 1    
-
+            elseif valFeTa2AdsPrEnd(i,nS) == 1    
+    
+                %---------------------------------------------------------%
                 %Get the total concentration of the feed tank
                 gasConTotPrEnd ...
                     = feTa.n1.gasConsTot;
@@ -180,8 +182,7 @@ function units = makeCol2Interact(params,units,nS)
                 %Get the concentration of species at the product end of
                 %the ith adsorber.
                 col.(sColNums{i}).prEnd.gasCons.(sComNums{j}) ...
-                    = (gasConSpePrEnd ...
-                      /gasConTotPrEnd) ...
+                    = (gasConSpePrEnd/gasConTotPrEnd) ...
                     * gasConTotCstr;
                 
                 %Get the total concentration of species at the product end
@@ -192,10 +193,12 @@ function units = makeCol2Interact(params,units,nS)
                 %Get the upstream temperature from the feed tank
                 col.(sColNums{i}).prEnd.temps ...
                     = feTa.n1.temps.cstr;
+                %---------------------------------------------------------%
 
             %Otherwise, the flow is from the raffinate product tank. 
-            else 
+            else
                 
+                %---------------------------------------------------------%
                 %Get the total concentration of the raffinate product 
                 %tank
                 gasConTotPrEnd ...
@@ -216,8 +219,7 @@ function units = makeCol2Interact(params,units,nS)
                 %Get the concentration of species at the product end of
                 %the ith adsorber.
                 col.(sColNums{i}).prEnd.gasCons.(sComNums{j}) ...
-                    = (gasConSpePrEnd/ ...
-                      gasConTotPrEnd) ...
+                    = (gasConSpePrEnd/gasConTotPrEnd) ...
                     * gasConTotCstr;
                 
                 %Get the total concentration of species at the product end
@@ -228,6 +230,7 @@ function units = makeCol2Interact(params,units,nS)
                 %Get the temperature from the raffinate product tank
                 col.(sColNums{i}).prEnd.temps ...
                     = raTa.n1.temps.cstr;
+                %---------------------------------------------------------%
 
             end
             %-------------------------------------------------------------%
@@ -238,22 +241,23 @@ function units = makeCol2Interact(params,units,nS)
             %Define feed-end interactions
 
             %Check for any pressure equalization at the feed-end
-            colEq = colIntActBot(i,nS);
+            numColEqStep = numAdsEqFeEnd(i,nS);
 
             %If the upstream is another adsorption column at the 
             %feed-end
-            if colEq ~= 0
-
+            if numColEqStep ~= 0
+                
+                %---------------------------------------------------------%
                 %Get the total concentration of the other equalizing 
                 %adsorption column (in the 1st CSTR)
                 gasConTotFeEnd ...
-                    = col.(sColNums{colEq}). ...
+                    = col.(sColNums{numColEqStep}). ...
                       gasConsTot(:,1);
 
                 %Get the jth species concentration inside the 
                 %equalizing adsorption column (in the 1st CSTR)
                 gasConSpeFeEnd ...
-                    = col.(sColNums{colEq}). ...
+                    = col.(sColNums{numColEqStep}). ...
                       gasCons.(sComNums{j})(:,1);
 
                 %Get the current total concentration of the 1st CSTR in
@@ -277,12 +281,15 @@ function units = makeCol2Interact(params,units,nS)
                 %Get the upstream temperatures from the other column
                 %undergoing the equalization
                 col.(sColNums{i}).feEnd.temps ...
-                    = col.(sColNums{colEq}).temps.cstr(:,1); 
+                    = col.(sColNums{numColEqStep}).temps.cstr(:,1); 
+                %---------------------------------------------------------%
 
             %If there is an interaction between the extract product
             %tank and the column(s)
-            elseif valRinBot(nS) == 1
-
+            elseif valExTa2AdsFeEnd(i,nS) == 1 || ...
+                   valAdsFeEnd2ExTa(i,nS) == 1
+                
+                %---------------------------------------------------------%
                 %Get the total concentration of the extract tank
                 gasConTotFeEnd ...
                     = exTa.n1.gasConsTot;
@@ -302,8 +309,7 @@ function units = makeCol2Interact(params,units,nS)
                 %Get the concentration of species at the product end of
                 %the adsorber
                 col.(sColNums{i}).feEnd.gasCons.(sComNums{j}) ...
-                    = (gasConSpeFeEnd/ ...
-                      gasConTotFeEnd) ...
+                    = (gasConSpeFeEnd/gasConTotFeEnd) ...
                     * gasConTotCstr;
                 
                 %Get the total concentration of species at the feed end of 
@@ -314,11 +320,13 @@ function units = makeCol2Interact(params,units,nS)
                 %Get the temperature from the extract product tank
                 col.(sColNums{i}).feEnd.temps ...
                     = exTa.n1.temps.cstr;
+                %---------------------------------------------------------%
 
             %If there is an interaction between the raffinate product
             %tank and the column(s)
-            elseif valPurBot(nS) == 1
-
+            elseif valRaTa2AdsFeEnd(i,nS) == 1
+    
+                %---------------------------------------------------------%
                 %Get the total concentration of the raffinate tank
                 gasConTotFeEnd ...
                     = raTa.n1.gasConsTot;
@@ -338,8 +346,7 @@ function units = makeCol2Interact(params,units,nS)
                 %Get the concentration of species at the product end of
                 %the adsorber
                 col.(sColNums{i}).feEnd.gasCons.(sComNums{j}) ...
-                    = (gasConSpeFeEnd/ ...
-                      gasConTotFeEnd) ...
+                    = (gasConSpeFeEnd/gasConTotFeEnd) ...
                     * gasConTotCstr;
                 
                 %Get the total concentration of species at the feed end of 
@@ -350,10 +357,12 @@ function units = makeCol2Interact(params,units,nS)
                 %Get the temperature from the extract product tank
                 col.(sColNums{i}).feEnd.temps ...
                     = raTa.n1.temps.cstr;    
+                %---------------------------------------------------------%
 
             %Otherwise the downstream is the feed tank
             else
-
+    
+                %---------------------------------------------------------%
                 %Get the total concentration of the first feed tank
                 gasConTotFeEnd ...
                     = feTa.n1.gasConsTot;
@@ -373,8 +382,7 @@ function units = makeCol2Interact(params,units,nS)
                 %Get the concentration of species at the product end of
                 %the adsorber
                 col.(sColNums{i}).feEnd.gasCons.(sComNums{j}) ...
-                    = (gasConSpeFeEnd/ ...
-                      gasConTotFeEnd) ...
+                    = (gasConSpeFeEnd/gasConTotFeEnd) ...
                     * gasConTotCstr;
                 
                 %Get the total concentration of species at the feed end of 
@@ -385,7 +393,8 @@ function units = makeCol2Interact(params,units,nS)
                 %Get the temperature from the feed tank
                 col.(sColNums{i}).feEnd.temps ...
                     = feTa.n1.temps.cstr;
-
+                %---------------------------------------------------------%
+                    
             end                
             %-------------------------------------------------------------%
             

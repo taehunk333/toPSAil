@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/25/Monday
-%Code last modified on : 2022/5/9/Monday
+%Code last modified on : 2022/8/10/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -41,11 +41,11 @@ function params = getColBoundConds(params)
     %funcId = 'getColBoundConds.m';
     
     %Unpack Params
-    nCols    = params.nCols   ;
-    nSteps   = params.nSteps  ;
-    maxNoBC  = params.maxNoBC ;
-    daeModel = params.daeModel;
-    bool     = params.bool    ;
+    nCols        = params.nCols       ;
+    nSteps       = params.nSteps      ;
+    maxNoBC      = params.maxNoBC     ;
+    typeDaeModel = params.typeDaeModel;
+    bool         = params.bool        ;
     %---------------------------------------------------------------------%                
   
     
@@ -77,11 +77,14 @@ function params = getColBoundConds(params)
             
             %-------------------------------------------------------------%
             %For each boundary condition associated with jth column,
-            for k = 1 : maxNoBC
-            
-                %Assign the function handle
-                [volFlBo{k,j,i},flags] ...
-                    = getVolFlowFuncHandle(params,i,j,k);
+           
+                %---------------------------------------------------------%
+                %Obtain the boundary conditions
+                
+                %Assign the function handle for the product-end (1) and the
+                %feed-end (2)
+                [volFlBo{1,j,i},volFlBo{2,j,i},flags] ...
+                    = getVolFlowFuncHandle(params,i,j);
                 %---------------------------------------------------------%
                 
                 
@@ -93,7 +96,7 @@ function params = getColBoundConds(params)
                 %boundary condition where it was specifeid; we save when we
                 %have a constant pressure DAE model with no axial pressure 
                 %drop
-                checkDaeModel = daeModel(j,i);    
+                checkDaeModel = typeDaeModel(j,i);    
                 
                 %Check if we have momentum balance or not
                 checkMomBal = bool(6);
@@ -104,18 +107,17 @@ function params = getColBoundConds(params)
                 if checkDaeModel == 0 && ... %Constant pressure DAE
                    checkMomBal == 0 && ...   %No axial pressure drop
                    whichEnd ~= 0             %Update only when needed
-
+  
                     %Update the boundary condition for the constant 
                     %pressure no axial pressure drop DAE model which 
                     %requires only one boundary condition. All the other 
                     %DAE models require the specification of two boundary
                     %conditions.
-                    volFlBoFree(j,i) = flags.whichEnd;
+                    volFlBoFree(j,i) = whichEnd;
 
                 end
                 %---------------------------------------------------------%
-                
-            end                        
+                       
             %-------------------------------------------------------------%
             
         end    
