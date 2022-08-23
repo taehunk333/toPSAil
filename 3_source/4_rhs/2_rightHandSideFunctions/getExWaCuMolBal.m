@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/2/2/Wednesday
-%Code last modified on : 2022/3/14/Monday
+%Code last modified on : 2022/8/23/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -44,12 +44,11 @@ function units = getExWaCuMolBal(params,units,nS)
     %funcId = 'getExWaCuMolBal.m';
     
     %Unpack params
-    nComs      = params.nComs     ;
-    nCols      = params.nCols     ;
-    sComs      = params.sComNums  ;  
-    sCols      = params.sColNums  ;
-    valExTa    = params.valExTa   ;
-    flowDirCol = params.flowDirCol;
+    nComs            = params.nComs           ;
+    nCols            = params.nCols           ;
+    sComs            = params.sComNums        ;  
+    sCols            = params.sColNums        ;
+    valAdsFeEnd2ExWa = params.valAdsFeEnd2ExWa;
     
     %Unpack units
     col = units.col;
@@ -76,8 +75,7 @@ function units = getExWaCuMolBal(params,units,nS)
                 = exWa.n1.cumMolBal.waste.(sComs{j}) ...
                 + col.(sCols{i}).gasCons.(sComs{j})(:,1) ...
                 * col.(sCols{i}).volFlRat(:,1) ...
-                * (1-valExTa(nS)) ...
-                * flowDirCol(nS);
+                * (1-valAdsFeEnd2ExWa(i,nS));
 
         end
     

@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/1/Monday
-%Code last modified on : 2022/1/24/Monday
+%Code last modified on : 2022/8/16/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -41,15 +41,15 @@ function params = getEventParams(params)
     
     %Unpack params
     eveVal   = params.eveVal  ;
-    sStepCol = params.sStepCol;
-    eveCol   = params.eveColNo;
-    eveStep  = params.eveStep ;
+    eveUnit  = params.eveUnit ;
+    eveLoc   = params.eveLoc  ;
     nSteps   = params.nSteps  ;
     presBeHi = params.presBeHi;    
+    tempAmbi = params.tempAmbi;
     %---------------------------------------------------------------------% 
     
-                  
-        
+                     
+    
     %---------------------------------------------------------------------%    
     %Obtain event values
     
@@ -59,222 +59,99 @@ function params = getEventParams(params)
         %-----------------------------------------------------------------%    
         %Get the ith step event information
         
-        %Get the current event column
-        eveColNoCurr = eveCol(i);                        
+        %Get the current event location
+        eveLocStep = eveLoc{i};     
+        
+        %Get the current event value
+        eveUnitStep = eveUnit{i};
+        
+        %Get the current event unit
+        eveValStep = eveVal(i);        
         %-----------------------------------------------------------------%    
         
         
         
         %-----------------------------------------------------------------%    
-        %Obtain threshold values for the event functions
+        %Check the logic for the events for the current step
 
-        %If the event is happening for re-pressurization step,
-        if eveColNoCurr ~=0 && sStepCol{eveColNoCurr,i} == "RP"
-                
-            %-------------------------------------------------------------%    
-            %For the first event criteria
-            if eveStep(i) == 1
-                                                                                
-                %Event pressure for the re-pressurization
-                params.eveTotPresRp = eveVal(i)/presBeHi;
-            
-            %For the second event criteria
-            elseif eveStep(i) == 2
-                
-                %TBD
-                
-            %For the third event criteria
-            elseif eveStep(i) == 3
-                
-                %TBD
+        %Is the step an event driven step? i.e., is there a location for
+        %the event?
+        noEvent = strcmp(eveLocStep,'None');
 
-            end
-            %-------------------------------------------------------------%    
+        %For a given event location, is there no unit assigned?
+        noEventUnit = strcmp(eveUnitStep,'None');
+
+        %For a given event location, is the unit 'Light_Key_[mol_frac]'?
+        eventUnitLkMoleFrac = strcmp(eveUnit,'Light_Key_[mol_frac]');
         
-        %-----------------------------------------------------------------%
+        %For a given event location, is the unit 'Pressure_[bar]'?
+        eventUnitPressure = strcmp(eveUnit,'Pressure_[bar]');
+        
+        %For a given event location, is the unit 'Temperature_[K]'?
+        eventUnitTemperature = strcmp(eveUnit,'Temperature_[K]');
+        %-----------------------------------------------------------------%  
         
         
-            
+        
         %-----------------------------------------------------------------%    
-        %If the event is happening for high pressure feed step,
-        elseif eveColNoCurr ~=0 && sStepCol{eveColNoCurr,i} == "HP" 
-            
-            %-------------------------------------------------------------%    
-            %For the first event criteria
-            if eveStep(i) == 1
-            
-                %Define the breakthrough mole fraction
-                params.evePrdMolFr = eveVal(i);
-            
-            %For the second event criteria
-            elseif eveStep(i) == 2
-                
-                %Define the breakthrough mole fraction
-                params.evePrdMolFr = eveVal(i);
-                
-            %For the third event criteria
-            elseif eveStep(i) == 3
-                
-                %Define the breakthrough mole fraction
-                params.evePrdMolFr = eveVal(i);
-
-            end
-            %-------------------------------------------------------------%             
+        %Assign the event threshold values to proper variables to be used
+        %in the respective event functions.
         
-        %-----------------------------------------------------------------%
-        
-        
+        %If no event is assigned for the step
+        if noEvent
             
-        %-----------------------------------------------------------------%    
-        %If the event is happening for depressurization step,
-        elseif eveColNoCurr ~=0 && sStepCol{eveColNoCurr,i} == "DP" 
+            %No need to assign any variables to store the event function
+            %threshold value
             
-            %-------------------------------------------------------------%    
-            %For the first event criteria
-            if eveStep(i) == 1
-            
-                %Event pressure for the re-pressurization
-                params.eveTotPresDp = eveVal(i)/presBeHi;
-            
-            %For the second event criteria
-            elseif eveStep(i) == 2
-                
-                %TBD
-                
-            %For the third event criteria
-            elseif eveStep(i) == 3
-                
-                %TBD
-
-            end
-            %-------------------------------------------------------------%
-            
-        %-----------------------------------------------------------------%
-        
-        
-            
-        %-----------------------------------------------------------------%
-        %If the event is happening for low pressure purge step,
-        elseif eveColNoCurr ~=0 && sStepCol{eveColNoCurr,i} == "LP"
-            
-            %-------------------------------------------------------------%    
-            %For the first event criteria
-            if eveStep(i) == 1
-            
-                %A threshold on the fraction of the product in the product
-                %tank used to purge: 0 <= fraction <= 1
-                params.evePrTaConTot = eveVal(i);
-            
-            %For the second event criteria
-            elseif eveStep(i) == 2
-                
-                %A threshold om the heavy key efficieny factor (HKEF) at
-                %the end of the low pressure purge
-                params.eveHkef = eveVal(i);
-                
-            %For the third event criteria
-            elseif eveStep(i) == 3
-                
-                %TBD
-
-            end
-            %-------------------------------------------------------------%
-        
-        %-----------------------------------------------------------------%
-        
-        
-            
-        %-----------------------------------------------------------------%                            
-        %If the event is happening for equalization step,
-        elseif eveColNoCurr ~=0 && sStepCol{eveColNoCurr,i} == "EQ"
-            
-            %-------------------------------------------------------------%    
-            %For the first event criteria
-            if eveStep(i) == 1
-            
-                %A threshold on the pressure swing (i.e. presBeHi-presBeLo)
-                params.eveEqThr = eveVal(i);
-            
-            %For the second event criteria
-            elseif eveStep(i) == 2
-                
-                %TBD
-                
-            %For the third event criteria
-            elseif eveStep(i) == 3
-                
-                %TBD
-
-            end
-            %-------------------------------------------------------------%
-         
-        %-----------------------------------------------------------------%
-            
-            
-            
-        %-----------------------------------------------------------------%                
-        %If the event is happening for rest step,
-        elseif eveColNoCurr ~=0 && sStepCol{eveColNoCurr,i} == "RT"
-            
-            %-------------------------------------------------------------%    
-            %For the first event criteria
-            if eveStep(i) == 1
-            
-                %TBD
-            
-            %For the second event criteria
-            elseif eveStep(i) == 2
-                
-                %TBD
-                
-            %For the third event criteria
-            elseif eveStep(i) == 3
-                
-                %TBD
-
-            end
-            %-------------------------------------------------------------%    
-            
-        %-----------------------------------------------------------------%
-        
-        
-        
-        %-----------------------------------------------------------------%                
-        %If the event is happening for rinse step,
-        elseif eveColNoCurr ~=0 && sStepCol{eveColNoCurr,i} == "RN"
-            
-            %-------------------------------------------------------------%    
-            %For the first event criteria
-            if eveStep(i) == 1
-            
-                %TBD
-            
-            %For the second event criteria
-            elseif eveStep(i) == 2
-                
-                %TBD
-                
-            %For the third event criteria
-            elseif eveStep(i) == 3
-                
-                %TBD
-
-            end
-            %-------------------------------------------------------------%    
-            
-        %-----------------------------------------------------------------%
-        
-        
-        
-        %-----------------------------------------------------------------%
-        %Otherwise, we do not have any event for the step
+        %Otherwise, we are given an event for the step    
         else
             
-            %Do not assign anything
-            
-        end
-        %-----------------------------------------------------------------%    
+            %-------------------------------------------------------------%    
+            %If we are given no unit,
+            if noEventUnit
+
+                %No event is going to happen; ask the user to specify a
+                %proper unit for the event
+                msg1 = 'Please provide a correct unit '; 
+                msg2 = 'for the selected event';
+                msg = append(funcId,': ', msg1,msg2);
+                error(msg);                
+            %-------------------------------------------------------------%
+
+
+
+            %-------------------------------------------------------------%
+            %If we are given a percentage on the product stream purity,
+            elseif eventUnitLkMoleFrac
+
+                %Define the breakthrough mole fraction
+                params.eveLkMolFrac = eveValStep;
+            %-------------------------------------------------------------%
+
+
+
+            %-------------------------------------------------------------%            
+            %If we are given a threshold on the final pressure,
+            elseif eventUnitPressure
+
+                %Assign the pressure at which the event will occur
+                params.eveTotPres = eveValStep/presBeHi;                
+            %-------------------------------------------------------------%
+
+
+
+            %-------------------------------------------------------------%
+            %If we are given a threshold on the final amount
+            elseif eventUnitTemperature
+
+                %Assign the temperature at which the event will occur
+                params.eveTemp = eveValStep/tempAmbi;
+
+            end                                   
+            %-------------------------------------------------------------%                          
     
+        end
+                
     end
     %---------------------------------------------------------------------%                                                          
     

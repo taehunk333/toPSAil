@@ -102,7 +102,7 @@ function units = calcVolFlowsDP1KC(params,units,nS)
 
         %Evaluate the linear difference in the pressure and compute the 
         %volumetric flow rates         
-        vFlInterior = preFacLinFlow * 0.001 ...
+        vFlInterior = preFacLinFlow ...
                    .* deltaP;     
                
         %Save the interior volumetric flow rates
@@ -168,7 +168,7 @@ function units = calcVolFlowsDP1KC(params,units,nS)
 
     %Grab the unknown volumetric flow rates from the calculated volumetric
     %flow rates from the adsorption columns
-    units = calcVolFlows4PFD(params,units,nS);
+    units = calcVolFlows4UnitsPresDriv(params,units,nS);
     %---------------------------------------------------------------------% 
     
 end

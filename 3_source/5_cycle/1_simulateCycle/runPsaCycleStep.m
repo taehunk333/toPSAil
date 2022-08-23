@@ -68,6 +68,9 @@ function [stTime,stStates,flags] ...
    
     %Define the right hand side function
     funcRhs = @(t,x) defineRhsFunc(t,x,params);
+    
+    %Update the initial state vector
+    params.initStates = iStates;
     %---------------------------------------------------------------------%
     
     

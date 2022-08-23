@@ -92,7 +92,7 @@ function plotColWallTempProfiles(params,sol,colNum)
     height = linspace(1,heightCol,nVols);
     
     %Find the high pressure step
-    indHp = find(sStepCol=="HP");
+    indHp = contains(sStepCol,"HP");
     
     %Find the last high pressure step
     indHpEnd = lastStep ...

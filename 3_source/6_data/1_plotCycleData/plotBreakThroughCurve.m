@@ -85,7 +85,7 @@ function plotBreakThroughCurve(params,sol,colNum)
     %---------------------------------------------------------------------%
     %Calcualte needed quantities
             
-    %Find all the indices for the high pressure step in the currend
+    %Find all the indices for the high pressure step in the current
     %adsorption column
     [indHpEnd,eveCount] = grabHighPresFeedEvent(params,sol,colNum);
     

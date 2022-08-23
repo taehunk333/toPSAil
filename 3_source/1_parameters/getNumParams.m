@@ -19,9 +19,9 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/5/Tuesday
-%Code last modified on : 2021/2/16/Tuesday
+%Code last modified on : 2022/8/16/Tuesday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : getNumParams.m
 %Source     : common
@@ -40,15 +40,13 @@ function params = getNumParams(params)
     %funcId = 'getNumParams.m';
     
     %Unpack params
-    nVols      = params.nVols     ;
-    cstrHt     = params.cstrHt    ;
-    daeModel   = params.daeModel  ;    
-    nCols      = params.nCols     ;
-    nSteps     = params.nSteps    ;
-    valConT    = params.valConT   ;
-    valFeedCol = params.valFeedCol;
-    valProdCol = params.valProdCol;
-    maxNoBC    = params.maxNoBC   ;
+    nVols          = params.nVols         ; 
+    cstrHt         = params.cstrHt        ;
+    typeDaeModel   = params.typeDaeModel  ;      
+    nCols          = params.nCols         ;
+    nSteps         = params.nSteps        ;
+    valFeedColNorm = params.valFeedColNorm;
+    valProdColNorm = params.valProdColNorm;
     %---------------------------------------------------------------------%    
     
     
@@ -135,12 +133,12 @@ function params = getNumParams(params)
             %Determine logical statements
             
             %See if the product-end of the column has a Cv            
-            prodHasCv = valProdCol(j,i) ~= 1 && ...
-                        valProdCol(j,i) ~= 0;  
+            prodHasCv = valProdColNorm(j,i) ~= 1 && ...
+                        valProdColNorm(j,i) ~= 0;  
             
             %See if the feed-end of the column has a Cv
-            feedHasCv = valFeedCol(j,i) ~= 1 && ...
-                        valFeedCol(j,i) ~= 0;                        
+            feedHasCv = valFeedColNorm(j,i) ~= 1 && ...
+                        valFeedColNorm(j,i) ~= 0;                        
             %-------------------------------------------------------------%
             
             
@@ -150,21 +148,21 @@ function params = getNumParams(params)
             %matrices
             
             %If we have a time varying pressure DAE model,
-            if daeModel(j,i) == 1
+            if typeDaeModel(j,i) == 1
                 
                 %We assign the lower and upper triangular matrices
                 coefMat{j,i} = {loTriPlusVaPr,upTriPlusVaPr};  
             
             %If we have a constant pressure DAE model with a CV in the
             %product-end,
-            elseif daeModel(j,i) == 0 && prodHasCv
+            elseif typeDaeModel(j,i) == 0 && prodHasCv
                 
                 %We assign the coefficient matrix for the product-end
                 coefMat{j,i} = {upTriPlusCoPr,-upTriPlusCoPr};
             
             %If we have a constant pressure DAE model with a CV in the
             %feed-end,    
-            elseif daeModel(j,i) == 0 && feedHasCv    
+            elseif typeDaeModel(j,i) == 0 && feedHasCv    
                 
                 %We assign the coefficient matrix for the feed-end
                 coefMat{j,i} = {loTriPlusCoPr,-loTriPlusCoPr};

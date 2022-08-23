@@ -58,6 +58,8 @@ function params = getDimLessParams(params)
     valScaleFac  = params.valScaleFac ;
     valFeedCol   = params.valFeedCol  ;
     valProdCol   = params.valProdCol  ;
+    valRaTaFull  = params.valRaTaFull ;
+    valExTaFull  = params.valExTaFull ;
     %---------------------------------------------------------------------%    
     
     
@@ -106,10 +108,14 @@ function params = getDimLessParams(params)
                   / presBeHi;
               
     %Define dimensionless valve constants (replaced valConNorm)
-    valFeedCol = valFeedCol ...
-              .* valScaleFac;
-    valProdCol = valProdCol ...
-              .* valScaleFac;
+    valFeedColNorm  = valFeedCol ...
+                   .* valScaleFac;
+    valProdColNorm  = valProdCol ...
+                   .* valScaleFac;
+    valRaTaFullNorm = valRaTaFull ...
+                   .* valScaleFac;
+    valExTaFullNorm = valExTaFull ...
+                   .* valScaleFac;
     %---------------------------------------------------------------------%               
     
 
@@ -118,11 +124,13 @@ function params = getDimLessParams(params)
     %Save computed quantities into a struct
     
     %Pack variables into params
-    params.partCoefHp    = partCoefHp   ;    
-    params.damkoNo       = damkoNo      ;
-    params.gasConsNormEq = gasConsNormEq;
-    params.valFeedCol    = valFeedCol   ;
-    params.valProdCol    = valProdCol   ;
+    params.partCoefHp      = partCoefHp     ;    
+    params.damkoNo         = damkoNo        ;
+    params.gasConsNormEq   = gasConsNormEq  ;
+    params.valFeedColNorm  = valFeedColNorm ;
+    params.valProdColNorm  = valProdColNorm ;
+    params.valRaTaFullNorm = valRaTaFullNorm;
+    params.valExTaFullNorm = valExTaFullNorm;
     %---------------------------------------------------------------------%   
     
 end

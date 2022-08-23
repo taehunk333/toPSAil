@@ -19,9 +19,9 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/18/Monday
-%Code last modified on : 2021/2/16/Tuesday
+%Code last modified on : 2022/8/16/Tuesday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : getLpEvent1.m
 %Source     : common
@@ -53,7 +53,8 @@ function [event,isterminal,direction] = getLpEvent1(params,~,states,~,~)
     %Unpack params
     nComs         = params.nComs        ;           
     inShRaTa      = params.inShRaTa     ;
-    evePrTaConTot = params.evePrTaConTot;
+    eveTotPres    = params.eveTotPres   ;
+    gasConsNormEq = params.gasConsNormEq;
     
     %Convert the states into a row vector
     states = states(:).';
@@ -64,9 +65,13 @@ function [event,isterminal,direction] = getLpEvent1(params,~,states,~,~)
     %---------------------------------------------------------------------%
     %Unpack states and obtain necessary quantities
  
-    %Compute the dimensionless total concentration inside the first product
-    %tank
-    conTotPrTa = sum(states(:,inShRaTa+1:inShRaTa+nComs));      
+    %Compute the dimensionless total concentration inside the raffinate
+    %product tank
+    conTotRaTa = sum(states(:,inShRaTa+1:inShRaTa+nComs)); 
+    
+    %Obtain the dimensionless total temperature inside the raffinate
+    %product tank
+    tempRaTa = states(:,inShRaTa+nComs+1);
     %---------------------------------------------------------------------%
     
     
@@ -75,7 +80,8 @@ function [event,isterminal,direction] = getLpEvent1(params,~,states,~,~)
     %Compute the event criteria 
     
     %Purity of the product above a threshold
-    event = conTotPrTa-evePrTaConTot;
+    event = gasConsNormEq*conTotRaTa.*tempRaTa ...
+          - eveTotPres;
     %---------------------------------------------------------------------%
     
     

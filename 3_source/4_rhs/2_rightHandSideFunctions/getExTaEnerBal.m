@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/1/28/Friday
-%Code last modified on : 2022/3/14/Monday
+%Code last modified on : 2022/8/22/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -86,18 +86,19 @@ function units = getExTaEnerBal(params,units,nS)
     %funcId = 'getExTaEnerBal.m';
     
     %Unpack params     
-    nComs          = params.nComs         ;       
-    intHtTrFacExTa = params.intHtTrFacExTa;
-    extHtTrFacExTa = params.extHtTrFacExTa;    
-    ambTempNorm    = params.ambTempNorm   ;    
-    nCols          = params.nCols         ;
-    sColNums       = params.sColNums      ;
-    sComNums       = params.sComNums      ;
-    flowDirCol     = params.flowDirCol    ;    
-    gConsNormExTa  = params.gConsNormExTa ;
-    valRinTop      = params.valRinTop     ;
-    valRinBot      = params.valRinBot     ;
-    htCapCpNorm    = params.htCapCpNorm   ;
+    nComs            = params.nComs           ;   
+    htCapCpNorm      = params.htCapCpNorm     ;
+    intHtTrFacExTa   = params.intHtTrFacExTa  ;
+    extHtTrFacExTa   = params.extHtTrFacExTa  ;      
+    ambTempNorm      = params.ambTempNorm     ;      
+    nCols            = params.nCols           ;
+    sColNums         = params.sColNums        ;
+    sComNums         = params.sComNums        ;       
+    gConsNormExTa    = params.gConsNormExTa   ;    
+    valExTa2AdsFeEnd = params.valExTa2AdsFeEnd;
+    valExTa2AdsPrEnd = params.valExTa2AdsPrEnd;
+    valAdsFeEnd2ExWa = params.valAdsFeEnd2ExWa;
+    valAdsFeEnd2ExTa = params.valAdsFeEnd2ExTa;
     %---------------------------------------------------------------------%                                                 
     
     
@@ -137,7 +138,8 @@ function units = getExTaEnerBal(params,units,nS)
     convFlowEner = 0;
     
     %Initialize the net molar flow in the raffinate product tank
-    netMolarFlow = 0;
+    netMolarFlowIn  = 0;
+    netMolarFlowOut = 0;
     %---------------------------------------------------------------------%
     
     
@@ -149,18 +151,18 @@ function units = getExTaEnerBal(params,units,nS)
     %For all each column,
     for i = 1 : nCols
 
+        %FLOW INTO THE EXTRACT TANK FROM THE FEED-ENDS OF THE ADSORBERS
         %If we have a counter-current flow and no rinse step is going
         %on, we may be pressurizing the extract product tank with the
         %extract product stream from the column
-        if flowDirCol(i,nS) == 1 && ...
-           valRinTop(nS) == 0 && ...
-           valRinBot(nS) == 0
+        if valAdsFeEnd2ExTa(i,nS) == 1
        
             %Update the net molar flow (since the flow is in a negative
             %direction, the voluemtric flow is negative)
-            netMolarFlow = netMolarFlow ...
-                         + col.(sColNums{i}).volFlRat(:,1) ...
-                         * col.(sColNums{i}).gasConsTot(:,1);
+            netMolarFlowIn = netMolarFlowIn ...
+                           + min(0,valAdsFeEnd2ExWa(i,nS)...
+                           * col.(sColNums{i}).volFlRat(:,1) ...
+                           * col.(sColNums{i}).gasConsTot(:,1));
                      
             %Evaluate the species dependent terms
             for j = 1 : nComs
@@ -177,33 +179,23 @@ function units = getExTaEnerBal(params,units,nS)
             
             %Multiply the updated term with the volumetric flow rate and
             %the temperature difference
-            convFlowEner = col.(sColNums{i}).volFlRat(:,1) ...
-                         * (col.(sColNums{i}).temps.cstr(:,1)...
-                           -exTa.n1.temps.cstr) ...
-                         * convFlowEner;
-
+            convFlowEner ...
+                = min(0,col.(sColNums{i}).volFlRat(:,1)) ...
+                * (col.(sColNums{i}).temps.cstr(:,1)...
+                  -exTa.n1.temps.cstr) ...
+                * convFlowEner;
+        
         %If we have a counter-current flow, we can have a rinse going on
         %from the top-end of the adsorption column
-        elseif flowDirCol(i,nS) == 1 && ...
-               valRinTop(nS) == 1
-        
+        elseif valExTa2AdsPrEnd(i,nS) == 1 || ...
+               valExTa2AdsFeEnd(i,nS) == 1
+      
             %Update the net molar flow (since the flow is in a negative
             %direction, the voluemtric flow is negative)
-            netMolarFlow = netMolarFlow ...
-                         - exTa.n1.volFlRat(i) ...
-                         * exTa.n1.gasConsTot;           
+            netMolarFlowOut = netMolarFlowOut ...
+                            + max(0,exTa.n1.volFlRat(i)) ...
+                            * exTa.n1.gasConsTot;           
         
-        %If we have a co-current flow, we can have a rinse going on form
-        %the bottom-end of the adsorption column
-        elseif flowDirCol(i,nS) == 0 && ...
-               valRinBot(nS) == 1
-            
-           %Update the net molar flow (since the flow is in a negative
-            %direction, the voluemtric flow is negative)
-            netMolarFlow = netMolarFlow ...
-                         - exTa.n1.volFlRat(i) ...
-                         * exTa.n1.gasConsTot;             
-            
        %Otherwise, we don't have to do anything as there is no interaction
         %with the extract product tank
         else 
@@ -212,10 +204,14 @@ function units = getExTaEnerBal(params,units,nS)
             
         end
         
+        %Calculate the net change in the total moles inside the tank; the
+        %negative sign accounts for the negative flow direction.
+        netChangeInMoles = -(netMolarFlowIn+netMolarFlowOut);
+        
         %Scale the terms with the relevant pre-factors
         presDeltaEner = gConsNormExTa ...
                       * exTa.n1.temps.cstr ...
-                      * netMolarFlow;
+                      * netChangeInMoles;
         convFlowEner = gConsNormExTa ...
                      * convFlowEner;
         

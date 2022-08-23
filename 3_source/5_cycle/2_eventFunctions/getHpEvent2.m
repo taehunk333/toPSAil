@@ -49,10 +49,10 @@ function [event,isterminal,direction] = getHpEvent2(params,~,states,nS,nCy)
     %funcId = 'getHpEvent2.m';
     
     %Unpack params
-    eveColNo    = params.eveColNo(nS);
-    nComs       = params.nComs       ;
-    nColStT     = params.nColStT     ;    
-    evePrdMolFr = params.evePrdMolFr ;
+    eveColNo     = params.eveColNo(nS);
+    nComs        = params.nComs       ;
+    nColStT      = params.nColStT     ;    
+    eveLkMolFrac = params.eveLkMolFrac;
     
     %Convert the states into a row vector
     states = states(:).';
@@ -92,7 +92,7 @@ function [event,isterminal,direction] = getHpEvent2(params,~,states,nS,nCy)
         %Compute the event criteria 
 
         %Purity of the product above a threshold
-        event = gasMoleFracCum-evePrdMolFr;
+        event = gasMoleFracCum-eveLkMolFrac;
         %-----------------------------------------------------------------%
     
     %If the first event has not triggered,

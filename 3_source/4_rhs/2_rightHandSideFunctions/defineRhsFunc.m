@@ -116,7 +116,7 @@ function xDot = defineRhsFunc(~,x,params)
         %Feed Tank
 
         %Do the feed tank mole balance      
-        units = getFeTaMoleBal(params,units,nS);       
+        units = getFeTaMoleBal(params,units);       
 
         %Do the feed tank energy balance               
         units = getFeTaEnerBal(params,units);      

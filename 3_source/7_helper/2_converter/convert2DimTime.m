@@ -19,15 +19,15 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2019/2/4/Monday
-%Code last modified on : 2021/1/6/Wednesday
+%Code last modified on : 2022/8/16/Tuesday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : convert2DimTime.m
 %Source     : common
 %Description: converts a given time vector from dimensionaless form to 
 %             dimensional form using scaling factors from the struct called
-%             Params.
+%             params.
 %Inputs     : timePts      - a dimensionaless time vector (either row or
 %                            column vector) defined as:
 %                            timePts = [s_0,...,s_f];
@@ -54,13 +54,13 @@ function dimTimePts = convert2DimTime(timePts,params)
     %---------------------------------------------------------------------%
     %Check function inputs
     
-    %Check if the input s is indeed a vector
-    if ~isvector(timePts)         
+    %Check if the input timePts is neither a vector nor a scalar
+    if ~isvector(timePts) && ~isscalar(timePts)         
         
         %Print the error message
-        msg = 'Please provide a vector as an input';
-        msg = append(funcId,': ',msg)              ;
-        error(msg)                                 ;
+        msg = 'Please provide a scalar or a vector as an input';
+        msg = append(funcId,': ',msg)                          ;
+        error(msg)                                             ;
         
     end    
     %---------------------------------------------------------------------%

@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2019/2/4/Monday
-%Code last modified on : 2022/7/21/Thursday
+%Code last modified on : 2022/8/16/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -30,10 +30,14 @@
 %             simulation in a format of a structure called "Params".
 %Inputs     : exampleFolder - a string denoting a location of the example
 %                            folder
-%Outputs    : params       - a struct containing simulation parameters.
+%Outputs    : params        - a struct containing simulation parameters. 
+%                             Any unnecessary params during a numerical
+%                             integration of the ODEs are removed.
+%             fullParams    - a struct containing a full set of all the
+%                             simulation parameters.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function params = getSimParams(exampleFolder)        
+function [params,fullParams] = getSimParams(exampleFolder)        
     
     %---------------------------------------------------------------------%    
     %Define known quantities
@@ -275,6 +279,7 @@ function params = getSimParams(exampleFolder)
     %---------------------------------------------------------------------%    
 
     
+    
     %---------------------------------------------------------------------%
     %Calculate necessary volumetric flow rates from valve constants
     
@@ -304,19 +309,19 @@ function params = getSimParams(exampleFolder)
     
     %Compute changes absolute amount of moles between high and low 
     %pressuresdue 
-    params.voidMolDiff ...
+    voidMolDiff ...
         = calcEqTheoryRePresVoid(params);
 
     %Compute moles adsorbed during re-pressurization
-    params.adsMolDiff ...
+    adsMolDiff ...
         = calcEqTheoryRePresAds(params);
     
     %Compute the Normalization constant for product generated as per the
     %Equilibrium theory
     params.maxNetPrdOp ...
         = params.maxMolPr ...
-        - params.voidMolDiff ...
-        - params.adsMolDiff;
+        - voidMolDiff ...
+        - adsMolDiff;
     %---------------------------------------------------------------------%    
    
     
@@ -336,8 +341,11 @@ function params = getSimParams(exampleFolder)
     %Get Parameters for Energy Balance       
     if params.bool(5) == 1
         
-        %Calculate parameters that are needed for energy balance
-        params = getEnergyBalanceParams(params);        
+        %Calculate parameters that are needed for energy balance equations
+        params = getEnergyBalanceParams(params);    
+        
+        %Remove any unnecessary fields related to energy balance equations
+        params = removeEnergyBalanceParams(params);
         
     end    
     
@@ -345,7 +353,12 @@ function params = getSimParams(exampleFolder)
     if params.bool(6) == 1
         
         %Calculate parameters that are needed for momentum balance
+        %equations
         params = getMomentumBalanceParams(params);    
+        
+        %Remove any unnecessary fields related to momentum balance
+        %equations
+        params = removeMomentumBalanceParams(params);
         
     end
     %---------------------------------------------------------------------%
@@ -378,8 +391,9 @@ function params = getSimParams(exampleFolder)
     %---------------------------------------------------------------------%
     %Organize the PSA cycle
     
-    %Get parameters related to cycle organization
-    params = getCycleOrg(params);                     
+    %Get the interaction matrices for the multi-way valves on the process
+    %flow diagram (PFD).
+    params = getFlowSheetValves(params);                     
     
     %Get parameters related to boundary conditions
     params = getColBoundConds(params);
@@ -388,10 +402,10 @@ function params = getSimParams(exampleFolder)
     params = getTimeSpan(params);     
     
     %Get the parameters related to event functions
-    params = getEventParams(params);
+    params = getEventParams(params); 
     
     %Get event functions for all the steps in a given PSA cycle
-    params.funcEve = getEventFuncs(params);                
+    params.funcEve = getEventFuncs(params); %Work in progress!!!!!!!!!!               
     %---------------------------------------------------------------------%
     
     
@@ -425,10 +439,18 @@ function params = getSimParams(exampleFolder)
    
     
     %---------------------------------------------------------------------%
-    %Remove any unnecessary fields in params
+    %Make final adjustments in the data structure
+    
+    %Save the full set of simulation parameters in a structure named 
+    %fullParams
+    fullParams = params;
     
     %Remove unnecessary fields from the structure named params
     params = removeParams(params);    
+    
+    %Alphabetically order params and fullParams
+    params     = orderfields(params)    ;
+    fullParams = orderfields(fullParams);
     %---------------------------------------------------------------------%
     
     

@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/18/Monday
-%Code last modified on : 2022/8/8/Monday
+%Code last modified on : 2022/8/16/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -67,11 +67,11 @@ function sol = runPsaCycle(params)
     maxNoBC    = params.maxNoBC   ;
     funcVol    = params.funcVol   ;   
     funcCss    = params.funcCss   ;
-    eveColNo   = params.eveColNo  ;
+    eveLoc     = params.eveLoc    ;
     tiScaleFac = params.tiScaleFac;
     
     %Calculate needed quantities
-    stepTimes = timeSpan*tiScaleFac;
+    stepTimes = convert2DimTime(timeSpan,params);
     %---------------------------------------------------------------------%
     
     
@@ -424,14 +424,14 @@ function sol = runPsaCycle(params)
                 for i = 1 : nCols
                     
                     %Print a step name associated with ith column
-                    fprintf("%s ",sStepCol(i,nS));
+                    fprintf("%s ",sStepCol{i,nS});
                     
                 end                        
                                                 
                 %Print if an event happened?
                 
-                %Find the event column number
-                eCol = eveColNo(currStepNum);
+                %Find the event column name
+                eveLocStep = eveLoc(currStepNum);
                 
                 %Calculate actual step duration
                 eTi = round(stTimePts(end)*tiScaleFac); %round to a 
@@ -440,15 +440,18 @@ function sol = runPsaCycle(params)
                 %Get the requested step duration
                 eTi0 = round(stepTimes(currStepNum));
                 
+                %Is this an event driven step?
+                eveTrue = ~strcmp(eveLocStep,'None');
+                
                 %Event did not happen for the current step
-                if flags.event == 0 && eCol ~= 0
+                if flags.event == 0 && eveTrue == 1
                      
                     %Print the information
                     fprintf("\n*Step duration  : %d(%d) seconds",eTi,eTi0);
                     fprintf("\n*No event happened for the step")          ;          
                 
                 %No Event was requested
-                elseif flags.event == 0 && eCol == 0
+                elseif flags.event == 0 && eveTrue == 0
                     
                     %Print the information
                     fprintf("\n*Step duration  : %d(%d) seconds",eTi,eTi0);
@@ -459,7 +462,7 @@ function sol = runPsaCycle(params)
                     
                     %Print the information
                     fprintf("\n*Step duration  : %d(%d) seconds",eTi,eTi0);
-                    fprintf("\n*An event happened in column No.%d",eCol)  ;
+                    fprintf("\n*An event happened in %s",eveLocStep)  ;
                     
                 end                
                 

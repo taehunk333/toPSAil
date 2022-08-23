@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/22/Friday
-%Code last modified on : 2022/8/8/Monday
+%Code last modified on : 2022/8/9/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -37,7 +37,7 @@ function params = getStringParams(params)
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'getStringParams.m';
+    funcId = 'getStringParams.m';
     
     %Unpack params
     nSteps     = params.nSteps    ;    
@@ -65,11 +65,15 @@ function params = getStringParams(params)
 
     %Initialize a numeric array that stores the type of the DAE model,
     %i.e., time-varying pressure (1) vs. constant pressure (0)
-    typeCol = zeros(nCols,nSteps);
+    typeDaeModel = zeros(nCols,nSteps);
 
     %Initialize cell arrays that stores differents
     sComNums = cell(nComs,1)     ; %a column vector (nComs x 1)
     sColNums = cell(nCols,1)     ; %a column vector (nComs x 1)
+    
+    %Initialie cell array for the equalization between adsorption columns
+    numAdsEqPrEnd = zeros(nCols,nSteps);
+    numAdsEqFeEnd = zeros(nCols,nSteps);
     %---------------------------------------------------------------------%    
         
     
@@ -122,7 +126,16 @@ function params = getStringParams(params)
     eveVal     = str2double(eveVal)'   ;
     valFeedCol = str2double(valFeedCol); %a matrix (nCols x nSteps)
     valProdCol = str2double(valProdCol); %a matrix (nCols x nSteps)
-      
+    %---------------------------------------------------------------------%                                   
+        
+    
+    
+    %---------------------------------------------------------------------%                                   
+    %Obtain numerical values for the specific information for the PSA
+    %cycle for all columns and for all steps, including the flow
+    %directions, the types of DAE models used, and the equalizing adsorber
+    %pairs
+    
     %For each columns,
     for i = 1 : nCols         
         
@@ -145,10 +158,131 @@ function params = getStringParams(params)
         indDaeVarPres = find(sTypeCol(i,:)=="varying_pressure");                
         
         %Save the flow directions
-        typeCol(i,indDaeVarPres) = ones(1,length(indDaeVarPres));        
+        typeDaeModel(i,indDaeVarPres) = ones(1,length(indDaeVarPres));        
         %-----------------------------------------------------------------% 
         
     end           
+    
+    %For each row,
+    for i = 1 : nSteps
+    
+        %-----------------------------------------------------------------%
+        %Grab information in each adsorber, specific to the current step
+        
+        %Grab the ith column of the matrix containing the step names
+        %involved in a PSA cycle
+        ithColName = sStepCol(:,i);
+        %-----------------------------------------------------------------%
+        
+        
+        
+        %-----------------------------------------------------------------%
+        %Obtain the equalization information in the product-end
+        
+        %Check for any equalization steps happening at the product-end
+        eqPrEndInfo = strcmp(ithColName,'EQ-XXX-APR');
+        
+        %Relate the equalizing columns to their numbers
+        eqPrEndInfo = eqPrEndInfo.*linspace(1,nCols,nCols)';
+        
+        %Remove zeros from the equalizing vector
+        eqPrEndInfo = nonzeros(eqPrEndInfo);
+        
+        %Grab the length of the vector
+        numPrEndEqAds = length(eqPrEndInfo);
+        
+        %If the vector is empty, 
+        if numPrEndEqAds == 0
+            
+            %There are no equalizing steps
+            numAdsEqPrEnd(:,i) = 0;
+            
+        %If we have an odd number of equalizing steps
+        elseif rem(numPrEndEqAds,2) ~= 0
+            
+            %Throw out an error and ask the user to supply an even number
+            %of equalizing steps
+            msg1 = 'Please provide an even number of equalizing steps '; 
+            msg2 = 'for a given PSA cycle';
+            msg = append(funcId,': ', msg1,msg2);
+            error(msg);
+           
+        %Otherwise we have an even number of equalizing steps
+        else 
+            
+            %For each pair, swap their indices and save it into another
+            %vector
+            for j = 1 : numPrEndEqAds/2
+                
+                %Get the indices
+                IndFirst  = eqPrEndInfo(2*(j-1)+1);
+                IndSecond = eqPrEndInfo(2*j)      ;
+                
+                %Update the adsorption column numbers to indicate the
+                %equalization going on at the product-end
+                numAdsEqPrEnd(IndFirst,i)  = IndSecond;
+                numAdsEqPrEnd(IndSecond,i) = IndFirst ;
+                
+            end
+            
+        end        
+        %-----------------------------------------------------------------%
+        
+       
+        
+        %-----------------------------------------------------------------%
+        %Obtain the equalization information in the feed-end
+        
+        %Check for any equalization steps happening at the feed-end
+        eqFeEndInfo = strcmp(ithColName,'EQ-AFE-XXX');
+        
+        %Relate the equalizing columns to their numbers
+        eqFeEndInfo = eqFeEndInfo.*linspace(1,nCols,nCols)';
+        
+        %Remove zeros from the equalizing vector
+        eqFeEndInfo = nonzeros(eqFeEndInfo); 
+        
+        %Grab the length of the vector
+        numFeEndEqAds = length(eqFeEndInfo);
+        
+        %If the vector is empty, 
+        if numFeEndEqAds == 0
+            
+            %There are no equalizing steps
+            numAdsEqFeEnd(:,i) = 0;
+            
+        %If we have an odd number of equalizing steps
+        elseif rem(numFeEndEqAds,2) ~= 0
+            
+            %Throw out an error and ask the user to supply an even number
+            %of equalizing steps
+            msg1 = 'Please provide an even number of equalizing steps '; 
+            msg2 = 'for a given PSA cycle';
+            msg = append(funcId,': ', msg1,msg2);
+            error(msg);
+           
+        %Otherwise we have an even number of equalizing steps
+        else 
+            
+            %For each pair, swap their indices and save it into another
+            %vector
+            for j = 1 : numFeEndEqAds/2
+                
+                %Get the indices
+                IndFirst  = eqFeEndInfo(2*(j-1)+1);
+                IndSecond = eqFeEndInfo(2*j)      ;
+                
+                %Update the adsorption column numbers to indicate the
+                %equalization going on at the product-end
+                numAdsEqFeEnd(IndFirst,i)  = IndSecond;
+                numAdsEqFeEnd(IndSecond,i) = IndFirst ;
+                
+            end
+            
+        end 
+        %-----------------------------------------------------------------%                      
+        
+    end
     %---------------------------------------------------------------------%                                   
     
     
@@ -164,12 +298,14 @@ function params = getStringParams(params)
     params.eveLoc   = eveLoc  ;
     
     %Save the numerical array results
-    params.durStep    = durStep   ;
-    params.eveVal     = eveVal    ;
-    params.valFeedCol = valFeedCol;
-    params.valProdCol = valProdCol;
-    params.flowDirCol = flowDir   ;
-    params.typeCol    = typeCol   ;
+    params.durStep       = durStep      ;
+    params.eveVal        = eveVal       ;
+    params.valFeedCol    = valFeedCol   ;
+    params.valProdCol    = valProdCol   ;
+    params.flowDirCol    = flowDir      ;
+    params.typeDaeModel  = typeDaeModel ;
+    params.numAdsEqPrEnd = numAdsEqPrEnd;
+    params.numAdsEqFeEnd = numAdsEqFeEnd;
     %---------------------------------------------------------------------%
 
 

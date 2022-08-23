@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/18/Monday
-%Code last modified on : 2022/3/3/Thursday
+%Code last modified on : 2022/8/20/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -40,14 +40,12 @@ function funcEve = getEventFuncs(params)
     %Define known quantities
     
     %Name the function ID
-    funcId = 'getEventFuncs.m';
+    %funcId = 'getEventFuncs.m';
     
     %Unpack params
-    nSteps     = params.nSteps    ;     
-    sStepCol   = params.sStepCol  ;      
-    eveStep    = params.eveStep   ;
-    eveColNo   = params.eveColNo  ;
-    flowDirCol = params.flowDirCol;
+    nSteps  = params.nSteps ;         
+    eveLoc  = params.eveLoc ;
+    eveUnit = params.eveUnit;    
     %---------------------------------------------------------------------%                                  
     
     
@@ -58,12 +56,7 @@ function funcEve = getEventFuncs(params)
     %Initialize a cell array containing the event functions
     funcEve = cell(nSteps,1);    
     %---------------------------------------------------------------------%                                                                                                           
-    
-    
-    
-    %%%%%%%%%%THIS FUNCTION SHOULD BE UPDATED ONCE DEBUGGING FOR THE%%%%%%%
-    %%%%%%%%%%NONISOTHEMRAL CASE IS FINISHED                        %%%%%%%
-    
+        
     
     
     %---------------------------------------------------------------------%                     
@@ -74,477 +67,281 @@ function funcEve = getEventFuncs(params)
     for i = 1 : nSteps
 
         %-----------------------------------------------------------------%
-        %Determine quantities to be used for the current iteration in
-        %the for-loop
-
-        %Define the current column number on which the event would
-        %trigger            
-        eveColNoCurr = eveColNo(i);     
+        %Determine the current event location and verify if the step is an
+        %event driven step
         
-        %Get the event flow direction
+        %Get the ith step event location       
+        eveLocStep = eveLoc{i};
         
-        %When there is no event
-        if eveStep(i) == 0
-            
-            %No need to define the flow direction in the column undergoing
-            %the event
-            
-        %When there is an event
-        else
-            
-            %Define the flow direction in the column undergoing the event
-            eveFlowDir = flowDirCol(eveColNoCurr,i);
-            
-        end
+        %Compare the string to see if we are dealing with an event driven
+        %step
+        eveTrue = ~strcmp(eveLocStep,'None');
+        
+        %Get the ith event unit
+        eveUnitStep = eveUnit{i};
         %-----------------------------------------------------------------%
-
-
-
+        
+        
+        
         %-----------------------------------------------------------------%
-        %Precondition the event status
-
-        %Check to see if we have an event for the ith step
-        if eveColNoCurr == 0
-
-            %If we do not have an event, no event function is assigned   
+        %If there is an event for the ith step, assign the correct event 
+        %function for the step
+        
+        %The step is not an event driven step
+        if eveTrue == 0
+        
+            %No event function is assigned   
             funcEve{i} = [];
-        %-----------------------------------------------------------------%
-
-
-
-        %-----------------------------------------------------------------%
-        %If the step is a re-pressurization step            
-        elseif sStepCol{eveColNoCurr,i} == "RP"
-            
-            %If not a event driven mode,
-            if eveStep(i) == 0
-
-                %No event function is assigned   
-                funcEve{i} = [];
-
-            %If the first event mode,                 
-            elseif eveStep(i) == 1
-                
-                %If we have a counter-current flow
-                if eveFlowDir == 1
-                    
-                    
-                    
-                %If we have a co-current flow
-                elseif eveFlowDir == 0
-                    
-                    
-                    
-                    
-                end
-
-                %Event function is assigned
-                funcEve{i} = @(params,t,states,nS,nCy) ...
-                             getRpEvent1(params,t,states,nS,nCy);
-
-            %If the second event mode,    
-            elseif eveStep(i) == 2    
-
-                %Event function under development
-                msg = 'The event function is under development.';
-                msg = append(funcId,': ',msg);
-                error(msg);  
-
-                %Event function is assigned
-                funcEve{i} = @(params,t,states,nS,nCy) ...
-                             getRpEvent2(params,t,states,nS,nCy);
-
-            %If the third event mode,    
-            elseif eveStep(i) == 3  
-
-                %Event function under development
-                msg = 'The event function isunder development.';
-                msg = append(funcId,': ',msg);
-                error(msg); 
-
-                %Event function is assigned
-                funcEve{i} = @(params,t,states,nS,nCy) ...
-                             getRpEvent3(params,t,states,nS,nCy);    
-
-            end                                    
-        %-----------------------------------------------------------------%                             
-
-
-
-        %-----------------------------------------------------------------%            
-        %If the step is a high pressure feed step
-        elseif sStepCol{eveColNoCurr,i} == "HP" 
-
-            %If not a event driven mode,
-            if eveStep(i) == 0
-
-                %No event function is assigned  
-                funcEve{i} = [];
-
-            %If the first event mode,    
-            elseif eveStep(i) == 1
-                
-                %If we have a counter-current flow
-                if eveFlowDir == 1
-                    
-                    
-                    
-                %If we have a co-current flow
-                elseif eveFlowDir == 0
-                    
-                    
-                    
-                    
-                end
-                
-                %Event function is assigned
-                funcEve{i} = @(params,t,states,nS,nCy) ...
-                             getHpEvent1(params,t,states,nS,nCy);
-
-            %If the second event mode,    
-            elseif eveStep(i) == 2    
-                
-                %If we have a counter-current flow
-                if eveFlowDir == 1
-                    
-                    
-                    
-                %If we have a co-current flow
-                elseif eveFlowDir == 0
-                    
-                    
-                    
-                    
-                end
-
-                %Event function is assigned
-                funcEve{i} = @(params,t,states,nS,nCy) ...
-                             getHpEvent2(params,t,states,nS,nCy);
-
-            %If the third event mode,    
-            elseif eveStep(i) == 3    
-                
-                %If we have a counter-current flow
-                if eveFlowDir == 1
-                    
-                    
-                    
-                %If we have a co-current flow
-                elseif eveFlowDir == 0
-                    
-                    
-                    
-                    
-                end
-
-                %Event function is assigned
-                funcEve{i} = @(params,t,states,nS,nCy) ...
-                             getHpEvent3(params,t,states,nS,nCy); 
-
-            end                            
-        %-----------------------------------------------------------------%                             
-
-
-
-        %-----------------------------------------------------------------%
-        %If the step is a depressurization step
-        elseif sStepCol{eveColNoCurr,i} == "DP" 
-            
-            %If not a event driven mode,
-            if eveStep(i) == 0
-
-                %No event function is assigned  
-                funcEve{i} = [];
-
-            %If the first event mode,    
-            elseif eveStep(i) == 1
-                
-                %If we have a counter-current flow
-                if eveFlowDir == 1
-                    
-                    
-                    
-                %If we have a co-current flow
-                elseif eveFlowDir == 0
-                    
-                    
-                    
-                    
-                end
-
-                %Event function is assigned
-                funcEve{i} = @(params,t,states,nS,nCy) ...
-                             getDpEvent1(params,t,states,nS,nCy);
-
-            %If the second event mode,    
-            elseif eveStep(i) == 2    
-
-                %Event function under development
-                msg = 'The event function isunder development.';
-                msg = append(funcId,': ',msg);
-                error(msg); 
-
-                %Event function is assigned
-                funcEve{i} = @(params,t,states,nS,nCy) ...
-                             getDpEvent2(params,t,states,nS,nCy);
-
-            %If the third event mode,    
-            elseif eveStep(i) == 3   
-
-                %Event function under development
-                msg = 'The event function isunder development.';
-                msg = append(funcId,': ',msg);
-                error(msg); 
-
-                %Event function is assigned
-                funcEve{i} = @(params,t,states,nS,nCy) ...
-                             getDpEvent3(params,t,states,nS,nCy); 
-
-            end   
-        %-----------------------------------------------------------------%                             
-
-
-
-        %-----------------------------------------------------------------%
-        %If the step is a low pressure purge step
-        elseif sStepCol{eveColNoCurr,i} == "LP" 
-            
-            %If not a event driven mode,
-            if eveStep(i) == 0
-
-                %No event function is assigned  
-                funcEve{i} = [];
-
-            %If the first event mode,    
-            elseif eveStep(i) == 1
-                
-                %If we have a counter-current flow
-                if eveFlowDir == 1
-                    
-                    
-                    
-                %If we have a co-current flow
-                elseif eveFlowDir == 0
-                    
-                    
-                    
-                    
-                end
-                
-                %Event function is assigned
-                funcEve{i} = @(params,t,states,nS,nCy) ...
-                             getLpEvent1(params,t,states,nS,nCy);
-
-            %If the second event mode,    
-            elseif eveStep(i) == 2    
-                
-                %If we have a counter-current flow
-                if eveFlowDir == 1
-                    
-                    
-                    
-                %If we have a co-current flow
-                elseif eveFlowDir == 0
-                    
-                    
-                    
-                    
-                end
-                
-                %Event function is assigned
-                funcEve{i} = @(params,t,states,nS,nCy) ...
-                             getLpEvent2(params,t,states,nS,nCy);
-
-            %If the third event mode,    
-            elseif eveStep(i) == 3 
-
-                %Event function under development
-                msg = 'The event function isunder development.';
-                msg = append(funcId,': ',msg);
-                error(msg); 
-
-                %Event function is assigned
-                funcEve{i} = @(params,t,states,nS,nCy) ...
-                             getLpEvent3(params,t,states,nS,nCy); 
-
-            end   
-        %-----------------------------------------------------------------%                             
-
-
-
-        %-----------------------------------------------------------------%
-        %If the step is a pressure equalization step
-        elseif sStepCol{eveColNoCurr,i} == "EQ"
-            
-            %If not a event driven mode,
-            if eveStep(i) == 0
-
-                %No event function is assigned   
-                funcEve{i} = [];
-
-            %If the first event mode,    
-            elseif eveStep(i) == 1            
-                
-                %If we have a counter-current flow
-                if eveFlowDir == 1
-                    
-                    
-                    
-                %If we have a co-current flow
-                elseif eveFlowDir == 0
-                    
-                    
-                    
-                    
-                end
-                
-                %Event function is assigned
-                funcEve{i} = @(params,t,states,nS,nCy) ...
-                             getEqEvent1(params,t,states,nS,nCy);
-
-            %If the second event mode,    
-            elseif eveStep(i) == 2    
-
-                %Event function under development
-                msg = 'The event function isunder development.';
-                msg = append(funcId,': ',msg);
-                error(msg); 
-
-                %Event function is assigned
-                funcEve{i} = @(params,t,states,nS,nCy) ...
-                             getEqEvent2(params,t,states,nS,nCy);
-
-            %If the third event mode,    
-            elseif eveStep(i) == 3    
-
-                %Event function under development
-                msg = 'The event function isunder development.';
-                msg = append(funcId,': ',msg);
-                error(msg); 
-
-                %Event function is assigned
-                funcEve{i} = @(params,t,states,nS,nCy) ...
-                             getEqEvent3(params,t,states,nS,nCy); 
-
-            end   
-        %-----------------------------------------------------------------%                             
-
-
-
-        %-----------------------------------------------------------------%
-        %If the step is a rest step
-        elseif sStepCol{eveColNoCurr,i} == "RT" 
-
-            %If not a event driven mode,
-            if eveStep(i) == 0
-
-                %No event function is assigned  
-                funcEve{i} = [];
-
-            %If the first event mode,    
-            elseif eveStep(i) == 1
-
-                %Event function under development
-                msg = 'The event function isunder development.';
-                msg = append(funcId,': ',msg);
-                error(msg); 
-
-                %Event function is assigned
-                funcEve{i} = @(params,t,states,nS,nCy) ...
-                             getRtEvent1(params,t,states,nS,nCy);
-
-            %If the second event mode,    
-            elseif eveStep(i) == 2    
-
-                %Event function under development
-                msg = 'The event function isunder development.';
-                msg = append(funcId,': ',msg);
-                error(msg); 
-
-                %Event function is assigned
-                funcEve{i} = @(params,t,states,nS,nCy) ...
-                             getRtEvent2(params,t,states,nS,nCy);
-
-            %If the third event mode,    
-            elseif eveStep(i) == 3 
-
-                %Event function under development
-                msg = 'The event function isunder development.';
-                msg = append(funcId,': ',msg);
-                error(msg); 
-
-                %Event function is assigned
-                funcEve{i} = @(params,t,states,nS,nCy) ...
-                             getRtEvent3(params,t,states,nS,nCy); 
-
-            end   
-        %-----------------------------------------------------------------%
         
-        
-        
-        %-----------------------------------------------------------------%
-        %If the step is a rinse step
-        elseif sStepCol{eveColNoCurr,i} == "RN" 
-
-            %If not a event driven mode,
-            if eveStep(i) == 0
-
-                %No event function is assigned  
-                funcEve{i} = [];
-
-            %If the first event mode,    
-            elseif eveStep(i) == 1
-
-                %Event function under development
-                msg = 'The event function isunder development.';
-                msg = append(funcId,': ',msg);
-                error(msg); 
-
-                %Event function is assigned
-                funcEve{i} = @(params,t,states,nS,nCy) ...
-                             getRnEvent1(params,t,states,nS,nCy);
-
-            %If the second event mode,    
-            elseif eveStep(i) == 2    
-
-                %Event function under development
-                msg = 'The event function isunder development.';
-                msg = append(funcId,': ',msg);
-                error(msg); 
-
-                %Event function is assigned
-                funcEve{i} = @(params,t,states,nS,nCy) ...
-                             getRnEvent2(params,t,states,nS,nCy);
-
-            %If the third event mode,    
-            elseif eveStep(i) == 3 
-
-                %Event function under development
-                msg = 'The event function isunder development.';
-                msg = append(funcId,': ',msg);
-                error(msg); 
-
-                %Event function is assigned
-                funcEve{i} = @(params,t,states,nS,nCy) ...
-                             getRnEvent3(params,t,states,nS,nCy); 
-
-            end   
-        %-----------------------------------------------------------------%
-
-      
-        
-        %-----------------------------------------------------------------%    
-        %If no other situations, then something must be wrong about the
-        %step event specification        
+        %The step is an event driven step
         else
             
-            %Event function specification went wrong!
-            msg = 'The event function specification went wrong!';
-            msg = append(funcId,': ',msg);
-            error(msg); 
+            %-------------------------------------------------------------%
+            %Determine where the event is happening
+            
+            %Adsorption column no.1
+            eveInAds1FeEnd = strcmp(eveLocStep,'Adsorber_1_Feed_End');
+            eveInAds1PrEnd = strcmp(eveLocStep,'Adsorber_1_Prod_End');
+            
+            %Adsorption column no.2
+            eveInAds2FeEnd = strcmp(eveLocStep,'Adsorber_2_Feed_End');
+            eveInAds2PrEnd = strcmp(eveLocStep,'Adsorber_2_Prod_End');
+            
+            %The feed tank
+            eveInFeTa = strcmp(eveLocStep,'Feed_Tank');
+            
+            %The raffinate tank
+            eveInRaTa = strcmp(eveLocStep,'Raffinate_Tank');
+            
+            %The extract tank
+            eveInExTa = strcmp(eveLocStep,'Extract_Tank');
+            %-------------------------------------------------------------%
+            
+            
+            
+            %-------------------------------------------------------------%
+            %Determine the type of the event for the current step
+            
+            %Mole fraction of the light key threshold
+            eveTypeMolFrac = strcmp(eveUnitStep,'Light_Key_[mol_frac]');
+            
+            %Pressure threshold
+            eveTypePres = strcmp(eveUnitStep,'Pressure_[bar]');
+            
+            %Temperature threshold
+            eveTypeTemp = strcmp(eveUnitStep,'Temperature_[K]');
+            %-------------------------------------------------------------%
+            
+            
+            
+            %-------------------------------------------------------------%
+            %Assign the event function for the step, based on the location
+            %and type of the event
+            
+            %If we have the event at the feed-end of the the first adsorber
+            if eveInAds1FeEnd == 1
+                
+                %---------------------------------------------------------%
+                %Depending on the event type, assign the corresponding
+                %event function for the step
+                
+                %If we have the light key mole fraction
+                if eveTypeMolFrac == 1
+                
+                    %Assign the event function
+                    funcEve{i} = [];
+                    
+                %If we have the pressure in the unit
+                elseif eveTypePres == 1
+                    
+                    %Assign the event function
+                    funcEve{i} = [];
+                    
+                %If we have the temperature in the unit
+                elseif eveTypeTemp == 1
+                    
+                    %Assign the event function
+                    funcEve{i} = [];
+                
+                end
+                %---------------------------------------------------------%
+                
+            %If we have the event at the product-end of the the first 
+            %adsorber
+            elseif eveInAds1PrEnd == 1
+            
+                %---------------------------------------------------------%
+                %Depending on the event type, assign the corresponding
+                %event function for the step
+                
+                %If we have the light key mole fraction
+                if eveTypeMolFrac == 1
+                
+                    %Assign the event function
+                    funcEve{i} = [];
+                    
+                %If we have the pressure in the unit
+                elseif eveTypePres == 1
+                    
+                    %Assign the event function
+                    funcEve{i} = [];
+                    
+                %If we have the temperature in the unit
+                elseif eveTypeTemp == 1
+                    
+                    %Assign the event function
+                    funcEve{i} = [];
+                
+                end
+                %---------------------------------------------------------%            
+            
+            %If we have the event at the feed-end of the the second 
+            %adsorber
+            elseif eveInAds2FeEnd == 1
+                
+                %---------------------------------------------------------%
+                %Depending on the event type, assign the corresponding
+                %event function for the step
+                
+                %If we have the light key mole fraction
+                if eveTypeMolFrac == 1
+                
+                    %Assign the event function
+                    funcEve{i} = [];
+                    
+                %If we have the pressure in the unit
+                elseif eveTypePres == 1
+                    
+                    %Assign the event function
+                    funcEve{i} = [];
+                    
+                %If we have the temperature in the unit
+                elseif eveTypeTemp == 1
+                    
+                    %Assign the event function
+                    funcEve{i} = [];
+                
+                end
+                %---------------------------------------------------------%
+                
+            %If we have the event at the product-end of the the second 
+            %adsorber
+            elseif eveInAds2PrEnd == 1
+                
+                %---------------------------------------------------------%
+                %Depending on the event type, assign the corresponding
+                %event function for the step
+                
+                %If we have the light key mole fraction
+                if eveTypeMolFrac == 1
+                
+                    %Assign the event function
+                    funcEve{i} = [];
+                    
+                %If we have the pressure in the unit
+                elseif eveTypePres == 1
+                    
+                    %Assign the event function
+                    funcEve{i} = [];
+                    
+                %If we have the temperature in the unit
+                elseif eveTypeTemp == 1
+                    
+                    %Assign the event function
+                    funcEve{i} = [];
+                
+                end
+                %---------------------------------------------------------%
+            
+            %If we have the event at the feed tank
+            elseif eveInFeTa == 1
+            
+                %---------------------------------------------------------%
+                %Depending on the event type, assign the corresponding
+                %event function for the step
+                
+                %If we have the light key mole fraction
+                if eveTypeMolFrac == 1
+                
+                    %Assign the event function
+                    funcEve{i} = [];
+                    
+                %If we have the pressure in the unit
+                elseif eveTypePres == 1
+                    
+                    %Assign the event function
+                    funcEve{i} = [];
+                    
+                %If we have the temperature in the unit
+                elseif eveTypeTemp == 1
+                    
+                    %Assign the event function
+                    funcEve{i} = [];
+                
+                end
+                %---------------------------------------------------------%            
+            
+            %If we have the event at the raffinate tank
+            elseif eveInRaTa == 1
+                
+                %---------------------------------------------------------%
+                %Depending on the event type, assign the corresponding
+                %event function for the step
+                
+                %If we have the light key mole fraction
+                if eveTypeMolFrac == 1
+                
+                    %Assign the event function
+                    funcEve{i} = [];
+                    
+                %If we have the pressure in the unit
+                elseif eveTypePres == 1
+                    
+                    %Assign the event function
+                    funcEve{i} = [];
+                    
+                %If we have the temperature in the unit
+                elseif eveTypeTemp == 1
+                    
+                    %Assign the event function
+                    funcEve{i} = [];
+                
+                end
+                %---------------------------------------------------------%
+                                                
+            %If we have the event at the extract tank
+            elseif eveInExTa == 1
+                
+                %---------------------------------------------------------%
+                %Depending on the event type, assign the corresponding
+                %event function for the step
+                
+                %If we have the light key mole fraction
+                if eveTypeMolFrac == 1
+                
+                    %Assign the event function
+                    funcEve{i} = [];
+                    
+                %If we have the pressure in the unit
+                elseif eveTypePres == 1
+                    
+                    %Assign the event function
+                    funcEve{i} = [];
+                    
+                %If we have the temperature in the unit
+                elseif eveTypeTemp == 1
+                    
+                    %Assign the event function
+                    funcEve{i} = [];
+                
+                end
+                %---------------------------------------------------------%
+                                            
+            end
+            %-------------------------------------------------------------%
             
         end
-        %-----------------------------------------------------------------%                         
+        %-----------------------------------------------------------------%
         
     end                  
     %---------------------------------------------------------------------%                     

@@ -19,9 +19,9 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/10/Wednesday
-%Code last modified on : 2021/2/23/Tuesday
+%Code last modified on : 2022/8/23/Tuesday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : plotGasConsHighPresFeed.m
 %Source     : common
@@ -93,7 +93,7 @@ function plotGasConsHighPresFeed(params,sol,colNum)
     height = linspace(1,heightCol,nVols);
     
     %Find the high pressure step
-    indHp = find(sStepCol=="HP");
+    indHp = contains(sStepCol,"HP");
     
     %Find the last high pressure step
     indHpEnd = lastStep ...

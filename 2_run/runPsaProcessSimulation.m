@@ -108,7 +108,7 @@ function runPsaProcessSimulation(folderName)
     %Initialize the simulation environment    
     
     %Define a struct called params that contains simulation parameters
-    params = getSimParams(exampleFolder);  
+    [params,fullParams] = getSimParams(exampleFolder);  
     %---------------------------------------------------------------------%
     
     
@@ -194,7 +194,7 @@ function runPsaProcessSimulation(folderName)
     fprintf("*******************************************\n")  ;
     
     %Plot the simulation results
-    plotPsaSimulationResults(params,sol);    
+    plotPsaSimulationResults(fullParams,sol);    
     
     %Insert a conclusion for the command window output
     fprintf("\n*******************************************\n");
@@ -213,7 +213,7 @@ function runPsaProcessSimulation(folderName)
     fprintf("*******************************************\n")  ;
     
     %Save simulation outputs into excel files
-    savePsaSimulationResults(params,sol,sol.path.data);
+    savePsaSimulationResults(fullParams,sol,sol.path.data);
     
     %Insert a conclusion for the command window output
     fprintf("\n*******************************************\n");

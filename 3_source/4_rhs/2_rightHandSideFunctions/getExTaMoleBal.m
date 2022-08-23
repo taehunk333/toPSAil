@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/1/28/Friday
-%Code last modified on : 2022/3/14/Monday
+%Code last modified on : 2022/8/22/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -45,15 +45,12 @@ function units = getExTaMoleBal(params,units,nS)
     %funcId = 'getExTaMoleBal.m';
     
     %Unpack params
-    nComs         = params.nComs        ;
-    nCols         = params.nCols        ;
-    colIntActExtr = params.colIntActExtr;
-    exTaScaleFac  = params.exTaScaleFac ;
-    sColNums      = params.sColNums     ;
-    sComNums      = params.sComNums     ;
-    valExTa       = params.valExTa      ;
-    valRinTop     = params.valRinTop    ;
-    valRinBot     = params.valRinBot    ;
+    nComs            = params.nComs           ;
+    nCols            = params.nCols           ;    
+    exTaScaleFac     = params.exTaScaleFac    ;
+    sColNums         = params.sColNums        ;
+    sComNums         = params.sComNums        ;
+    valAdsFeEnd2ExWa = params.valAdsFeEnd2ExWa;
     
     %Unpack units
     col  = units.col ;
@@ -65,15 +62,19 @@ function units = getExTaMoleBal(params,units,nS)
     %---------------------------------------------------------------------%    
     %Initialize solution arrays
     
-    %Initialize the convective flow in and out of the extract stream valve 
-    %(i.e., %valve 6)
-    convInVal6  = 0; 
-    convOutVal2 = 0;
-    convOutVal5 = 0;
+    %Initialize the molar flow rates from the depressurization valves from 
+    %the adsorbers (i.e., valve 6's) leading to the extract product tank.
+    convInFromAds = 0; 
+    
+    %Initialize the molar flow rates from the extract product tank to the
+    %adsorption columns due to rinse/pressurization at the feed-end (i.e.,
+    %valve 2's) or rinse/pressurization at the product-end (i.e., 
+    %valve 5's).
+    convOutToAds  = 0;
     %---------------------------------------------------------------------%    
     
     
-      
+    
     %---------------------------------------------------------------------%    
     %Do the mole balance for each species for all species inside each 
     %product tank
@@ -88,85 +89,44 @@ function units = getExTaMoleBal(params,units,nS)
         for k = 1 : nCols
 
             %-------------------------------------------------------------%    
-            %Calculate molar flow rates around the extract product tank
-            %(The balance is done over product tank + valve 1)
+            %Account for the molar flow rate in between the raffinate
+            %product tank and the kth adsorber
 
-            %If the interaction b/t kth column and the extract product tank
-            %is through valve 6, and the flow (inside the adsorber) is 
-            %counter-current, i.e., exiting the adsorber and heading 
-            %towards either the exteact waste stream of the extract product 
-            %tank, we have the following:
-            if colIntActExtr(k,nS) == 6 
-
-                %Convective flow in through valve 6; the negative sign is
-                %needed because the flow direction switches from
-                %counter-current (exiting the column) to co-current
-                %(entering the extract feed tank)
-                convInVal6 = convInVal6 ...
-                           + valExTa(nS) ...
-                           * (-1)*col.(sColNums{k}).volFlRat(:,1) ...
-                          .* col.(sColNums{k}).gasCons.(sComNums{j})(:,1);                   
-
-            %If the interaction b/t kth column and the extract product tank
-            %is through valve 2, and the flow (inside the adsorber) is 
-            %co-current, i.e., exiting the extract product tank and
-            %entering the adsorber at the bottom-end of the column, we have
-            %the following:
-            elseif colIntActExtr(k,nS) == 2
-                
-                %Get the total concentration of the extract product tank
-                gasConTotFeEnd = exTa.n1.gasConsTot;
-
-                %Get the upstream species concentration
-                gasConSpec = exTa.n1.gasCons.(sComNums{j});
-                
-                %Get the current total concentration of the Nth CSTR in the
-                %ith adsorption column
-                gasConTotCstr = col.(sColNums{k}).gasConsTot(:,1);               
-                                
-                %Convective flow in through valve 2
-                convOutVal2 = convOutVal2 ...
-                            + valRinBot(nS) ...
-                            * col.(sColNums{k}).volFlRat(:,1) ...
-                           .* (gasConSpec/gasConTotFeEnd) ...
-                            * gasConTotCstr;                             
+            %Calculate the "min" of the feed-end molar flow rate of the
+            %kth column and 0. We neglect any streams diverted to the waste
+            %stream.
+            convInFromAdsK = min(0,valAdsFeEnd2ExWa(k,nS) ...
+                                .* col.(sColNums{k}).volFlRat(:,1) ...
+                                .* col.(sColNums{k}).gasCons. ...
+                                   (sComNums{j})(:,1));
             
-            %If the interaction b/t kth column and the extract product tank
-            %is through valve 5, and the flow (inside the adsorber) is 
-            %counter-current, i.e., exiting the extract product tank and 
-            %entering the adsorber at the top-end of the column, we have 
-            %the following:
-            elseif colIntActExtr(k,nS) == 5         
-                     
-                %Get the total concentration of the extract product 
-                %tank
-                gasConTotPrEnd = exTa.n1.gasConsTot;
+            %Calculate the "max" of the molar flow rates from the extract
+            %product tank to either the feed-end or product-end of the kth
+            %adsorber and 0. The flow is in the positive direction and
+            %the volumetric flow rates coming out from the extract tank
+            %should have positive sign.
+            convOutToAdsK = max(0,exTa.n1.volFlRat(:,k) ...
+                               .* exTa.n1.gasCons.(sComNums{j}));
+            
+            %Update the cumulative convective flow into the raffinate tank
+            convInFromAds = convInFromAds ...
+                          + convInFromAdsK;                   
 
-                %Get the upstream species concentration
-                gasConSpec = exTa.n1.gasCons.(sComNums{j});
-                
-                %Get the current total concentration of the Nth CSTR in the
-                %ith adsorption column
-                gasConTotCstr = col.(sColNums{k}).gasConsTot(:,end);
-                                
-                %Convective flow in through valve 5
-                convOutVal5 = convOutVal5 ...
-                            + valRinTop(nS) ...
-                            * col.(sColNums{k}).volFlRat(:,end) ...
-                           .* (gasConSpec/gasConTotPrEnd) ...
-                            * gasConTotCstr;
-                       
-            %If there is no interaction with kth column and the ith
-            %product tank, for nS step,                            
-            else
-
-                %No need to update anything
-
-            end
+            %Update the cumulative convective flow out from the raffinate 
+            %tank
+            convOutToAds = convOutToAds ...                            
+                         + convOutToAdsK;
             %-------------------------------------------------------------%    
 
         end
-
+        %-----------------------------------------------------------------%
+        
+        
+        
+        %-----------------------------------------------------------------%    
+        %Account for the outlet molar flows from the extract product tank
+        %to the product reservoir
+        
         %Convective flow out to the product reservoir
         convOutExRes = exTa.n1.volFlRat(:,end) ...
                     .* exTa.n1.gasCons.(sComNums{j});
@@ -179,15 +139,13 @@ function units = getExTaMoleBal(params,units,nS)
 
         %Do the mole balance on the ith tank for species j
         exTa.n1.moleBal.(sComNums{j}) = exTaScaleFac ...
-                                     .* (convInVal6 ...  %counter-current
-                                        -convOutVal2 ... %co-current
-                                        +convOutVal5 ... %counter-current
-                                        -convOutExRes);  %co-current
+                                     .* (-convInFromAds ... %negative flow 
+                                         +convOutToAds ...  %positive flow                         
+                                         -convOutExRes);    %positive flow
 
         %Initialize the molar flow rates for the next iteration
-        convInVal6  = 0; 
-        convOutVal2 = 0;
-        convOutVal5 = 0;
+        convInFromAds = 0; 
+        convOutToAds  = 0;        
         %-----------------------------------------------------------------%                
 
     end

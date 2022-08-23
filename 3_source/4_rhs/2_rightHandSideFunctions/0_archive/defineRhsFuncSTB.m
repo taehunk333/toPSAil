@@ -139,7 +139,7 @@ function [yDot,flag,params] = defineRhsFuncSTB(~,y,params)
         %Raffinate Product Tank    
     
         %Do the raffinate product tank mole balance      
-        units = getRaTaMoleBal(params,units,nS);
+        units = getRaTaMoleBal(params,units);
 
         %Do the raffinate product tank energy balance             
         units = getRaTaEnerBal(params,units,nS);
