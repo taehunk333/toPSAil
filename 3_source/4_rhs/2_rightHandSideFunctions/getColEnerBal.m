@@ -102,7 +102,7 @@ function units = getColEnerBal(params,units)
     isoStHtNorm   = params.isoStHtNorm  ;
     partCoefHp    = params.partCoefHp   ;
     gConsNormCol  = params.gConsNormCol ;
-    ambTempNorm   = params.ambTempNorm  ;
+    tempAmbiNorm  = params.tempAmbiNorm ;
     sColNums      = params.sColNums     ; 
     sComNums      = params.sComNums     ;
     cstrHt        = params.cstrHt       ;
@@ -123,7 +123,7 @@ function units = getColEnerBal(params,units)
               - col.(sColNums{i}).temps.cstr;
                             
         %Compute the exterior heat transfer rates
-        dQnwdt = ambTempNorm*ones(1,nVols) ...
+        dQnwdt = tempAmbiNorm*ones(1,nVols) ...
                - col.(sColNums{i}).temps.wall;    
         
         %Save the column wall energy balance into the struct

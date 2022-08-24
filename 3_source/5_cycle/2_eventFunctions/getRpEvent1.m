@@ -52,11 +52,11 @@ function [event,isterminal,direction] = ...
     %funcId = 'getRpEvent1.m';        
     
     %Unpack params
-    eveColNo      = params.eveColNo(nS) ;
-    nComs         = params.nComs        ;
-    nColStT       = params.nColStT      ;
-    eveTotPres    = params.eveTotPres   ;
-    gasConsNormEq = params.gasConsNormEq;
+    eveColNo       = params.eveColNo(nS)  ;
+    nComs          = params.nComs         ;
+    nColStT        = params.nColStT       ;
+    eveTotPresNorm = params.eveTotPresNorm;
+    gasConsNormEq  = params.gasConsNormEq ; 
     
     %Convert the states into a row vector
     states = states(:).';
@@ -97,7 +97,7 @@ function [event,isterminal,direction] = ...
     
     %Total concentration differnce between the high pressure vs. the
     %current pressure of the 1st CSTR
-    event = eveTotPres ...
+    event = eveTotPresNorm ...
           - gasTotPres1;
     %---------------------------------------------------------------------%
     

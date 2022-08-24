@@ -89,7 +89,7 @@ function units = getFeTaEnerBal(params,units)
     sColNums       = params.sColNums      ;
     intHtTrFacFeTa = params.intHtTrFacFeTa;
     extHtTrFacFeTa = params.extHtTrFacFeTa;
-    ambTempNorm    = params.ambTempNorm   ;
+    tempAmbiNorm   = params.tempAmbiNorm  ;
     gConsNormFeTa  = params.gConsNormFeTa ;
     htCapCpNorm    = params.htCapCpNorm   ;
     yFeC           = params.yFeC          ;
@@ -112,7 +112,7 @@ function units = getFeTaEnerBal(params,units)
           - feTa.n1.temps.cstr;
 
     %Compute the exterior heat transfer rates
-    dQnwdt = ambTempNorm ... 
+    dQnwdt = tempAmbiNorm ... 
            - feTa.n1.temps.wall;    
 
     %Save ith feed tank wall energy balance into the struct

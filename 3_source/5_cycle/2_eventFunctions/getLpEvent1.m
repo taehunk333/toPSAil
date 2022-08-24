@@ -51,10 +51,10 @@ function [event,isterminal,direction] = getLpEvent1(params,~,states,~,~)
     %funcId = 'getLpEvent1.m';
     
     %Unpack params
-    nComs         = params.nComs        ;           
-    inShRaTa      = params.inShRaTa     ;
-    eveTotPres    = params.eveTotPres   ;
-    gasConsNormEq = params.gasConsNormEq;
+    nComs          = params.nComs         ;           
+    inShRaTa       = params.inShRaTa      ;
+    eveTotPresNorm = params.eveTotPresNorm;
+    gasConsNormEq  = params.gasConsNormEq ;
     
     %Convert the states into a row vector
     states = states(:).';
@@ -81,7 +81,7 @@ function [event,isterminal,direction] = getLpEvent1(params,~,states,~,~)
     
     %Purity of the product above a threshold
     event = gasConsNormEq*conTotRaTa.*tempRaTa ...
-          - eveTotPres;
+          - eveTotPresNorm;
     %---------------------------------------------------------------------%
     
     

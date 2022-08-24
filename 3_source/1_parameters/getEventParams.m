@@ -121,7 +121,7 @@ function params = getEventParams(params)
 
 
             %-------------------------------------------------------------%
-            %If we are given a percentage on the product stream purity,
+            %If we are given a mole fraction on the product stream purity,
             elseif eventUnitLkMoleFrac
 
                 %Define the breakthrough mole fraction
@@ -135,7 +135,7 @@ function params = getEventParams(params)
             elseif eventUnitPressure
 
                 %Assign the pressure at which the event will occur
-                params.eveTotPres = eveValStep/presBeHi;                
+                params.eveTotPresNorm = eveValStep/presBeHi;                
             %-------------------------------------------------------------%
 
 
@@ -145,7 +145,7 @@ function params = getEventParams(params)
             elseif eventUnitTemperature
 
                 %Assign the temperature at which the event will occur
-                params.eveTemp = eveValStep/tempAmbi;
+                params.eveTempNorm = eveValStep/tempAmbi;
 
             end                                   
             %-------------------------------------------------------------%                          
