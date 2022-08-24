@@ -18,22 +18,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2021/1/18/Monday
-%Code last modified on : 2021/2/16/Tuesday
+%Code created on       : 2022/8/24/Wednesday
+%Code last modified on : 2022/8/24/Wednesday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : getLpEvent2.m
+%Function   : getFeTaEventMoleFrac.m
 %Source     : common
-%Description: This is the second type of an event function for low 
-%             pressure. The event criteria is reaching a threshold on the
-%             heavy key efficienct factor (HKEF) at the time point t_curr.
+%Description: This is an event function that triggers when the mole
+%             fraction inside the feed tank reaches a prespecified 
+%             threshold value.
 %Inputs     : params       - a struct containing simulation parameters.
-%             t            - a column vector containing state time points
-%             states       - a state solution vector/matrix at a given time
-%                            point
-%             nCy          - ith PSA cycle
-%             nS           - jth step in a given PSA cycle
+%             t            - a current time point.
+%             states       - a current state vector at the current time 
+%                            point t.
 %Outputs    : event        - a value that defines an event to happen when
 %                            the function value becomes zero
 %             isTerminal   - a boolean determining if we need to stop the 
@@ -42,57 +40,58 @@
 %                            a zero event function value
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [event,isterminal,direction] = getLpEvent2(params,~,states,nS,~)
+function [event,isterminal,direction] ...
+    = getFeTaEventMoleFrac(params,~,states)
 
     %---------------------------------------------------------------------%
     %Define known quantities
     
     %Define function ID
-    %funcId = 'getLpEvent2.m';
+    %funcId = 'getFeTaEventMoleFrac.m';
     
     %Unpack params
-    eveColNo  = params.eveColNo(nS);
-    nComs     = params.nComs       ;
-    adsConC   = params.adsConC     ;
-    adsConHkT = params.adsConHkT   ;
-    eveHkef   = params.eveHkef     ;
-    %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %Initialize solution array
-    
-    %Initialize the HEKF value
-    hkef = 0;  
-    %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %Compute the heavy key state efficiency factor        
-    
-    %For all heavy key in the system
-    for i = 2 : nComs
-        
-        %Compute the overall heavy key efficiency factor for ith component
-        hkef = hkef+adsConC(i)/adsConHkT* ...
-                            calcSumKeyEfficiency(states,params,i,eveColNo);
-        
-    end            
+    eveLkMolFrac = params.eveLkMolFrac;    
+    nComs        = params.nComs       ;    
+    inShFeTa     = params.inShFeTa    ;
     %---------------------------------------------------------------------%
     
     
     
     %---------------------------------------------------------------------%
     %Compute the event criteria 
-    
-    %Purity of the product above a threshold
-    event = hkef-eveHkef;
+
+    %Shift the index to be that of the feed tank
+    indSh = inShFeTa;
+
+    %Get the index for the light key
+    indLk = indSh+1;
+
+    %Get the index for the last component
+    indEnd = indSh+nComs;
+
+    %Get the dimensionless light key concentration in the gas phase
+    gasConsLk = states(:,indLk);
+
+    %Get the total gas concentration in the gas phase
+    gasConsTot = sum(states(:,indLk:indEnd),2);
+
+    %Compute the current light key mole fraction inside the feed tank
+    currLkMolFrac = gasConsLk ...
+                  / gasConsTot;
     %---------------------------------------------------------------------%
+
+
+
+    %---------------------------------------------------------------------%
+    %Evaluate the event
+
+    %Check the mole fraction threshold
+    event = currLkMolFrac ...
+          - eveLkMolFrac ;
+    %---------------------------------------------------------------------%    
     
-    
-    
+
+      
     %---------------------------------------------------------------------%
     %Specify the event criteria
     

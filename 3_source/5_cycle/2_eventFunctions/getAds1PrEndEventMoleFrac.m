@@ -18,22 +18,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2021/1/18/Monday
-%Code last modified on : 2021/2/16/Tuesday
+%Code created on       : 2022/8/24/Wednesday
+%Code last modified on : 2022/8/24/Wednesday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : getEqEvent3.m
+%Function   : getAds1PrEndEventMoleFrac.m
 %Source     : common
-%Description: This is the third type of an event function for pressure 
-%             equalization between two columns. The event criteria is
-%             (TBD).
+%Description: This is an event function that triggers when the mole
+%             fraction inside the n_c th CSTR inside the 1st adsorber
+%             reaches a prespecified threshold value.
 %Inputs     : params       - a struct containing simulation parameters.
-%             t            - a column vector containing state time points
-%             states       - a state solution vector/matrix at a given time
-%                            point
-%             nCy          - ith PSA cycle
-%             nS           - jth step in a given PSA cycle
+%             t            - a current time point.
+%             states       - a current state vector at the current time 
+%                            point t.
 %Outputs    : event        - a value that defines an event to happen when
 %                            the function value becomes zero
 %             isTerminal   - a boolean determining if we need to stop the 
@@ -42,20 +40,60 @@
 %                            a zero event function value
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [event,isterminal,direction] = getEqEvent3(params,~,states,nS,~)
+function [event,isterminal,direction] ...
+    = getAds1PrEndEventMoleFrac(params,~,states)
 
     %---------------------------------------------------------------------%
     %Define known quantities
     
     %Define function ID
-    %funcId = 'getEqEvent3.m';
+    %funcId = 'getAds1PrEndEventMoleFrac.m';
     
     %Unpack params
-    
+    eveLkMolFrac = params.eveLkMolFrac;
+    nVols        = params.nVols       ;
+    nStates      = params.nStates     ;
+    nComs        = params.nComs       ;
     %---------------------------------------------------------------------%
     
     
     
+    %---------------------------------------------------------------------%
+    %Compute the event criteria 
+
+    %Shift the index to be that of the last CSTR
+    indSh = nStates*(nVols-1);
+
+    %Get the index for the light key
+    indLk = indSh+1;
+
+    %Get the index for the last component
+    indEnd = indSh+nComs;
+
+    %Get the dimensionless light key concentration in the gas phase
+    gasConsLk = states(:,indLk);
+
+    %Get the total gas concentration in the gas phase
+    gasConsTot = sum(states(:,indLk:indEnd),2);
+
+    %Compute the current light key mole fraction inside the n_c th CSTR in
+    %the 1st adsorber
+    currLkMolFrac = gasConsLk ...
+                  / gasConsTot;
+    %---------------------------------------------------------------------%
+
+
+
+    %---------------------------------------------------------------------%
+    %Evaluate the event
+
+    %Check the mole fraction threshold
+    event = currLkMolFrac ...
+          - eveLkMolFrac ;
+    %---------------------------------------------------------------------%    
+    
+
+      
     %---------------------------------------------------------------------%
     %Specify the event criteria
     

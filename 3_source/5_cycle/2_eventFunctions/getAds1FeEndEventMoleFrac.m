@@ -18,16 +18,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2021/3/14/Sunday
-%Code last modified on : 2022/1/24/Monday
+%Code created on       : 2022/8/24/Wednesday
+%Code last modified on : 2022/8/24/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : getCpEvent.m
+%Function   : getAds1FeEndEventMoleFrac.m
 %Source     : common
-%Description: This is an event function that makes sure that both events
-%             for achieving a product purity and heavy key removal happens.
+%Description: This is an event function that triggers when the mole
+%             fraction inside the 1st CSTR inside the 1st adsorber
+%             reaches a prespecified threshold value.
 %Inputs     : params       - a struct containing simulation parameters.
+%             t            - a current time point.
+%             states       - a current state vector at the current time 
+%                            point t.
 %Outputs    : event        - a value that defines an event to happen when
 %                            the function value becomes zero
 %             isTerminal   - a boolean determining if we need to stop the 
@@ -36,64 +40,58 @@
 %                            a zero event function value
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [event,isterminal,direction] = getCpEvent(params,t,states,nS,nCy)
+function [event,isterminal,direction] ...
+    = getAds1FeEndEventMoleFrac(params,~,states)
 
     %---------------------------------------------------------------------%
     %Define known quantities
     
     %Define function ID
-    %funcId = 'getCpEvent.m';
+    %funcId = 'getAds1FeEndEventMoleFrac.m';
     
     %Unpack params
-    indHpCol = params.indGpCol;
-    indLpCol = params.indLpCol;
-    %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %Initialize important quantities
-    
-    %Initialize the high pressure feed event vector 
-    eventHp = 0*indHpCol;
-    
-    %Initialize the low pressure purge event vector 
-    eventLp = 0*indLpCol;
+    eveLkMolFrac = params.eveLkMolFrac;
+    nComs        = params.nComs       ;
     %---------------------------------------------------------------------%
     
     
     
     %---------------------------------------------------------------------%
     %Compute the event criteria 
-    
-    %For each high pressure feed column,
-    for i = indHpCol
-    
-        %For the ith repressurizing column, get the event.
-        [eventHp(i),~,~] = getRpEvent1(params,t,states,nS,nCy,i);
-        
-    end
-    
-    %For each low pressure purge column,
-    for i = indLpCol
-    
-        %For the ith depressurizing column, get the event.
-        [eventLp(i),~,~] = getDpEvent1(params,t,states,nS,nCy,i);
-        
-    end    
+
+    %Shift the index to be that of the last CSTR
+    indSh = 0;
+
+    %Get the index for the light key
+    indLk = indSh+1;
+
+    %Get the index for the last component
+    indEnd = indSh+nComs;
+
+    %Get the dimensionless light key concentration in the gas phase
+    gasConsLk = states(:,indLk);
+
+    %Get the total gas concentration in the gas phase
+    gasConsTot = sum(states(:,indLk:indEnd),2);
+
+    %Compute the current light key mole fraction inside the n_c th CSTR in
+    %the 1st adsorber
+    currLkMolFrac = gasConsLk ...
+                  / gasConsTot;
     %---------------------------------------------------------------------%
-    
-    
-    
+
+
+
     %---------------------------------------------------------------------%
-    %Get the overall event
+    %Evaluate the event
+
+    %Check the mole fraction threshold
+    event = currLkMolFrac ...
+          - eveLkMolFrac ;
+    %---------------------------------------------------------------------%    
     
-    %Take the max out of all the events that are happening
-    event = max([eventHp,eventLp]);        
-    %---------------------------------------------------------------------%
-    
-    
-    
+
+      
     %---------------------------------------------------------------------%
     %Specify the event criteria
     

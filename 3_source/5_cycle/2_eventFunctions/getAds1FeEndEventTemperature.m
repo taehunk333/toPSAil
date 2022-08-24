@@ -18,22 +18,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2021/1/18/Monday
-%Code last modified on : 2022/8/16/Tuesday
+%Code created on       : 2022/8/24/Wednesday
+%Code last modified on : 2022/8/24/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : getLpEvent1.m
+%Function   : getAds1FeEndEventTemperature.m
 %Source     : common
-%Description: This is the first type of an event function for low pressure.
-%             The event criteria is reaching a threshold on the moles of
-%             purge gas used so far in the simulation until time t_curr.
+%Description: This is an event function that triggers when the temperature
+%             inside the 1st CSTR inside the 1st adsorber reaches a 
+%             prespecified threshold value.
 %Inputs     : params       - a struct containing simulation parameters.
-%             t            - a column vector containing state time points
-%             states       - a state solution vector/matrix at a given time
-%                            point
-%             nCy          - ith PSA cycle
-%             nS           - jth step in a given PSA cycle
+%             t            - a current time point.
+%             states       - a current state vector at the current time 
+%                            point t.
 %Outputs    : event        - a value that defines an event to happen when
 %                            the function value becomes zero
 %             isTerminal   - a boolean determining if we need to stop the 
@@ -42,36 +40,18 @@
 %                            a zero event function value
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [event,isterminal,direction] = getLpEvent1(params,~,states,~,~)
+function [event,isterminal,direction] ...
+    = getAds1FeEndEventTemperature(params,~,states)
 
     %---------------------------------------------------------------------%
     %Define known quantities
     
     %Define function ID
-    %funcId = 'getLpEvent1.m';
+    %funcId = 'getAds1FeEndEventTemperature.m';
     
     %Unpack params
-    nComs          = params.nComs         ;           
-    inShRaTa       = params.inShRaTa      ;
-    eveTotPresNorm = params.eveTotPresNorm;
-    gasConsNormEq  = params.gasConsNormEq ;
-    
-    %Convert the states into a row vector
-    states = states(:).';
-    %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %Unpack states and obtain necessary quantities
- 
-    %Compute the dimensionless total concentration inside the raffinate
-    %product tank
-    conTotRaTa = sum(states(:,inShRaTa+1:inShRaTa+nComs)); 
-    
-    %Obtain the dimensionless total temperature inside the raffinate
-    %product tank
-    tempRaTa = states(:,inShRaTa+nComs+1);
+    eveTotTempNorm = params.eveTotTempNorm;
+    nComs          = params.nComs         ;    
     %---------------------------------------------------------------------%
     
     
@@ -79,13 +59,25 @@ function [event,isterminal,direction] = getLpEvent1(params,~,states,~,~)
     %---------------------------------------------------------------------%
     %Compute the event criteria 
     
-    %Purity of the product above a threshold
-    event = gasConsNormEq*conTotRaTa.*tempRaTa ...
-          - eveTotPresNorm;
+    %Shift the index to be that of the last CSTR
+    indSh = 0;
+
+    %Compute the current pressure in the n_c th CSTR
+    currCstrTemperature = states(:,indSh+2*nComs+1);
     %---------------------------------------------------------------------%
+
+
+
+    %---------------------------------------------------------------------%
+    %Evaluate the event
+
+    %Check the temperature threshold
+    event = currCstrTemperature ...
+          - eveTotTempNorm ;
+    %---------------------------------------------------------------------%    
     
-    
-    
+
+      
     %---------------------------------------------------------------------%
     %Specify the event criteria
     

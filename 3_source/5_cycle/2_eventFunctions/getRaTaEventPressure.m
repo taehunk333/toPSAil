@@ -18,22 +18,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2021/1/18/Monday
-%Code last modified on : 2021/2/16/Tuesday
+%Code created on       : 2022/8/24/Wednesday
+%Code last modified on : 2022/8/24/Wednesday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : getEqEvent2.m
+%Function   : getRaTaEventPressure.m
 %Source     : common
-%Description: This is the second type of an event function for pressure 
-%             equalization between two columns. The event criteria is
-%             (TBD).
+%Description: This is an event function that triggers when the pressure
+%             inside the n_c th CSTR inside the raffinate tank reaches a 
+%             prespecified threshold value.
 %Inputs     : params       - a struct containing simulation parameters.
-%             t            - a column vector containing state time points
-%             states       - a state solution vector/matrix at a given time
-%                            point
-%             nCy          - ith PSA cycle
-%             nS           - jth step in a given PSA cycle
+%             t            - a current time point.
+%             states       - a current state vector at the current time 
+%                            point t.
 %Outputs    : event        - a value that defines an event to happen when
 %                            the function value becomes zero
 %             isTerminal   - a boolean determining if we need to stop the 
@@ -42,20 +40,58 @@
 %                            a zero event function value
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [event,isterminal,direction] = getEqEvent2(params,~,states,nS,~)
+function [event,isterminal,direction] ...
+    = getRaTaEventPressure(params,~,states)
 
     %---------------------------------------------------------------------%
     %Define known quantities
     
     %Define function ID
-    %funcId = 'getEqEvent2.m';
+    %funcId = 'getRaTaEventPressure.m';
     
     %Unpack params
-    
+    eveTotPresNorm = params.eveTotPresNorm;
+    nComs          = params.nComs         ;
+    gasConsNormEq  = params.gasConsNormEq ;
+    inShRaTa       = params.inShRaTa      ;
     %---------------------------------------------------------------------%
     
     
     
+    %---------------------------------------------------------------------%
+    %Compute the event criteria 
+    
+    %Shift the index to be that of the raffinate tank
+    indSh = inShRaTa;
+
+    %Get the index for the light key
+    indLk = indSh+1;
+
+    %Get the index for the last component
+    indEnd = indSh+nComs;
+
+    %Get the total gas concentration in the gas phase
+    gasConsTot = sum(states(:,indLk:indEnd),2);
+
+    %Get the interior temperature of the raffinate tank
+    intTempTank = states(:,indEnd+1);
+
+    %Compute the current pressure in the raffinate tank
+    currTankPressure = gasConsTot.*intTempTank.*gasConsNormEq;
+    %---------------------------------------------------------------------%
+
+
+
+    %---------------------------------------------------------------------%
+    %Evaluate the event
+
+    %Check the pressure threshold
+    event = currTankPressure ...
+          - eveTotPresNorm ;
+    %---------------------------------------------------------------------%    
+    
+
+      
     %---------------------------------------------------------------------%
     %Specify the event criteria
     

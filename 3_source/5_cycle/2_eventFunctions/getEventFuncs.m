@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/18/Monday
-%Code last modified on : 2022/8/20/Saturday
+%Code last modified on : 2022/8/24/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -149,19 +149,25 @@ function funcEve = getEventFuncs(params)
                 if eveTypeMolFrac == 1
                 
                     %Assign the event function
-                    funcEve{i} = [];
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getAds1FeEndEventMoleFrac(params,t,states);
                     
                 %If we have the pressure in the unit
                 elseif eveTypePres == 1
                     
                     %Assign the event function
-                    funcEve{i} = [];
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getAds1FeEndEventPressure(params,t,states);
                     
                 %If we have the temperature in the unit
                 elseif eveTypeTemp == 1
                     
                     %Assign the event function
-                    funcEve{i} = [];
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getAds1FeEndEventTemperature(params,t,states);
                 
                 end
                 %---------------------------------------------------------%
@@ -178,19 +184,25 @@ function funcEve = getEventFuncs(params)
                 if eveTypeMolFrac == 1
                 
                     %Assign the event function
-                    funcEve{i} = [];
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getAds1PrEndEventMoleFrac(params,t,states);
                     
                 %If we have the pressure in the unit
                 elseif eveTypePres == 1
                     
                     %Assign the event function
-                    funcEve{i} = [];
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getAds1PrEndEventPressure(params,t,states);
                     
                 %If we have the temperature in the unit
                 elseif eveTypeTemp == 1
                     
                     %Assign the event function
-                    funcEve{i} = [];
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getAds1PrEndEventTemperature(params,t,states);
                 
                 end
                 %---------------------------------------------------------%            
@@ -207,19 +219,25 @@ function funcEve = getEventFuncs(params)
                 if eveTypeMolFrac == 1
                 
                     %Assign the event function
-                    funcEve{i} = [];
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getAds2FeEndEventMoleFrac(params,t,states);
                     
                 %If we have the pressure in the unit
                 elseif eveTypePres == 1
                     
                     %Assign the event function
-                    funcEve{i} = [];
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getAds2FeEndEventPressure(params,t,states);
                     
                 %If we have the temperature in the unit
                 elseif eveTypeTemp == 1
                     
                     %Assign the event function
-                    funcEve{i} = [];
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getAds2FeEndEventTemperature(params,t,states);
                 
                 end
                 %---------------------------------------------------------%
@@ -236,19 +254,25 @@ function funcEve = getEventFuncs(params)
                 if eveTypeMolFrac == 1
                 
                     %Assign the event function
-                    funcEve{i} = [];
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getAds2PrEndEventMoleFrac(params,t,states);
                     
                 %If we have the pressure in the unit
                 elseif eveTypePres == 1
                     
                     %Assign the event function
-                    funcEve{i} = [];
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getAds2PrEndEventPressure(params,t,states);
                     
                 %If we have the temperature in the unit
                 elseif eveTypeTemp == 1
                     
                     %Assign the event function
-                    funcEve{i} = [];
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getAds2PrEndEventTemperature(params,t,states);
                 
                 end
                 %---------------------------------------------------------%
@@ -264,19 +288,25 @@ function funcEve = getEventFuncs(params)
                 if eveTypeMolFrac == 1
                 
                     %Assign the event function
-                    funcEve{i} = [];
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getFeTaEventMoleFrac(params,t,states);
                     
                 %If we have the pressure in the unit
                 elseif eveTypePres == 1
                     
                     %Assign the event function
-                    funcEve{i} = [];
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                         getFeTaEventPressure(params,t,states);
                     
                 %If we have the temperature in the unit
                 elseif eveTypeTemp == 1
                     
                     %Assign the event function
-                    funcEve{i} = [];
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                         getFeTaEventTemperature(params,t,states);
                 
                 end
                 %---------------------------------------------------------%            
@@ -292,19 +322,25 @@ function funcEve = getEventFuncs(params)
                 if eveTypeMolFrac == 1
                 
                     %Assign the event function
-                    funcEve{i} = [];
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getRaTaEventMoleFrac(params,t,states);
                     
                 %If we have the pressure in the unit
                 elseif eveTypePres == 1
                     
                     %Assign the event function
-                    funcEve{i} = [];
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getRaTaEventPressure(params,t,states);
                     
                 %If we have the temperature in the unit
                 elseif eveTypeTemp == 1
                     
                     %Assign the event function
-                    funcEve{i} = [];
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getRaTaEventTemperature(params,t,states);
                 
                 end
                 %---------------------------------------------------------%
@@ -320,19 +356,25 @@ function funcEve = getEventFuncs(params)
                 if eveTypeMolFrac == 1
                 
                     %Assign the event function
-                    funcEve{i} = [];
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getExTaEventMoleFrac(params,t,states);
                     
                 %If we have the pressure in the unit
                 elseif eveTypePres == 1
                     
                     %Assign the event function
-                    funcEve{i} = [];
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getExTaEventPressure(params,t,states);
                     
                 %If we have the temperature in the unit
                 elseif eveTypeTemp == 1
                     
                     %Assign the event function
-                    funcEve{i} = [];
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getExTaEventTemperature(params,t,states);
                 
                 end
                 %---------------------------------------------------------%
