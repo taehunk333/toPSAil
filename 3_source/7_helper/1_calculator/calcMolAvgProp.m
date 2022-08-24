@@ -21,7 +21,7 @@
 %Code created on       : 2021/2/19/Friday
 %Code last modified on : 2021/2/19/Friday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : calcMolAvgProp.m
 %Source     : common

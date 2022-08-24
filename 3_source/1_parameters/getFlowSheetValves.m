@@ -42,9 +42,9 @@ function params = getFlowSheetValves(params)
     %funcId = 'getFlowSheetValves.m';
     
     %Unpack Params
-    nSteps      = params.nSteps     ;  
-    sStepCol    = params.sStepCol   ;
-    nCols       = params.nCols      ;
+    nSteps   = params.nSteps  ;  
+    sStepCol = params.sStepCol;
+    nCols    = params.nCols   ;
     %---------------------------------------------------------------------%                
     
     

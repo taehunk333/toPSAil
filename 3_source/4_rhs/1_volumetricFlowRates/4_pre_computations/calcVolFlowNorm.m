@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/3/Sunday
-%Code last modified on : 2022/2/10/Thursday
+%Code last modified on : 2022/8/24/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 2nd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -47,19 +47,19 @@ function volFlowNorm = calcVolFlowNorm(params)
     funcId = 'calcVolFlowNorm.m';
     
     %Unpack Params
-    sStepCol   = params.sStepCol  ;   
-    valFeedCol = params.valFeedCol;
-    valProdCol = params.valProdCol;
-    funcVal    = params.funcVal   ;
-    funcEos    = params.funcEos   ;
-    tempAmbi   = params.tempAmbi  ;
-    presBeHi   = params.presBeHi  ;
-    presFeTa   = params.presFeTa  ;  
-    presRaTa   = params.presRaTa  ;
-    gasCons    = params.gasCons   ;
-    numZero    = params.numZero   ;
-    tempCol    = params.tempCol   ;
-    tempFeTa   = params.tempFeTa  ;
+    sStepCol    = params.sStepCol   ;   
+    valFeedCol  = params.valFeedCol ;
+    valProdCol  = params.valProdCol ;
+    funcVal     = params.funcVal    ;
+    funcEos     = params.funcEos    ;
+    tempAmbi    = params.tempAmbi   ;
+    presBeHi    = params.presBeHi   ;
+    presFeTa    = params.presFeTa   ;  
+    presRaTa    = params.presRaTa   ;
+    gasCons     = params.gasCons    ;
+    numZero     = params.numZero    ;
+    tempColNorm = params.tempColNorm;
+    tempFeTa    = params.tempFeTa   ;
     
     %Define scale factors for using valve equation in a dimensional form
     valScaleFac = 1000 ...
@@ -192,11 +192,11 @@ function volFlowNorm = calcVolFlowNorm(params)
         
     %Calculate upstream total concentration
     gasConsTotUp = voidMolUp ...
-                 / (testVol);
+                 / testVol;
     
     %Calculate downstream total concentration
     gasConsTotDo = voidMolDo ...
-                 / (testVol);
+                 / testVol;
     %---------------------------------------------------------------------%
     
     
@@ -212,7 +212,7 @@ function volFlowNorm = calcVolFlowNorm(params)
                           gasConsTotDo, ...
                           gasConsTotUp, ...
                           tempFeTa/tempAmbi, ...
-                          tempCol/tempAmbi);         
+                          tempColNorm);         
     %---------------------------------------------------------------------%              
     
 end

@@ -40,8 +40,6 @@ function params = getDimLessParams(params)
     %funcId = 'getDimLessParams.m';
     
     %Unpack params
-    tempCol      = params.tempCol     ;
-    tempAmbi     = params.tempAmbi    ;
     nVols        = params.nVols       ;
     cstrVol      = params.cstrVol     ;
     colVol       = params.colVol      ;    
@@ -62,19 +60,7 @@ function params = getDimLessParams(params)
     valExTaFull  = params.valExTaFull ;
     %---------------------------------------------------------------------%    
     
-    
-    
-    %---------------------------------------------------------------------%                                          
-    %Calculate dimensionless system parameters
-    
-    %Calculate Dimensionless Temperatures
-    params.colTempNorm  = tempCol ...
-                        / teScaleFac   ;
-    params.ambTempNorm  = tempAmbi ...
-                        / teScaleFac   ;   
-    %---------------------------------------------------------------------%                     
-    
-    
+   
     
     %---------------------------------------------------------------------%                     
     %Specification of dimensionless parameters related to adsorption column

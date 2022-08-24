@@ -189,28 +189,25 @@ function [params,fullParams] = getSimParams(exampleFolder)
     models = getSubModels(params);
     
     %Unpack models (basic):
-    if true
         
-        %Specify isotherm model inside params
-        params.funcIso = models{1};
+    %Specify isotherm model inside params
+    params.funcIso = models{1};
 
-        %Specify adsorption rate model inside params
-        params.funcRat = models{2};
+    %Specify adsorption rate model inside params
+    params.funcRat = models{2};
 
-        %Specify equation of states inside params
-        params.funcEos = models{3};
+    %Specify equation of states inside params
+    params.funcEos = models{3};
 
-        %Specify a valve model inside params
-        params.funcVal = models{4};
-        
-        %Specify a volumetric flow rate calculation model
-        params.funcVol = models{6};
-        
-        %Specify a CSS convergence model
-        params.funcCss = models{7};
-        
-    end
+    %Specify a valve model inside params
+    params.funcVal = models{4};
     
+    %Specify a volumetric flow rate calculation model
+    params.funcVol = models{6};
+    
+    %Specify a CSS convergence model
+    params.funcCss = models{7};
+        
     %Unpack models (non-isothermal):
     if params.bool(5) == 1
         
@@ -223,13 +220,15 @@ function [params,fullParams] = getSimParams(exampleFolder)
     
     
     %---------------------------------------------------------------------%
-    %Define sub-model parameters
+    %Define sub-model parameters (Work in progress)
     
     %Define adsorption isotherm (equilibrium) parameters
-    params = getAdsEquilParams(params);
+    params = getAdsEquilParams(params); %This is the right place to 
+                                        %generalize the isotherm parameter
+                                        %input handling
     
     %Define adsorption rate parameters
-    params = getAdsRateParams(params);
+    params = getAdsRateParams(params); %currently an empty function
     %---------------------------------------------------------------------%
     
     

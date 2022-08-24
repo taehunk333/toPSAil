@@ -276,7 +276,8 @@ function models = getSubModels(params)
     elseif modSp(modNo3) == 1 && bool(7) == 0
         
         %Define the EOS
-        models{modNo3} = @(params,P,V,T,n) calcEosIdealGas(params,P,V,T,n);
+        models{modNo3} ...
+            = @(params,P,V,T,n) calcEosIdealGas(params,P,V,T,n);
                      
     %TBD
     elseif modSp(modNo3) == 2 && bool(7) == 1

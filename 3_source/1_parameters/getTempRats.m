@@ -42,7 +42,6 @@ function params = getTempRats(params)
     tempAmbi = params.tempAmbi;
     tempCol  = params.tempCol ;
     tempFeed = params.tempFeed;
-    tempBeHi = params.tempCol ;
     %---------------------------------------------------------------------% 
       
     

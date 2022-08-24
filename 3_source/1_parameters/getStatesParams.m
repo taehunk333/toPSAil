@@ -65,8 +65,7 @@ function params = getStatesParams(params)
     %# of phases      : 2     (Adsorbed and Gas Phases)
     %# of components  : nComs (1, ..., n components) 
     %# of temperatures: 2     (CSTR and CSTR wall)
-    params.nStates = 2*(nComs) ...
-                   + 2;                                          
+    params.nStates = 2*(nComs)+2;                                          
             
     %Determine a cell of strings containing names of temperature variables
     params.sTemp = {'cstr','wall'}';
@@ -77,22 +76,19 @@ function params = getStatesParams(params)
     %Define the number of state variables for the feed tank
     %[gas concentrations for species, temperature variables, cumulative
     %species molar flow rates in the tank "inlet"]
-    params.nFeTaStT = 2*nComs ...
-                    + params.nTemp;
+    params.nFeTaStT = 2*nComs+params.nTemp;
     
     %Define the number of state variables for the raffinate product tank
     %[gas concentrations for species, temperature variables, cumulative
     %species molar flow rates in the tank "outlet", cumulative species 
     %molar flow rates in the "waste"]
-    params.nRaTaStT = 3*nComs ...
-                    + params.nTemp;
+    params.nRaTaStT = 3*nComs+params.nTemp;
                 
     %Define the number of state variables for the extract product tank
     %[gas concentrations for species, temperature variables, cumulative
     %species molar flow rates in the tank "outlet", "cumulative species 
     %molar flow rates in the "waste"]
-    params.nExTaStT = 3*nComs ...
-                    + params.nTemp;
+    params.nExTaStT = 3*nComs+params.nTemp;
     
     %Define the number of state variables per adsorber excluding the
     %boundary flows
@@ -101,8 +97,7 @@ function params = getStatesParams(params)
     %Determine the number of total state variables per adsorber:
     %(# of CSTRs)*(# of states per CSTR)+(# of components for feed end 
     %flow)+(# of components for product end flow)
-    params.nColStT = params.nColSt ...
-                   + 2*nComs;    
+    params.nColStT = params.nColSt+2*nComs;    
                
     %Determine the number of total state variables per compressor:
     params.nCompStT = 1;

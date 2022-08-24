@@ -68,8 +68,8 @@ function params = getStringParams(params)
     typeDaeModel = zeros(nCols,nSteps);
 
     %Initialize cell arrays that stores differents
-    sComNums = cell(nComs,1)     ; %a column vector (nComs x 1)
-    sColNums = cell(nCols,1)     ; %a column vector (nComs x 1)
+    sComNums = cell(nComs,1); %a column vector (nComs x 1)
+    sColNums = cell(nCols,1); %a column vector (nComs x 1)
     
     %Initialie cell array for the equalization between adsorption columns
     numAdsEqPrEnd = zeros(nCols,nSteps);

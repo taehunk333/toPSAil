@@ -90,7 +90,7 @@ function units = getExTaEnerBal(params,units,nS)
     htCapCpNorm      = params.htCapCpNorm     ;
     intHtTrFacExTa   = params.intHtTrFacExTa  ;
     extHtTrFacExTa   = params.extHtTrFacExTa  ;      
-    ambTempNorm      = params.ambTempNorm     ;      
+    tempAmbiNorm     = params.tempAmbiNorm    ;      
     nCols            = params.nCols           ;
     sColNums         = params.sColNums        ;
     sComNums         = params.sComNums        ;       
@@ -111,7 +111,7 @@ function units = getExTaEnerBal(params,units,nS)
           - exTa.n1.temps.cstr;
 
     %Compute the exterior heat transfer rates
-    dQnwdt = ambTempNorm ...
+    dQnwdt = tempAmbiNorm ...
            - exTa.n1.temps.wall;    
 
     %Save ith feed tank wall energy balance into the struct

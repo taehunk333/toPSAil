@@ -55,7 +55,7 @@ function units = getVacWorkRate(params,units,nS)
     nCols        = params.nCols       ;
     sColNums     = params.sColNums    ;
     flowDirCol   = params.flowDirCol  ;
-    ambTempNorm  = params.ambTempNorm ;
+    tempAmbiNorm = params.tempAmbiNorm;
     
     %Unpack units
     col = units.col;
@@ -85,7 +85,7 @@ function units = getVacWorkRate(params,units,nS)
         
         %Calculate the outlet temperature; assumed to be an ambient
         %temperature
-        tempOut = ambTempNorm;
+        tempOut = tempAmbiNorm;
                         
         %Get the adsorption column concentration from the bottom CSTR
         consIn = col.(sColNums{i}).gasConsTot(:,1);
