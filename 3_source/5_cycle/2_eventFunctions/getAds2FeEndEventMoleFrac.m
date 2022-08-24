@@ -18,23 +18,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2021/1/18/Monday
-%Code last modified on : 2021/2/16/Tuesday
+%Code created on       : 2022/8/24/Wednesday
+%Code last modified on : 2022/8/24/Wednesday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : getHpEvent3.m
+%Function   : getAds2FeEndEventMoleFrac.m
 %Source     : common
-%Description: This is the third type of an event function for high pressure
-%             feed. The event criteria is a termination with product tank 
-%             purity.
-%             column.
+%Description: This is an event function that triggers when the mole
+%             fraction inside the 1st CSTR inside the 2nd adsorber
+%             reaches a prespecified threshold value.
 %Inputs     : params       - a struct containing simulation parameters.
-%             t            - a column vector containing state time points
-%             states       - a state solution vector/matrix at a given time
-%                            point
-%             nCy          - ith PSA cycle
-%             nS           - jth step in a given PSA cycle
+%             t            - a current time point.
+%             states       - a current state vector at the current time 
+%                            point t.
 %Outputs    : event        - a value that defines an event to happen when
 %                            the function value becomes zero
 %             isTerminal   - a boolean determining if we need to stop the 
@@ -43,44 +40,59 @@
 %                            a zero event function value
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [event,isterminal,direction] = getHpEvent3(params,~,states,~,~)
+function [event,isterminal,direction] ...
+    = getAds2FeEndEventMoleFrac(params,~,states)
 
     %---------------------------------------------------------------------%
     %Define known quantities
     
     %Define function ID
-    %funcId = 'getHpEvent3.m';
+    %funcId = 'getAds2FeEndEventMoleFrac.m';
     
     %Unpack params
-    nComs        = params.nComs       ;           
-    inShRaTa     = params.inShRaTa    ;
     eveLkMolFrac = params.eveLkMolFrac;
-    
-    %Convert the states into a row vector
-    states = states(:).';
-    %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %Unpack states and obtain necessary quantities
- 
-    %Compute the product gas mole fraction inside a product tank
-    gasMoleFrPrTa = states(:,inShRaTa+1)/ ...
-                                  sum(states(:,inShRaTa+1:inShRaTa+nComs));      
+    nComs        = params.nComs       ;
+    nColStT      = params.nColStT     ;
     %---------------------------------------------------------------------%
     
     
     
     %---------------------------------------------------------------------%
     %Compute the event criteria 
-    
-    %Purity of the product above a threshold
-    event = gasMoleFrPrTa-eveLkMolFrac;
+
+    %Shift the index to be that of the last CSTR
+    indSh = nColStT;
+
+    %Get the index for the light key
+    indLk = indSh+1;
+
+    %Get the index for the last component
+    indEnd = indSh+nComs;
+
+    %Get the dimensionless light key concentration in the gas phase
+    gasConsLk = states(:,indLk);
+
+    %Get the total gas concentration in the gas phase
+    gasConsTot = sum(states(:,indLk:indEnd),2);
+
+    %Compute the current light key mole fraction inside the n_c th CSTR in
+    %the 1st adsorber
+    currLkMolFrac = gasConsLk ...
+                  / gasConsTot;
     %---------------------------------------------------------------------%
+
+
+
+    %---------------------------------------------------------------------%
+    %Evaluate the event
+
+    %Check the mole fraction threshold
+    event = currLkMolFrac ...
+          - eveLkMolFrac ;
+    %---------------------------------------------------------------------%    
     
-    
-    
+
+      
     %---------------------------------------------------------------------%
     %Specify the event criteria
     

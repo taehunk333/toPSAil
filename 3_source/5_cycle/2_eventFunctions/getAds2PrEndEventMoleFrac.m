@@ -18,20 +18,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2021/1/18/Monday
-%Code last modified on : 2021/2/16/Tuesday
+%Code created on       : 2022/8/24/Wednesday
+%Code last modified on : 2022/8/24/Wednesday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : getHpEvent2.m
+%Function   : getAds2PrEndEventMoleFrac.m
 %Source     : common
-%Description: This is the second type of an event function for high 
-%             pressure feed. The event criteria is a termination with
-%             average product purity of cumulative products that exited
-%             the adsorption column so far in the simulation until time
-%             t_curr.
-%             column.
+%Description: This is an event function that triggers when the mole
+%             fraction inside the n_c th CSTR inside the 1st adsorber
+%             reaches a prespecified threshold value.
 %Inputs     : params       - a struct containing simulation parameters.
+%             t            - a current time point.
+%             states       - a current state vector at the current time 
+%                            point t.
 %Outputs    : event        - a value that defines an event to happen when
 %                            the function value becomes zero
 %             isTerminal   - a boolean determining if we need to stop the 
@@ -40,72 +40,61 @@
 %                            a zero event function value
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [event,isterminal,direction] = getHpEvent2(params,~,states,nS,nCy)
+function [event,isterminal,direction] ...
+    = getAds2PrEndEventMoleFrac(params,~,states)
 
     %---------------------------------------------------------------------%
     %Define known quantities
     
     %Define function ID
-    %funcId = 'getHpEvent2.m';
+    %funcId = 'getAds2PrEndEventMoleFrac.m';
     
     %Unpack params
-    eveColNo     = params.eveColNo(nS);
-    nComs        = params.nComs       ;
-    nColStT      = params.nColStT     ;    
     eveLkMolFrac = params.eveLkMolFrac;
-    
-    %Convert the states into a row vector
-    states = states(:).';
+    nVols        = params.nVols       ;
+    nStates      = params.nStates     ;
+    nComs        = params.nComs       ;
+    nColStT      = params.nColStT     ;
     %---------------------------------------------------------------------%
     
     
     
     %---------------------------------------------------------------------%
-    %Call any other events first
-    
-    %Did Nth column break through happened?   
-    [event1,~,~] = getHpEvent1(params,0,states,nS,nCy);            
-    %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %Unpack states and obtain necessary quantities
- 
-    %Compute the total cumulative mole fraction of the product gas that
-    %left the adsorption column from top end
-    
-    %For the initial time point, we do not have and flow yet
-    if event1 < 0
-        
-        %-----------------------------------------------------------------%
-        %Compute the cumulative product concentration
-        
-        %Assign the current cumulative product concentration as an output
-        gasMoleFracCum = states(:,nColStT*eveColNo-nComs+1)/ ...
-                  sum(states(:,nColStT*eveColNo-nComs+1:nColStT*eveColNo)); 
-        %-----------------------------------------------------------------%
-        
-        
-        
-        %-----------------------------------------------------------------%
-        %Compute the event criteria 
+    %Compute the event criteria 
 
-        %Purity of the product above a threshold
-        event = gasMoleFracCum-eveLkMolFrac;
-        %-----------------------------------------------------------------%
-    
-    %If the first event has not triggered,
-    else
-        
-         %No need to test for the second event
-         event = event1;
-         
-    end
+    %Shift the index to be that of the last CSTR
+    indSh = nColStT+nStates*(nVols-1);
+
+    %Get the index for the light key
+    indLk = indSh+1;
+
+    %Get the index for the last component
+    indEnd = indSh+nComs;
+
+    %Get the dimensionless light key concentration in the gas phase
+    gasConsLk = states(:,indLk);
+
+    %Get the total gas concentration in the gas phase
+    gasConsTot = sum(states(:,indLk:indEnd),2);
+
+    %Compute the current light key mole fraction inside the n_c th CSTR in
+    %the 1st adsorber
+    currLkMolFrac = gasConsLk ...
+                  / gasConsTot;
     %---------------------------------------------------------------------%
+
+
+
+    %---------------------------------------------------------------------%
+    %Evaluate the event
+
+    %Check the mole fraction threshold
+    event = currLkMolFrac ...
+          - eveLkMolFrac ;
+    %---------------------------------------------------------------------%    
     
-                    
-    
+
+      
     %---------------------------------------------------------------------%
     %Specify the event criteria
     

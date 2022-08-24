@@ -18,22 +18,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2021/1/18/Monday
-%Code last modified on : 2022/4/17/Sunday
+%Code created on       : 2022/8/24/Wednesday
+%Code last modified on : 2022/8/24/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : getDpEvent1.m
+%Function   : getAds1PrEndEventPressure.m
 %Source     : common
-%Description: This is the first type of an event function for 
-%             depressurization. The event criteria is for the column void
-%             pressure to be equal to a low pressure.
+%Description: This is an event function that triggers when the pressure
+%             inside the n_c th CSTR inside the 1st adsorber reaches a 
+%             prespecified threshold value.
 %Inputs     : params       - a struct containing simulation parameters.
-%             t            - a column vector containing state time points
-%             states       - a state solution vector/matrix at a given time
-%                            point
-%             nS           - jth step in a given PSA cycle
-%             nCy          - ith PSA cycle
+%             t            - a current time point.
+%             states       - a current state vector at the current time 
+%                            point t.
 %Outputs    : event        - a value that defines an event to happen when
 %                            the function value becomes zero
 %             isTerminal   - a boolean determining if we need to stop the 
@@ -43,51 +41,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function [event,isterminal,direction] ...
-    = getDpEvent1(params,~,states,nS,~,varargin)
+    = getAds1PrEndEventPressure(params,~,states)
 
     %---------------------------------------------------------------------%
     %Define known quantities
     
     %Define function ID
-    %funcId = 'getDpEvent1.m';
+    %funcId = 'getAds1PrEndEventPressure.m';
     
     %Unpack params
-    eveColNo       = params.eveColNo(nS)  ;
-    nComs          = params.nComs         ;
-    nColStT        = params.nColStT       ;
     eveTotPresNorm = params.eveTotPresNorm;
+    nVols          = params.nVols         ;
+    nStates        = params.nStates       ;
+    nComs          = params.nComs         ;
     gasConsNormEq  = params.gasConsNormEq ;
-    
-    %Convert the states into a row vector
-    states = states(:).';
-    %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %Grab the event column number only when needed
-    
-    %If the event column number is provided by the user, then 
-    if ~isempty(varargin)
-        
-        %Get the event column number from the first varargin input
-        eveColNo = varargin{1};
-        
-    end
-    %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %Unpack states and obtain necessary quantities
- 
-    %Compute the total pressure inside the 1st CSTR in the column
-    %where the event would take place
-    gasTotPres1 ...
-        = sum(states(:,nColStT*(eveColNo-1)+1: ...
-             nColStT*(eveColNo-1)+nComs)) ...
-        * gasConsNormEq ...
-        * states(:,nColStT*(eveColNo-1)+1+2*nComs);   
     %---------------------------------------------------------------------%
     
     
@@ -95,13 +62,37 @@ function [event,isterminal,direction] ...
     %---------------------------------------------------------------------%
     %Compute the event criteria 
     
-    %Total pressure differnce between the current pressure of the 1st
-    %CSTR vs. the low pressure
-    event = gasTotPres1-eveTotPresNorm;
+    %Shift the index to be that of the last CSTR
+    indSh = nStates*(nVols-1);
+
+    %Get the index for the light key
+    indLk = indSh+1;
+
+    %Get the index for the last component
+    indEnd = indSh+nComs;
+
+    %Get the total gas concentration in the gas phase
+    gasConsTot = sum(states(:,indLk:indEnd),2);
+
+    %Get the interior temperature of the n_c th CSTR
+    intTempCstr = states(:,indSh+2*nComs+1);
+
+    %Compute the current pressure in the n_c th CSTR
+    currCstrPressure = gasConsTot.*intTempCstr.*gasConsNormEq;
     %---------------------------------------------------------------------%
+
+
+
+    %---------------------------------------------------------------------%
+    %Evaluate the event
+
+    %Check the pressure threshold
+    event = currCstrPressure ...
+          - eveTotPresNorm ;
+    %---------------------------------------------------------------------%    
     
-    
-    
+
+      
     %---------------------------------------------------------------------%
     %Specify the event criteria
     

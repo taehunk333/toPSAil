@@ -18,22 +18,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2021/1/18/Monday
-%Code last modified on : 2022/3/3/Thursday
+%Code created on       : 2022/8/24/Wednesday
+%Code last modified on : 2022/8/24/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : getRpEvent1.m
+%Function   : getFeTaEventTemperature.m
 %Source     : common
-%Description: This is the first type of an event function for 
-%             re-pressurization. The event criteria is for the column void
-%             pressure to be equal to a high pressure.
+%Description: This is an event function that triggers when the temperature
+%             inside the 1st CSTR inside the feed tank reaches a 
+%             prespecified threshold value.
 %Inputs     : params       - a struct containing simulation parameters.
-%             timePts      - a column vector containing state time points
-%             states       - a state solution vector/matrix at a given time
-%                            point
-%             nS           - jth step in a given PSA cycle
-%             nCy          - ith PSA cycle
+%             t            - a current time point.
+%             states       - a current state vector at the current time 
+%                            point t.
 %Outputs    : event        - a value that defines an event to happen when
 %                            the function value becomes zero
 %             isTerminal   - a boolean determining if we need to stop the 
@@ -42,52 +40,19 @@
 %                            a zero event function value
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [event,isterminal,direction] = ...
-                                 getRpEvent1(params,~,states,nS,~,varargin)
+function [event,isterminal,direction] ...
+    = getFeTaEventTemperature(params,~,states)
 
     %---------------------------------------------------------------------%
     %Define known quantities
     
     %Define function ID
-    %funcId = 'getRpEvent1.m';        
+    %funcId = 'getFeTaEventTemperature.m';
     
     %Unpack params
-    eveColNo       = params.eveColNo(nS)  ;
-    nComs          = params.nComs         ;
-    nColStT        = params.nColStT       ;
-    eveTotPresNorm = params.eveTotPresNorm;
-    gasConsNormEq  = params.gasConsNormEq ; 
-    
-    %Convert the states into a row vector
-    states = states(:).';
-    %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %Grab the event column number only when needed
-    
-    %If the event column number is provided by the user, then 
-    if ~isempty(varargin)
-        
-        %Get the event column number from the first varargin input
-        eveColNo = varargin{1};
-        
-    end
-    %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %Unpack states and obtain necessary quantities
- 
-    %Compute the total pressure inside the 1st CSTR in the column
-    %where the event would take place
-    gasTotPres1 ...
-        = sum(states(:,nColStT*(eveColNo-1)+1: ...
-             nColStT*(eveColNo-1)+nComs),2) ...
-        * gasConsNormEq ...
-        * states(:,nColStT*(eveColNo-1)+1+2*nComs);   
+    eveTotTempNorm = params.eveTotTempNorm;
+    nComs          = params.nComs         ;     
+    inShFeTa       = params.inShFeTa      ;
     %---------------------------------------------------------------------%
     
     
@@ -95,14 +60,25 @@ function [event,isterminal,direction] = ...
     %---------------------------------------------------------------------%
     %Compute the event criteria 
     
-    %Total concentration differnce between the high pressure vs. the
-    %current pressure of the 1st CSTR
-    event = eveTotPresNorm ...
-          - gasTotPres1;
+    %Shift the index to be that of the feed tank
+    indSh = inShFeTa;
+
+    %Compute the current pressure in the feed tank
+    currTankTemperature = states(:,indSh+nComs+1);
     %---------------------------------------------------------------------%
+
+
+
+    %---------------------------------------------------------------------%
+    %Evaluate the event
+
+    %Check the temperature threshold
+    event = currTankTemperature ...
+          - eveTotTempNorm ;
+    %---------------------------------------------------------------------%    
     
-    
-    
+
+      
     %---------------------------------------------------------------------%
     %Specify the event criteria
     

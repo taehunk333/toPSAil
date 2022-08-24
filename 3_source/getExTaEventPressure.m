@@ -18,18 +18,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2021/1/18/Monday
-%Code last modified on : 2021/2/16/Tuesday
+%Code created on       : 2022/8/24/Wednesday
+%Code last modified on : 2022/8/24/Wednesday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : getHpEvent1.m
+%Function   : getExTaEventPressure.m
 %Source     : common
-%Description: This is the first type of an event function for high pressure
-%             feed. The event criteria is a termination with instantaneous
-%             product purity of the exiting stream of the adsorption
-%             column.
+%Description: This is an event function that triggers when the pressure
+%             inside the n_c th CSTR inside the extract tank reaches a 
+%             prespecified threshold value.
 %Inputs     : params       - a struct containing simulation parameters.
+%             t            - a current time point.
+%             states       - a current state vector at the current time 
+%                            point t.
 %Outputs    : event        - a value that defines an event to happen when
 %                            the function value becomes zero
 %             isTerminal   - a boolean determining if we need to stop the 
@@ -38,36 +40,20 @@
 %                            a zero event function value
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [event,isterminal,direction] = getHpEvent1(params,~,states,nS,~)
+function [event,isterminal,direction] ...
+    = getExTaEventPressure(params,~,states)
 
     %---------------------------------------------------------------------%
     %Define known quantities
     
     %Define function ID
-    %funcId = 'getHpEvent1.m';
+    %funcId = 'getExTaEventPressure.m';
     
     %Unpack params
-    eveColNo     = params.eveColNo(nS);
-    nComs        = params.nComs       ;
-    nColStT      = params.nColStT     ;    
-    nStates      = params.nStates     ;
-    nVols        = params.nVols       ;
-    eveLkMolFrac = params.eveLkMolFrac;
-    
-    %Convert the states into a row vector
-    states = states(:).';
-    %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %Unpack states and obtain necessary quantities
- 
-    %Compute the total mole fraction inside the Nth CSTR in the column
-    %where the event would take place
-    gasMoleFracN = states(:,nColStT*(eveColNo-1)+nStates*(nVols-1)+1)/ ...
-                  sum(states(:,nColStT*(eveColNo-1)+nStates*(nVols-1)+1 ...
-                         :nColStT*(eveColNo-1)+nStates*(nVols-1)+nComs),2);   
+    eveTotPresNorm = params.eveTotPresNorm;
+    nComs          = params.nComs         ;
+    gasConsNormEq  = params.gasConsNormEq ;
+    inShExTa       = params.inShExTa      ;
     %---------------------------------------------------------------------%
     
     
@@ -75,12 +61,37 @@ function [event,isterminal,direction] = getHpEvent1(params,~,states,nS,~)
     %---------------------------------------------------------------------%
     %Compute the event criteria 
     
-    %Purity of the product above a threshold
-    event = gasMoleFracN-eveLkMolFrac;
+    %Shift the index to be that of the extract tank
+    indSh = inShExTa;
+
+    %Get the index for the light key
+    indLk = indSh+1;
+
+    %Get the index for the last component
+    indEnd = indSh+nComs;
+
+    %Get the total gas concentration in the gas phase
+    gasConsTot = sum(states(:,indLk:indEnd),2);
+
+    %Get the interior temperature of the extract tank
+    intTempTank = states(:,indEnd+1);
+
+    %Compute the current pressure in the extract tank
+    currTankPressure = gasConsTot.*intTempTank.*gasConsNormEq;
     %---------------------------------------------------------------------%
+
+
+
+    %---------------------------------------------------------------------%
+    %Evaluate the event
+
+    %Check the pressure threshold
+    event = currTankPressure ...
+          - eveTotPresNorm ;
+    %---------------------------------------------------------------------%    
     
-    
-    
+
+      
     %---------------------------------------------------------------------%
     %Specify the event criteria
     

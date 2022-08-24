@@ -18,21 +18,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2021/1/18/Monday
-%Code last modified on : 2021/2/16/Tuesday
+%Code created on       : 2022/8/24/Wednesday
+%Code last modified on : 2022/8/24/Wednesday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : getDpEvent2.m
+%Function   : getExTaEventTemperature.m
 %Source     : common
-%Description: This is the second type of an event function for 
-%             depressurization. The event criteria is (TBD)
+%Description: This is an event function that triggers when the temperature
+%             inside the 1st CSTR inside the extract tank reaches a 
+%             prespecified threshold value.
 %Inputs     : params       - a struct containing simulation parameters.
-%             t            - a column vector containing state time points
-%             states       - a state solution vector/matrix at a given time
-%                            point
-%             nCy          - ith PSA cycle
-%             nS           - jth step in a given PSA cycle
+%             t            - a current time point.
+%             states       - a current state vector at the current time 
+%                            point t.
 %Outputs    : event        - a value that defines an event to happen when
 %                            the function value becomes zero
 %             isTerminal   - a boolean determining if we need to stop the 
@@ -41,20 +40,45 @@
 %                            a zero event function value
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [event,isterminal,direction] = getDpEvent2(params,~,states,nS,~)
+function [event,isterminal,direction] ...
+    = getExTaEventTemperature(params,~,states)
 
     %---------------------------------------------------------------------%
     %Define known quantities
     
     %Define function ID
-    %funcId = 'getDpEvent2.m';
+    %funcId = 'getExTaEventTemperature.m';
     
     %Unpack params
-    
+    eveTotTempNorm = params.eveTotTempNorm;
+    nComs          = params.nComs         ;     
+    inShExTa       = params.inShExTa      ;
     %---------------------------------------------------------------------%
     
     
     
+    %---------------------------------------------------------------------%
+    %Compute the event criteria 
+    
+    %Shift the index to be that of the extract tank
+    indSh = inShExTa;
+
+    %Compute the current pressure in the extract tank
+    currTankTemperature = states(:,indSh+nComs+1);
+    %---------------------------------------------------------------------%
+
+
+
+    %---------------------------------------------------------------------%
+    %Evaluate the event
+
+    %Check the temperature threshold
+    event = currTankTemperature ...
+          - eveTotTempNorm ;
+    %---------------------------------------------------------------------%    
+    
+
+      
     %---------------------------------------------------------------------%
     %Specify the event criteria
     
