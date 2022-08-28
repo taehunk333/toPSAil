@@ -40,12 +40,12 @@ function params = getEventParams(params)
     %funcId = 'getEventParams.m';
     
     %Unpack params
-    eveVal   = params.eveVal  ;
-    eveUnit  = params.eveUnit ;
-    eveLoc   = params.eveLoc  ;
-    nSteps   = params.nSteps  ;
-    presBeHi = params.presBeHi;    
-    tempAmbi = params.tempAmbi;
+    eveVal       = params.eveVal      ;
+    eveUnit      = params.eveUnit     ;
+    eveLoc       = params.eveLoc      ;
+    nSteps       = params.nSteps      ;
+    presBeHiFull = params.presBeHiFull;    
+    tempAmbi     = params.tempAmbi    ;
     %---------------------------------------------------------------------% 
     
                      
@@ -135,7 +135,7 @@ function params = getEventParams(params)
             elseif eventUnitPressure
 
                 %Assign the pressure at which the event will occur
-                params.eveTotPresNorm = eveValStep/presBeHi;                
+                params.eveTotPresNorm = eveValStep/presBeHiFull;                
             %-------------------------------------------------------------%
 
 
