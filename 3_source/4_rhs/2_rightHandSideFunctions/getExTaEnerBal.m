@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/1/28/Friday
-%Code last modified on : 2022/8/22/Monday
+%Code last modified on : 2022/8/27/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -185,8 +185,10 @@ function units = getExTaEnerBal(params,units,nS)
                   -exTa.n1.temps.cstr) ...
                 * convFlowEner;
         
-        %If we have a counter-current flow, we can have a rinse going on
-        %from the top-end of the adsorption column
+        %If we have a negative flow, we can have a rinse going on from the
+        %top-end of the adsorption column. Similarly, if we have a positive
+        %flow, we can have a rinse going on frim the bottome-end of the
+        %adsorption column.
         elseif valExTa2AdsPrEnd(i,nS) == 1 || ...
                valExTa2AdsFeEnd(i,nS) == 1
       
@@ -196,7 +198,7 @@ function units = getExTaEnerBal(params,units,nS)
                             + max(0,exTa.n1.volFlRat(i)) ...
                             * exTa.n1.gasConsTot;           
         
-       %Otherwise, we don't have to do anything as there is no interaction
+        %Otherwise, we don't have to do anything as there is no interaction
         %with the extract product tank
         else 
             

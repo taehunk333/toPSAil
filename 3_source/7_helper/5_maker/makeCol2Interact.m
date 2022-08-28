@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/2/18/Friday
-%Code last modified on : 2022/8/20/Saturday
+%Code last modified on : 2022/8/27/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -55,8 +55,7 @@ function units = makeCol2Interact(params,units,nS)
     valFeTa2AdsPrEnd = params.valFeTa2AdsPrEnd;  
     valRaTa2AdsFeEnd = params.valRaTa2AdsFeEnd;
     valExTa2AdsPrEnd = params.valExTa2AdsPrEnd; 
-    valExTa2AdsFeEnd = params.valExTa2AdsFeEnd;
-    valAdsFeEnd2ExTa = params.valAdsFeEnd2ExTa;
+    valFeTa2AdsFeEnd = params.valFeTa2AdsFeEnd;
        
     %Unpack units
     col  = units.col ;
@@ -195,7 +194,7 @@ function units = makeCol2Interact(params,units,nS)
                     = feTa.n1.temps.cstr;
                 %---------------------------------------------------------%
 
-            %Otherwise, the flow is from the raffinate product tank. 
+            %Otherwise, the flow is from or to the raffinate product tank. 
             else
                 
                 %---------------------------------------------------------%
@@ -282,45 +281,7 @@ function units = makeCol2Interact(params,units,nS)
                 %undergoing the equalization
                 col.(sColNums{i}).feEnd.temps ...
                     = col.(sColNums{numColEqStep}).temps.cstr(:,1); 
-                %---------------------------------------------------------%
-
-            %If there is an interaction between the extract product
-            %tank and the column(s)
-            elseif valExTa2AdsFeEnd(i,nS) == 1 || ...
-                   valAdsFeEnd2ExTa(i,nS) == 1
-                
-                %---------------------------------------------------------%
-                %Get the total concentration of the extract tank
-                gasConTotFeEnd ...
-                    = exTa.n1.gasConsTot;
-
-                %Get the jth species concentration inside the extract
-                %tank
-                gasConSpeFeEnd ...
-                    = exTa.n1.gasCons. ...
-                      (sComNums{j});
-
-                %Get the current total concentration of the 1st CSTR in
-                %the ith adsorption column
-                gasConTotCstr ...
-                    = col.(sColNums{i}). ...
-                      gasConsTot(:,1);
-
-                %Get the concentration of species at the product end of
-                %the adsorber
-                col.(sColNums{i}).feEnd.gasCons.(sComNums{j}) ...
-                    = (gasConSpeFeEnd/gasConTotFeEnd) ...
-                    * gasConTotCstr;
-                
-                %Get the total concentration of species at the feed end of 
-                %the adsorber
-                col.(sColNums{i}).feEnd.gasConsTot ...
-                    = gasConTotCstr;
-
-                %Get the temperature from the extract product tank
-                col.(sColNums{i}).feEnd.temps ...
-                    = exTa.n1.temps.cstr;
-                %---------------------------------------------------------%
+                %---------------------------------------------------------%            
 
             %If there is an interaction between the raffinate product
             %tank and the column(s)
@@ -359,8 +320,9 @@ function units = makeCol2Interact(params,units,nS)
                     = raTa.n1.temps.cstr;    
                 %---------------------------------------------------------%
 
-            %Otherwise the downstream is the feed tank
-            else
+            %If there is an interaction between the feed tank and the
+            %adsorption volumn feed-end,
+            elseif valFeTa2AdsFeEnd(i,nS) == 1
     
                 %---------------------------------------------------------%
                 %Get the total concentration of the first feed tank
@@ -395,6 +357,43 @@ function units = makeCol2Interact(params,units,nS)
                     = feTa.n1.temps.cstr;
                 %---------------------------------------------------------%
                     
+            %Otherwise, there is an interaction between the extract product
+            %tank and the adsorption column feed-end.
+            else
+                
+                %---------------------------------------------------------%
+                %Get the total concentration of the extract tank
+                gasConTotFeEnd ...
+                    = exTa.n1.gasConsTot;
+
+                %Get the jth species concentration inside the extract
+                %tank
+                gasConSpeFeEnd ...
+                    = exTa.n1.gasCons. ...
+                      (sComNums{j});
+
+                %Get the current total concentration of the 1st CSTR in
+                %the ith adsorption column
+                gasConTotCstr ...
+                    = col.(sColNums{i}). ...
+                      gasConsTot(:,1);
+
+                %Get the concentration of species at the product end of
+                %the adsorber
+                col.(sColNums{i}).feEnd.gasCons.(sComNums{j}) ...
+                    = (gasConSpeFeEnd/gasConTotFeEnd) ...
+                    * gasConTotCstr;
+                
+                %Get the total concentration of species at the feed end of 
+                %the adsorber
+                col.(sColNums{i}).feEnd.gasConsTot ...
+                    = gasConTotCstr;
+
+                %Get the temperature from the extract product tank
+                col.(sColNums{i}).feEnd.temps ...
+                    = exTa.n1.temps.cstr;
+                %---------------------------------------------------------%
+
             end                
             %-------------------------------------------------------------%
             

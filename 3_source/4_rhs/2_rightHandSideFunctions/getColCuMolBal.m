@@ -95,15 +95,15 @@ function units = getColCuMolBal(params,units)
             
             
             %-------------------------------------------------------------%
-            %Do the cumularive mole balance at the boundaries
+            %Do the cumulative mole balance at the boundaries
             
-            %Assign the right hand side for the cumulative moles
+            %Assign the right-hand side for the cumulative moles
             %flowing into the adsorption column from the product-end
             col.(sColNums{i}).cumMolBal.prod.(sComNums{j}) ...
                 = gasConsSpecNeqNc*vPlPr ...
                 - gasConsSpecPr*vMiPr;                
 
-            %Assign the right hand side for the cumulative moles
+            %Assign the right-hand side for the cumulative moles
             %flowing out of the adsorption column from the column at
             %the feed-end
             col.(sColNums{i}).cumMolBal.feed.(sComNums{j}) ...

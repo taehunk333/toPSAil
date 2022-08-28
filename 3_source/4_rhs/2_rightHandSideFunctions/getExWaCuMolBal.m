@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/2/2/Wednesday
-%Code last modified on : 2022/8/23/Tuesday
+%Code last modified on : 2022/8/27/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -74,7 +74,7 @@ function units = getExWaCuMolBal(params,units,nS)
             exWa.n1.cumMolBal.waste.(sComs{j}) ...
                 = exWa.n1.cumMolBal.waste.(sComs{j}) ...
                 + col.(sCols{i}).gasCons.(sComs{j})(:,1) ...
-                * col.(sCols{i}).volFlRat(:,1) ...
+                * min(0,col.(sCols{i}).volFlRat(:,1)) ...
                 * (1-valAdsFeEnd2ExWa(i,nS));
 
         end

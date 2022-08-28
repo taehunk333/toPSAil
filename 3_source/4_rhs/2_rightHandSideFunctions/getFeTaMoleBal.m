@@ -55,25 +55,26 @@ function units = getFeTaMoleBal(params,units)
     %Unpack units
     feTa = units.feTa;
     %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%    
-    %Initialize solution arrays
-    
-    %Initialize the convective flow after the feed valve (i.e., valve 2) 
-    convOutToAds = 0;        
-    %---------------------------------------------------------------------%    
-    
-    
-    
+   
+   
+
     %---------------------------------------------------------------------%    
     %Do the mole balance for each species for all species inside each 
     %feed tank
       
     %For each species,
     for j = 1 : nComs
+        
+        %-----------------------------------------------------------------%    
+        %Initialize solution arrays
+        
+        %Initialize the convective flow after the feed valve (i.e., valve 
+        %2) 
+        convOutToAds = 0;        
+        %-----------------------------------------------------------------%   
 
+
+        
         %-----------------------------------------------------------------%    
         %Account for all flows into/out of feed tank from all columns                        
 
@@ -107,10 +108,7 @@ function units = getFeTaMoleBal(params,units)
         %Do the mole balance on the ith tank for species j
         feTa.n1.moleBal.(sComNums{j}) ...
             = feTaScaleFac ...
-           .* (convfromFeRes-convOutToAds);    
-
-        %Initialize the molar flow rates for the next iteration
-        convOutToAds = 0;                     
+           .* (convfromFeRes-convOutToAds);                      
         %-----------------------------------------------------------------%                
 
     end
