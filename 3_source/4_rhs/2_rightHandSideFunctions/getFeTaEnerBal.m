@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/28/Thursday
-%Code last modified on : 2022/8/22/Monday
+%Code last modified on : 2022/8/27/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -163,10 +163,13 @@ function units = getFeTaEnerBal(params,units)
     %Initialize the convective energy flow term
     convFlowEner = 0;
     
+    %Calculate the total concentration of the feed
+    gasConsTotFeed = pRatFe/(gasConsNormEq*tempFeedNorm);
+
     %For the feed stream of the feed tank, update the net molar flow (since
     %the flow is in a negative direction, the voluemtric flow is negative)
     netMolarFlowIn = feTa.n1.volFlRat(end) ...
-                   * pRatFe/(gasConsNormEq*tempFeedNorm);
+                   * gasConsTotFeed;
     
     %For each adsorber
     for i = 1 : nCols
@@ -175,10 +178,10 @@ function units = getFeTaEnerBal(params,units)
         %If we have a co-current flow in the current adsorber and we are
         %collecting the raffinate product      
 
-        %Update the net molar flow (since the flow is in a negative
-        %direction, the voluemtric flow is negative)
+        %Update the net molar flow (since the flow is in the positive
+        %direction, the voluemtric flow is positive)
         netMolarFlowOut = netMolarFlowOut ...
-                        + col.(sColNums{i}).volFlRat(:,1) ...
+                        + max(0,col.(sColNums{i}).volFlRat(:,1)) ...
                         * feTa.n1.gasConsTot;        
         
     end
@@ -191,7 +194,7 @@ function units = getFeTaEnerBal(params,units)
         
         %Update the first term
         convFlowEner = convFlowEner ...
-                     + htCapCpNorm(j)*(pRatFe*yFeC(j));    
+                     + htCapCpNorm(j)*(gasConsTotFeed*yFeC(j));    
         
     end            
     
@@ -199,9 +202,9 @@ function units = getFeTaEnerBal(params,units)
     presDeltaEner = gConsNormFeTa ...
                   * feTa.n1.temps.cstr ...
                   * netMolarFlow;    
-    convFlowEner = gConsNormFeTa ...
-                 * vnm1*(Tnm1-Tnm0) ...
-                 * convFlowEner;    
+    convFlowEner  = gConsNormFeTa ...
+                  * vnm1*(Tnm1-Tnm0) ...
+                  * convFlowEner;    
     %---------------------------------------------------------------------%
     
     

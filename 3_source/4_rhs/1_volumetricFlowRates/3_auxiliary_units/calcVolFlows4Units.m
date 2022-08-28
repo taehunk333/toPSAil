@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/8/13/Saturday
-%Code last modified on : 2022/8/13/Saturday
+%Code last modified on : 2022/8/27/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -62,10 +62,10 @@ function vFlUnits = calcVolFlows4Units(params,units,nS)
     valFeTa2AdsPrEnd = params.valFeTa2AdsPrEnd;
     valFeTa2AdsFeEnd = params.valFeTa2AdsFeEnd;
     valRaTa2AdsPrEnd = params.valRaTa2AdsPrEnd;
-    valAdsPrEnd2RaTa = params.valAdsPrEnd2RaTa;
     valRaTa2AdsFeEnd = params.valRaTa2AdsFeEnd;
     valExTa2AdsPrEnd = params.valExTa2AdsPrEnd;
     valExTa2AdsFeEnd = params.valExTa2AdsFeEnd;
+    valAdsPrEnd2RaTa = params.valAdsPrEnd2RaTa;
     valAdsPrEnd2RaWa = params.valAdsPrEnd2RaWa;
     valAdsFeEnd2ExWa = params.valAdsFeEnd2ExWa;
     valAdsFeEnd2ExTa = params.valAdsFeEnd2ExTa;
@@ -150,7 +150,7 @@ function vFlUnits = calcVolFlows4Units(params,units,nS)
             vFlScaleFac = col.(sColNums{i}).gasConsTot(:,nVols) ...
                        ./ feTaTotCon;
 
-            %Grab a volumetric flow rate from the product-end of jth 
+            %Grab a volumetric flow rate from the product-end of the jth 
             %column. The flow rate is negated to make the counter-current 
             %flow (negative) to become a positive number.
             vFlFeTa(:,i) = (-1)*vFlCol(:,nVols+1) ...
@@ -191,10 +191,26 @@ function vFlUnits = calcVolFlows4Units(params,units,nS)
                          * vFlCol(:,1) ...
                         .* vFlScaleFac;    
         
-        %The raffinate product tank is interacting with the ith adsorber at
-        %the product-end.
-        elseif valRaTa2AdsPrEnd(i,nS) == 1 || ...
-               valAdsPrEnd2RaTa(i,nS) == 1
+        %The flow is from the raffinate product tank to the product-end of
+        %the ith adsorber
+        elseif valRaTa2AdsPrEnd(i,nS) == 1
+
+            %Determine the scale factor for the volumetric flow rate
+            vFlScaleFac = col.(sColNums{i}).gasConsTot(:,nVols) ...
+                       ./ raTaTotCon;
+
+            %Calculate the volumetric flow rate from the raffinate product 
+            %tank to the ith adsorption column. The flow into the 
+            %product-end of the ith adsorber is in the negative direction. 
+            %By convention, we consider the flow coming out from the 
+            %raffinate tank and heading towards an adsorber to be in the 
+            %negative direction.
+            vFlRaTa(:,i) = vFlCol(:,nVols+1) ...
+                        .* vFlScaleFac;  
+
+        %The flow is from the ith adsorber product-end towards the
+        %raffinate product tank or the raffinate waste stream
+        elseif valAdsPrEnd2RaTa(i,nS) == 1
 
             %Determine the scale factor for the volumetric flow rate
             vFlScaleFac1 = col.(sColNums{i}).gasConsTot(:,nVols) ...
@@ -237,11 +253,23 @@ function vFlUnits = calcVolFlows4Units(params,units,nS)
         %The volumetric flow rates are evaluated at the tank total 
         %concentration and the flow directions should be defined for the 
         %extract product tank.
-                                                  
-        %The extract product tank is interacting with the ith adsorber at
-        %the feed-end. 
-        if valExTa2AdsFeEnd(i,nS) == 1 || ...
-           valAdsFeEnd2ExTa(i,nS) == 1
+         
+        %The flow is from the extract product tank to the feed-end of the
+        %ith adsorber
+        if valExTa2AdsFeEnd(i,nS) == 1
+            
+            %Determine the scale factor for the volumetric flow rate
+            vFlScaleFac = col.(sColNums{i}).gasConsTot(:,1) ...
+                       ./ exTaTotCon;
+
+            %Update a volumetric flow rate for the effulent stream from the
+            %extract product tank. 
+            vFlExTa(:,i) = vFlCol(:,1) ...
+                        .* vFlScaleFac;             
+
+        %The flow is from the feed-end of the ith adsorber into the extract
+        %product tank or the extract waste stream
+        elseif valAdsFeEnd2ExTa(i,nS) == 1
             
             %Determine the scale factor for the volumetric flow rate
             vFlScaleFac1 = col.(sColNums{i}).gasConsTot(:,1) ...
@@ -258,18 +286,12 @@ function vFlUnits = calcVolFlows4Units(params,units,nS)
                        .* vFlScaleFac2;
 
             %Update a volumetric flow rate for the stream between the 
-            %adsorber and the extract product tank; the negative sign is 
-            %needed because we flip the flow direction on the way and the
-            %flow is coming "into" the extract product tank.
-            vFlExTa(:,i) = (-1) ...
-                         * valAdsFeEnd2ExWa(i,nS) ...
+            %adsorber and the extract product tank
+            vFlExTa(:,i) = valAdsFeEnd2ExWa(i,nS) ...
                          * vFlExTaVal1;
 
-            %Update a volumetric flow rate for the waste stream; the 
-            %negative sign is needed because we flip the flow direction on 
-            %the way and the flow is coming "into" the extract stream.
-            vFlExWa(:,i) = (-1) ...
-                         * (1-valAdsFeEnd2ExWa(i,nS)) ...
+            %Update a volumetric flow rate for the waste stream
+            vFlExWa(:,i) = (1-valAdsFeEnd2ExWa(i,nS)) ...
                          * vFlExTaVal2;
                  
         %The extract product tank is interacting with the ith adsorber at
@@ -281,10 +303,9 @@ function vFlUnits = calcVolFlows4Units(params,units,nS)
                        ./ exTaTotCon;
 
             %Calcualate the volumetric flow rate from the extract product 
-            %tank to the jth adsorption column. Since this is a
-            %counter-current flow "out" from the extract product tank, we 
-            %let the volumetric flow rate to be a negative value
-            vFlExTa(:,i) = vFlCol(:,nVols+1) ...
+            %tank to the jth adsorption column.
+            vFlExTa(:,i) = (-1)...
+                         * vFlCol(:,nVols+1) ...
                         .* vFlScaleFac;              
                      
         %The extract product tank does not interact with the ith adsorption

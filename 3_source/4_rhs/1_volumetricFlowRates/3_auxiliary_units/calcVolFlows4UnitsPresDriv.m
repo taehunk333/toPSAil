@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/8/13/Saturday
-%Code last modified on : 2022/8/13/Saturday
+%Code last modified on : 2022/8/27/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -133,8 +133,8 @@ function units = calcVolFlows4UnitsPresDriv(params,units,nS)
     %For each time point,
     for t = 1 : nRows
     
-        %The exit valve for the raffinate product tank is opened only when the
-        %tank pressure equals the initial product tank pressure 
+        %The exit valve for the raffinate product tank is opened only when 
+        %the tank pressure equals the initial product tank pressure 
         molFlRaTa2Res(t) ...
             = valRaTaFullNorm*gasConsNormEq*tempColNorm/1000 ...
             * median([0,deltaPres(t),1]) ...
@@ -172,13 +172,13 @@ function units = calcVolFlows4UnitsPresDriv(params,units,nS)
     %For each time point,
     for t = 1 : nRows
         
-    %The exit valve for the raffinate product tank is opened only when the
-    %tank pressure equals the initial product tank pressure 
-    molFlExTa2Res ...
-        = valExTaFullNorm*gasConsNormEq*tempColNorm/1000 ...
-        * median([0,deltaPres(t),1]) ...
-        * min(0,exTaTotCon(t).*exTaIntTemp(t) ...
-             -pRatEx/gasConsNormEq);
+        %The exit valve for the raffinate product tank is opened only when
+        %the tank pressure equals the initial product tank pressure 
+        molFlExTa2Res ...
+            = valExTaFullNorm*gasConsNormEq*tempColNorm/1000 ...
+            * median([0,deltaPres(t),1]) ...
+            * min(0,exTaTotCon(t).*exTaIntTemp(t) ...
+                 -pRatEx/gasConsNormEq);
                      
     end         
                             

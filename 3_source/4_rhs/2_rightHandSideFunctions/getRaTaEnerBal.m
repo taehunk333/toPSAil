@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/28/Thursday
-%Code last modified on : 2022/3/14/Monday
+%Code last modified on : 2022/8/27/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -154,8 +154,7 @@ function units = getRaTaEnerBal(params,units,nS)
     %For each column,
     for i = 1 : nCols
     
-        %FLOW OUT FROM THE RAFFINATE TANK INTO THE PRODUCT-ENDS OF THE
-        %ADSORBERS
+        %FLOW OUT FROM THE RAFFINATE TANK INTO THE ENDS OF THE ADSORBERS
         %If we have a counter-current flow in the current adsorber (i.e., 
         %we are doing a purge or pressurization at the product-end) or if
         %we have a co-current flow in the current adsorber (i.e., we are
@@ -216,9 +215,9 @@ function units = getRaTaEnerBal(params,units,nS)
         netChangeInMoles = (netMolarFlowIn+netMolarFlowOut);
         
         %Scale the terms with the relevant pre-factors
-        presDeltaEner = gConsNormRaTa ...
-                      * raTa.n1.temps.cstr ...
-                      * netChangeInMoles;
+        presDeltaEner  = gConsNormRaTa ...
+                       * raTa.n1.temps.cstr ...
+                       * netChangeInMoles;
         convFlowEnerIn = gConsNormRaTa ...
                        * convFlowEnerIn;
 

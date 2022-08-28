@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/1/28/Friday
-%Code last modified on : 2022/8/22/Monday
+%Code last modified on : 2022/8/27/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -56,23 +56,7 @@ function units = getExTaMoleBal(params,units,nS)
     col  = units.col ;
     exTa = units.exTa;
     %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%    
-    %Initialize solution arrays
-    
-    %Initialize the molar flow rates from the depressurization valves from 
-    %the adsorbers (i.e., valve 6's) leading to the extract product tank.
-    convInFromAds = 0; 
-    
-    %Initialize the molar flow rates from the extract product tank to the
-    %adsorption columns due to rinse/pressurization at the feed-end (i.e.,
-    %valve 2's) or rinse/pressurization at the product-end (i.e., 
-    %valve 5's).
-    convOutToAds  = 0;
-    %---------------------------------------------------------------------%    
-    
+        
     
     
     %---------------------------------------------------------------------%    
@@ -81,6 +65,23 @@ function units = getExTaMoleBal(params,units,nS)
         
     %For each species,
     for j = 1 : nComs
+
+        %-----------------------------------------------------------------%    
+        %Initialize solution arrays
+        
+        %Initialize the molar flow rates from the depressurization valves 
+        %from the adsorbers (i.e., valve 6's) leading to the extract 
+        %product tank.
+        convInFromAds = 0; 
+        
+        %Initialize the molar flow rates from the extract product tank to 
+        %the adsorption columns due to rinse/pressurization at the feed-end
+        %(i.e., valve 2's) or rinse/pressurization at the product-end 
+        %(i.e., valve 5's).
+        convOutToAds  = 0;
+        %-----------------------------------------------------------------%  
+
+
 
         %-----------------------------------------------------------------%    
         %Account for all flows into/out of product tank from all columns                        
@@ -96,9 +97,9 @@ function units = getExTaMoleBal(params,units,nS)
             %kth column and 0. We neglect any streams diverted to the waste
             %stream.
             convInFromAdsK = min(0,valAdsFeEnd2ExWa(k,nS) ...
-                                .* col.(sColNums{k}).volFlRat(:,1) ...
-                                .* col.(sColNums{k}).gasCons. ...
-                                   (sComNums{j})(:,1));
+                               .* col.(sColNums{k}).volFlRat(:,1) ...
+                               .* col.(sColNums{k}).gasCons. ...
+                                  (sComNums{j})(:,1));
             
             %Calculate the "max" of the molar flow rates from the extract
             %product tank to either the feed-end or product-end of the kth
@@ -139,13 +140,9 @@ function units = getExTaMoleBal(params,units,nS)
 
         %Do the mole balance on the ith tank for species j
         exTa.n1.moleBal.(sComNums{j}) = exTaScaleFac ...
-                                     .* (-convInFromAds ... %negative flow 
-                                         +convOutToAds ...  %positive flow                         
-                                         -convOutExRes);    %positive flow
-
-        %Initialize the molar flow rates for the next iteration
-        convInFromAds = 0; 
-        convOutToAds  = 0;        
+                                     .* (-convInFromAds ... %-negative flow 
+                                         -convOutToAds ...  %-positive flow                         
+                                         -convOutExRes);    %-positive flow       
         %-----------------------------------------------------------------%                
 
     end

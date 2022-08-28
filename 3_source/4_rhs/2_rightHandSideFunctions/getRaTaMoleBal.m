@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/28/Thursday
-%Code last modified on : 2022/8/12/Friday
+%Code last modified on : 2022/8/27/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -46,6 +46,7 @@ function units = getRaTaMoleBal(params,units,nS)
     
     %Unpack params
     nComs            = params.nComs           ; 
+    nVols            = params.nVols           ;
     nCols            = params.nCols           ;
     raTaScaleFac     = params.raTaScaleFac    ;
     sColNums         = params.sColNums        ;
@@ -57,30 +58,30 @@ function units = getRaTaMoleBal(params,units,nS)
     raTa = units.raTa;
     %---------------------------------------------------------------------%
     
-    
-    
-    %---------------------------------------------------------------------%    
-    %Initialize solution arrays
-    
-    %Initialize the molar flow rates from the product valves from the
-    %adsorbers (i.e., valve 1's) leading to the raffinate product tank.
-    convInFromAds = 0;
-    
-    %Initialize the molar flow rates from the raffiante product tank to the
-    %adsorption columns due to purge/pressurization at the feed-end (i.e.,
-    %valve 2's) or purge/pressurization at the product-end (i.e., 
-    %valve 5's).   
-    convOutToAds = 0;         
-    %---------------------------------------------------------------------%    
-    
-    
-      
+
+
     %---------------------------------------------------------------------%    
     %Do the mole balance for each species for all species inside each 
     %product tank
         
     %For each species,
     for j = 1 : nComs
+
+        %-----------------------------------------------------------------%    
+        %Initialize solution arrays
+        
+        %Initialize the molar flow rates from the product valves from the
+        %adsorbers (i.e., valve 1's) leading to the raffinate product tank.
+        convInFromAds = 0;
+        
+        %Initialize the molar flow rates from the raffiante product tank to 
+        %the adsorption columns due to purge/pressurization at the feed-end
+        %(i.e., valve 2's) or purge/pressurization at the product-end 
+        %(i.e., valve 5's).   
+        convOutToAds = 0;         
+        %-----------------------------------------------------------------%  
+
+
 
         %-----------------------------------------------------------------%    
         %Account for all molar flows in between the raffinate product tank
@@ -97,9 +98,9 @@ function units = getRaTaMoleBal(params,units,nS)
             %kth column and 0. We neglect any streams diverted to the waste
             %stream.
             convInFromAdsK = max(0,valAdsPrEnd2RaWa(k,nS) ...
-                                .* col.(sColNums{k}).volFlRat(:,end) ...
-                                .* col.(sColNums{k}).gasCons. ...
-                                   (sComNums{j})(:,end));
+                               .* col.(sColNums{k}).volFlRat(:,nVols+1) ...
+                               .* col.(sColNums{k}).gasCons. ...
+                                  (sComNums{j})(:,end));
             
             %Calculate the "min" of the molar flow rates from the raffinate
             %product tank to either the feed-end or product-end of the kth
@@ -142,11 +143,7 @@ function units = getRaTaMoleBal(params,units,nS)
         raTa.n1.moleBal.(sComNums{j}) = raTaScaleFac ...
                                      .* (convInFromAds ... %positive flow
                                         +convOutToAds ...  %negative flow
-                                        -convOutRfRes);    %positive flow
-
-        %Initialize the molar flow rates for the next iteration
-        convInFromAds = 0;
-        convOutToAds  = 0;                
+                                        -convOutRfRes);    %positive flow             
         %-----------------------------------------------------------------%                
 
     end  

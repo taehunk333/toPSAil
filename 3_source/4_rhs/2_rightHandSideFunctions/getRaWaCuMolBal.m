@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/2/2/Wednesday
-%Code last modified on : 2022/3/14/Monday
+%Code last modified on : 2022/8/27/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -75,7 +75,7 @@ function units = getRaWaCuMolBal(params,units,nS)
             raWa.n1.cumMolBal.waste.(sComs{j}) ...
                 = raWa.n1.cumMolBal.waste.(sComs{j}) ...
                 + col.(sCols{i}).gasCons.(sComs{j})(:,nVols) ...
-                * col.(sCols{i}).volFlRat(:,nVols+1) ...
+                * max(0,col.(sCols{i}).volFlRat(:,nVols+1)) ...
                 * (1-valAdsPrEnd2RaWa(i,nS));
 
         end
