@@ -47,19 +47,19 @@ function volFlowNorm = calcVolFlowNorm(params)
     funcId = 'calcVolFlowNorm.m';
     
     %Unpack Params
-    sStepCol    = params.sStepCol   ;   
-    valFeedCol  = params.valFeedCol ;
-    valProdCol  = params.valProdCol ;
-    funcVal     = params.funcVal    ;
-    funcEos     = params.funcEos    ;
-    tempAmbi    = params.tempAmbi   ;
-    presBeHi    = params.presBeHi   ;
-    presFeTa    = params.presFeTa   ;  
-    presRaTa    = params.presRaTa   ;
-    gasCons     = params.gasCons    ;
-    numZero     = params.numZero    ;
-    tempColNorm = params.tempColNorm;
-    tempFeTa    = params.tempFeTa   ;
+    sStepCol     = params.sStepCol    ;   
+    valFeedCol   = params.valFeedCol  ;
+    valProdCol   = params.valProdCol  ;
+    funcVal      = params.funcVal     ;
+    funcEos      = params.funcEos     ;
+    tempAmbi     = params.tempAmbi    ;
+    presBeHiFull = params.presBeHiFull;
+    presFeTa     = params.presFeTa    ;  
+    presRaTa     = params.presRaTa    ;
+    gasCons      = params.gasCons     ;
+    numZero      = params.numZero     ;
+    tempColNorm  = params.tempColNorm ;
+    tempFeTa     = params.tempFeTa    ;
     
     %Define scale factors for using valve equation in a dimensional form
     valScaleFac = 1000 ...
@@ -160,7 +160,7 @@ function volFlowNorm = calcVolFlowNorm(params)
 
         %Calculate moles in the void at downstream pressure (i.e. the high
         %pressure in the void space of an adsorption column)
-        voidMolDo = funcEos(params,presBeHi,testVol,tempAmbi,0);    
+        voidMolDo = funcEos(params,presBeHiFull,testVol,tempAmbi,0);    
         
     %If we have a valve constant at the product-end,
     elseif hasCvProdEnd
@@ -171,7 +171,7 @@ function volFlowNorm = calcVolFlowNorm(params)
 
         %Calculate moles in the void at downstream pressure (i.e. the high
         %pressure in the void space of an adsorption column)
-        voidMolDo = funcEos(params,presBeHi,testVol,tempAmbi,0); 
+        voidMolDo = funcEos(params,presBeHiFull,testVol,tempAmbi,0); 
         
         %Check for the difference in the total moles
         diffTotMol = (voidMolUp-voidMolDo);

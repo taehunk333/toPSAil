@@ -47,18 +47,18 @@ function voidMolDiff = calcEqTheoryRePresVoid(params)
     %funcId = 'calcEqTheoryRePresVoid.m';
     
     %Unpack Params
-    presBeHi = params.presBeHi;
-    presBeLo = params.presBeLo;
-    colVol   = params.colVol  ;
-    overVoid = params.overVoid;
-    tempCol  = params.tempCol ;
-    funcEos  = params.funcEos ;
+    presBeHiFull = params.presBeHiFull;
+    presBeLoFull = params.presBeLoFull;
+    colVol       = params.colVol      ;
+    overVoid     = params.overVoid    ;
+    tempCol      = params.tempCol     ;
+    funcEos      = params.funcEos     ;
     
     %Define column void space
     colVoidVol = overVoid*colVol;
 
     %Define the pressure difference 
-    presDiff = presBeHi-presBeLo; 
+    presDiff = presBeHiFull-presBeLoFull; 
     %---------------------------------------------------------------------%
     
     

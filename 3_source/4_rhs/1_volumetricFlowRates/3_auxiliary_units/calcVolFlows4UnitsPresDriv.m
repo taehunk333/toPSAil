@@ -117,14 +117,14 @@ function units = calcVolFlows4UnitsPresDriv(params,units,nS)
     %tank unit
     
     %Get the total concentration of the raffinate product tank at time t
-    raTaTotCon = raTa.n1.gasConsTot;
+    gasConTotRaTa = raTa.n1.gasConsTot;
     
     %Get the interior temperature of the raffinate product tank at time t
-    raTaIntTemp = raTa.n1.temps.cstr;
+    cstrTempRaTa = raTa.n1.temps.cstr;
     
     %Calculate the dimensionless pressure difference term
     deltaPres ...
-        = (gasConsNormEq.*raTaTotCon.*raTaIntTemp-pRatRaTaSet) ...
+        = (gasConsNormEq.*gasConTotRaTa.*cstrTempRaTa-pRatRaTaSet) ...
        ./ (pRatRaTaFull-pRatRaTaSet);
     
     %Initialize the molar flow rate vector
@@ -138,7 +138,7 @@ function units = calcVolFlows4UnitsPresDriv(params,units,nS)
         molFlRaTa2Res(t) ...
             = valRaTaFullNorm*gasConsNormEq*tempColNorm/1000 ...
             * median([0,deltaPres(t),1]) ...
-            * min(0,raTaTotCon(t).*raTaIntTemp(t) ...
+            * min(0,gasConTotRaTa(t).*cstrTempRaTa(t) ...
                  -pRatRa/gasConsNormEq);
                      
     end
@@ -146,7 +146,7 @@ function units = calcVolFlows4UnitsPresDriv(params,units,nS)
     %The exit valve for the raffinate product tank is opened only when the
     %tank pressure equals the initial product tank pressure 
     vFlRaTa(:,(nCols+1)) = molFlRaTa2Res ...
-                        ./ raTaTotCon;
+                        ./ gasConTotRaTa;
     %---------------------------------------------------------------------%
     
     
@@ -156,14 +156,14 @@ function units = calcVolFlows4UnitsPresDriv(params,units,nS)
     %tank unit. We use the check valve + back pressure regulator equation.
     
     %Get the total concentration of the raffinate product tank at time t
-    exTaTotCon = exTa.n1.gasConsTot;
+    gasConTotExTa = exTa.n1.gasConsTot;
     
     %Get the interior temperature of the raffinate product tank at time t
-    exTaIntTemp = exTa.n1.temps.cstr;
+    cstrTempExTa = exTa.n1.temps.cstr;
     
     %Calculate the dimensionless pressure difference term
     deltaPres ...
-        = (gasConsNormEq.*exTaTotCon.*exTaIntTemp-pRatExTaSet) ...
+        = (gasConsNormEq.*gasConTotExTa.*cstrTempExTa-pRatExTaSet) ...
        ./ (pRatExTaFull-pRatExTaSet);
     
     %Initialize the molar flow rate vector
@@ -177,7 +177,7 @@ function units = calcVolFlows4UnitsPresDriv(params,units,nS)
         molFlExTa2Res ...
             = valExTaFullNorm*gasConsNormEq*tempColNorm/1000 ...
             * median([0,deltaPres(t),1]) ...
-            * min(0,exTaTotCon(t).*exTaIntTemp(t) ...
+            * min(0,gasConTotExTa(t).*cstrTempExTa(t) ...
                  -pRatEx/gasConsNormEq);
                      
     end         
@@ -185,7 +185,7 @@ function units = calcVolFlows4UnitsPresDriv(params,units,nS)
     %The exit valve for the raffinate product tank is opened only when the
     %tank pressure equals the initial product tank pressure 
     vFlExTa(:,(nCols+1)) = molFlExTa2Res ...
-                        ./ exTaTotCon;
+                        ./ gasConTotExTa;
     %---------------------------------------------------------------------%
     
     

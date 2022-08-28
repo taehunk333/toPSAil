@@ -46,7 +46,7 @@ function params = getDimLessParams(params)
     gConScaleFac = params.gConScaleFac;    
     tiScaleFac   = params.tiScaleFac  ;
     teScaleFac   = params.teScaleFac  ;
-    presBeHi     = params.presBeHi    ;
+    presBeHiFull = params.presBeHiFull;
     aConScaleFac = params.aConScaleFac;
     pellDens     = params.pellDens    ;
     overVoid     = params.overVoid    ; 
@@ -58,6 +58,8 @@ function params = getDimLessParams(params)
     valProdCol   = params.valProdCol  ;
     valRaTaFull  = params.valRaTaFull ;
     valExTaFull  = params.valExTaFull ;
+    valBeHiFull  = params.valBeHiFull ;
+    valBeLoFull  = params.valBeLoFull ;
     %---------------------------------------------------------------------%    
     
    
@@ -91,7 +93,7 @@ function params = getDimLessParams(params)
     gasConsNormEq = gasCons ...
                   * gConScaleFac ...
                   * teScaleFac ...
-                  / presBeHi;
+                  / presBeHiFull;
               
     %Define dimensionless valve constants (replaced valConNorm)
     valFeedColNorm  = valFeedCol ...
@@ -101,6 +103,10 @@ function params = getDimLessParams(params)
     valRaTaFullNorm = valRaTaFull ...
                    .* valScaleFac;
     valExTaFullNorm = valExTaFull ...
+                   .* valScaleFac;
+    valBeHiFullNorm = valBeHiFull ...
+                   .* valScaleFac;
+    valBeLoFullNorm = valBeLoFull ...
                    .* valScaleFac;
     %---------------------------------------------------------------------%               
     
@@ -117,6 +123,8 @@ function params = getDimLessParams(params)
     params.valProdColNorm  = valProdColNorm ;
     params.valRaTaFullNorm = valRaTaFullNorm;
     params.valExTaFullNorm = valExTaFullNorm;
+    params.valBeHiFullNorm = valBeHiFullNorm;
+    params.valBeLoFullNorm = valBeLoFullNorm;
     %---------------------------------------------------------------------%   
     
 end
