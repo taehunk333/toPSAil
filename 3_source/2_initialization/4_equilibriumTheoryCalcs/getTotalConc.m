@@ -43,14 +43,14 @@ function params = getTotalConc(params)
     %funcId = 'getTotalConc.m';
     
     %Unpack params
-    presBeHiFull = params.presBeHiFull;
-    cstrVoidVol  = params.cstrVoidVol ;
-    tempCol      = params.tempCol     ;
-    tempAmbi     = params.tempAmbi    ;
-    yFeC         = params.yFeC        ;
-    nComs        = params.nComs       ;
-    funcIso      = params.funcIso     ;
-    funcEos      = params.funcEos     ;
+    presColHigh = params.presColHigh;
+    cstrVoidVol = params.cstrVoidVol;
+    tempCol     = params.tempCol    ;
+    tempAmbi    = params.tempAmbi   ;
+    yFeC        = params.yFeC       ;
+    nComs       = params.nComs      ;
+    funcIso     = params.funcIso    ;
+    funcEos     = params.funcEos    ;
     %---------------------------------------------------------------------%    
     
     
@@ -62,7 +62,7 @@ function params = getTotalConc(params)
     %Compute state variables at a high pressure feed condition using ideal 
     %gas law in a single CSTR (n=0 means solve for n)
     [~,voidVol,~,voidMol] ...
-        = funcEos(params,presBeHiFull,cstrVoidVol,tempCol,0);
+        = funcEos(params,presColHigh,cstrVoidVol,tempCol,0);
     
     %Define the total concentration of high pressure feed
     params.gasConT = voidMol/voidVol;

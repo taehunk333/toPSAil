@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/8/27/Saturday
-%Code last modified on : 2022/8/27/Saturday
+%Code last modified on : 2022/8/30/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -49,7 +49,7 @@
 %Outputs    : volFlowRat   - a volumetric flow rate after the valve
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function volFlowRat = calcVolFlowValSixBpr2ExWa(params,col,~,~,~,~,nCo)
+function volFlowRat = calcVolFlowValSixBpr2ExWa(params,col,~,~,~,nS,nCo)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
@@ -58,14 +58,14 @@ function volFlowRat = calcVolFlowValSixBpr2ExWa(params,col,~,~,~,~,nCo)
     %funcId = 'calcVolFlowValSixBpr2ExWa.m';      
     
     %Unpack Params    
-    pRatHighSet     = params.pRatHighSet    ;
-    pRatHighFull    = 1                     ;
-    valBeHiFullNorm = params.valBeHiFullNorm;
-    sColNums        = params.sColNums       ;  
-    gasConsNormEq   = params.gasConsNormEq  ;   
-    nRows           = params.nRows          ;
-    pRatAmb         = params.pRatAmb        ;
-    tempColNorm     = params.tempColNorm    ;
+    pRat            = params.pRat                  ;
+    pRatLowSet      = params.pRatLowSet            ;
+    pRatLowFull     = params.pRatLowFull           ;
+    valFeedColNorm  = params.valFeedColNorm(nCo,nS);
+    sColNums        = params.sColNums              ;  
+    gasConsNormEq   = params.gasConsNormEq         ;   
+    nRows           = params.nRows                 ;
+    tempColNorm     = params.tempColNorm           ;
     %---------------------------------------------------------------------%                
     
     
@@ -93,8 +93,7 @@ function volFlowRat = calcVolFlowValSixBpr2ExWa(params,col,~,~,~,~,nCo)
     
     %Calculate the pressure inside the product-end CSTR and the raffinate
     %waste stream
-    presTotCol = gasConsNormEq.*gasConTotCol.*cstrTempCol;
-    presExWa   = pRatAmb                                 ;    
+    presTotCol = gasConsNormEq.*gasConTotCol.*cstrTempCol;   
     %---------------------------------------------------------------------%
 
 
@@ -102,11 +101,15 @@ function volFlowRat = calcVolFlowValSixBpr2ExWa(params,col,~,~,~,~,nCo)
     %---------------------------------------------------------------------%
     %Compute the function output       
 
-    %Calculate the dimensionless pressure difference term
+    %Calculate the dimensionless pressure difference term. We assume that
+    %the downstream of the back-pressure regulator + check valve is always
+    %fixed at a constant pressure at the desired low pressure, whether it
+    %may be a vacuum or an ambient pressure.
     deltaPres ...
-        = (presExWa-pRatHighSet) ...
-       ./ (pRatHighFull-pRatHighSet);
-   
+        = (pRat-pRatLowSet) ...
+       ./ (pRatLowFull-pRatLowSet) ...
+        * ones(nRows,1);
+    
     %Initialize the molar flow rate vector
     molFlFeEnd2ExWa = zeros(nRows,1);   
        
@@ -115,10 +118,10 @@ function volFlowRat = calcVolFlowValSixBpr2ExWa(params,col,~,~,~,~,nCo)
         
         %The molar flow rate over the back pressure regulator and check
         %valve is calculated as below
-        molFlFeEnd2ExWa ...
-            = valBeHiFullNorm*tempColNorm/1000 ...
+        molFlFeEnd2ExWa(t) ...
+            = valFeedColNorm*tempColNorm/1000 ...
             * median([0,deltaPres(t),1]) ...
-            * min(0,presExWa-presTotCol);
+            * min(0,pRat-presTotCol(t));
                      
     end         
     

@@ -43,7 +43,7 @@ function plotColPresProfiles(params,sol)
     nCols        = params.nCols       ;
     tiScaleFac   = params.tiScaleFac  ;
     lastStep     = sol.lastStep       ;
-    presBeHiFull = params.presBeHiFull;
+    presColHigh  = params.presColHigh ;
     color        = params.color       ;
     nVols        = params.nVols       ;
     gasCons      = params.gasCons     ;
@@ -72,17 +72,17 @@ function plotColPresProfiles(params,sol)
     yLimUp = 0;
     
     %Compute the test sign
-    testSign = round(presBeHiFull)-presBeHiFull;
+    testSign = round(presColHigh)-presColHigh;
     
     %If the 
     if testSign <= 0 
         
-        yLimUp = round(presBeHiFull) ...
+        yLimUp = round(presColHigh) ...
                + 0.5;
         
     elseif testSign > 0
         
-        yLimUp = round(presBeHiFull);
+        yLimUp = round(presColHigh);
         
     end
     %---------------------------------------------------------------------%

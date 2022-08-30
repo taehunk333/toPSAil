@@ -73,11 +73,15 @@ function params = removeParams(params)
     
     %Remove dimensional pressures
     params = rmfield(params,'presStan'); 
-    params = rmfield(params,'presBeLoFull');
+    params = rmfield(params,'presColLow');
+    params = rmfield(params,'presColLowFull');
+    params = rmfield(params,'presColLowSet');
     params = rmfield(params,'presFeTa');
     params = rmfield(params,'presRaTa');
     params = rmfield(params,'presExTa');
-    params = rmfield(params,'presBeHiFull');
+    params = rmfield(params,'presColHigh');
+    params = rmfield(params,'presColHighFull');
+    params = rmfield(params,'presColHighSet');
     params = rmfield(params,'presAmbi');
     params = rmfield(params,'presExTaFull');
     params = rmfield(params,'presExTaSet');

@@ -46,7 +46,7 @@ function params = getDimLessParams(params)
     gConScaleFac = params.gConScaleFac;    
     tiScaleFac   = params.tiScaleFac  ;
     teScaleFac   = params.teScaleFac  ;
-    presBeHiFull = params.presBeHiFull;
+    presColHigh  = params.presColHigh ;
     aConScaleFac = params.aConScaleFac;
     pellDens     = params.pellDens    ;
     overVoid     = params.overVoid    ; 
@@ -58,8 +58,6 @@ function params = getDimLessParams(params)
     valProdCol   = params.valProdCol  ;
     valRaTaFull  = params.valRaTaFull ;
     valExTaFull  = params.valExTaFull ;
-    valBeHiFull  = params.valBeHiFull ;
-    valBeLoFull  = params.valBeLoFull ;
     modSp        = params.modSp       ;
     bool         = params.bool        ;
     %---------------------------------------------------------------------%    
@@ -95,7 +93,7 @@ function params = getDimLessParams(params)
     gasConsNormEq = gasCons ...
                   * gConScaleFac ...
                   * teScaleFac ...
-                  / presBeHiFull;
+                  / presColHigh;
               
     %Define dimensionless valve constants (replaced valConNorm)
     valFeedColNorm  = valFeedCol ...
@@ -105,10 +103,6 @@ function params = getDimLessParams(params)
     valRaTaFullNorm = valRaTaFull ...
                    .* valScaleFac;
     valExTaFullNorm = valExTaFull ...
-                   .* valScaleFac;
-    valBeHiFullNorm = valBeHiFull ...
-                   .* valScaleFac;
-    valBeLoFullNorm = valBeLoFull ...
                    .* valScaleFac;
     %---------------------------------------------------------------------%               
     
@@ -172,9 +166,7 @@ function params = getDimLessParams(params)
     params.valFeedColNorm  = valFeedColNorm ;
     params.valProdColNorm  = valProdColNorm ;
     params.valRaTaFullNorm = valRaTaFullNorm;
-    params.valExTaFullNorm = valExTaFullNorm;
-    params.valBeHiFullNorm = valBeHiFullNorm;
-    params.valBeLoFullNorm = valBeLoFullNorm;    
+    params.valExTaFullNorm = valExTaFullNorm;   
     %---------------------------------------------------------------------%   
     
 end

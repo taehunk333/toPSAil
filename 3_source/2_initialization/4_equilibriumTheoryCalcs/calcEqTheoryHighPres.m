@@ -64,18 +64,18 @@ function [maxMolPr,maxMolFe,maxMolAdsC] = calcEqTheoryHighPres(params)
     %funcId = 'calcEqTheoryHighPres.m';
     
     %Unpack Params
-    massAds      = params.massAds     ;    
-    yRaC         = params.yRaC        ;
-    yFeC         = params.yFeC        ;
-    overVoid     = params.overVoid    ;
-    presBeHiFull = params.presBeHiFull;
-    colVol       = params.colVol      ;    
-    tempCol      = params.tempCol     ;
-    funcIso      = params.funcIso     ;    
-    tempAmbi     = params.tempAmbi    ;
-    nComs        = params.nComs       ;
-    sComNums     = params.sComNums    ;
-    funcEos      = params.funcEos     ;
+    massAds     = params.massAds    ;    
+    yRaC        = params.yRaC       ;
+    yFeC        = params.yFeC       ;
+    overVoid    = params.overVoid   ;
+    presColHigh = params.presColHigh;
+    colVol      = params.colVol     ;    
+    tempCol     = params.tempCol    ;
+    funcIso     = params.funcIso    ;    
+    tempAmbi    = params.tempAmbi   ;
+    nComs       = params.nComs      ;
+    sComNums    = params.sComNums   ;
+    funcEos     = params.funcEos    ;
     
     %Make local params specifications
     
@@ -223,7 +223,7 @@ function [maxMolPr,maxMolFe,maxMolAdsC] = calcEqTheoryHighPres(params)
     %quantitiy does not change when the adsorption column is maintained at 
     %a constant pressure. i.e. n_void_before = n_void_after = n_void.    
     [~,~,~,adsHpMolVoid] ...
-        = funcEos(params,presBeHiFull,colVol*overVoid,tempCol,0);
+        = funcEos(params,presColHigh,colVol*overVoid,tempCol,0);
     %---------------------------------------------------------------------%
     
     
