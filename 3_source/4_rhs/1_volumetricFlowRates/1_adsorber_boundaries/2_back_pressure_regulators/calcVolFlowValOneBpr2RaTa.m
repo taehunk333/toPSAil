@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/8/27/Saturday
-%Code last modified on : 2022/8/27/Saturday
+%Code last modified on : 2022/8/30/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -49,7 +49,7 @@
 %Outputs    : volFlowRat   - a volumetric flow rate after the valve
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function volFlowRat = calcVolFlowValOneBpr2RaTa(params,col,~,raTa,~,~,nCo)
+function volFlowRat = calcVolFlowValOneBpr2RaTa(params,col,~,raTa,~,nS,nCo)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
@@ -58,14 +58,14 @@ function volFlowRat = calcVolFlowValOneBpr2RaTa(params,col,~,raTa,~,~,nCo)
     %funcId = 'calcVolFlowValOneBpr2RaTa.m';      
     
     %Unpack Params    
-    pRatHighSet     = params.pRatHighSet    ;
-    pRatHighFull    = 1                     ;
-    valBeHiFullNorm = params.valBeHiFullNorm;
-    sColNums        = params.sColNums       ;  
-    gasConsNormEq   = params.gasConsNormEq  ;
-    nVols           = params.nVols          ;
-    nRows           = params.nRows          ;
-    tempColNorm     = params.tempColNorm    ;
+    pRatHighSet    = params.pRatHighSet           ;
+    pRatHighFull   = params.pRatHighFull          ;
+    valProdColNorm = params.valProdColNorm(nCo,nS);
+    sColNums       = params.sColNums              ;   
+    gasConsNormEq  = params.gasConsNormEq         ;
+    nVols          = params.nVols                 ;
+    nRows          = params.nRows                 ;
+    tempColNorm    = params.tempColNorm           ;
     %---------------------------------------------------------------------%                
     
     
@@ -121,10 +121,10 @@ function volFlowRat = calcVolFlowValOneBpr2RaTa(params,col,~,raTa,~,~,nCo)
         
         %The molar flow rate over the back pressure regulator and check
         %valve is calculated as below
-        molFlPrEnd2RaTa ...
-            = valBeHiFullNorm*tempColNorm/1000 ...
+        molFlPrEnd2RaTa(t) ...
+            = valProdColNorm*tempColNorm/1000 ...
             * median([0,deltaPres(t),1]) ...
-            * min(0,presTotCol-presRaTa);
+            * min(0,presTotCol(t)-presRaTa(t));
                      
     end         
     
