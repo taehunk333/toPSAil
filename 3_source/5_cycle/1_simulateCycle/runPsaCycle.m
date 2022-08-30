@@ -86,7 +86,7 @@ function sol = runPsaCycle(params)
     initTime = 0;
     
     %Initialize the css numerical array inside a solution struct
-    sol.css    = zeros(nCycles+1,1);   
+    sol.css = zeros(nCycles+1,1);   
     
     %Initialize the vector checking for a triggered event
     sol.flags.event = zeros(nCycles*nSteps,1);

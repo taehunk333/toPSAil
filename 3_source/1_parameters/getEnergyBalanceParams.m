@@ -80,10 +80,10 @@ function params = getEnergyBalanceParams(params)
     heightRaTa      = params.heightRaTa     ;
     heightExTa      = params.heightExTa     ;
     tempFeed        = params.tempFeed       ;
-    tempRefIso      = params.tempRefIso     ;
     tempRaTa        = params.tempRaTa       ;
     tempExTa        = params.tempExTa       ;
     tempFeTa        = params.tempFeTa       ;
+    tempAmbi        = params.tempAmbi       ;
     gasCons         = params.gasCons        ;
     htCapCpC        = params.htCapCpC       ;
     htCapCvC        = params.htCapCvC       ;
@@ -98,10 +98,10 @@ function params = getEnergyBalanceParams(params)
     
     %Define dimensionless temperature parameters
     params.tempFeedNorm = tempFeed ...
-                        / teScaleFac;
-    params.tempRefNorm  = tempRefIso ...
-                        / teScaleFac;
+                        / teScaleFac;    
     params.tempRaTaNorm = tempRaTa ...
+                        / teScaleFac;
+    params.tempAmbiNorm = tempAmbi ...
                         / teScaleFac;
     params.tempExTaNorm = tempExTa ...
                         / teScaleFac;

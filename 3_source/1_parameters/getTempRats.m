@@ -39,9 +39,10 @@ function params = getTempRats(params)
     %funcId = 'getPresRats.m';
     
     %Unpack params
-    tempAmbi = params.tempAmbi;
-    tempCol  = params.tempCol ;
-    tempFeed = params.tempFeed;
+    tempAmbi   = params.tempAmbi  ;
+    tempCol    = params.tempCol   ;
+    tempFeed   = params.tempFeed  ;
+    tempRefIso = params.tempRefIso;
     %---------------------------------------------------------------------% 
       
     
@@ -52,8 +53,10 @@ function params = getTempRats(params)
     %Calculate the pressure ratio. i.e., T_{amb}/T_{amb} = 1
     params.tempAmbiNorm = tempAmbi ...
                         / tempAmbi;
-    params.tempColNorm = tempCol ...
-                       / tempAmbi;
+    params.tempRefNorm  = tempRefIso ...
+                        / tempAmbi;
+    params.tempColNorm  = tempCol ...
+                        / tempAmbi;
     params.tempFeedNorm = tempFeed ...
                         / tempAmbi;
     params.tempColNorm  = tempCol ...
