@@ -39,26 +39,49 @@ function params = getAdsEquilParams(params)
     %Name the function ID
     %funcId = 'getAdsEquilParams.m';
     
-    %Unpack params
-    bC    = params.bC   ;
-    nVols = params.nVols;
+    %Unpack params            
+    modSp = params.modSp;
     %---------------------------------------------------------------------% 
     
     
     
     %---------------------------------------------------------------------%    
-    %Define parameters relevant for adsorption affinity constant
-    
-    %Get the adsorption affinity constant parameter matrix at the
-    %isothermal temperature of the system
-    bC0 = bC*ones(1,nVols);
+    %Based on the isotherm model, compute any necessary parameters
 
-    %Transpose the matrix
-    bC0 = transpose(bC0);
+    %Check the isotherm model
+    whichIsotherm = modSp(6);
 
-    %Reshape the matrix to get the row vector
-    params.bC0 = reshape(bC0,1,[]);
-    %---------------------------------------------------------------------%                                               
+    %A custom isotherm
+    if whichIsotherm == 0
+        
+        %Currently, no custom isotherm model is supported.
+        error("toPSAil: No custom isotherm model is supported.")
+
+    %Henry's law or Extended Langmuir isotherm
+    elseif whichIsotherm == 1 || ...
+           whichIsotherm == 2
+
+        %Unpack additional params
+        gasCons    = params.gasCons   ; 
+        tempRefIso = params.tempRefIso;
+        isoStHtC   = params.isoStHtC  ;
+
+        %Calculate the constant factor inside the exponent: 
+        %(J/mol-L)/(J/mol-L)
+        dimLessIsoStHtRef = isoStHtC ...
+                         ./ ((gasCons/10)*tempRefIso);
+       
+    end
+    %---------------------------------------------------------------------%
+
+
+
+    %---------------------------------------------------------------------%
+    %Return the updated structure
+
+    %Update params
+    params.dimLessIsoStHtRef = dimLessIsoStHtRef;
+    %---------------------------------------------------------------------%
     
 end
 

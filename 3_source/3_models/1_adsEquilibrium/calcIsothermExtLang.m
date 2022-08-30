@@ -19,9 +19,9 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2020/12/14/Monday
-%Code last modified on : 2020/12/14/Monday
+%Code last modified on : 2022/8/29/Monday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : calcIsothermExtLang.m
 %Source     : common
@@ -64,7 +64,7 @@ function newStates = calcIsothermExtLang(params,states,nAds)
     nVols        = params.nVols       ;
     bool         = params.bool        ;
     nR           = params.nRows       ;
-    bC0          = params.bC0         ;
+    bC           = params.bC          ;
     nColStT      = params.nColStT     ;
     nRows        = params.nRows       ;
     %---------------------------------------------------------------------%
@@ -78,10 +78,21 @@ function newStates = calcIsothermExtLang(params,states,nAds)
     %a single CSTR
     if nAds == 0   
         
-        %Update the row vector of adsorption affinity constants at a
-        %constant temperature T
-        bC0 = [bC0(1,1),bC0(1,nVols+1)];
+        %Initialize the adsorption affinity constant vector
+        bC0New = zeros(1,nComs);
+
+        %For each species,
+        for i = 1 : nComs
+            
+            %Update the row vector of adsorption affinity constants at a
+            %constant temperature T
+            bC0New(i) = bC(1,nVols*(i-1)+1);
+    
+        end        
         
+        %Update the adsorption affinity constant vector
+        bC = bC0New;
+
         %We have a single CSTR
         nVols = 1;
         
@@ -98,13 +109,12 @@ function newStates = calcIsothermExtLang(params,states,nAds)
                        
         %Get the affinity parameter matrix at a specified CSTR temperature 
         %for all CSTRs
-        %bC = getAdsAffConstant(params,states,nRows,nAds);  
-        bC = repmat(bC0,nRows,1);
+        bC = getAdsAffConstant(params,states,nRows,nAds);  
         
     else
         
         %Duplicate bC0 into nR rows to get bC
-        bC = repmat(bC0,nR,1);
+        bC = repmat(bC,nR,1);
         
     end           
     

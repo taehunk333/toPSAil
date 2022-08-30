@@ -60,6 +60,8 @@ function params = getDimLessParams(params)
     valExTaFull  = params.valExTaFull ;
     valBeHiFull  = params.valBeHiFull ;
     valBeLoFull  = params.valBeLoFull ;
+    modSp        = params.modSp       ;
+    bool         = params.bool        ;
     %---------------------------------------------------------------------%    
     
    
@@ -112,6 +114,54 @@ function params = getDimLessParams(params)
     
 
     
+    %---------------------------------------------------------------------%               
+    %Get dimensionless isotherm parameters
+
+    %Determine to see if we have an isothermal case or not
+    isNonIsothermal = bool(5);
+
+    %Determine which isotherm model we have
+    whichIsotherm = modSp(1);
+
+    %If we have a custom isotherm
+    if whichIsotherm == 0
+
+        %Currently, no custom isotherm model is supported.
+        error("toPSAil: No custom isotherm model is supported.")
+
+    %If we have the Henry's law,
+    elseif whichIsotherm == 1
+        
+        %Unpack additional params
+        bC    = params.bC   ;
+        qSatC = params.qSatC;
+
+        %When we have an isothermal case
+        if isNonIsothermal == 0
+
+            %Define dimensionless Henry's constants
+            dimLessHenry = (qSatC.*bC) ...
+                         * (gConScaleFac/aConScaleFac);
+
+            %Remove unnecessary fields
+            params = rmfield(params,'bC')   ; 
+            params = rmfield(params,'qSatC'); 
+
+            %Save to params
+            params.dimLessHenry = dimLessHenry;
+
+        end
+
+    %If we have the Extended Langmuir Isotherm,
+    elseif whichIsotherm == 2
+
+        %
+
+    end
+    %---------------------------------------------------------------------%               
+
+
+
     %---------------------------------------------------------------------%   
     %Save computed quantities into a struct
     
@@ -124,7 +174,7 @@ function params = getDimLessParams(params)
     params.valRaTaFullNorm = valRaTaFullNorm;
     params.valExTaFullNorm = valExTaFullNorm;
     params.valBeHiFullNorm = valBeHiFullNorm;
-    params.valBeLoFullNorm = valBeLoFullNorm;
+    params.valBeLoFullNorm = valBeLoFullNorm;    
     %---------------------------------------------------------------------%   
     
 end

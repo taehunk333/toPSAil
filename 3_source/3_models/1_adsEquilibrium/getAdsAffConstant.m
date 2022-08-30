@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/29/Friday
-%Code last modified on : 2022/3/1/Friday
+%Code last modified on : 2022/8/29/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -40,13 +40,13 @@
 %                            state matrix is a vector, nRows = 1.
 %             nAds         - the adsober number where we will evaluate the
 %                            adsorption equilibrium
-%Outputs    : bC           - a vector or matrix of affinity constants 
+%Outputs    : bCNew        - a vector or matrix of affinity constants 
 %                            for all species updated with a current 
 %                            temperature of the system.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function bC = getAdsAffConstant(params,states,nRows,nAds)
-  
+function bCNew = getAdsAffConstant(params,states,nRows,nAds)
+    
     %---------------------------------------------------------------------%
     %Define known quantities
     
@@ -54,16 +54,34 @@ function bC = getAdsAffConstant(params,states,nRows,nAds)
     %funcId = 'getAdsAffConstant.m';
     
     %Unpack params
-    nVols      = params.nVols     ;
-    bC         = params.bC        ;
-    isoStHtC   = params.isoStHtC  ;
-    gasCons    = params.gasCons   ;
-    tempAmbi   = params.tempAmbi  ;
-    tempRefIso = params.tempRefIso;
-    nComs      = params.nComs     ;    
+    nVols             = params.nVols            ;
+    bC                = params.bC               ;
+    tempRefNorm       = params.tempRefNorm      ;
+    nComs             = params.nComs            ;    
+    dimLessIsoStHtRef = params.dimLessIsoStHtRef;
+    %---------------------------------------------------------------------%
     
-    %Calculate needed quantities
-    scaleGasCons = gasCons/10*tempRefIso;
+       
+    
+    %---------------------------------------------------------------------%
+    %Unpack states
+   
+    %If we have a single CSTR,
+    if nAds == 0
+    
+        %Grab dimensionless CSTR temperatures from the struct
+        temps = convert2ColTemps(params,states);  
+    
+        %Locally reset the number of volume parameter
+        nVols = 1;
+    
+    %Otherwise, we have an adsorption column number specified by nAds
+    else
+        
+        %Grab dimensionless CSTR temperatures from the struct
+        temps = convert2ColTemps(params,states,nAds); 
+        
+    end
     %---------------------------------------------------------------------%
     
     
@@ -71,51 +89,11 @@ function bC = getAdsAffConstant(params,states,nRows,nAds)
     %---------------------------------------------------------------------%
     %Initialize solution arrays
     
-    %Get a row vector for isoStHtC
-    isoStHtC = transpose(isoStHtC);
-    
-    %Initialze a numeric array for holding initial adsorption affinity
-    %constants for all species for all CSTRs
-    affConsMat = ones(nRows,nVols*nComs);  
-    
-    %Initialze a numeric array for holding isosteric heat of adsorption
-    %constants for all species for all CSTRs
-    isoStHtMat = ones(nRows,nVols*nComs);   
-    
-    %For each species
-    for i = 1 : nComs
-        
-        %Update block of the matrix with ith species affinity constant
-        affConsMat(:,nVols*(i-1)+1:nVols*i) ...
-            = bC(i) ...
-           .* affConsMat(:,nVols*(i-1)+1:nVols*i);
-       
-        %Update block of the matrix with ith species isosteric heat of
-        %adsorption
-        isoStHtMat(:,nVols*(i-1)+1:nVols*i) ...
-            = isoStHtC(i) ...
-           .* isoStHtMat(:,nVols*(i-1)+1:nVols*i);
-                      
-    end        
-    
-    %Initialize a numeric array for holding reference temperatures
-    refTempNorm = (tempRefIso/tempAmbi) ...
-                * ones(nRows,nVols);
-    
     %Initialize the solution output
-    bC = zeros(nRows,nVols*nComs);
+    bCNew = zeros(nRows,nVols*nComs);
     %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %Unpack states
-   
-    %Grab dimensionless CSTR temperatures from the struct
-    temps = convert2ColTemps(params,states,nAds);
-    %---------------------------------------------------------------------%
-    
-    
+
+
     
     %---------------------------------------------------------------------%
     %Update the adsorption affinity constant for all species
@@ -124,11 +102,10 @@ function bC = getAdsAffConstant(params,states,nRows,nAds)
     for i = 1 : nComs
                 
         %Update the affinity constant at the current CSTR temperatures
-        bC(:,nVols*(i-1)+1:nVols*i) ...
-            = affConsMat(:,nVols*(i-1)+1:nVols*i) ...
-           .* exp(-isoStHtMat(:,nVols*(i-1)+1:nVols*i) ...
-           ./ scaleGasCons ...
-           .* (1-refTempNorm./temps.cstr));
+        bCNew(:,nVols*(i-1)+1:nVols*i) ...
+            = bC(i) ...
+           .* exp(-dimLessIsoStHtRef(i) ...
+           .* (1-tempRefNorm./temps.cstr));
                 
     end            
     %---------------------------------------------------------------------%            
