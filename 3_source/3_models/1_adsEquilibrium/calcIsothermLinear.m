@@ -60,13 +60,13 @@ function newStates = calcIsothermLinear(params,states,nAds)
     %funcId = 'calcIsothermLinear.m';
     
     %Unpack params
-    nStates      = params.nStates     ;
-    nColStT      = params.nColStT     ;
-    nComs        = params.nComs       ;
-    sComNums     = params.sComNums    ; 
-    nVols        = params.nVols       ;
-    bool         = params.bool        ;
-    nRows        = params.nRows       ;       
+    nStates  = params.nStates ;
+    nColStT  = params.nColStT ;
+    nComs    = params.nComs   ;
+    sComNums = params.sComNums; 
+    nVols    = params.nVols   ;
+    bool     = params.bool    ;
+    nRows    = params.nRows   ;       
     %---------------------------------------------------------------------%
     
 
@@ -126,7 +126,7 @@ function newStates = calcIsothermLinear(params,states,nAds)
 
         %Calaulate the matrix containing the state dependent dimensionless
         %Henry's constant
-        dimLessHenry = qSatCRep.*bC ...
+        dimLessHenry = (qSatCRep.*bC) ...
                      * (gConScaleFac/aConScaleFac);
 
         %Check to see if we have a singel CSTR

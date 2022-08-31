@@ -125,13 +125,13 @@ function params = getDimLessParams(params)
 
     %If we have the Henry's law,
     elseif whichIsotherm == 1
-        
-        %Unpack additional params
-        bC    = params.bC   ;
-        qSatC = params.qSatC;
-
+                
         %When we have an isothermal case
         if isNonIsothermal == 0
+
+            %Unpack additional params
+            bC    = params.bC   ;
+            qSatC = params.qSatC;
 
             %Define dimensionless Henry's constants
             dimLessHenry = (qSatC.*bC) ...
@@ -149,7 +149,26 @@ function params = getDimLessParams(params)
     %If we have the Extended Langmuir Isotherm,
     elseif whichIsotherm == 2
 
-        %
+        %When we have an isothermal case
+        if isNonIsothermal == 0
+
+            %Unpack additional params
+            bC    = params.bC   ;
+            qSatC = params.qSatC;
+    
+            %Obtain dimensionless isotherm paramters
+            bCDimLess   = bC / gConScaleFac   ;
+            qSatDimLess = qSatC / aConScaleFac;
+
+            %Remove unnecessary fields
+            params = rmfield(params,'bC')   ; 
+            params = rmfield(params,'qSatC'); 
+
+            %Save to params
+            params.bCDimLess   = bCDimLess  ;
+            params.qSatDimLess = qSatDimLess;
+
+        end
 
     end
     %---------------------------------------------------------------------%               

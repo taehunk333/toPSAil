@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2020/12/14/Monday
-%Code last modified on : 2022/8/29/Monday
+%Code last modified on : 2022/8/30/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -55,133 +55,175 @@ function newStates = calcIsothermExtLang(params,states,nAds)
     %funcId = 'calcIsothermExtLang.m';
     
     %Unpack params
-    qSatC        = params.qSatC       ;
-    nStates      = params.nStates     ;
-    nComs        = params.nComs       ;
-    sComNums     = params.sComNums    ;
-    gConScaleFac = params.gConScaleFac;
-    aConScaleFac = params.aConScaleFac;   
-    nVols        = params.nVols       ;
-    bool         = params.bool        ;
-    nR           = params.nRows       ;
-    bC           = params.bC          ;
-    nColStT      = params.nColStT     ;
-    nRows        = params.nRows       ;
+    nStates  = params.nStates ;
+    nColStT  = params.nColStT ;
+    nComs    = params.nComs   ;
+    sComNums = params.sComNums; 
+    nVols    = params.nVols   ;
+    bool     = params.bool    ;
+    nRows    = params.nRows   ;
     %---------------------------------------------------------------------%
     
     
     
     %---------------------------------------------------------------------%
-    %Determine the states to be used in adsorption equilibrium calculation
-    
-    %If we are requested to just compute adsorbed phase concentrations for 
-    %a single CSTR
-    if nAds == 0   
-        
-        %Initialize the adsorption affinity constant vector
-        bC0New = zeros(1,nComs);
+    %Check for the single CSTR case
 
-        %For each species,
-        for i = 1 : nComs
-            
-            %Update the row vector of adsorption affinity constants at a
-            %constant temperature T
-            bC0New(i) = bC(1,nVols*(i-1)+1);
+    %If we have a single CSTR,
+    if nAds == 0
     
-        end        
-        
-        %Update the adsorption affinity constant vector
-        bC = bC0New;
+        %Grab dimensionless gas phases concentrations as fields in a struct
+        colGasCons = convert2ColGasConc(params,states);  
 
-        %We have a single CSTR
-        nVols = 1;
+        %Locally reset the number of volume parameter
+        nVols = 1;        
+
+    %Otherwise, we have an adsorption column number specified by nAds
+    else
         
-    end  
+        %Grab dimensionless gas phases concentrations as fields in a struct
+        colGasCons = convert2ColGasConc(params,states,nAds);  
+
+    end
     %---------------------------------------------------------------------%
     
-    
+        
     
     %---------------------------------------------------------------------%
-    %Obtain the adsorption affinity constant matrix
+    %Initialize solution arrays
     
+    %Define an output state solution vector/matrix
+    newStates = states; 
+    %---------------------------------------------------------------------%
+    
+
+    
+    %---------------------------------------------------------------------%
+    %Calculate adsorption equilibrium (Explicit)
+
+    %Check if the simulation is an isothermal simulation
+    isIsoNonThermal = bool(5);
+
     %If non-isothermal operation,
-    if bool(5) == 1
+    if isIsoNonThermal == 1
+
+        %Unpack params additionally
+        qSatC        = params.qSatC       ;
+        gConScaleFac = params.gConScaleFac;
+        aConScaleFac = params.aConScaleFac; 
                        
         %Get the affinity parameter matrix at a specified CSTR temperature 
         %for all CSTRs
-        bC = getAdsAffConstant(params,states,nRows,nAds);  
+        bC = getAdsAffConstant(params,states,nRows,nAds); 
         
-    else
+        %Replicate the elements of qSatC
+        qSatCRep = repelem(qSatC,nVols)';
+
+        %Calaulate the matrix containing the state dependent dimensionless
+        %Henry's constant
+        dimLessHenry = (qSatCRep.*bC) ...
+                     * (gConScaleFac/aConScaleFac);
+
+        %Check to see if we have a singel CSTR
+        if nAds == 0
+
+            %Make sure that nAds = 1 so that the indexing will work out
+            nAds = 1;
+
+        end
+
+        %Initialize the denominator
+        denominator = ones(nRows,nVols);
+
+        %Update the species dependent term in the denominator of the
+        %Extended Langmuir expression
+        for i = 1 : nComs
+
+            %Update the denominator vector
+            denominator = denominator ...
+                        + (bC*gConScaleFac) ...
+                       .* colGasCons.(sComNums{i});
+
+        end
         
-        %Duplicate bC0 into nR rows to get bC
-        bC = repmat(bC,nR,1);
+        %Evaluate explicit form of linear isotherm (i.e., Extened Langmuir
+        %isotherm) and update the corresponding value to the output 
+        %solution
+        for i = 1 : nComs
+            
+            %Calculate the adsoption equilibrium loading
+            loading = dimLessHenry(:,nVols*(i-1)+1:nVols*i) ...
+                   .* colGasCons.(sComNums{i});
+
+            %Get the beginning index
+            n0 = nColStT*(nAds-1) ...
+               + nComs+i;
+            
+            %Get the final index
+            nf = nColStT*(nAds-1) ...
+               + nStates*(nVols-1)+nComs+i;
+               
+            %For adosrbed concentrations, update with equilibrium 
+            %concentrations with the current gas phase compositions
+            newStates(:,n0:nStates:nf) = loading ...
+                                      ./ denominator;
+                      
+        end   
+    
+    %For isothermal operation,
+    elseif isIsoNonThermal == 0            
         
-    end           
-    
-    %Define an output state solution vector/matrix
-    newStates = states;  
-    %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %Unpack states and save as dimensionless gas phase concentrations              
-    
-    %Grab dimensionless gas phases concentrations as fields in a struct
-    colGasCons = convert2ColGasConc(params,states,nAds);
-    %---------------------------------------------------------------------%
-    
-        
-    
-    %---------------------------------------------------------------------%
-    %Calculate adsorption equilibrium (Explicit)    
-    
-    %If we are calculating a state for a single CSTR,
-    if nAds == 0 
-        
-        %For the indexing, let nAds = 1
-        nAds = 1;
-        
-    end
-    
-    %Initialize the denominator
-    termDenom = ones(nR,nVols);
-    
-    %Compute the denominator of the Extended Langmuir isotherm once
-    for i = 1 : nComs
-                
-        %Update the denominator
-        termDenom = termDenom ...
-                  + gConScaleFac ...
-                 .* bC(:,nVols*(i-1)+1:nVols*i) ...
-                 .* colGasCons.(sComNums{i});
-                                            
-    end
-    
-    %Evaluate explicit form of linear isotherm (i.e. Langmuir equation) and
-    %update the corresponding value to the output solution
-    for i = 1 : nComs
-        
-        %Calculate the adsoption equilibrium loading
-        loading = (bC(:,nVols*(i-1)+1:nVols*i) ...
-                * qSatC(i) ...
-                * gConScaleFac/aConScaleFac) ...
-               .* colGasCons.(sComNums{i}) ...
-               ./ termDenom; 
-        
-        %Get the beginning index
-        n0 = nColStT*(nAds-1) ...
-           + nComs+i;
-        
-        %Get the final index
-        nf = nColStT*(nAds-1) ...
-           + nStates*(nVols-1)+nComs+i;
-           
-        %For adosrbed concentrations, update with equilibrium 
-        %concentrations with the current gas phase compositions
-        newStates(:,n0:nStates:nf) = loading;                 
-                                 
-    end        
+        %Unpack params additionally 
+        bCDimLess   = params.bCDimLess  ;
+        qSatDimLess = params.qSatDimLess;
+
+        %Check to see if we have a singel CSTR
+        if nAds == 0
+
+            %Make sure that nAds = 1 so that the indexing will work out
+            nAds = 1;
+
+        end
+
+        %Initialize the denominator
+        denominator = ones(nRows,nVols);
+
+        %Update the species dependent term in the denominator of the
+        %Extended Langmuir expression
+        for i = 1 : nComs
+
+            %Update the denominator vector
+            denominator = denominator ...
+                        + bCDimLess(i) ...
+                       .* colGasCons.(sComNums{i});
+
+        end
+
+        %Evaluate explicit form of linear isotherm (i.e., Extened Langmuir
+        %isotherm) and update the corresponding value to the output 
+        %solution
+        for i = 1 : nComs
+            
+            %Calculate the adsoption equilibrium loading
+            loading = (qSatDimLess(i)*bCDimLess(i)) ...
+                   .* colGasCons.(sComNums{i});
+
+            %Get the beginning index
+            n0 = nColStT*(nAds-1) ...
+               + nComs+i;
+            
+            %Get the final index
+            nf = nColStT*(nAds-1) ...
+               + nStates*(nVols-1)+nComs+i;
+               
+            %For adosrbed concentrations, update with equilibrium 
+            %concentrations with the current gas phase compositions
+            newStates(:,n0:nStates:nf) = loading ...
+                                      ./ denominator;
+                      
+        end    
+
+    end      
     %---------------------------------------------------------------------%
     
 end
