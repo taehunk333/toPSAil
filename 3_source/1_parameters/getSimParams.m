@@ -404,7 +404,7 @@ function [params,fullParams] = getSimParams(exampleFolder)
     params = getEventParams(params); 
     
     %Get event functions for all the steps in a given PSA cycle
-    params.funcEve = getEventFuncs(params); %Work in progress!!!!!!!!!!               
+    params.funcEve = getEventFuncs(params);           
     %---------------------------------------------------------------------%
     
     
