@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/8/27/Saturday
-%Code last modified on : 2022/8/30/Tuesday
+%Code last modified on : 2022/8/31/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -106,7 +106,7 @@ function volFlowRat = calcVolFlowValSixBpr2ExWa(params,col,~,~,~,nS,nCo)
     %fixed at a constant pressure at the desired low pressure, whether it
     %may be a vacuum or an ambient pressure.
     deltaPres ...
-        = (pRat-pRatLowSet) ...
+        = (presTotCol-pRatLowSet) ...
        ./ (pRatLowFull-pRatLowSet) ...
         * ones(nRows,1);
     
@@ -130,7 +130,7 @@ function volFlowRat = calcVolFlowValSixBpr2ExWa(params,col,~,~,~,nS,nCo)
     volFlowRat = molFlFeEnd2ExWa ...
               ./ gasConTotCol;
     %---------------------------------------------------------------------%
-  
+    
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
