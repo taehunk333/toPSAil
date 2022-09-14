@@ -239,7 +239,7 @@ function col = makeColumns(params,states)
         %balance equation
                 
         %Calculate only when there is an axial pressure drop
-        if bool(6) == 1 && modSp(6) == 2
+        if bool(3) == 1 && modSp(6) == 2
         
             %-------------------------------------------------------------%
             %Unpack additional params

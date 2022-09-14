@@ -98,8 +98,7 @@ function params = removeParams(params)
     params = rmfield(params,'bulkDens');
     
     %Remove feed gas properties
-    params = rmfield(params,'compFacC');
-    params = rmfield(params,'molVolIdg');    
+    params = rmfield(params,'compFacC');   
 
     %Remove cstr related parameters
     params = rmfield(params,'oneCstrHt');

@@ -349,7 +349,7 @@ function [params,fullParams] = getSimParams(exampleFolder)
     end    
     
     %Get Parameters for Momentum Balance      
-    if params.bool(6) == 1
+    if params.bool(3) == 1
         
         %Calculate parameters that are needed for momentum balance
         %equations
