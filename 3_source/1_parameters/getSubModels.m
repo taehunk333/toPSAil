@@ -74,14 +74,14 @@ function models = getSubModels(params)
         noteModelNotReady(modNo1);
         
     %Linear (decoupled) isotherm
-    elseif modSp(modNo1) == 1 && bool(8) == 0
+    elseif modSp(modNo1) == 1 && bool(7) == 0
         
         %Define the isotherm
         models{modNo1} = @(params,states,nAds) ...
                          calcIsothermLinear(params,states,nAds);
                                          
     %Extended Langmuir isotherm
-    elseif modSp(modNo1) == 2 && bool(8) == 0 
+    elseif modSp(modNo1) == 2 && bool(7) == 0 
         
         %Define the isotherm
         models{modNo1} = @(params,states,nAds) ...
@@ -173,14 +173,14 @@ function models = getSubModels(params)
         noteModelNotReady(modNo2);
         
     %Linear driving force (LDF) adsorption rate law
-    elseif modSp(modNo2) == 1 && bool(9) == 0
+    elseif modSp(modNo2) == 1 && bool(8) == 0
         
         %Define the rate expression
         models{modNo2} = @(params,states,nC) ...
                          calcAdsRateLdf(params,states,nC);
                         
     %TBD
-    elseif modSp(modNo2) == 2 && bool(9) == 0
+    elseif modSp(modNo2) == 2 && bool(8) == 0
         
         %models{modNo2} = 0;
         
@@ -265,7 +265,7 @@ function models = getSubModels(params)
     %Based on the user specification, globally define an equation of states
     
     %Custom EOS
-    if modSp(modNo3) == 0 && bool(7) == 1
+    if modSp(modNo3) == 0 && bool(6) == 1
         
         %models{modNo3} = 0;
         
@@ -273,14 +273,14 @@ function models = getSubModels(params)
         noteModelNotReady(modNo3);
         
     %Ideal gas law
-    elseif modSp(modNo3) == 1 && bool(7) == 0
+    elseif modSp(modNo3) == 1 && bool(6) == 0
         
         %Define the EOS
         models{modNo3} ...
             = @(params,P,V,T,n) calcEosIdealGas(params,P,V,T,n);
                      
     %TBD
-    elseif modSp(modNo3) == 2 && bool(7) == 1
+    elseif modSp(modNo3) == 2 && bool(6) == 1
         
         %models{modNo3} = 0;
         
@@ -288,15 +288,7 @@ function models = getSubModels(params)
         noteModelNotReady(modNo3);
         
     %TBD
-    elseif modSp(modNo3) == 3 && bool(7) == 1
-        
-        %models{modNo3} = 0;
-        
-        %Model under development
-        noteModelNotReady(modNo3);
-    
-    %TBD
-    elseif modSp(modNo3) == 4 && bool(7) == 1
+    elseif modSp(modNo3) == 3 && bool(6) == 1
         
         %models{modNo3} = 0;
         
@@ -304,15 +296,7 @@ function models = getSubModels(params)
         noteModelNotReady(modNo3);
     
     %TBD
-    elseif modSp(modNo3) == 5 && bool(7) == 1
-        
-        %models{modNo3} = 0;
-        
-        %Model under development
-        noteModelNotReady(modNo3);
-        
-    %TBD
-    elseif modSp(modNo3) == 6 && bool(7) == 1
+    elseif modSp(modNo3) == 4 && bool(6) == 1
         
         %models{modNo3} = 0;
         
@@ -320,7 +304,23 @@ function models = getSubModels(params)
         noteModelNotReady(modNo3);
     
     %TBD
-    elseif modSp(modNo3) == 7 && bool(7) == 1
+    elseif modSp(modNo3) == 5 && bool(6) == 1
+        
+        %models{modNo3} = 0;
+        
+        %Model under development
+        noteModelNotReady(modNo3);
+        
+    %TBD
+    elseif modSp(modNo3) == 6 && bool(6) == 1
+        
+        %models{modNo3} = 0;
+        
+        %Model under development
+        noteModelNotReady(modNo3);
+    
+    %TBD
+    elseif modSp(modNo3) == 7 && bool(6) == 1
         
         %models{modNo3} = 0;
         
@@ -328,7 +328,7 @@ function models = getSubModels(params)
         noteModelNotReady(modNo3);
       
     %TBD
-    elseif modSp(modNo3) == 8 && bool(7) == 1
+    elseif modSp(modNo3) == 8 && bool(6) == 1
         
         %models{modNo3} = 0;
         
@@ -336,7 +336,7 @@ function models = getSubModels(params)
         noteModelNotReady(modNo3);
     
     %TBD
-    elseif modSp(modNo3) == 9 && bool(7) == 1
+    elseif modSp(modNo3) == 9 && bool(6) == 1
         
         %models{modNo3} = 0;
         
@@ -365,7 +365,7 @@ function models = getSubModels(params)
     %Based on the user specification, globally define the valve model
     
     %Define a custom valve model
-    if modSp(modNo4) == 0 && bool(3) == 0 
+    if modSp(modNo4) == 0
         
         %models{modNo4} = 0;
         
@@ -373,14 +373,14 @@ function models = getSubModels(params)
         noteModelNotReady(modNo4);
         
     %Linear valve model        
-    elseif modSp(modNo4) == 1 && bool(3) == 0 %a linear valve
+    elseif modSp(modNo4) == 1 %a linear valve
         
         %Define the linear valve model
         models{modNo4} = @(valCoeff,c1,c2,T1,T2) ...
                          calcLinValveMolFlow(valCoeff,c1,c2,T1,T2);
      
     %TBD
-    elseif modSp(modNo4) == 2 && bool(3) == 0
+    elseif modSp(modNo4) == 2
         
         %models{modNo4} = 0;
         
@@ -388,7 +388,7 @@ function models = getSubModels(params)
         noteModelNotReady(modNo4);
         
     %TBD    
-    elseif modSp(modNo4) == 3 && bool(3) == 0
+    elseif modSp(modNo4) == 3
         
         %models{modNo4} = 0;
         
@@ -396,7 +396,7 @@ function models = getSubModels(params)
         noteModelNotReady(modNo4);
         
     %TBD
-    elseif modSp(modNo4) == 4 && bool(3) == 0
+    elseif modSp(modNo4) == 4
         
         %models{modNo4} = 0;
         
@@ -404,7 +404,15 @@ function models = getSubModels(params)
         noteModelNotReady(modNo4);
         
     %TBD
-    elseif modSp(modNo4) == 5 && bool(3) == 0 
+    elseif modSp(modNo4) == 5
+
+        %models{modNo4} = 0;
+        
+        %Model under development
+        noteModelNotReady(modNo4);
+        
+    %TBD
+    elseif modSp(modNo4) == 6
         
         %models{modNo4} = 0;
         
@@ -412,7 +420,7 @@ function models = getSubModels(params)
         noteModelNotReady(modNo4);
         
     %TBD
-    elseif modSp(modNo4) == 6 && bool(3) == 0
+    elseif modSp(modNo4) == 7
         
         %models{modNo4} = 0;
         
@@ -420,7 +428,7 @@ function models = getSubModels(params)
         noteModelNotReady(modNo4);
         
     %TBD
-    elseif modSp(modNo4) == 7 && bool(3) == 0
+    elseif modSp(modNo4) == 8
         
         %models{modNo4} = 0;
         
@@ -428,15 +436,7 @@ function models = getSubModels(params)
         noteModelNotReady(modNo4);
         
     %TBD
-    elseif modSp(modNo4) == 8 && bool(3) == 0
-        
-        %models{modNo4} = 0;
-        
-        %Model under development
-        noteModelNotReady(modNo4);
-        
-    %TBD
-    elseif modSp(modNo4) == 9 && bool(3) == 0
+    elseif modSp(modNo4) == 9
         
         %models{modNo4} = 0;
         
@@ -572,7 +572,7 @@ function models = getSubModels(params)
     
     %No axial pressure drop and isothermal
     if modSp(modNo6) == 0 && ... %No axial pressure drop
-             bool(6) == 0 && ... %No axial pressure drop
+             bool(3) == 0 && ... %No axial pressure drop
              bool(5) == 0        %Isothermal
         
         %Define the function for calculating the volumetric flow rates
@@ -581,7 +581,7 @@ function models = getSubModels(params)
       
     %No axial pressure drop and non-isothermal                 
     elseif modSp(modNo6) == 0 && ... %No axial pressure drop
-                 bool(6) == 0 && ... %No axial pressure drop
+                 bool(3) == 0 && ... %No axial pressure drop
                  bool(5) == 1        %Non-isothermal
         
         %Define the function for calculating the volumetric flow rates
@@ -590,7 +590,7 @@ function models = getSubModels(params)
                               
     %Carman-Kozeny equation discretized momentum balance
     elseif modSp(modNo6) == 1 && ... %linear axial pressure drop
-                 bool(6) == 1  %axial pressure drop
+                 bool(3) == 1  %axial pressure drop
               
         %Define the function for calculating the volumetric flow rates
         models{modNo6} ...
@@ -598,49 +598,49 @@ function models = getSubModels(params)
         
     %Ergun's equation discretized momentum balance
     elseif modSp(modNo6) == 2 && ... %quadratic axial pressure drop
-                 bool(6) == 1  %axial pressure drop
+                 bool(3) == 1  %axial pressure drop
         
         %Define the function for calculating the volumetric flow rates
         models{modNo6} ...
             = @(params,units,nS) calcVolFlowsDP1ER(params,units,nS) ;
         
-    elseif modSp(modNo6) == 3 && bool(6) == 1 %TBD
+    elseif modSp(modNo6) == 3 && bool(3) == 1 %TBD
         %models{modNo6} = 0;
         
         %Model under development
         noteModelNotReady(modNo6);
         
-    elseif modSp(modNo6) == 4 && bool(6) == 1 %TBD
+    elseif modSp(modNo6) == 4 && bool(3) == 1 %TBD
         %models{modNo6} = 0;
         
         %Model under development
         noteModelNotReady(modNo6);
         
-    elseif modSp(modNo6) == 5 && bool(6) == 1 %TBD
+    elseif modSp(modNo6) == 5 && bool(3) == 1 %TBD
         %models{modNo6} = 0;
         
         %Model under development
         noteModelNotReady(modNo6);
         
-    elseif modSp(modNo6) == 6 && bool(6) == 1 %TBD
+    elseif modSp(modNo6) == 6 && bool(3) == 1 %TBD
         %models{modNo6} = 0;
         
         %Model under development
         noteModelNotReady(modNo6);
         
-    elseif modSp(modNo6) == 7 && bool(6) == 1 %TBD
+    elseif modSp(modNo6) == 7 && bool(3) == 1 %TBD
         %models{modNo6} = 0;
         
         %Model under development
         noteModelNotReady(modNo6);
         
-    elseif modSp(modNo6) == 8 && bool(6) == 1 %TBD
+    elseif modSp(modNo6) == 8 && bool(3) == 1 %TBD
         %models{modNo6} = 0;
         
         %Model under development
         noteModelNotReady(modNo6);
         
-    elseif modSp(modNo6) == 9 && bool(6) == 1 %TBD
+    elseif modSp(modNo6) == 9 && bool(3) == 1 %TBD
         %models{modNo6} = 0;
         
         %Model under development
@@ -671,29 +671,33 @@ function models = getSubModels(params)
     if modSp(modNo7) == 0 
         
         %Define the function
-        models{modNo7} = @(params,initCondCurr,initCondPrev) ...
-                      calcCssConvOverall(params,initCondCurr,initCondPrev);
+        models{modNo7} ...
+            = @(params,initCondCurr,initCondPrev) ...
+              calcCssConvOverall(params,initCondCurr,initCondPrev);
     
     %CSS besed on the first column states              
     elseif modSp(modNo7) == 1 
         
         %Define the function
-        models{modNo7} = @(params,initCondCurr,initCondPrev) ...
-                     calcCssConvFirstCol(params,initCondCurr,initCondPrev);
+        models{modNo7} ...
+            = @(params,initCondCurr,initCondPrev) ...
+              calcCssConvFirstCol(params,initCondCurr,initCondPrev);
    
     %CSS based on multiple column states             
     elseif modSp(modNo7) == 2 
         
         %Define the function
-        models{modNo7} = @(params,initCondCurr,initCondPrev) ...
-                      calcCssConvAllCols(params,initCondCurr,initCondPrev);
+        models{modNo7} ...
+            = @(params,initCondCurr,initCondPrev) ...
+              calcCssConvAllCols(params,initCondCurr,initCondPrev);
         
     %CSS based on product tank states
     elseif modSp(modNo7) == 3 
         
         %Define the function
-        models{modNo7} = @(params,initCondCurr,initCondPrev) ...
-                    calcCssConvFirstPrTa(params,initCondCurr,initCondPrev);
+        models{modNo7} ...
+            = @(params,initCondCurr,initCondPrev) ...
+              calcCssConvFirstRaTa(params,initCondCurr,initCondPrev);
         
     %TBD
     elseif modSp(modNo7) == 4 

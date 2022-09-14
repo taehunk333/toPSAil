@@ -19,11 +19,11 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/3/25/Thursday
-%Code last modified on : 2021/3/25/Thursday
+%Code last modified on : 2022/9/13/Tuesday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : calcCssConvFirstPrTa.m
+%Function   : calcCssConvFirstRaTa.m
 %Source     : common
 %Description: given a solution struct to the simulation up to the nCy
 %             cycle, computes the L2-norm of the difference between the
@@ -37,13 +37,13 @@
 %                            numerical value
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function css = calcCssConvFirstPrTa(params,initCondCurr,initCondPrev)   
+function css = calcCssConvFirstRaTa(params,initCondCurr,initCondPrev)   
     
     %---------------------------------------------------------------------%    
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'calcCssConvFirstPrTa.m';  
+    %funcId = 'calcCssConvFirstRaTa.m';  
     
     %Unpack params
     inShRaTa = params.inShRaTa;
@@ -60,8 +60,8 @@ function css = calcCssConvFirstPrTa(params,initCondCurr,initCondPrev)
     indLast = inShRaTa+1+nRaTaStT;
     
     %Compute the difference between the cycle initial conditions
-    diffInitCond = initCondCurr(indInit:indLast)- ...
-                                             initCondPrev(indInit:indLast);
+    diffInitCond = initCondCurr(indInit:indLast) ...
+                 - initCondPrev(indInit:indLast);
     
     %Compute the l2-norm of the difference and save it inside the struct
     css = sum(diffInitCond.^2,2);     

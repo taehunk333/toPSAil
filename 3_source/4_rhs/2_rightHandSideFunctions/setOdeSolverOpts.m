@@ -120,7 +120,7 @@ function options = setOdeSolverOpts(params,iStates,nS,nCy)
     
     %When there is an axial pressure drop, let us spcify the sparsity
     %pattern for the Jacobian matrix, once before the numerical integration
-    if bool(6) == 1
+    if bool(3) == 1
         
         %Call the helper function to obtain the jacobian matrix and its
         %sparsity pattern
@@ -131,7 +131,7 @@ function options = setOdeSolverOpts(params,iStates,nS,nCy)
     
     %When there is no axial pressure drop, let us specify a function handle
     %for the Jacobian matrix, once before the numerical inetgration
-    elseif bool(6) == 0
+    elseif bool(3) == 0
         
         %Do not specify anything about the Jacobian matrix
         jacOpts = [];

@@ -99,7 +99,7 @@ function params = getColBoundConds(params)
                 checkDaeModel = typeDaeModel(j,i);    
                 
                 %Check if we have momentum balance or not
-                checkMomBal = bool(6);
+                checkMomBal = bool(3);
                 
                 %Unpack the flags
                 whichEnd = flags.whichEnd;

@@ -54,7 +54,7 @@ function [prodEnd,feedEnd,flags] ...
     sStepCol     = params.sStepCol     ;
  
     %Check to see if the step has a momentum balance
-    simMode = bool(6);
+    simMode = bool(3);
 
     %Check to see if we have a time varying vs. constant pressure step
     typeColStep = typeDaeModel(numCol,numStep);
