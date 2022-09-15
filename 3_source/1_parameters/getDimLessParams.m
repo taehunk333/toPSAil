@@ -55,11 +55,18 @@ function params = getDimLessParams(params)
     gasCons      = params.gasCons     ;
     valScaleFac  = params.valScaleFac ;
     valFeedCol   = params.valFeedCol  ;
-    valProdCol   = params.valProdCol  ;
-    valRaTaFull  = params.valRaTaFull ;
-    valExTaFull  = params.valExTaFull ;
+    valProdCol   = params.valProdCol  ;    
     modSp        = params.modSp       ;
     bool         = params.bool        ;
+
+    %When there is axial pressure drop
+    if bool(3) == 1
+        
+        %Set additional valve constants for the product tanks
+        valRaTaFull  = params.valRaTaFull ;
+        valExTaFull  = params.valExTaFull ;
+
+    end
     %---------------------------------------------------------------------%    
     
    
@@ -100,10 +107,17 @@ function params = getDimLessParams(params)
                    .* valScaleFac;
     valProdColNorm  = valProdCol ...
                    .* valScaleFac;
-    valRaTaFullNorm = valRaTaFull ...
-                   .* valScaleFac;
-    valExTaFullNorm = valExTaFull ...
-                   .* valScaleFac;
+
+    %When there is axial pressure drop
+    if bool(3) == 1
+
+        %Compute additional dimensionless valve constants
+        valRaTaFullNorm = valRaTaFull ...
+                       .* valScaleFac;
+        valExTaFullNorm = valExTaFull ...
+                       .* valScaleFac;
+
+    end
     %---------------------------------------------------------------------%               
     
 
@@ -184,8 +198,15 @@ function params = getDimLessParams(params)
     params.gasConsNormEq   = gasConsNormEq  ;
     params.valFeedColNorm  = valFeedColNorm ;
     params.valProdColNorm  = valProdColNorm ;
-    params.valRaTaFullNorm = valRaTaFullNorm;
-    params.valExTaFullNorm = valExTaFullNorm;   
+
+    %When there is axial pressure drop
+    if bool(3) == 1
+        
+        %Save the results inside the struct
+        params.valRaTaFullNorm = valRaTaFullNorm;
+        params.valExTaFullNorm = valExTaFullNorm;  
+
+    end
     %---------------------------------------------------------------------%   
     
 end

@@ -40,6 +40,7 @@ function params = removeParams(params)
     
     %Name the function ID
     %funcId = 'removeParams.m';
+    bool = params.bool;
     %---------------------------------------------------------------------%
     
     
@@ -83,10 +84,16 @@ function params = removeParams(params)
     params = rmfield(params,'presColHighFull');
     params = rmfield(params,'presColHighSet');
     params = rmfield(params,'presAmbi');
-    params = rmfield(params,'presExTaFull');
-    params = rmfield(params,'presExTaSet');
-    params = rmfield(params,'presRaTaFull');
-    params = rmfield(params,'presRaTaSet');    
+
+    %When there is axial pressure drop
+    if bool(3) == 1
+
+        params = rmfield(params,'presExTaFull');
+        params = rmfield(params,'presExTaSet');
+        params = rmfield(params,'presRaTaFull');
+        params = rmfield(params,'presRaTaSet');    
+
+    end
     
     %Remove adsorber packing related information
     params = rmfield(params,'voidFracBed');
@@ -163,8 +170,14 @@ function params = removeParams(params)
     %Remove dimensional valve parameters          
     params = rmfield(params,'valProdCol');
     params = rmfield(params,'valFeedCol');
-    params = rmfield(params,'valRaTaFull');
-    params = rmfield(params,'valExTaFull');   
+
+    %When there is axial pressure drop
+    if bool(3) == 1
+
+        params = rmfield(params,'valRaTaFull');
+        params = rmfield(params,'valExTaFull');   
+
+    end
     %---------------------------------------------------------------------%   
     
 end
