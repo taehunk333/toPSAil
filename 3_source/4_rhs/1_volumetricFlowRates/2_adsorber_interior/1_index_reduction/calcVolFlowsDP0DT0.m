@@ -49,15 +49,15 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
     %funcId = 'calcVolFlowsDP0DT0.m';
     
     %Unpack params   
-    nCols       = params.nCols      ; 
-    nVols       = params.nVols      ;        
-    vFlBo       = params.volFlBo    ;   
-    daeModCur   = params.daeModel   ;
-    cstrHt      = params.cstrHt     ; 
-    sColNums    = params.sColNums   ;
-    nRows       = params.nRows      ;
-    volFlBoFree = params.volFlBoFree;
-    flowDirCol  = params.flowDirCol ;
+    nCols        = params.nCols       ; 
+    nVols        = params.nVols       ;        
+    vFlBo        = params.volFlBo     ;   
+    typeDaeModel = params.typeDaeModel;
+    cstrHt       = params.cstrHt      ; 
+    sColNums     = params.sColNums    ;
+    nRows        = params.nRows       ;
+    volFlBoFree  = params.volFlBoFree ;
+    flowDirCol   = params.flowDirCol  ;
     
     %Unpack units
     col  = units.col ;
@@ -90,7 +90,7 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
 
             %-------------------------------------------------------------%
             %If we are dealing with a constant pressure DAE model,
-            if daeModCur(i,nS) == 0
+            if typeDaeModel(i,nS) == 0
 
                 %---------------------------------------------------------%
                 %Unpack additional params
@@ -306,7 +306,7 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
 
             %-------------------------------------------------------------%
             %If we are dealing with a time varying pressure DAE model,
-            elseif daeModCur(i,nS) == 1
+            elseif typeDaeModel(i,nS) == 1
 
                 %---------------------------------------------------------%
                 %Depending on the flow direction, unpack the coefficient

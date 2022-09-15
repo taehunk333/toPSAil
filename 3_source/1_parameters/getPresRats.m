@@ -49,10 +49,18 @@ function params = getPresRats(params)
     presColHigh     = params.presColHigh    ;
     presColHighSet  = params.presColHighSet ;
     presColHighFull = params.presColHighFull;
-    presExTaFull    = params.presExTaFull   ;
-    presExTaSet     = params.presExTaSet    ;
-    presRaTaFull    = params.presRaTaFull   ;
-    presRaTaSet     = params.presRaTaSet    ;    
+    bool            = params.bool           ;
+
+    %When there is axial pressure drop
+    if bool(3) == 1
+
+        %Unpack additional params
+        presExTaFull    = params.presExTaFull   ;
+        presExTaSet     = params.presExTaSet    ;
+        presRaTaFull    = params.presRaTaFull   ;
+        presRaTaSet     = params.presRaTaSet    ;    
+
+    end
     %---------------------------------------------------------------------% 
       
     
@@ -121,15 +129,20 @@ function params = getPresRats(params)
     %Calculate the pressure ratios for the pressure regulators for the
     %product tanks
     
-    %Get the dimensionless pressure for the raffinate tank pressure
-    %regulator valve
-    params.pRatRaTaFull = (presRaTaFull/presColHigh);
-    params.pRatRaTaSet  = (presRaTaSet/presColHigh) ;
-    
-    %Get the dimensionless pressure for the extract tank pressure regulator
-    %valve
-    params.pRatExTaFull = (presExTaFull/presColHigh);
-    params.pRatExTaSet  = (presExTaSet/presColHigh) ;
+    %When there is axial pressure drop
+    if bool(3) == 1
+
+        %Get the dimensionless pressure for the raffinate tank pressure
+        %regulator valve
+        params.pRatRaTaFull = (presRaTaFull/presColHigh);
+        params.pRatRaTaSet  = (presRaTaSet/presColHigh) ;
+        
+        %Get the dimensionless pressure for the extract tank pressure regulator
+        %valve
+        params.pRatExTaFull = (presExTaFull/presColHigh);
+        params.pRatExTaSet  = (presExTaSet/presColHigh) ;
+
+    end
     %---------------------------------------------------------------------%
         
 end

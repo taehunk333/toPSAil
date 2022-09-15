@@ -49,7 +49,7 @@ function params = getAdsEquilParams(params)
     %Based on the isotherm model, compute any necessary parameters
 
     %Check the isotherm model
-    whichIsotherm = modSp(6);
+    whichIsotherm = modSp(1);
 
     %A custom isotherm
     if whichIsotherm == 0

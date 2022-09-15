@@ -62,7 +62,7 @@ function units = calcVolFlowsDP0DT1Test(params,units,nS)
     nCols        = params.nCols       ; 
     nVols        = params.nVols       ;        
     vFlBo        = params.volFlBo     ;   
-    daeModCur    = params.daeModel    ; 
+    typeDaeModel = params.typeDaeModel; 
     sColNums     = params.sColNums    ;
     nRows        = params.nRows       ;
     nComs        = params.nComs       ;
@@ -225,7 +225,7 @@ function units = calcVolFlowsDP0DT1Test(params,units,nS)
 
             %-------------------------------------------------------------%
             %If we are dealing with a constant pressure DAE model,
-            if daeModCur(i,nS) == 0
+            if typeDaeModel(i,nS) == 0
                 
                 %---------------------------------------------------------%
                 %Decide which boundary condition is given
@@ -306,7 +306,7 @@ function units = calcVolFlowsDP0DT1Test(params,units,nS)
 
             %-------------------------------------------------------------%
             %If we are dealing with a time varying pressure DAE model,
-            elseif daeModCur(i,nS) == 1                        
+            elseif typeDaeModel(i,nS) == 1                        
                 
                 %---------------------------------------------------------%
                 %Initialize solution arrays

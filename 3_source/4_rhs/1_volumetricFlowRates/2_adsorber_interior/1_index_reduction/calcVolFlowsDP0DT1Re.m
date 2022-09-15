@@ -55,9 +55,9 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT1Re(params,nS,nC,nTp)
     %funcId = 'calcVolFlowsDP0DT1Re.m';
     
     %Unpack params    
-    nVols       = params.nVols      ;          
-    daeModCur   = params.daeModel   ;  
-    volFlBoFree = params.volFlBoFree;
+    nVols        = params.nVols       ;          
+    typeDaeModel = params.typeDaeModel;  
+    volFlBoFree  = params.volFlBoFree ;
 %     flowDirCol  = params.flowDirCol ;
     
     %Unpack the time dependent at nTp
@@ -87,7 +87,7 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT1Re(params,nS,nC,nTp)
     %used for a given column undergoing a given step in a given PSA cycle
         
     %If we are dealing with a constant pressure DAE model,
-    if daeModCur(nC,nS) == 0
+    if typeDaeModel(nC,nS) == 0
 
         %-----------------------------------------------------------------%
         %Decide which boundary condition is given
@@ -204,7 +204,7 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT1Re(params,nS,nC,nTp)
 
     %---------------------------------------------------------------------%
     %If we are dealing with a time varying pressure DAE model,
-    elseif daeModCur(nC,nS) == 1
+    elseif typeDaeModel(nC,nS) == 1
 
         %-----------------------------------------------------------------%
         %Unpack additional params
