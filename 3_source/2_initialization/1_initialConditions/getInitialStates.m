@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2019/2/4/Monday
-%Code last modified on : 2022/1/24/Monday
+%Code last modified on : 2022/9/15/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -108,7 +108,7 @@ function iCond = getInitialStates(params)
         %Determine the initial states for a single CSTR based on the user 
         %specified inputs
                     
-        %Saturation with a feed at a high pressure
+        %Saturation with the feed at the high pressure
         if iConBed(i) == 1 
             
             %Assign corresponding dimensionless states for a single CSTR
@@ -117,7 +117,7 @@ function iCond = getInitialStates(params)
                           tempColNorm, ...
                           tempColNorm];
             
-        %Saturation with a raffinate product at a high pressure
+        %Saturation with the raffinate product at the high pressure
         elseif iConBed(i) == 2
             
             %Assign corresponding dimensionless states for a single CSTR
@@ -126,7 +126,7 @@ function iCond = getInitialStates(params)
                           tempColNorm, ...
                           tempColNorm];
                    
-        %Saturation with an extract product at a high pressure
+        %Saturation with the extract product at the high pressure
         elseif iConBed(i) == 3
             
             %Assign corresponding dimensionless states for a single CSTR
@@ -135,7 +135,7 @@ function iCond = getInitialStates(params)
                           tempColNorm, ...
                           tempColNorm];
                    
-        %Saturation with a feed at a low pressure
+        %Saturation with the feed at the low pressure
         elseif iConBed(i) == 4
             
             %Assign corresponding dimensionless states for a single CSTR
@@ -144,7 +144,7 @@ function iCond = getInitialStates(params)
                           tempColNorm, ...
                           tempColNorm];
                       
-        %Saturation with a raffinate product at a low pressure
+        %Saturation with the raffinate product at the low pressure
         elseif iConBed(i) == 5
             
             %Assign corresponding dimensionless states for a single CSTR
@@ -153,7 +153,7 @@ function iCond = getInitialStates(params)
                           tempColNorm, ...
                           tempColNorm];
                       
-        %Saturation with an extract product at a low pressure
+        %Saturation with the extract product at the low pressure
         elseif iConBed(i) == 6
             
             %Assign corresponding dimensionless states for a single CSTR
@@ -161,6 +161,33 @@ function iCond = getInitialStates(params)
                           zeros(1,nComs), ...
                           tempColNorm, ...
                           tempColNorm];
+
+        %Saturation with the feed at the feed pressure
+        elseif iConBed(i) == 7 
+            
+            %Assign corresponding dimensionless states for a single CSTR
+            cstrStates = [pRatFe*yFeC', ...
+                          zeros(1,nComs), ...
+                          tempColNorm, ...
+                          tempColNorm];
+            
+        %Saturation with the raffinate product at the feed pressure
+        elseif iConBed(i) == 8
+            
+            %Assign corresponding dimensionless states for a single CSTR
+            cstrStates = [pRatFe*yRaC', ...
+                          zeros(1,nComs), ...
+                          tempColNorm, ...
+                          tempColNorm];
+                   
+        %Saturation with the extract product at the feed pressure
+        elseif iConBed(i) == 9
+            
+            %Assign corresponding dimensionless states for a single CSTR
+            cstrStates = [pRatFe*yExC', ...
+                          zeros(1,nComs), ...
+                          tempColNorm, ...
+                          tempColNorm];         
                    
         end        
         %-----------------------------------------------------------------%                                
