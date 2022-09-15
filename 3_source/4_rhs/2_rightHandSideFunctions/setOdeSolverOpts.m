@@ -133,15 +133,8 @@ function options = setOdeSolverOpts(params,iStates,nS,nCy)
     %for the Jacobian matrix, once before the numerical inetgration
     elseif bool(3) == 0
         
-%         %Do not specify anything about the Jacobian matrix
-%         jacOpts = [];
-
-        %Call the helper function to obtain the jacobian matrix and its
-        %sparsity pattern
-        [~,spyPat] = calcJacMatFiniteDiff(0,iStates,params);       
-
-        %Specify the sparsity pattern for the Jacobian matrix
-        jacOpts = odeset('JPattern',spyPat);
+        %Do not specify anything about the Jacobian matrix
+        jacOpts = [];
 
 %         %Define the Jacobian matrix evaluation function
 %         funcJacobMat = @(t,x) defineJacobMat(t,x,params);
