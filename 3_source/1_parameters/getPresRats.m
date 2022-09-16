@@ -39,22 +39,22 @@ function params = getPresRats(params)
     %funcId = 'getPresRats.m';
     
     %Unpack params
-    presFeTa        = params.presFeTa       ;
-    presRaTa        = params.presRaTa       ;
-    presExTa        = params.presExTa       ;
-    presAmbi        = params.presAmbi       ;
-    presColLow      = params.presColLow     ;
-    presColLowSet   = params.presColLowSet  ;
-    presColLowFull  = params.presColLowFull ;
-    presColHigh     = params.presColHigh    ;
-    presColHighSet  = params.presColHighSet ;
-    presColHighFull = params.presColHighFull;
-    bool            = params.bool           ;
+    presFeTa    = params.presFeTa   ;
+    presRaTa    = params.presRaTa   ;
+    presExTa    = params.presExTa   ;
+    presAmbi    = params.presAmbi   ;
+    presColLow  = params.presColLow ;    
+    presColHigh = params.presColHigh;    
+    bool        = params.bool       ;
 
     %When there is axial pressure drop
     if bool(3) == 1
 
         %Unpack additional params
+        presColLowSet   = params.presColLowSet  ;
+        presColLowFull  = params.presColLowFull ;
+        presColHighSet  = params.presColHighSet ;
+        presColHighFull = params.presColHighFull;
         presExTaFull    = params.presExTaFull   ;
         presExTaSet     = params.presExTaSet    ;
         presRaTaFull    = params.presRaTaFull   ;
@@ -71,19 +71,7 @@ function params = getPresRats(params)
     %Calculate the pressure ratio. i.e. (low-pressure)/(high-pressure)
     params.pRat = presColLow ...
                 / presColHigh;    
-    
-    %Calculate the pressure ratio of a set value of high pressure
-    params.pRatHighSet  = presColHighSet ...
-                        / presColHigh;
-    params.pRatHighFull = presColHighFull ...
-                        / presColHigh;
-    
-    %Calculate the pressure ratio of a set value of low pressure
-    params.pRatLowSet  = presColLowSet ...
-                       / presColHigh;
-    params.pRatLowFull = presColLowFull ...
-                       / presColHigh;
-
+        
     %Calculate pressure swing
     presDiff = presColHigh-presColLow;
                 
@@ -131,6 +119,18 @@ function params = getPresRats(params)
     
     %When there is axial pressure drop
     if bool(3) == 1
+
+        %Calculate the pressure ratio of a set value of high pressure
+        params.pRatHighSet  = presColHighSet ...
+                            / presColHigh;
+        params.pRatHighFull = presColHighFull ...
+                            / presColHigh;
+        
+        %Calculate the pressure ratio of a set value of low pressure
+        params.pRatLowSet  = presColLowSet ...
+                           / presColHigh;
+        params.pRatLowFull = presColLowFull ...
+                           / presColHigh;
 
         %Get the dimensionless pressure for the raffinate tank pressure
         %regulator valve

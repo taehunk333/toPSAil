@@ -313,7 +313,10 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
 
                             %Set the positive pseudo volumetric flow rates
                             %equal to a zero vector
-                            %(Already initialized as zero)
+                            %(Already initialized as zero but must be reset
+                            %for the next iteration)
+                            vFlPlusCol ...
+                                = zeros(nRows,nVols+1);
 
                             %Solve for dimensionless volumetric flow rates 
                             %using a linear solver           
@@ -326,8 +329,8 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                             %---------------------------------------------%
                             %Save the results
 
-                            %We are specifying a volumetric flow rate at the 
-                            %feed-end
+                            %We are specifying a volumetric flow rate at 
+                            %the feed-end
                             vFlMinusCol(t,:) ...
                                 = [vFlMinusBoFe(t),vFlMinusColVal'];
                             %---------------------------------------------%
@@ -350,7 +353,10 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
 
                             %Set the negative pseudo volumetric flow rates
                             %equal to a zero vector
-                            %(Already initialized as zero)
+                            %(Already initialized as zero but must be reset
+                            %for the next iteration)
+                            vFlMinusCol ...
+                                = zeros(nRows,nVols+1);
 
                             %Solve for dimensionless volumetric flow rates 
                             %using a linear solver           
