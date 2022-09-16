@@ -79,10 +79,7 @@ function [prodEnd,feedEnd,flags] ...
 
         %When we are dealing with constant pressure DAE model
         if typeColStep == 0      
-            
-            %Indicate that the step is a constant pressure step
-            flags.whichEnd = 1;
-
+                        
             %High pressure feed step, from the feed tank to the feed-end of
             %the adsorber, and from the product-end of the adsorber to the
             %atmosphere
@@ -92,7 +89,10 @@ function [prodEnd,feedEnd,flags] ...
                 prodEnd = [];
                 feedEnd = @(params,col,feTa,raTa,exTa,nS,nCo) ...
                           calcVolFlowFeTa2ValTwo(params,col,feTa, ...
-                                                 raTa,exTa,nS,nCo);                                                                                          
+                                                 raTa,exTa,nS,nCo); 
+
+                %Indicate that the step is a constant pressure step
+                flags.whichEnd = 1;
                 
             %High pressure feed step, from the feed tank to the feed-end of
             %the adsorber, and from the product-end of the adsoreber to the
@@ -103,7 +103,10 @@ function [prodEnd,feedEnd,flags] ...
                 prodEnd = [];
                 feedEnd = @(params,col,feTa,raTa,exTa,nS,nCo) ...
                           calcVolFlowFeTa2ValTwo(params,col,feTa, ...
-                                                 raTa,exTa,nS,nCo);                
+                                                 raTa,exTa,nS,nCo); 
+
+                %Indicate that the step is a constant pressure step
+                flags.whichEnd = 1;
                 
             %High pressure feed step, from the raffinate tank to the
             %product-end of the adsorber, and from the feed-end of the
@@ -136,7 +139,10 @@ function [prodEnd,feedEnd,flags] ...
                 prodEnd = [];
                 feedEnd = @(params,col,feTa,raTa,exTa,nS,nCo) ...
                           calcVolFlowRaTa2ValTwo(params,col,feTa, ...
-                                                 raTa,exTa,nS,nCo);                 
+                                                 raTa,exTa,nS,nCo); 
+
+                %Indicate that the step is a constant pressure step
+                flags.whichEnd = 1;
                 
             %High pressure rinse step, from the extract tank to the
             %feed-end of the adsorber, and from the product-end of the
@@ -148,6 +154,9 @@ function [prodEnd,feedEnd,flags] ...
                 feedEnd = @(params,col,feTa,raTa,exTa,nS,nCo) ...
                           calcVolFlowExTa2ValTwo(params,col,feTa, ...
                                                  raTa,exTa,nS,nCo);
+
+                %Indicate that the step is a constant pressure step
+                flags.whichEnd = 1;
                                 
             %High pressure rinse step, from the extract tank to the
             %product-end of the adsorber, and from the feed-end of the
