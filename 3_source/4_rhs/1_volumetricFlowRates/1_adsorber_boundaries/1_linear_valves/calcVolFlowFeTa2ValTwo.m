@@ -102,7 +102,8 @@ function volFlowRat = calcVolFlowFeTa2ValTwo(params,col,feTa,~,~,nS,nCo)
                          cstrTempFeTa);
                    
     %Calculate the volumetric flow rate at the stream exiting the valve
-    volFlowRat = molFlowRat ./ gasConTotCol;
+    volFlowRat = molFlowRat ...
+              ./ gasConTotCol;
     %---------------------------------------------------------------------%
   
 end

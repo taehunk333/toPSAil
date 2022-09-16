@@ -169,7 +169,7 @@ function params = getExcelParams(exFolder,nameFolder,nameExcelFile)
     lenFnsZeros = length(fnsZeros);
     
     %Initialize a column vector to store the field numbers
-    store = zeros(length(fns),1);
+    store = zeros(lenFns,1);
     
     %Initialize the first entry with the first entry from fns
     store(1) = fns(1);
@@ -194,12 +194,12 @@ function params = getExcelParams(exFolder,nameFolder,nameExcelFile)
             
             %The current counter should be obtained form incrementing the
             %previous counter by 1
-            store(i) = store(i-1) + 1;
-         
+            store(i) = store(i-1) + 1;        
+
         %Consider the case where we have the last field in the params to be
         %included inside a vector with some other fields right before the
         %last field
-        elseif diffFnsCurr > 0 && fns(i-1) ~= 0 && i==lenFns
+        elseif diffFnsCurr > 0 && fns(i-1) ~= 0 && i == lenFns
             
             %The current field number should be one greater than the one
             %before
@@ -214,7 +214,37 @@ function params = getExcelParams(exFolder,nameFolder,nameExcelFile)
             
             %Save the index for the current field (because we are at the
             %last field)
-            saveData(j,2) = i;        
+            saveData(j,2) = i; 
+
+        %Consider the case where we have the last field in the params to be
+        %include inside a single numeric array of dimension 1 x 1
+        elseif fns(i) == 1 && fns(i-1) ~= 0 && i == lenFns
+
+            %The current field number should be one greater than the one
+            %before
+            store(i) = 1;
+            
+            %Update the switch counter (because we reached the last field)
+            j = j + 1;
+            
+            %Save the count of the current field (because we are at the
+            %last field)
+            saveData(j,1) = store(i-1);
+            
+            %Save the index for the current field (because we are at the
+            %last field)
+            saveData(j,2) = i-1; 
+
+            %Update the switch counter (because we reached the last field)
+            j = j + 1;
+            
+            %Save the count of the current field (because we are at the
+            %last field)
+            saveData(j,1) = store(i);
+            
+            %Save the index for the current field (because we are at the
+            %last field)
+            saveData(j,2) = i; 
             
         %Consider the case where somewhere along the way of counting
         %field names over and over, we have a start of a new scalar field
@@ -248,7 +278,7 @@ function params = getExcelParams(exFolder,nameFolder,nameExcelFile)
             saveData(j,1) = store(i-1);
             
             %Save the index for the previous field
-            saveData(j,2) = i-1;
+            saveData(j,2) = i-1;             
             
         %Consider the case where we just started counting fields in a 
         %previous iteration and that we just finished counting fields in 

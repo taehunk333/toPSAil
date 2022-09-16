@@ -74,20 +74,20 @@ function params = removeParams(params)
     
     %Remove dimensional pressures
     params = rmfield(params,'presStan'); 
-    params = rmfield(params,'presColLow');
-    params = rmfield(params,'presColLowFull');
-    params = rmfield(params,'presColLowSet');
+    params = rmfield(params,'presColLow');    
     params = rmfield(params,'presFeTa');
     params = rmfield(params,'presRaTa');
     params = rmfield(params,'presExTa');
-    params = rmfield(params,'presColHigh');
-    params = rmfield(params,'presColHighFull');
-    params = rmfield(params,'presColHighSet');
+    params = rmfield(params,'presColHigh');    
     params = rmfield(params,'presAmbi');
 
     %When there is axial pressure drop
     if bool(3) == 1
-
+        
+        params = rmfield(params,'presColHighFull');
+        params = rmfield(params,'presColHighSet');
+        params = rmfield(params,'presColLowFull');
+        params = rmfield(params,'presColLowSet');
         params = rmfield(params,'presExTaFull');
         params = rmfield(params,'presExTaSet');
         params = rmfield(params,'presRaTaFull');

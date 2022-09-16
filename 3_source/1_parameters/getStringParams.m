@@ -110,15 +110,15 @@ function params = getStringParams(params)
     %Unpack strings and store them as needed
     
     %Split the string variables
-    durStep    = split(durStep)   ; %a row vector (1 x nSteps)
-    eveVal     = split(eveVal)    ; %a row vector (1 x nSteps)    
-    valFeedCol = split(valFeedCol); %a matrix (nCols x nSteps)
-    valProdCol = split(valProdCol); %a matrix (nCols x nSteps)
-    eveUnit    = split(eveUnit)'  ; %a row vector (1 x nSteps)
-    eveLoc     = split(eveLoc)'   ; %a row vector (1 x nSteps)
-    sStepCol   = split(sStepCol)  ; %a matrix (nCols x nSteps)
-    sTypeCol   = split(sTypeCol)  ; %a matrix (nCols x nSteps)
-    flowDirCol = split(flowDirCol); %a matrix (nCols x nSteps)
+    durStep    = split(durStep)'   ; %a row vector (1 x nSteps)
+    eveVal     = split(eveVal)'    ; %a row vector (1 x nSteps)    
+    valFeedCol = split(valFeedCol)'; %a matrix (nCols x nSteps)
+    valProdCol = split(valProdCol)'; %a matrix (nCols x nSteps)
+    eveUnit    = split(eveUnit)'   ; %a row vector (1 x nSteps)
+    eveLoc     = split(eveLoc)'    ; %a row vector (1 x nSteps)
+    sStepCol   = split(sStepCol)'  ; %a matrix (nCols x nSteps)
+    sTypeCol   = split(sTypeCol)'  ; %a matrix (nCols x nSteps)
+    flowDirCol = split(flowDirCol)'; %a matrix (nCols x nSteps)
     
     %Convert the cell array containing the splitted strings into a
     %numerical array and store it as a row vector
