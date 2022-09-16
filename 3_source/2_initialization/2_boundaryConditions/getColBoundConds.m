@@ -108,11 +108,10 @@ function params = getColBoundConds(params)
                    checkMomBal == 0 && ...   %No axial pressure drop
                    whichEnd ~= 0             %Update only when needed
   
-                    %Update the boundary condition for the constant 
-                    %pressure no axial pressure drop DAE model which 
-                    %requires only one boundary condition. All the other 
-                    %DAE models require the specification of two boundary
-                    %conditions.
+                    %Indicate whether the boundary condition for the 
+                    %constant pressure no axial pressure drop DAE model, 
+                    %which requires only one boundary condition, has its
+                    %boundary condition specified for the feed end
                     volFlBoFree(j,i) = whichEnd;
 
                 end

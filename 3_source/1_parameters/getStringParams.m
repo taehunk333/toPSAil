@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/22/Friday
-%Code last modified on : 2022/8/9/Tuesday
+%Code last modified on : 2022/9/16/Friday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -110,20 +110,20 @@ function params = getStringParams(params)
     %Unpack strings and store them as needed
     
     %Split the string variables
-    durStep    = split(durStep)'   ; %a row vector (1 x nSteps)
-    eveVal     = split(eveVal)'    ; %a row vector (1 x nSteps)    
-    valFeedCol = split(valFeedCol)'; %a matrix (nCols x nSteps)
-    valProdCol = split(valProdCol)'; %a matrix (nCols x nSteps)
-    eveUnit    = split(eveUnit)'   ; %a row vector (1 x nSteps)
-    eveLoc     = split(eveLoc)'    ; %a row vector (1 x nSteps)
-    sStepCol   = split(sStepCol)'  ; %a matrix (nCols x nSteps)
-    sTypeCol   = split(sTypeCol)'  ; %a matrix (nCols x nSteps)
-    flowDirCol = split(flowDirCol)'; %a matrix (nCols x nSteps)
+    durStep    = split(durStep,' ', 2)   ; %a row vector (1 x nSteps)
+    eveVal     = split(eveVal,' ', 2)    ; %a row vector (1 x nSteps)    
+    valFeedCol = split(valFeedCol,' ', 2); %a matrix (nCols x nSteps)
+    valProdCol = split(valProdCol,' ', 2); %a matrix (nCols x nSteps)
+    eveUnit    = split(eveUnit,' ', 2)   ; %a row vector (1 x nSteps)
+    eveLoc     = split(eveLoc,' ', 2)    ; %a row vector (1 x nSteps)
+    sStepCol   = split(sStepCol,' ', 2)  ; %a matrix (nCols x nSteps)
+    sTypeCol   = split(sTypeCol,' ', 2)  ; %a matrix (nCols x nSteps)
+    flowDirCol = split(flowDirCol,' ', 2); %a matrix (nCols x nSteps)
     
     %Convert the cell array containing the splitted strings into a
     %numerical array and store it as a row vector
-    durStep    = str2double(durStep)'  ;
-    eveVal     = str2double(eveVal)'   ;
+    durStep    = str2double(durStep)   ;
+    eveVal     = str2double(eveVal)    ;
     valFeedCol = str2double(valFeedCol); %a matrix (nCols x nSteps)
     valProdCol = str2double(valProdCol); %a matrix (nCols x nSteps)
     %---------------------------------------------------------------------%                                   

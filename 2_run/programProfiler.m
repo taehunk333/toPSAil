@@ -43,7 +43,7 @@ function programProfiler()
     %---------------------------------------------------------------------%
     %Profile the main function
     
-    %test 1
+%     %test 1
 %     name = strcat("1_kayser", ...
 %                   "/1_time_driven", ...
 %                   "/2-col_non-isothermal_axial_pressure_drop");
