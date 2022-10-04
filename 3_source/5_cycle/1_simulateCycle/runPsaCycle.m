@@ -178,9 +178,7 @@ function sol = runPsaCycle(params)
                 
                 %Run runPsaCycleStep.m
                 [stTimePts,stStates,flags] ...
-                    = runPsaCycleStep(params,iStates,tDom,nS,nCy);
-%                 [stTimePts,stStates,flags] ...
-%                     = runPsaCycleStepSTB(params,iStates,tDom,nS,nCy);             
+                    = runPsaCycleStep(params,iStates,tDom,nS,nCy);         
                 %---------------------------------------------------------%
 
 
@@ -431,7 +429,7 @@ function sol = runPsaCycle(params)
                 %Print if an event happened?
                 
                 %Find the event column name
-                eveLocStep = eveLoc(currStepNum);
+                eveLocStep = eveLoc{currStepNum};
                 
                 %Calculate actual step duration
                 eTi = round(stTimePts(end)*tiScaleFac); %round to a 
@@ -462,7 +460,7 @@ function sol = runPsaCycle(params)
                     
                     %Print the information
                     fprintf("\n*Step duration  : %d(%d) seconds",eTi,eTi0);
-                    fprintf("\n*An event happened in %s",eveLocStep)  ;
+                    fprintf("\n*An event happened in %s",eveLocStep)      ;
                     
                 end                
                 

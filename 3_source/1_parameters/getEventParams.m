@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/1/Monday
-%Code last modified on : 2022/8/16/Tuesday
+%Code last modified on : 2022/10/3/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -43,9 +43,29 @@ function params = getEventParams(params)
     eveVal      = params.eveVal     ;
     eveUnit     = params.eveUnit    ;
     eveLoc      = params.eveLoc     ;
-    nSteps      = params.nSteps     ;
     presColHigh = params.presColHigh;    
     tempAmbi    = params.tempAmbi   ;
+    nRows       = params.nRows      ;
+    nSteps      = params.nSteps     ;
+    %---------------------------------------------------------------------% 
+    
+    
+    
+    
+    %---------------------------------------------------------------------% 
+    %Initialize the solution arrays
+    
+    %Define a vector for storing the event values for the light key mole 
+    %fraction threshold
+    eveLkMolFrac = zeros(nRows,nSteps);
+    
+    %Define a vector for storing the event values for the total pressure 
+    %threshold
+    eveTotPresNorm = zeros(nRows,nSteps);
+    
+    %Define a vector for storing the event values for the interior 
+    %temperature threshold
+    eveTempNorm = zeros(nRows,nSteps);
     %---------------------------------------------------------------------% 
     
                      
@@ -122,30 +142,30 @@ function params = getEventParams(params)
 
             %-------------------------------------------------------------%
             %If we are given a mole fraction on the product stream purity,
-            elseif eventUnitLkMoleFrac
+            elseif eventUnitLkMoleFrac(i)
 
                 %Define the breakthrough mole fraction
-                params.eveLkMolFrac = eveValStep;
+                eveLkMolFrac(i) = eveValStep;
             %-------------------------------------------------------------%
 
 
 
             %-------------------------------------------------------------%            
             %If we are given a threshold on the final pressure,
-            elseif eventUnitPressure
+            elseif eventUnitPressure(i)
 
                 %Assign the pressure at which the event will occur
-                params.eveTotPresNorm = eveValStep/presColHigh;                
+                eveTotPresNorm(i) = eveValStep/presColHigh;                
             %-------------------------------------------------------------%
 
 
 
             %-------------------------------------------------------------%
             %If we are given a threshold on the final amount
-            elseif eventUnitTemperature
+            elseif eventUnitTemperature(i)
 
                 %Assign the temperature at which the event will occur
-                params.eveTempNorm = eveValStep/tempAmbi;
+                eveTempNorm(i) = eveValStep/tempAmbi;
 
             end                                   
             %-------------------------------------------------------------%                          
@@ -154,6 +174,17 @@ function params = getEventParams(params)
                 
     end
     %---------------------------------------------------------------------%                                                          
+    
+    
+    
+    %---------------------------------------------------------------------%
+    %Store the event parameter vectors into the params
+    
+    %Save into params
+    params.eveTempNorm    = eveTempNorm   ;
+    params.eveLkMolFrac   = eveLkMolFrac  ;
+    params.eveTotPresNorm = eveTotPresNorm;    
+    %---------------------------------------------------------------------%
     
 end
 

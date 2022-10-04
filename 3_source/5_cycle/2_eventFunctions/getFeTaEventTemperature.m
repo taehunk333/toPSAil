@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/8/24/Wednesday
-%Code last modified on : 2022/8/24/Wednesday
+%Code last modified on : 2022/10/3/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -50,9 +50,9 @@ function [event,isterminal,direction] ...
     %funcId = 'getFeTaEventTemperature.m';
     
     %Unpack params
-    eveTotTempNorm = params.eveTotTempNorm;
-    nComs          = params.nComs         ;     
-    inShFeTa       = params.inShFeTa      ;
+    eveTempNorm = params.eveTempNorm;
+    nComs       = params.nComs      ;     
+    inShFeTa    = params.inShFeTa   ;
     %---------------------------------------------------------------------%
     
     
@@ -64,7 +64,7 @@ function [event,isterminal,direction] ...
     indSh = inShFeTa;
 
     %Compute the current pressure in the feed tank
-    currTankTemperature = states(:,indSh+nComs+1);
+    currTankTemperature = states(indSh+nComs+1);
     %---------------------------------------------------------------------%
 
 
@@ -74,7 +74,7 @@ function [event,isterminal,direction] ...
 
     %Check the temperature threshold
     event = currTankTemperature ...
-          - eveTotTempNorm ;
+          - eveTempNorm ;
     %---------------------------------------------------------------------%    
     
 

@@ -19,9 +19,9 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2019/2/4/Monday
-%Code last modified on : 2021/1/18/Monday
+%Code last modified on : 2022/10/3/Monday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : testEventFunc.m
 %Source     : common
@@ -39,15 +39,13 @@
 %                            expectedSideOfZero=1 means that you expect the
 %                            event function's threshold comparison to yield
 %                            a positive result.    
-%             nCy          - ith PSA cycle
-%             nS           - jth step in a given PSA cycle
 %Outputs    : event        - a logic value of true or false. If true, 
 %                            the event function will work with the given 
 %                            initial condition. If false, the event 
 %                            function will not work.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function event = testEventFunc(params,states,func,side,nS,nCy)
+function event = testEventFunc(params,states,func,side)
 
     %---------------------------------------------------------------------%
     %Define known quantities
@@ -83,7 +81,7 @@ function event = testEventFunc(params,states,func,side,nS,nCy)
     
     %Evaluate the initial value of the chosen event function which is an
     %initial condition for a given step in the PSA Cycle.
-    [initVal,~,~] = func(params,0,states,nS,nCy);
+    [initVal,~,~] = func(params,0,states);
     
     %Compute the decision variable
     decision = (side/initVal);

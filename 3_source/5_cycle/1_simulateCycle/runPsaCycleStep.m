@@ -19,9 +19,9 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/18/Monday
-%Code last modified on : 2021/1/18/Monday
+%Code last modified on : 2022/10/3/Monday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : runPsaCycleStep.m
 %Source     : common
@@ -37,8 +37,8 @@
 %             tDom         - a 1 by 2 numerical vector that contains the
 %                            initial and terminal time points for the
 %                            numerical integration.
-%             nCy          - ith PSA cycle
-%             nS           - jth step in a given PSA cycle
+%             nCy          - the current PSA cycle
+%             nS           - the current step in a given PSA cycle
 %Outputs    : stTime       - a column vector containing state time points
 %             stStates     - a solution matrix containing the time
 %                            evolution of the state solutions for all the
@@ -62,9 +62,9 @@ function [stTime,stStates,flags] ...
     numIntSolv = params.numIntSolv ;
     funcEve    = params.funcEve{nS};
     
-    %Update the data structure with integration specific information
-    params.nRows = 1  ;
-    params.nS    = nS ;              
+    %Update the data structure with integration specific information for
+    %the given step
+    params = updateParams4Step(params,nS);              
    
     %Define the right hand side function
     funcRhs = @(t,x) defineRhsFunc(t,x,params);
