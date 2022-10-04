@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/5/12/Thursday
-%Code last modified on : 2022/5/12/Thursday
+%Code last modified on : 2022/10/3/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -31,18 +31,18 @@
 %             iStates      - an initial state solution row vector
 %                            containing the initial condition to the 
 %                            simulation.
-%             nCy          - ith PSA cycle
-%             nS           - jth step in a given PSA cycle
+%             nS           - the current step in a given PSA cycle
+%             nCy          - the current PSA cycle
 %Outputs    : options      - a struct 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function options = setOdeSolverOpts(params,iStates,nS,nCy)
+function options = setOdeSolverOpts(params,iStates,nS,~)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'setOdeSolverOpts.m';    
+    funcId = 'setOdeSolverOpts.m';    
     
     %Unpack params              
     funcEve = params.funcEve{nS};
@@ -66,7 +66,7 @@ function options = setOdeSolverOpts(params,iStates,nS,nCy)
                                                                         
         %Test to see if the event function will even work before solving 
         %the ODEs
-        if testEventFunc(params,iStates,funcEve,1,nS,nCy) == 0
+        if testEventFunc(params,iStates,funcEve,1) == 0
             
             %Display the error message
             msg = 'The event will not work with the current initial state';
@@ -76,8 +76,7 @@ function options = setOdeSolverOpts(params,iStates,nS,nCy)
         end    
         
         %Enable the option for an event function
-        event = odeset('Events',@(t,states) ...
-                        funcEve(params,t,states,nS,nCy));  
+        event = odeset('Events', @(t,states) funcEve(params,t,states));  
         
     %When we don't have a specified event, no options are needed
     elseif needEvent == 0

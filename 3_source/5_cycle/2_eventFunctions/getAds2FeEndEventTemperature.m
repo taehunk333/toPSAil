@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/8/24/Wednesday
-%Code last modified on : 2022/8/24/Wednesday
+%Code last modified on : 2022/10/3/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -50,9 +50,9 @@ function [event,isterminal,direction] ...
     %funcId = 'getAds2FeEndEventTemperature.m';
     
     %Unpack params
-    eveTotTempNorm = params.eveTotTempNorm;
-    nComs          = params.nComs         ; 
-    nColStT        = params.nColStT       ;
+    eveTempNorm = params.eveTempNorm;
+    nComs       = params.nComs      ; 
+    nColStT     = params.nColStT    ;
     %---------------------------------------------------------------------%
     
     
@@ -64,7 +64,7 @@ function [event,isterminal,direction] ...
     indSh = nColStT;
 
     %Compute the current pressure in the n_c th CSTR
-    currCstrTemperature = states(:,indSh+2*nComs+1);
+    currCstrTemperature = states(indSh+2*nComs+1);
     %---------------------------------------------------------------------%
 
 
@@ -74,7 +74,7 @@ function [event,isterminal,direction] ...
 
     %Check the temperature threshold
     event = currCstrTemperature ...
-          - eveTotTempNorm ;
+          - eveTempNorm ;
     %---------------------------------------------------------------------%    
     
 
