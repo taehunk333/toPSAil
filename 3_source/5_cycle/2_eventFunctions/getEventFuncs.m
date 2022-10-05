@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/18/Monday
-%Code last modified on : 2022/10/3/Monday
+%Code last modified on : 2022/10/4/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -40,7 +40,7 @@ function funcEve = getEventFuncs(params)
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'getEventFuncs.m';
+    funcId = 'getEventFuncs.m';
     
     %Unpack params
     nSteps  = params.nSteps ;         
@@ -110,11 +110,20 @@ function funcEve = getEventFuncs(params)
             %The feed tank
             eveInFeTa = strcmp(eveLocStep,'Feed_Tank');
             
+            %The feed stream
+            eveInFeSt = strcmp(eveLocStep,'Feed_Stream');
+            
             %The raffinate tank
             eveInRaTa = strcmp(eveLocStep,'Raffinate_Tank');
             
+            %The raffinate stream
+            eveInRaSt = strcmp(eveLocStep,'Raffinate_Stream');
+            
             %The extract tank
             eveInExTa = strcmp(eveLocStep,'Extract_Tank');
+            
+            %The extract stream
+            eveInExSt = strcmp(eveLocStep,'Extract_Stream');
             %-------------------------------------------------------------%
             
             
@@ -122,8 +131,14 @@ function funcEve = getEventFuncs(params)
             %-------------------------------------------------------------%
             %Determine the type of the event for the current step
             
-            %Mole fraction of the light key threshold
-            eveTypeMolFrac = strcmp(eveUnitStep,'Light_Key_[mol_frac]');
+            %Threshold on the sum of the mole fractions of the light keys
+            eveTypeMolFrac ...
+                = strcmp(eveUnitStep,'Sum_LK_Mol_Frac_[-]');
+            
+            %Threshold on the cumulative sum of the mole fractions of the 
+            %light keys
+            eveTypeMolFracCum ...
+                = strcmp(eveUnitStep,'Cum_Sum_LK_Mol_Frac_[-]');
             
             %Pressure threshold
             eveTypePres = strcmp(eveUnitStep,'Pressure_[bar]');
@@ -138,21 +153,30 @@ function funcEve = getEventFuncs(params)
             %Assign the event function for the step, based on the location
             %and type of the event
             
-            %If we have the event at the feed-end of the the first adsorber
+            %If we have an event at the feed-end of the the first adsorber
             if eveInAds1FeEnd == 1
                 
                 %---------------------------------------------------------%
                 %Depending on the event type, assign the corresponding
                 %event function for the step
                 
-                %If we have the light key mole fraction
+                %If we have the sum of the light key mole fractions
                 if eveTypeMolFrac == 1
                 
                     %Assign the event function
                     funcEve{i} ...
                         = @(params,t,states) ...
                           getAds1FeEndEventMoleFrac(params,t,states);
+                      
+                %If we have the cumulative sum of the light key mole
+                %fractions
+                elseif eveTypeMolFracCum == 1
                     
+                    %Assign the event function
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getAds1FeEndEventMoleFracCum(params,t,states);
+                
                 %If we have the pressure in the unit
                 elseif eveTypePres == 1
                     
@@ -172,7 +196,7 @@ function funcEve = getEventFuncs(params)
                 end
                 %---------------------------------------------------------%
                 
-            %If we have the event at the product-end of the the first 
+            %If we have an event at the product-end of the the first 
             %adsorber
             elseif eveInAds1PrEnd == 1
             
@@ -180,13 +204,22 @@ function funcEve = getEventFuncs(params)
                 %Depending on the event type, assign the corresponding
                 %event function for the step
                 
-                %If we have the light key mole fraction
+                %If we have the sum of the light key mole fraction
                 if eveTypeMolFrac == 1
                 
                     %Assign the event function
                     funcEve{i} ...
                         = @(params,t,states) ...
                           getAds1PrEndEventMoleFrac(params,t,states);
+                      
+                %If we have the cumulative sum of the light key mole
+                %fractions
+                elseif eveTypeMolFracCum == 1
+                    
+                    %Assign the event function
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getAds1PrEndEventMoleFracCum(params,t,states);
                     
                 %If we have the pressure in the unit
                 elseif eveTypePres == 1
@@ -207,7 +240,7 @@ function funcEve = getEventFuncs(params)
                 end
                 %---------------------------------------------------------%            
             
-            %If we have the event at the feed-end of the the second 
+            %If we have an event at the feed-end of the the second 
             %adsorber
             elseif eveInAds2FeEnd == 1
                 
@@ -215,13 +248,22 @@ function funcEve = getEventFuncs(params)
                 %Depending on the event type, assign the corresponding
                 %event function for the step
                 
-                %If we have the light key mole fraction
+                %If we have the sum of the light key mole fractions
                 if eveTypeMolFrac == 1
                 
                     %Assign the event function
                     funcEve{i} ...
                         = @(params,t,states) ...
                           getAds2FeEndEventMoleFrac(params,t,states);
+                      
+                %If we have the cumulative sum of the light key mole
+                %fractions
+                elseif eveTypeMolFracCum == 1
+                    
+                    %Assign the event function
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getAds2FeEndEventMoleFracCum(params,t,states);
                     
                 %If we have the pressure in the unit
                 elseif eveTypePres == 1
@@ -242,7 +284,7 @@ function funcEve = getEventFuncs(params)
                 end
                 %---------------------------------------------------------%
                 
-            %If we have the event at the product-end of the the second 
+            %If we have an event at the product-end of the the second 
             %adsorber
             elseif eveInAds2PrEnd == 1
                 
@@ -250,13 +292,22 @@ function funcEve = getEventFuncs(params)
                 %Depending on the event type, assign the corresponding
                 %event function for the step
                 
-                %If we have the light key mole fraction
+                %If we have the sum of the light key mole fractions
                 if eveTypeMolFrac == 1
                 
                     %Assign the event function
                     funcEve{i} ...
                         = @(params,t,states) ...
                           getAds2PrEndEventMoleFrac(params,t,states);
+                      
+                %If we have the cumulative sum of the light key mole
+                %fractions
+                elseif eveTypeMolFracCum == 1
+                    
+                    %Assign the event function
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getAds2PrEndEventMoleFracCum(params,t,states);                    
                     
                 %If we have the pressure in the unit
                 elseif eveTypePres == 1
@@ -277,20 +328,27 @@ function funcEve = getEventFuncs(params)
                 end
                 %---------------------------------------------------------%
             
-            %If we have the event at the feed tank
+            %If we have an event at the feed tank
             elseif eveInFeTa == 1
             
                 %---------------------------------------------------------%
                 %Depending on the event type, assign the corresponding
                 %event function for the step
                 
-                %If we have the light key mole fraction
+                %If we have the sum of the light key mole fractions
                 if eveTypeMolFrac == 1
                 
                     %Assign the event function
                     funcEve{i} ...
                         = @(params,t,states) ...
                           getFeTaEventMoleFrac(params,t,states);
+                      
+                %If we have the cumulative sum of the light key mole
+                %fractions
+                elseif eveTypeMolFracCum == 1
+                    
+                    %Notify the user that the event is not supported
+                    noteEventNotReady(funcId);
                     
                 %If we have the pressure in the unit
                 elseif eveTypePres == 1
@@ -311,20 +369,64 @@ function funcEve = getEventFuncs(params)
                 end
                 %---------------------------------------------------------%            
             
-            %If we have the event at the raffinate tank
+            %If we have an event at the feed stream
+            elseif eveInFeSt == 1
+                
+                %---------------------------------------------------------%            
+                %Depending on the event type, assign the corresponding
+                %event function for the step
+                
+                %If we have the sum of the light key mole fractions
+                if eveTypeMolFrac == 1
+                
+                    %Notify the user that the event is not supported
+                    noteEventNotReady(funcId);
+                      
+                %If we have the cumulative sum of the light key mole
+                %fractions
+                elseif eveTypeMolFracCum == 1
+                    
+                    %Assign the event function
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getFeTaEventMoleFracCum(params,t,states);                    
+                    
+                %If we have the pressure in the unit
+                elseif eveTypePres == 1
+                    
+                    %Notify the user that the event is not supported
+                    noteEventNotReady(funcId);
+                    
+                %If we have the temperature in the unit
+                elseif eveTypeTemp == 1
+                    
+                    %Notify the user that the event is not supported
+                    noteEventNotReady(funcId);  
+                    
+                end
+                %---------------------------------------------------------%            
+                
+            %If we have an event at the raffinate tank
             elseif eveInRaTa == 1
                 
                 %---------------------------------------------------------%
                 %Depending on the event type, assign the corresponding
                 %event function for the step
                 
-                %If we have the light key mole fraction
+                %If we have the sum of the light key mole fractions
                 if eveTypeMolFrac == 1
                 
                     %Assign the event function
                     funcEve{i} ...
                         = @(params,t,states) ...
                           getRaTaEventMoleFrac(params,t,states);
+                      
+                %If we have the cumulative sum of the light key mole
+                %fractions
+                elseif eveTypeMolFracCum == 1
+                    
+                    %Notify the user that the event is not supported
+                    noteEventNotReady(funcId);
                     
                 %If we have the pressure in the unit
                 elseif eveTypePres == 1
@@ -344,21 +446,65 @@ function funcEve = getEventFuncs(params)
                 
                 end
                 %---------------------------------------------------------%
-                                                
-            %If we have the event at the extract tank
+                         
+            %If we have an event at the raffinate stream
+            elseif eveInRaSt == 1
+                
+                %---------------------------------------------------------%            
+                %Depending on the event type, assign the corresponding
+                %event function for the step
+                
+                %If we have the sum of the light key mole fractions
+                if eveTypeMolFrac == 1
+                
+                    %Notify the user that the event is not supported
+                    noteEventNotReady(funcId);
+                      
+                %If we have the cumulative sum of the light key mole
+                %fractions
+                elseif eveTypeMolFracCum == 1
+                    
+                    %Assign the event function
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getRaTaEventMoleFracCum(params,t,states);                    
+                    
+                %If we have the pressure in the unit
+                elseif eveTypePres == 1
+                    
+                    %Notify the user that the event is not supported
+                    noteEventNotReady(funcId);
+                    
+                %If we have the temperature in the unit
+                elseif eveTypeTemp == 1
+                    
+                    %Notify the user that the event is not supported
+                    noteEventNotReady(funcId);
+                
+                end
+                %---------------------------------------------------------%                      
+                
+            %If we have an event at the extract tank
             elseif eveInExTa == 1
                 
                 %---------------------------------------------------------%
                 %Depending on the event type, assign the corresponding
                 %event function for the step
                 
-                %If we have the light key mole fraction
+                %If we have the sum of the light key mole fractions
                 if eveTypeMolFrac == 1
                 
                     %Assign the event function
                     funcEve{i} ...
                         = @(params,t,states) ...
                           getExTaEventMoleFrac(params,t,states);
+                      
+                %If we have the cumulative sum of the light key mole
+                %fractions
+                elseif eveTypeMolFracCum == 1
+                    
+                    %Notify the user that the event is not supported
+                    noteEventNotReady(funcId);
                     
                 %If we have the pressure in the unit
                 elseif eveTypePres == 1
@@ -378,6 +524,43 @@ function funcEve = getEventFuncs(params)
                 
                 end
                 %---------------------------------------------------------%
+                
+            %If we have an event at the extract stream
+            elseif eveInExSt == 1
+                
+                %---------------------------------------------------------%            
+                %Depending on the event type, assign the corresponding
+                %event function for the step
+                
+                %If we have the sum of the light key mole fractions
+                if eveTypeMolFrac == 1
+                
+                    %Notify the user that the event is not supported
+                    noteEventNotReady(funcId);
+                      
+                %If we have the cumulative sum of the light key mole
+                %fractions
+                elseif eveTypeMolFracCum == 1
+                    
+                    %Assign the event function
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getExTaEventMoleFracCum(params,t,states);                    
+                    
+                %If we have the pressure in the unit
+                elseif eveTypePres == 1
+                    
+                    %Notify the user that the event is not supported
+                    noteEventNotReady(funcId);
+                    
+                %If we have the temperature in the unit
+                elseif eveTypeTemp == 1
+                    
+                    %Notify the user that the event is not supported
+                    noteEventNotReady(funcId);
+                
+                end
+                %---------------------------------------------------------% 
                                             
             end
             %-------------------------------------------------------------%

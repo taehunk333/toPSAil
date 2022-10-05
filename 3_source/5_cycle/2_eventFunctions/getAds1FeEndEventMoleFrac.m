@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/8/24/Wednesday
-%Code last modified on : 2022/10/3/Monday
+%Code last modified on : 2022/10/4/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -52,6 +52,7 @@ function [event,isterminal,direction] ...
     %Unpack params
     eveLkMolFrac = params.eveLkMolFrac;
     nComs        = params.nComs       ;
+    nLKs         = params.nLKs        ;
     %---------------------------------------------------------------------%
     
     
@@ -62,14 +63,15 @@ function [event,isterminal,direction] ...
     %Shift the index to be that of the last CSTR
     indSh = 0;
 
-    %Get the index for the light key
-    indLk = indSh+1;
+    %Get the indices for the light key
+    indLk    = indSh+1   ;
+    indLkEnd = indSh+nLKs;
 
     %Get the index for the last component
     indEnd = indSh+nComs;
 
     %Get the dimensionless light key concentration in the gas phase
-    gasConsLk = states(indLk);
+    gasConsLk = sum(states(indLk:indLkEnd));
 
     %Get the total gas concentration in the gas phase
     gasConsTot = sum(states(indLk:indEnd));

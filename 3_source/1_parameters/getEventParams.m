@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/1/Monday
-%Code last modified on : 2022/10/3/Monday
+%Code last modified on : 2022/10/4/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -101,8 +101,11 @@ function params = getEventParams(params)
         %For a given event location, is there no unit assigned?
         noEventUnit = strcmp(eveUnitStep,'None');
 
-        %For a given event location, is the unit 'Light_Key_[mol_frac]'?
-        eventUnitLkMoleFrac = strcmp(eveUnit,'Light_Key_[mol_frac]');
+        %For a given event location, is the unit 'Sum_LK_Mol_Frac_[-]'?
+        eventUnitLkMoleFrac = strcmp(eveUnit,'Sum_LK_Mol_Frac_[-]');
+        
+        %For a given event location, is the unit 'Cum_Sum_LK_Mol_Frac_[-]'?
+        eventUnitLkMoleFracCum = strcmp(eveUnit,'Cum_Sum_LK_Mol_Frac_[-]');
         
         %For a given event location, is the unit 'Pressure_[bar]'?
         eventUnitPressure = strcmp(eveUnit,'Pressure_[bar]');
@@ -142,7 +145,7 @@ function params = getEventParams(params)
 
             %-------------------------------------------------------------%
             %If we are given a mole fraction on the product stream purity,
-            elseif eventUnitLkMoleFrac(i)
+            elseif eventUnitLkMoleFrac(i) || eventUnitLkMoleFracCum(i)
 
                 %Define the breakthrough mole fraction
                 eveLkMolFrac(i) = eveValStep;

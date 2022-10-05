@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/5/12/Thursday
-%Code last modified on : 2022/10/3/Thursday
+%Code last modified on : 2022/10/4/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -63,17 +63,20 @@ function options = setOdeSolverOpts(params,iStates,nS,~)
     %When we have a specified event, i.e., the cell containing the event
     %function handle is not an empty cell,
     if needEvent == 1
-                                                                        
-        %Test to see if the event function will even work before solving 
-        %the ODEs
-        if testEventFunc(params,iStates,funcEve,1) == 0
-            
-            %Display the error message
-            msg = 'The event will not work with the current initial state';
-            msg = append(funcId,': ',msg);
-            error(msg);              
-            
-        end    
+                                          
+%         %Determine the side of the event function
+%         eveSide = getEventSide(params,nS);
+%         
+%         %Test to see if the event function will even work before solving 
+%         %the ODEs
+%         if testEventFunc(params,iStates,funcEve,eveSide) == 0
+%             
+%             %Display the error message
+%             msg = 'The event will not work with the current initial state';
+%             msg = append(funcId,': ',msg);
+%             error(msg);              
+%             
+%         end    
         
         %Enable the option for an event function
         event = odeset('Events', @(t,states) funcEve(params,t,states));  

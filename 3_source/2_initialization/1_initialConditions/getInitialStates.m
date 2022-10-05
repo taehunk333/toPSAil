@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2019/2/4/Monday
-%Code last modified on : 2022/9/15/Thursday
+%Code last modified on : 2022/10/4/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -49,6 +49,7 @@ function iCond = getInitialStates(params)
     yRaC        = params.yRaC       ;
     yExC        = params.yExC       ;
     nComs       = params.nComs      ;
+    nLKs        = params.nLKs       ;
     pRat        = params.pRat       ;
     pRatFe      = params.pRatFe     ;  
     pRatRa      = params.pRatRa     ;
@@ -271,20 +272,39 @@ function iCond = getInitialStates(params)
 
     %Based on the user specified input, choose the initial condition
 
-    %feed gas at a high pressure
+    %Raffinate product gas with no heavy keys at the high pressure
     if iConRaTa == 1 
         
+        %Initialize the component vector
+        yRaCNew = yRaC;
+        
+        %Remove the heavy keys
+        yRaCNew(nLKs+1:nComs) = 0;
+        
+        %Rescale the mole fractions
+        yRaCNew = yRaCNew./sum(yRaCNew);
+        
         %Assign corresponding dimensionless states for a product tank
-        raTaStates = [yFeC', ...
+        raTaStates = [yRaCNew', ...
                       tempRaTaNorm, ...
                       tempRaTaNorm, ...
                       zeros(1,2*nComs)];   
 
-    %Feed gas at a raffinate product pressure
+    %Raffinate product gas with no heavy keys at the raffinate product
+    %pressure
     elseif iConRaTa == 2
+        
+        %Initialize the component vector
+        yRaCNew = yRaC;
+        
+        %Remove the heavy keys
+        yRaCNew(nLKs+1:nComs) = 0;
+        
+        %Rescale the mole fractions
+        yRaCNew = yRaCNew./sum(yRaCNew);
 
         %Assign corresponding dimensionless states for a product tank
-        raTaStates = [pRatRa*yFeC', ...
+        raTaStates = [pRatRa*yRaCNew', ...
                       tempRaTaNorm, ...
                       tempRaTaNorm, ...
                       zeros(1,2*nComs)];   
@@ -326,20 +346,38 @@ function iCond = getInitialStates(params)
 
     %Based on the user specified input, choose the initial condition
 
-    %Feed gas at a feed pressure
+    %Extract product gas with no light key at the feed product pressure
     if iConExTa == 1 
         
+        %Initialize the component vector
+        yExCNew = yExC;
+        
+        %Remove the light keys
+        yExCNew(1:nLKs) = 0;
+        
+        %Rescale the mole fractions
+        yExCNew = yExCNew./sum(yExCNew);
+        
         %Assign corresponding dimensionless states for a product tank
-        exTaStates = [pRatFe*yFeC', ...
+        exTaStates = [pRatFe*yExCNew', ...
                       tempExTaNorm, ...
                       tempExTaNorm, ...
                       zeros(1,2*nComs)];   
 
-    %Feed gas at an extract product gas pressure
+    %Extract product gas with no light key at the extract product pressure
     elseif iConExTa == 2
-
+        
+        %Initialize the component vector
+        yExCNew = yExC;
+        
+        %Remove the light keys
+        yExCNew(1:nLKs) = 0;
+        
+        %Rescale the mole fractions
+        yExCNew = yExCNew./sum(yExCNew);
+        
         %Assign corresponding dimensionless states for a product tank
-        exTaStates = [pRatEx*yFeC', ...
+        exTaStates = [pRatEx*yExCNew', ...
                       tempExTaNorm, ...
                       tempExTaNorm, ...
                       zeros(1,2*nComs)];   
