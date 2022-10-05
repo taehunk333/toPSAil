@@ -18,16 +18,16 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2022/8/24/Wednesday
+%Code created on       : 2022/10/4/Tuesday
 %Code last modified on : 2022/10/4/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : getAds2PrEndEventMoleFrac.m
+%Function   : getFeTaEventMoleFracCum.m
 %Source     : common
-%Description: This is an event function that triggers when the mole
-%             fraction inside the n_c th CSTR inside the 1st adsorber
-%             reaches a prespecified threshold value.
+%Description: This is an event function that triggers when the cumulative
+%             mole fraction inside the feed tank reaches a prespecified 
+%             threshold value.
 %Inputs     : params       - a struct containing simulation parameters.
 %             t            - a current time point.
 %             states       - a current state vector at the current time 
@@ -41,20 +41,18 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function [event,isterminal,direction] ...
-    = getAds2PrEndEventMoleFrac(params,~,states)
+    = getFeTaEventMoleFracCum(params,~,states)
 
     %---------------------------------------------------------------------%
     %Define known quantities
     
     %Define function ID
-    %funcId = 'getAds2PrEndEventMoleFrac.m';
+    %funcId = 'getFeTaEventMoleFracCum.m';
     
     %Unpack params
-    eveLkMolFrac = params.eveLkMolFrac;
-    nVols        = params.nVols       ;
-    nStates      = params.nStates     ;
-    nComs        = params.nComs       ;
-    nColStT      = params.nColStT     ;
+    eveLkMolFrac = params.eveLkMolFrac;    
+    nComs        = params.nComs       ;    
+    inShFeTa     = params.inShFeTa    ;
     nLKs         = params.nLKs        ;
     %---------------------------------------------------------------------%
     
@@ -63,8 +61,8 @@ function [event,isterminal,direction] ...
     %---------------------------------------------------------------------%
     %Compute the event criteria 
 
-    %Shift the index to be that of the last CSTR
-    indSh = nColStT+nStates*(nVols-1);
+    %Shift the index to be that of the feed tank
+    indSh = inShFeTa+(nComs+2);
 
     %Get the indices for the light key
     indLk    = indSh+1   ;
@@ -73,16 +71,17 @@ function [event,isterminal,direction] ...
     %Get the index for the last component
     indEnd = indSh+nComs;
 
-    %Get the dimensionless light key concentration in the gas phase
-    gasConsLk = sum(states(indLk:indLkEnd));
+    %Get the total cumulative amount of the light keys at the feed tank,
+    %flown up to time t
+    gasMolLk = sum(states(indLk:indLkEnd));
 
-    %Get the total gas concentration in the gas phase
-    gasConsTot = sum(states(indLk:indEnd));
+    %Get the total cumulative amount of the all keys at the feed tank, 
+    %flown up to time t
+    gasMolTot = sum(states(indLk:indEnd));
 
-    %Compute the current light key mole fraction inside the n_c th CSTR in
-    %the 1st adsorber
-    currLkMolFrac = gasConsLk ...
-                  / gasConsTot;
+    %Compute the current light key mole fraction inside the feed tank
+    currLkMolFrac = gasMolLk ...
+                  / gasMolTot;
     %---------------------------------------------------------------------%
 
 

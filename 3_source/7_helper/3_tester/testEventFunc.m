@@ -84,7 +84,7 @@ function event = testEventFunc(params,states,func,side)
     [initVal,~,~] = func(params,0,states);
     
     %Compute the decision variable
-    decision = (side/initVal);
+    decision = sign(side/initVal);
     %---------------------------------------------------------------------%
     
     
@@ -99,7 +99,7 @@ function event = testEventFunc(params,states,func,side)
         
         event = false;
         
-    %If the ratio is greater than 0 (i.e. positive value) the evaluated 
+    %If the ratio is greater than 0 (i.e., a positive value), the evaluated 
     %value of the event funtion has to start from the positive side
     else 
         
