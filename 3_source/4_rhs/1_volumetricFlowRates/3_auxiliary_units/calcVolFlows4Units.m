@@ -59,6 +59,7 @@ function vFlUnits = calcVolFlows4Units(params,units,nS)
     sColNums         = params.sColNums        ;        
     pRatAmb          = params.pRatAmb         ;
     tempColNorm      = params.tempColNorm     ;
+    gasConsNormEq    = params.gasConsNormEq   ;
     valFeTa2AdsPrEnd = params.valFeTa2AdsPrEnd;
     valFeTa2AdsFeEnd = params.valFeTa2AdsFeEnd;
     valRaTa2AdsPrEnd = params.valRaTa2AdsPrEnd;
@@ -216,7 +217,7 @@ function vFlUnits = calcVolFlows4Units(params,units,nS)
             vFlScaleFac1 = col.(sColNums{i}).gasConsTot(:,nVols) ...
                         ./ raTaTotCon;
             vFlScaleFac2 = col.(sColNums{i}).gasConsTot(:,nVols) ...
-                        ./ (pRatAmb*tempColNorm);      
+                        ./ (pRatAmb/(gasConsNormEq*tempColNorm));      
             %c_{amb}/c_{0} = P_{amb}/P_{0} * T_{0}/T_{amb}
 
             %Grab a volumetric flow rate from the product-end of the jth 

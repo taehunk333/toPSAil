@@ -60,6 +60,7 @@ function volFlowNorm = calcVolFlowNorm(params)
     numZero     = params.numZero    ;
     tempColNorm = params.tempColNorm;
     tempFeTa    = params.tempFeTa   ;
+    gasConT     = params.gasConT    ;
     
     %Define scale factors for using valve equation in a dimensional form
     valScaleFac = 1000 ...
@@ -156,11 +157,13 @@ function volFlowNorm = calcVolFlowNorm(params)
     
         %Calculate moles in the void at upstream pressure (i.e. the feed
         %tank pressure)
-        voidMolUp = funcEos(params,presFeTa,testVol,tempAmbi,0);
+        [~,~,~,voidMolUp] ...
+            = funcEos(params,presFeTa,testVol,tempAmbi,0);
 
         %Calculate moles in the void at downstream pressure (i.e. the high
         %pressure in the void space of an adsorption column)
-        voidMolDo = funcEos(params,presColHigh,testVol,tempAmbi,0);    
+        [~,~,~,voidMolDo] ...
+            = funcEos(params,presColHigh,testVol,tempAmbi,0);    
         
     %If we have a valve constant at the product-end,
     elseif hasCvProdEnd
@@ -209,8 +212,8 @@ function volFlowNorm = calcVolFlowNorm(params)
     %dimensionless version of the function but getting dimensional values 
     %out)
     volFlowNorm = funcVal(valConHp, ...
-                          gasConsTotDo, ...
-                          gasConsTotUp, ...
+                          gasConsTotDo/gasConT, ...
+                          gasConsTotUp/gasConT, ...
                           tempFeTa/tempAmbi, ...
                           tempColNorm);         
     %---------------------------------------------------------------------%              

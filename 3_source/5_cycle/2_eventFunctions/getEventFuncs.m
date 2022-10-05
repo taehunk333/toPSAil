@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/18/Monday
-%Code last modified on : 2022/10/4/Tuesday
+%Code last modified on : 2022/10/5/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -141,10 +141,12 @@ function funcEve = getEventFuncs(params)
                 = strcmp(eveUnitStep,'Cum_Sum_LK_Mol_Frac_[-]');
             
             %Pressure threshold
-            eveTypePres = strcmp(eveUnitStep,'Pressure_[bar]');
+            eveTypePres ...
+                = strcmp(eveUnitStep,'Pressure_[bar]');
             
             %Temperature threshold
-            eveTypeTemp = strcmp(eveUnitStep,'Temperature_[K]');
+            eveTypeTemp ...
+                = strcmp(eveUnitStep,'Temperature_[K]');
             %-------------------------------------------------------------%
             
             
@@ -389,7 +391,7 @@ function funcEve = getEventFuncs(params)
                     %Assign the event function
                     funcEve{i} ...
                         = @(params,t,states) ...
-                          getFeTaEventMoleFracCum(params,t,states);                    
+                          getFeStEventMoleFracCum(params,t,states);                    
                     
                 %If we have the pressure in the unit
                 elseif eveTypePres == 1
@@ -467,7 +469,7 @@ function funcEve = getEventFuncs(params)
                     %Assign the event function
                     funcEve{i} ...
                         = @(params,t,states) ...
-                          getRaTaEventMoleFracCum(params,t,states);                    
+                          getRaStEventMoleFracCum(params,t,states);                    
                     
                 %If we have the pressure in the unit
                 elseif eveTypePres == 1
@@ -545,7 +547,7 @@ function funcEve = getEventFuncs(params)
                     %Assign the event function
                     funcEve{i} ...
                         = @(params,t,states) ...
-                          getExTaEventMoleFracCum(params,t,states);                    
+                          getExStEventMoleFracCum(params,t,states);                    
                     
                 %If we have the pressure in the unit
                 elseif eveTypePres == 1
