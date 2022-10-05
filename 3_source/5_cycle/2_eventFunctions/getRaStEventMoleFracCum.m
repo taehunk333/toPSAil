@@ -23,7 +23,7 @@
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : getRaTaEventMoleFracCum.m
+%Function   : getRaStEventMoleFracCum.m
 %Source     : common
 %Description: This is an event function that triggers when the cumulative
 %             mole fraction inside the raffinate tank reaches a 
@@ -41,13 +41,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function [event,isterminal,direction] ...
-    = getRaTaEventMoleFracCum(params,~,states)
+    = getRaStEventMoleFracCum(params,~,states)
 
     %---------------------------------------------------------------------%
     %Define known quantities
     
     %Define function ID
-    %funcId = 'getRaTaEventMoleFracCum.m';
+    %funcId = 'getRaStEventMoleFracCum.m';
     
     %Unpack params
     eveLkMolFrac = params.eveLkMolFrac;    

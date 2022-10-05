@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/1/Monday
-%Code last modified on : 2022/10/4/Tuesday
+%Code last modified on : 2022/10/5/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -144,7 +144,8 @@ function params = getEventParams(params)
 
 
             %-------------------------------------------------------------%
-            %If we are given a mole fraction on the product stream purity,
+            %If we are given a mole fraction on the purity of the sum of
+            %the light keys in a unit or in a stream,
             elseif eventUnitLkMoleFrac(i) || eventUnitLkMoleFracCum(i)
 
                 %Define the breakthrough mole fraction

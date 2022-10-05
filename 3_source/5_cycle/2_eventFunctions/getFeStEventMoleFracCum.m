@@ -23,10 +23,10 @@
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : getExTaEventMoleFracCum.m
+%Function   : getFeStEventMoleFracCum.m
 %Source     : common
 %Description: This is an event function that triggers when the cumulative
-%             mole fraction inside the extract tank reaches a prespecified 
+%             mole fraction inside the feed stream reaches a prespecified 
 %             threshold value.
 %Inputs     : params       - a struct containing simulation parameters.
 %             t            - a current time point.
@@ -41,18 +41,18 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function [event,isterminal,direction] ...
-    = getExTaEventMoleFracCum(params,~,states)
+    = getFeStEventMoleFracCum(params,~,states)
 
     %---------------------------------------------------------------------%
     %Define known quantities
     
     %Define function ID
-    %funcId = 'getExTaEventMoleFracCum.m';
+    %funcId = 'getFeStEventMoleFracCum.m';
     
     %Unpack params
     eveLkMolFrac = params.eveLkMolFrac;    
     nComs        = params.nComs       ;    
-    inShExTa     = params.inShExTa    ;
+    inShFeTa     = params.inShFeTa    ;
     nLKs         = params.nLKs        ;
     %---------------------------------------------------------------------%
     
@@ -61,25 +61,26 @@ function [event,isterminal,direction] ...
     %---------------------------------------------------------------------%
     %Compute the event criteria 
 
-    %Shift the index to be that of the extract tank
-    indSh = inShExTa+(nComs+2);
+    %Shift the index to be that of the feed tank
+    indSh = inShFeTa+(nComs+2);
 
-    %Get the indices for the heavy key
-    indHk = indSh+nLKs+1;
+    %Get the indices for the light key
+    indLk    = indSh+1   ;
+    indLkEnd = indSh+nLKs;
 
     %Get the index for the last component
     indEnd = indSh+nComs;
 
-    %Get the total cumulative amount of the light keys at the extract tank,
+    %Get the total cumulative amount of the light keys at the feed tank,
     %flown up to time t
-    gasMolHk = sum(states(indHk:indEnd));
+    gasMolLk = sum(states(indLk:indLkEnd));
 
-    %Get the total cumulative amount of the all keys at the extract tank, 
+    %Get the total cumulative amount of the all keys at the feed tank, 
     %flown up to time t
-    gasMolTot = sum(states(indHk:indEnd));
+    gasMolTot = sum(states(indLk:indEnd));
 
-    %Compute the current heavy key mole fraction inside the raffinate tank
-    currLkMolFrac = gasMolHk ...
+    %Compute the current light key mole fraction inside the feed tank
+    currLkMolFrac = gasMolLk ...
                   / gasMolTot;
     %---------------------------------------------------------------------%
 
