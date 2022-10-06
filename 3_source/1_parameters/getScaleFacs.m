@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/1/26/Wednesday
-%Code last modified on : 2022/6/9/Thursday
+%Code last modified on : 2022/10/6/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -46,9 +46,6 @@ function params = getScaleFacs(params)
     adsConT      = params.adsConT     ;
     tempAmbi     = params.tempAmbi    ;
     gasCons      = params.gasCons     ;
-    feFeVol      = params.feTaVol     ;
-    feRaVol      = params.raTaVol     ;
-    feExVol      = params.exTaVol     ;
     %---------------------------------------------------------------------% 
     
     
@@ -89,19 +86,7 @@ function params = getScaleFacs(params)
     params.valScaleFac = 1000 ...
                        * gasCons ...
                        * tempAmbi ...
-                       / params.volScaleFac;
-                     
-    %Define scaling factor for volume for tanks [-]; actually this is the
-    %inverse of the tank scale factor derived in the derivation.
-    params.feTaScaleFac = overVoid ...
-                        * colVol ...
-                        / feFeVol;
-    params.raTaScaleFac = overVoid ...
-                        * colVol ...
-                        / feRaVol;
-    params.exTaScaleFac = overVoid ...
-                        * colVol ...
-                        / feExVol;
+                       / params.volScaleFac;                         
        
     %Define scaling factor for the energy [J]
     %Energy scaling factor = $\tau 0.1 z R T_{amb} 

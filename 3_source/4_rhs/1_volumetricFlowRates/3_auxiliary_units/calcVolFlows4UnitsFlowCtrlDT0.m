@@ -19,11 +19,11 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/8/13/Saturday
-%Code last modified on : 2022/8/15/Monday
+%Code last modified on : 2022/10/5/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : calcVolFlows4UnitsFlowCtrl.m
+%Function   : calcVolFlows4UnitsFlowCtrlDT0.m
 %Source     : common
 %Description: This function calculates volumetric flow rates for the rest
 %             of the process flow diagram, based on the calcualted and thus
@@ -42,13 +42,13 @@
 %                            the process flow diagram. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function units = calcVolFlows4UnitsFlowCtrl(params,units,nS)
+function units = calcVolFlows4UnitsFlowCtrlDT0(params,units,nS)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'calcVolFlows4UnitsFlowCtrl.m';
+    %funcId = 'calcVolFlows4UnitsFlowCtrlDT0.m';
     
     %Unpack params   
     nCols         = params.nCols        ;  

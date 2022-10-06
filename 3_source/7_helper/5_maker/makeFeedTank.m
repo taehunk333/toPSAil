@@ -103,9 +103,7 @@ function feTa = makeFeedTank(params,states)
         %Unpack additional params
         htCapCvNorm   = params.htCapCvNorm  ;
         gConsNormFeTa = params.gConsNormFeTa;
-        feTaScaleFac  = params.feTaScaleFac ;
-
-        %Calculate dimensionless overall heat capacity values
+        feTaVolNorm   = params.feTaVolNorm  ;
 
         %Initialize the overall heat capacity
         htCO0 = 0;
@@ -123,8 +121,7 @@ function feTa = makeFeedTank(params,states)
         end
         
         %Save the overall heat capacity to a struct 
-        feTa.n1.htCO = gConsNormFeTa ...
-                    ./ feTaScaleFac ...
+        feTa.n1.htCO = (gConsNormFeTa*feTaVolNorm) ...
                      * htCO0;
         
     %If isothermal,

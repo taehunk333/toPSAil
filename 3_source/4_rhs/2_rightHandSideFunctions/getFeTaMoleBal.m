@@ -46,7 +46,7 @@ function units = getFeTaMoleBal(params,units)
     nComs        = params.nComs       ;
     nCols        = params.nCols       ;
     yFeC         = params.yFeC        ;
-    feTaScaleFac = params.feTaScaleFac;
+    feTaVolNorm  = params.feTaVolNorm ;
     pRatFe       = params.pRatFe      ;   
     sComNums     = params.sComNums    ;
     tempColNorm  = params.tempColNorm ;
@@ -107,7 +107,7 @@ function units = getFeTaMoleBal(params,units)
 
         %Do the mole balance on the ith tank for species j
         feTa.n1.moleBal.(sComNums{j}) ...
-            = feTaScaleFac ...
+            = (1/feTaVolNorm) ...
            .* (convfromFeRes-convOutToAds);                      
         %-----------------------------------------------------------------%                
 

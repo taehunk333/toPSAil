@@ -787,7 +787,7 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
 
     %Grab the unknown volumetric flow rates from the calculated volumetric
     %flow rates from the adsorption columns
-    units = calcVolFlows4UnitsFlowCtrl(params,units,nS);
+    units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS);
     %---------------------------------------------------------------------%  
     
 end
