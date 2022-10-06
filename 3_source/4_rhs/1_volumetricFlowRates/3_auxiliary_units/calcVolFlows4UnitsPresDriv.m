@@ -65,6 +65,7 @@ function units = calcVolFlows4UnitsPresDriv(params,units,nS)
     pRatRa          = params.pRatRa         ;
     pRatEx          = params.pRatEx         ;
     tempColNorm     = params.tempColNorm    ;
+    bool            = params.bool           ;
     
     %Unpack units
     raTa = units.raTa;
@@ -103,11 +104,21 @@ function units = calcVolFlows4UnitsPresDriv(params,units,nS)
     %---------------------------------------------------------------------%
     %Calculate the remaining boundary conditions for the feed tank unit
         
-    %The entering valve to the feed tank is always controlled to 
-    %maintain a constant pressure inside the feed tank. Therefore, we can 
-    %control the volumetric flow rate so that a constant pressure is 
-    %maintained inside the feed tank
-    vFlFeTa(:,(nCols+1)) = sum(vFlFeTa(:,1:nCols),2);    
+    %When the feed tank is isothermal, 
+    if bool(5) == 0
+
+        %The entering valve to the feed tank is always controlled to 
+        %maintain a constant pressure inside the feed tank. Therefore, we 
+        %can control the volumetric flow rate so that a constant pressure 
+        %is maintained inside the feed tank.
+        vFlFeTa(:,(nCols+1)) = sum(vFlFeTa(:,1:nCols),2); 
+
+    %When the feed tank is non-isothermal,   
+    elseif bool(5) == 1
+   
+        %TBD
+
+    end
     %---------------------------------------------------------------------%       
     
     

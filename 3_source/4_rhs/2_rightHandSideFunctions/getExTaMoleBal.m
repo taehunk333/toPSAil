@@ -47,7 +47,7 @@ function units = getExTaMoleBal(params,units,nS)
     %Unpack params
     nComs            = params.nComs           ;
     nCols            = params.nCols           ;    
-    exTaScaleFac     = params.exTaScaleFac    ;
+    exTaVolNorm      = params.exTaVolNorm     ;
     sColNums         = params.sColNums        ;
     sComNums         = params.sComNums        ;
     valAdsFeEnd2ExWa = params.valAdsFeEnd2ExWa;
@@ -139,7 +139,7 @@ function units = getExTaMoleBal(params,units,nS)
         %Save the species j result (accounting for all columns)
 
         %Do the mole balance on the ith tank for species j
-        exTa.n1.moleBal.(sComNums{j}) = exTaScaleFac ...
+        exTa.n1.moleBal.(sComNums{j}) = (1/exTaVolNorm) ...
                                      .* (-convInFromAds ... %-negative flow 
                                          -convOutToAds ...  %-positive flow                         
                                          -convOutExRes);    %-positive flow       
