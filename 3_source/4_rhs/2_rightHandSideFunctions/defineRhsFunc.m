@@ -191,7 +191,7 @@ function xDot = defineRhsFunc(~,x,params)
     %Put together the resulting right hand sides from conservation laws and
     %produce the final output (a column vector) for the right hand side 
     %function
-    xDot = getRhsFuncVals(params,units); 
+    xDot = getRhsFuncVals(params,units);         
     %---------------------------------------------------------------------%                        
          
 end
