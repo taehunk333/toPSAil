@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/8/13/Saturday
-%Code last modified on : 2022/10/5/Wednesday
+%Code last modified on : 2022/10/7/Friday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -51,9 +51,10 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
     %funcId = 'calcVolFlows4UnitsFlowCtrlDT1.m';
     
     %Unpack params   
-    nCols           = params.nCols          ;  
-    nRows           = params.nRows          ;
+    nCols           = params.nCols          ; 
     nComs           = params.nComs          ;
+    nVols           = params.nVols          ;
+    nRows           = params.nRows          ;
     pRatEx          = params.pRatEx         ;
     pRatRa          = params.pRatRa         ;
     gasConsNormEq   = params.gasConsNormEq  ;
@@ -66,9 +67,12 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
     yFeC            = params.yFeC           ;
     gasConsNormFeTa = params.gasConsNormFeTa;
     gasConsNormRaTa = params.gasConsNormRaTa;
-    gasConsNormExTa = params.gasConsNormExTa;    
+    gasConsNormExTa = params.gasConsNormExTa; 
+    sColNums        = params.sColNums       ;
+    sComNums        = params.sComNums       ;
     
     %Unpack units
+    col  = units.col ;
     feTa = units.feTa;
     raTa = units.raTa;
     exTa = units.exTa;
@@ -107,7 +111,9 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
     %Calculate the remaining boundary conditions for the feed tank unit
     
         %-----------------------------------------------------------------%
-        %Unpack feTa tank overall heat capacity at time t
+        %Unpack feed tank states variables
+        
+        %Unpack feTa tank overall heat capacity
         feTaHtCO = feTa.n1.htCO;
     
         %Unpack the temperature variables for the feed tank
@@ -124,7 +130,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
         %Obtain the time dependent terms.
         
         %Evaluate the feed stream tototal concentration
-        feedConTot = pRatFe*gasConsNormEq*tempFeedNorm;
+        feedConTot = pRatFe/(gasConsNormEq*tempFeedNorm);
 
         %Evaluate a common term for the time dependent coefficients
         phiCommon = (feTaVolNorm*gasConsNormFeTa./feTaHtCO).*feTaConTot;
@@ -142,13 +148,13 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
                  * (feTaTempWall./feTaTempCstr-1);
     
         %Calculate the molar energy term (vectorized)
-        molarEnergy = feedConTot*sum(htCapCpNorm.*yFeC);
+        molarEnergyCurr = feedConTot*sum(htCapCpNorm.*yFeC);
         
         %Calculate the time dependent coefficient for the feed stream
         phiPlusFeed = (1+phiCommon).*(feedConTot./feTaConTot) ...
                     + (feTaVolNorm*gasConsNormFeTa./feTaHtCO) ...
                    .* (tempFeedNorm./feTaTempCstr-1) ...
-                    * molarEnergy;
+                    * molarEnergyCurr;
         %-----------------------------------------------------------------%
 
 
@@ -167,35 +173,133 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
     
     %---------------------------------------------------------------------%
     %Calculate the remaining boundary conditions for the raffinate product
-    %tank unit
+    %tank unit. When the raffinate product tank pressure is greater than 
+    %equal to the raffinate product pressure and there is a net flow out, 
+    %maintain it!
     
-    %Get the net volumetric flow rate in the raffinate product tank from 
-    %the streams associated with the columns
-    vFlNetRaTa = sum(vFlRaTa(:,1:nCols),2);
-
-    %Get the total concentration of the raffinate product tank at time t
-    raTaTotCon = raTa.n1.gasConsTot;
-    
-    %Get the interior temperature of the raffinate product tank at time t
-    raTaIntTemp = raTa.n1.temps.cstr;    
-    
-    %When the raffinate product tank pressure is greater than equal to the 
-    %raffinate product pressure and there is a net flow out, maintain it!
-
-    %For each time point t,
-    for t = 1 : nRows          
+        %-----------------------------------------------------------------%
+        %Unpack Raffinate tank states
         
-        %Get the sign of the current concentration difference
-        testPres = gasConsNormEq*raTaTotCon(t)*raTaIntTemp(t) ...
-                 - pRatRa;
+        %Unpack raTa tank overall heat capacity
+        raTaHtCO = raTa.n1.htCO;                     
+    
+        %Unpack the temperature variables for the raffinate product tank
+        raTaTempCstr = raTa.n1.temps.cstr;
+        raTaTempWall = raTa.n1.temps.wall;
 
-        %Obtain the volumetric flow rate out of the constant pressure 
-        %regulator valve. The exit valve is opened only when the raffinate 
-        %tank pressure equals the raffinate product pressure.
-        vFlRaTa(t,(nCols+1)) = (testPres >= 0) ...
-                             * vFlNetRaTa(t);
-       
-    end
+        %Unpack the total concentration of the raffinate product tank
+        raTaConTot = raTa.n1.gasConsTot; 
+
+        %Unpack the volumetric flow rates in between the raffinate tank and
+        %the product-ends of the adsorbers
+        vFlCol2RaTa = vFlRaTa(:,1:nCols);
+        %-----------------------------------------------------------------%
+
+
+
+        %-----------------------------------------------------------------%
+        %Obtain the time dependent terms for the raffinate product tank, as
+        %well as the adsorbers
+
+        %Evaluate a common term for the time dependent coefficients
+        phiCommon = (raTaVolNorm*gasConsNormRaTa./raTaHtCO).*raTaConTot;
+        
+        %Obtain the time dependent coefficients for the ith column        
+        phiZeroRaff = -(1+phiCommon);         
+    
+        %Calculate the heat transfer correction term
+        raTaBeta = (raTaVolNorm./raTaHtCO) ...
+                .* (raTaTempWall./raTaTempCstr-1);                
+        
+        %Initialize the sum of the volumetric flow rate term
+        vFlRaffSum = zeros(nRows,1);
+
+        %For each adsorber,
+        for i = 1 : nCols
+
+            %Get the positive pseudo volumetric flow rate
+            vFlRaTaIn  = max(vFlCol2RaTa(:,i),0)     ;
+            vFlRaTaOut = abs(min(vFlCol2RaTa(:,i),0));
+
+            %Initialize the molar energy term 
+            molarEnergyCurr = zeros(nRows,1);
+
+            %For each species,
+            for j = 1 : nComs
+
+                %Update the molar energy term for the current adsorber at
+                %the product end
+                molarEnergyCurr ...
+                    = molarEnergyCurr ...
+                    + htCapCpNorm(j) ...
+                   .* col.(sColNums{i}).gasCons.(sComNums{j})(:,nVols);
+
+            end
+            
+            %Get the product end total concentration of the ith adsorber
+            colConTotCurr = col.(sColNums{i}).gasConsTot(:,nVols);
+
+            %Get the interior temperature for the ith adsorber
+            colTempCurr = col.(sColNums{i}).temps.cstr(:,nVols);
+
+            %Calculate the time dependent coefficient for the raffinate
+            %product tank ith inlet stream
+            phiPlusAdsCurr = (1+phiCommon).*(colConTotCurr./raTaConTot) ...
+                           + (raTaVolNorm*gasConsNormRaTa./raTaHtCO) ...
+                          .* (colTempCurr./raTaTempCstr-1) ...
+                          .* molarEnergyCurr;
+            
+            %Update the term including the sum of the product of the state
+            %dependent coefficients and the pseudo volumetric flow rates
+            vFlRaffSum = vFlRaffSum ...
+                       + (phiPlusAdsCurr.*vFlRaTaIn(:,i)) ...
+                       + (phiZeroRaff.*vFlRaTaOut(:,i));
+
+        end
+        %-----------------------------------------------------------------%
+
+
+
+        %-----------------------------------------------------------------%
+        %Calculate the volumateric flow rate for the raffinate product
+        %stream
+
+        %For each time point t,
+        for t = 1 : nRows          
+            
+            %Get the sign of the current concentration difference
+            testPres = gasConsNormEq*raTaConTot(t)*raTaTempCstr(t);
+            
+            %If the raffinate tank pressure needs to build up, 
+            if testPres < pRatRa
+                
+                %---------------------------------------------------------%
+                %Obtain the volumetric flow rate out of the constant 
+                %pressure regulator valve.
+                
+                %We need to build up the pressure; therefore, the
+                %volumetric flow rate should equal zero.
+                vFlRaTa(t,(nCols+1)) = 0;
+                %---------------------------------------------------------%
+    
+            %If the raffinate tank pressure is at (or above) the desired 
+            %pressure
+            else
+                             
+                %---------------------------------------------------------%
+                %Save the results
+
+                %Save the feed volumetric flow rate to maintain a constant
+                %pressure inside the feed tank
+                vFlRaTa(t,(nCols+1)) = -(1./phiZeroRaff(t)) ...
+                                    .* (vFlRaffSum(t)+raTaBeta(t));
+                %---------------------------------------------------------%
+    
+            end
+           
+        end
+        %-----------------------------------------------------------------%
+    
     %---------------------------------------------------------------------%
     
     

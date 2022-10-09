@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/8/13/Saturday
-%Code last modified on : 2022/8/27/Saturday
+%Code last modified on : 2022/10/6/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -66,6 +66,12 @@ function units = calcVolFlows4UnitsPresDriv(params,units,nS)
     pRatEx          = params.pRatEx         ;
     tempColNorm     = params.tempColNorm    ;
     bool            = params.bool           ;
+    tempFeedNorm    = params.tempFeedNorm   ;
+    feTaVolNorm     = params.feTaVolNorm    ;
+    gasConsNormFeTa = params.gasConsNormFeTa;
+    htCapCpNorm     = params.htCapCpNorm    ;
+    pRatFe          = params.pRatFe         ;
+    yFeC            = params.yFeC           ;
     
     %Unpack units
     raTa = units.raTa;
@@ -116,7 +122,62 @@ function units = calcVolFlows4UnitsPresDriv(params,units,nS)
     %When the feed tank is non-isothermal,   
     elseif bool(5) == 1
    
-        %TBD
+        %-----------------------------------------------------------------%
+        %Unpack feed tank states variables
+        
+        %Unpack feTa tank overall heat capacity at time t
+        feTaHtCO = feTa.n1.htCO;
+    
+        %Unpack the temperature variables for the feed tank
+        feTaTempCstr = feTa.n1.temps.cstr;
+        feTaTempWall = feTa.n1.temps.wall;
+    
+        %Unpack the feed tank total concentration
+        feTaConTot = feTa.n1.gasConsTot;        
+        %-----------------------------------------------------------------%
+
+
+
+        %-----------------------------------------------------------------%
+        %Obtain the time dependent terms.
+        
+        %Evaluate the feed stream tototal concentration
+        feedConTot = pRatFe*gasConsNormEq*tempFeedNorm;
+
+        %Evaluate a common term for the time dependent coefficients
+        phiCommon = (feTaVolNorm*gasConsNormFeTa./feTaHtCO).*feTaConTot;
+
+        %Obtain the time dependent coefficients for the ith column        
+        phiZeroFeed = -(1+phiCommon);
+    
+        %Obtain the sum of the products of the volumetric flow rates and
+        %the state dependent coefficient (vectorized)
+        vFlFeedSum = phiZeroFeed ...
+                  .* sum(vFlFeTa(:,1:nCols),2);         
+    
+        %Calculate the heat transfer correction term
+        feTaBeta = (feTaVolNorm/feTaHtCO) ...
+                 * (feTaTempWall./feTaTempCstr-1);
+    
+        %Calculate the molar energy term (vectorized)
+        molarEnergy = feedConTot*sum(htCapCpNorm.*yFeC);
+        
+        %Calculate the time dependent coefficient for the feed stream
+        phiPlusFeed = (1+phiCommon).*(feedConTot./feTaConTot) ...
+                    + (feTaVolNorm*gasConsNormFeTa./feTaHtCO) ...
+                   .* (tempFeedNorm./feTaTempCstr-1) ...
+                    * molarEnergy;
+        %-----------------------------------------------------------------%
+
+
+
+        %-----------------------------------------------------------------%
+        %Save the results
+
+        %Save the feed volumetric flow rate to maintain a constant pressure
+        %inside the feed tank
+        vFlFeTa(:,nCols+1) = -(1./phiPlusFeed).*(vFlFeedSum+feTaBeta);
+        %-----------------------------------------------------------------%
 
     end
     %---------------------------------------------------------------------%       
