@@ -184,7 +184,7 @@ function sol = runPsaCycle(params)
 
 
                 %---------------------------------------------------------%
-                %Unpack the states solutions
+                %Unpack the state solutions
                 
                 %Grab the number of time points
                 params.nRows = length(stTimePts);

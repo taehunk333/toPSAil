@@ -139,7 +139,8 @@ function vFlUnits = calcVolFlows4Units(params,units,nS)
             vFlScaleFac = col.(sColNums{i}).gasConsTot(:,1) ...
                        ./ feTaTotCon;                              
 
-            %Grab a volumetric flow rate from the feed-end of jth column
+            %Grab a volumetric flow rate from the feed-end of the jth 
+            %column
             vFlFeTa(:,i) = vFlCol(:,1) ...
                         .* vFlScaleFac; 
         

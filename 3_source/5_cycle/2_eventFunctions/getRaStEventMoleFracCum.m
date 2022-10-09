@@ -62,7 +62,7 @@ function [event,isterminal,direction] ...
     %Compute the event criteria 
 
     %Shift the index to be that of the raffinate tank
-    indSh = inShRaTa+(nComs+2);
+    indSh = inShRaTa+(2*nComs+2);
 
     %Get the indices for the light key
     indLk    = indSh+1   ;
@@ -94,7 +94,7 @@ function [event,isterminal,direction] ...
           - eveLkMolFrac ;
     %---------------------------------------------------------------------%    
     
-
+    
       
     %---------------------------------------------------------------------%
     %Specify the event criteria
