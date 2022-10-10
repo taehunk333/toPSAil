@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/28/Thursday
-%Code last modified on : 2022/8/27/Saturday
+%Code last modified on : 2022/10/9/Sunday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -63,6 +63,9 @@ function units = getRaTaMoleBal(params,units,nS)
     %---------------------------------------------------------------------%    
     %Do the mole balance for each species for all species inside each 
     %product tank
+    
+    %Initialize the total mole balance term
+    moleBalTot = 0;
         
     %For each species,
     for j = 1 : nComs
@@ -108,7 +111,7 @@ function units = getRaTaMoleBal(params,units,nS)
             %the volumetric flow rates coming out from the raffinate tank
             %should have negative sign.
             convOutToAdsK = min(0,raTa.n1.volFlRat(:,k) ...
-                               .* raTa.n1.gasCons.(sComNums{j}));
+                         .* raTa.n1.gasCons.(sComNums{j}));
                                     
             %Update the cumulative convective flow into the raffinate tank
             convInFromAds = convInFromAds ...
@@ -130,23 +133,39 @@ function units = getRaTaMoleBal(params,units,nS)
         %to the product reservoir
         
         %Convective flow out to the product reservoir
-        convOutRfRes = raTa.n1.volFlRat(:,end) ...
+        convOutRfRes = max(0,raTa.n1.volFlRat(:,end)) ...
                     .* raTa.n1.gasCons.(sComNums{j});
         %-----------------------------------------------------------------%    
 
 
 
         %-----------------------------------------------------------------%    
-        %Save the species j result (acconting for all columns)
+        %Perform the species mole balance
+        
+        %Evaluate the jth species mole balance
+        moleBalSpec = (1/raTaVolNorm) ...
+                   .* (convInFromAds ... %positive flow
+                      +convOutToAds ...  %negative flow
+                      -convOutRfRes);    %positive flow
+        %-----------------------------------------------------------------%    
+        
+        
+        
+        %-----------------------------------------------------------------%    
+        %Save the results (acconting for all columns)
         
         %Do the mole balance on the ith tank for species j
-        raTa.n1.moleBal.(sComNums{j}) = (1/raTaVolNorm) ...
-                                     .* (convInFromAds ... %positive flow
-                                        +convOutToAds ...  %negative flow
-                                        -convOutRfRes);    %positive flow             
+        raTa.n1.moleBal.(sComNums{j}) = moleBalSpec;
+        
+        %Do the total mole balance
+        moleBalTot = moleBalTot ...
+                   + moleBalSpec;
         %-----------------------------------------------------------------%                
 
     end  
+    
+    %Save the overall mole balance for the raffinate tank
+    raTa.n1.moleBalTot = moleBalTot;
     %---------------------------------------------------------------------%
     
     

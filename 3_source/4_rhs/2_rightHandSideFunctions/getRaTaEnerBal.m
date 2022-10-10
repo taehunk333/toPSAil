@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/28/Thursday
-%Code last modified on : 2022/8/27/Saturday
+%Code last modified on : 2022/10/9/Sunday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -92,10 +92,8 @@ function units = getRaTaEnerBal(params,units,nS)
     sComNums         = params.sComNums        ;           
     gConsNormRaTa    = params.gConsNormRaTa   ;
     nVols            = params.nVols           ;
-    valRaTa2AdsPrEnd = params.valRaTa2AdsPrEnd;
-    valRaTa2AdsFeEnd = params.valRaTa2AdsFeEnd;
-    valAdsPrEnd2RaWa = params.valAdsPrEnd2RaWa;
     valAdsPrEnd2RaTa = params.valAdsPrEnd2RaTa;
+    raTaVolNorm      = params.raTaVolNorm     ;
     
     %Unpack units
     col  = units.col ;
@@ -132,56 +130,45 @@ function units = getRaTaEnerBal(params,units,nS)
     
     
     
-    %---------------------------------------------------------------------%           
-    %Do the CSTR interior energy balance for the feed tank
-              
-    %Initialize the convective flow energy terms
-    convFlowEnerIn  = 0;
+    %---------------------------------------------------------------------%
+    %Unpack additional quantaties associated with the raffinate product
+    %tank
     
-    %Initialize the net molar flow in the raffinate product tank
-    netMolarFlowIn  = 0;  
-    netMolarFlowOut = 0;
+    %Unpack the net change in the total moles inside the tank
+    netChangeGasConcTot = raTa.n1.moleBalTot;
+    
+    %Unpack the temperature of the raffinate product tank
+    raTaTempCstr = raTa.n1.temps.cstr;
     %---------------------------------------------------------------------%
     
     
     
     %---------------------------------------------------------------------%
-    %Evaluate the species dependent terms, based on the flow direction and
-    %the interacting boundary
+    %Calculate the net change in the total concentration inside the 
+    %raffinate product tank
+    
+    %Compute the net change in the total conecntration term
+    presDeltaEner  = gConsNormRaTa ...
+                   * raTaVolNorm ...
+                   * raTaTempCstr ...
+                   * netChangeGasConcTot;
+    %---------------------------------------------------------------------%
+    
+    
+    
+    %---------------------------------------------------------------------%
+    %Calculate the convective flow energy term
 
-    %MOLAR FLOW RATE INTO THE RAFFINATE TANK
+    %Initialize the convective flow energy term
+    convFlowEnerIn  = 0;    
            
     %For each column,
     for i = 1 : nCols
     
-        %FLOW OUT FROM THE RAFFINATE TANK INTO THE ENDS OF THE ADSORBERS
-        %If we have a counter-current flow in the current adsorber (i.e., 
-        %we are doing a purge or pressurization at the product-end) or if
-        %we have a co-current flow in the current adsorber (i.e., we are
-        %doing co-current purge or co-current pressurization)
-        if valRaTa2AdsPrEnd(i,nS) == 1 || ...
-           valRaTa2AdsFeEnd(i,nS) == 1
-            
-            %Update the net molar flow (since the flow is in a negative
-            %direction, the voluemtric flow is negative)
-            netMolarFlowOut = netMolarFlowOut ...
-                            + min(raTa.n1.volFlRat(:,i),0) ...
-                            * raTa.n1.gasConsTot;                                                                                              
-
-        %FLOW INTO THE RAFFINATE TANK
         %If we have a co-current flow in the current adsorber and we are
         %collecting the raffinate product
-        elseif valAdsPrEnd2RaTa(i,nS) == 1
+        if valAdsPrEnd2RaTa(i,nS) == 1
 
-            %Update the net molar flow (since the flow is in the positive
-            %direction, the voluemtric flow is positive). When we are
-            %throwing away the product to the waste stream, we mave a zero
-            %net molar flow rate coming into the raffinate tank.
-            netMolarFlowIn = netMolarFlowIn ...
-                           + max(0,valAdsPrEnd2RaWa(i,nS) ... 
-                           * col.(sColNums{i}).volFlRat(:,nVols+1) ...
-                           * col.(sColNums{i}).gasConsTot(:,nVols));
-                     
             %Evaluate the species dependent terms
             for j = 1 : nComs
 
@@ -202,26 +189,14 @@ function units = getRaTaEnerBal(params,units,nS)
                 * (col.(sColNums{i}).temps.cstr(:,nVols)...
                   -raTa.n1.temps.cstr) ...
                 * convFlowEnerIn;
-        
-        %Otherwise, we don't have to do anything as there is no interaction
-        %with the raffinate product tank
-        else
             
-            %Do nothing
-            
-        end
-        
-        %Calculate the net change in the total moles inside the tank
-        netChangeInMoles = (netMolarFlowIn+netMolarFlowOut);
-        
-        %Scale the terms with the relevant pre-factors
-        presDeltaEner  = gConsNormRaTa ...
-                       * raTa.n1.temps.cstr ...
-                       * netChangeInMoles;
-        convFlowEnerIn = gConsNormRaTa ...
-                       * convFlowEnerIn;
-
-    end     
+        end           
+                
+    end         
+    
+    %Scale the terms with the relevant pre-factors    
+    convFlowEnerIn = gConsNormRaTa ...
+                   * convFlowEnerIn;
     %---------------------------------------------------------------------%
     
     

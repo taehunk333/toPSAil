@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/1/28/Friday
-%Code last modified on : 2022/8/27/Saturday
+%Code last modified on : 2022/10/9/Sunday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -62,6 +62,9 @@ function units = getExTaMoleBal(params,units,nS)
     %---------------------------------------------------------------------%    
     %Do the mole balance for each species for all species inside each 
     %product tank
+    
+    %Initialize the total mole balance term
+    moleBalTot = 0;
         
     %For each species,
     for j = 1 : nComs
@@ -93,13 +96,13 @@ function units = getExTaMoleBal(params,units,nS)
             %Account for the molar flow rate in between the raffinate
             %product tank and the kth adsorber
 
-            %Calculate the "min" of the feed-end molar flow rate of the
+            %Calculate the "min" of the feed end molar flow rate of the
             %kth column and 0. We neglect any streams diverted to the waste
             %stream.
             convInFromAdsK = min(0,valAdsFeEnd2ExWa(k,nS) ...
-                               .* col.(sColNums{k}).volFlRat(:,1) ...
-                               .* col.(sColNums{k}).gasCons. ...
-                                  (sComNums{j})(:,1));
+                          .* col.(sColNums{k}).volFlRat(:,1) ...
+                          .* col.(sColNums{k}).gasCons. ...
+                             (sComNums{j})(:,1));
             
             %Calculate the "max" of the molar flow rates from the extract
             %product tank to either the feed-end or product-end of the kth
@@ -107,7 +110,7 @@ function units = getExTaMoleBal(params,units,nS)
             %the volumetric flow rates coming out from the extract tank
             %should have positive sign.
             convOutToAdsK = max(0,exTa.n1.volFlRat(:,k) ...
-                               .* exTa.n1.gasCons.(sComNums{j}));
+                         .* exTa.n1.gasCons.(sComNums{j}));
             
             %Update the cumulative convective flow into the raffinate tank
             convInFromAds = convInFromAds ...
@@ -133,19 +136,35 @@ function units = getExTaMoleBal(params,units,nS)
                     .* exTa.n1.gasCons.(sComNums{j});
         %-----------------------------------------------------------------%    
 
-
-
+    
+        
         %-----------------------------------------------------------------%    
-        %Save the species j result (accounting for all columns)
+        %Perform the species mole balance
+        
+        %Evaluate the jth species mole balance
+        moleBalSpec = (1/exTaVolNorm) ...
+                   .* (-convInFromAds ... %-negative flow 
+                      -convOutToAds ...  %-positive flow                         
+                      -convOutExRes);    %-positive flow 
+        %-----------------------------------------------------------------%
+        
+        
+        
+        %-----------------------------------------------------------------%    
+        %Save the results (accounting for all columns)
 
         %Do the mole balance on the ith tank for species j
-        exTa.n1.moleBal.(sComNums{j}) = (1/exTaVolNorm) ...
-                                     .* (-convInFromAds ... %-negative flow 
-                                         -convOutToAds ...  %-positive flow                         
-                                         -convOutExRes);    %-positive flow       
+        exTa.n1.moleBal.(sComNums{j}) = moleBalSpec;    
+        
+        %Do the total mole balance
+        moleBalTot = moleBalTot ...
+                   + moleBalSpec;
         %-----------------------------------------------------------------%                
 
     end
+    
+    %Save the overall mole balance for the raffinate tank
+    exTa.n1.moleBalTot = moleBalTot;
     %---------------------------------------------------------------------%
     
     
