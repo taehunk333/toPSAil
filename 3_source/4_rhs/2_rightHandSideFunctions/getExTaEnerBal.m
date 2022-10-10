@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/1/28/Friday
-%Code last modified on : 2022/8/27/Saturday
+%Code last modified on : 2022/10/9/Sunday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -95,10 +95,8 @@ function units = getExTaEnerBal(params,units,nS)
     sColNums         = params.sColNums        ;
     sComNums         = params.sComNums        ;       
     gConsNormExTa    = params.gConsNormExTa   ;    
-    valExTa2AdsFeEnd = params.valExTa2AdsFeEnd;
-    valExTa2AdsPrEnd = params.valExTa2AdsPrEnd;
-    valAdsFeEnd2ExWa = params.valAdsFeEnd2ExWa;
     valAdsFeEnd2ExTa = params.valAdsFeEnd2ExTa;
+    exTaVolNorm      = params.exTaVolNorm     ;
     %---------------------------------------------------------------------%                                                 
     
     
@@ -131,93 +129,73 @@ function units = getExTaEnerBal(params,units,nS)
     
     
     
-    %---------------------------------------------------------------------%           
-    %Do the CSTR interior energy balance for the feed tank
-              
-    %Initialize the convective flow energy term
-    convFlowEner = 0;
+    %---------------------------------------------------------------------%
+    %Unpack additional quantaties associated with the extract product tank
     
-    %Initialize the net molar flow in the raffinate product tank
-    netMolarFlowIn  = 0;
-    netMolarFlowOut = 0;
+    %Unpack the net change in the total moles inside the tank
+    netChangeGasConcTot = exTa.n1.moleBalTot;
+    
+    %Unpack the temperature of the extract product tank
+    exTaTempCstr = exTa.n1.temps.cstr;
     %---------------------------------------------------------------------%
     
     
     
     %---------------------------------------------------------------------%
-    %Evaluate the species dependent terms, based on the flow direction and
-    %the interacting boundary
+    %Calculate the net change in the total concentration inside the 
+    %raffinate product tank
+    
+    %Compute the net change in the total conecntration term
+    presDeltaEner  = gConsNormExTa ...
+                   * exTaVolNorm ...
+                   * exTaTempCstr ...
+                   * netChangeGasConcTot;
+    %---------------------------------------------------------------------%
+    
+    
+    
+    %---------------------------------------------------------------------%
+    %Calculate the convective flow energy term
 
-    %For all each column,
+    %Initialize the convective flow energy term
+    convFlowEnerIn = 0;
+    
+    %For each column,
     for i = 1 : nCols
 
-        %FLOW INTO THE EXTRACT TANK FROM THE FEED-ENDS OF THE ADSORBERS
         %If we have a counter-current flow and no rinse step is going
-        %on, we may be pressurizing the extract product tank with the
-        %extract product stream from the column
+        %on, we are pressurizing the extract product tank with the extract
+        %product stream from the column
         if valAdsFeEnd2ExTa(i,nS) == 1
        
-            %Update the net molar flow (since the flow is in a negative
-            %direction, the voluemtric flow is negative)
-            netMolarFlowIn = netMolarFlowIn ...
-                           + min(0,valAdsFeEnd2ExWa(i,nS)...
-                           * col.(sColNums{i}).volFlRat(:,1) ...
-                           * col.(sColNums{i}).gasConsTot(:,1));
-                     
             %Evaluate the species dependent terms
             for j = 1 : nComs
 
                %Update the summation term for the product of the component
                %heat capacity and the species concentration in the gas
                %phase
-               convFlowEner = convFlowEner ...
-                            + htCapCpNorm(j) ...
-                            * col.(sColNums{i}).gasCons. ...
-                              (sComNums{j})(:,1);
-
+               convFlowEnerIn = convFlowEnerIn ...
+                              + htCapCpNorm(j) ...
+                              * col.(sColNums{i}).gasCons. ...
+                                (sComNums{j})(:,1);
+  
             end
             
             %Multiply the updated term with the volumetric flow rate and
             %the temperature difference
-            convFlowEner ...
-                = min(0,col.(sColNums{i}).volFlRat(:,1)) ...
+            convFlowEnerIn ...
+                = abs(min(0,col.(sColNums{i}).volFlRat(:,1))) ...
                 * (col.(sColNums{i}).temps.cstr(:,1)...
                   -exTa.n1.temps.cstr) ...
-                * convFlowEner;
+                * convFlowEnerIn;
         
-        %If we have a negative flow, we can have a rinse going on from the
-        %top-end of the adsorption column. Similarly, if we have a positive
-        %flow, we can have a rinse going on frim the bottome-end of the
-        %adsorption column.
-        elseif valExTa2AdsPrEnd(i,nS) == 1 || ...
-               valExTa2AdsFeEnd(i,nS) == 1
-      
-            %Update the net molar flow (since the flow is in a negative
-            %direction, the voluemtric flow is negative)
-            netMolarFlowOut = netMolarFlowOut ...
-                            + max(0,exTa.n1.volFlRat(i)) ...
-                            * exTa.n1.gasConsTot;           
-        
-        %Otherwise, we don't have to do anything as there is no interaction
-        %with the extract product tank
-        else 
-            
-            %Do nothing
-            
         end
-        
-        %Calculate the net change in the total moles inside the tank; the
-        %negative sign accounts for the negative flow direction.
-        netChangeInMoles = -(netMolarFlowIn+netMolarFlowOut);
-        
-        %Scale the terms with the relevant pre-factors
-        presDeltaEner = gConsNormExTa ...
-                      * exTa.n1.temps.cstr ...
-                      * netChangeInMoles;
-        convFlowEner = gConsNormExTa ...
-                     * convFlowEner;
-        
-    end                                                                   
+                        
+    end 
+    
+    %Scale the terms with the relevant pre-factors        
+    convFlowEnerIn = gConsNormExTa ...
+                   * convFlowEnerIn;
     %---------------------------------------------------------------------%
         
         
@@ -228,7 +206,7 @@ function units = getExTaEnerBal(params,units,nS)
     %Update the existing field
     exTa.n1.cstrEnBal = (exTa.n1.cstrEnBal ...
                         +presDeltaEner ...
-                        +convFlowEner) ...
+                        +convFlowEnerIn) ...
                       / exTa.n1.htCO;        
     %---------------------------------------------------------------------%
     
