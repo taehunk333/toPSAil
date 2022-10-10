@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/4/10/Monday
-%Code last modified on : 2022/8/16/Tuesday
+%Code last modified on : 2022/10/10/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -61,6 +61,9 @@ function units = getFeTaMoleBal(params,units)
     %---------------------------------------------------------------------%    
     %Do the mole balance for each species for all species inside each 
     %feed tank
+    
+    %Initialize the total mole balance term
+    moleBalTot = 0;
       
     %For each species,
     for j = 1 : nComs
@@ -103,15 +106,30 @@ function units = getFeTaMoleBal(params,units)
 
 
         %-----------------------------------------------------------------%    
-        %Save the species j result (acconting for all columns)
+        %Perform the species mole balance
+        
+        %Evaluate the jth species mole balance
+        moleBalSpec = (1/feTaVolNorm) ...
+                   .* (convfromFeRes-convOutToAds);  
+        %-----------------------------------------------------------------%
+        
+        
+        
+        %-----------------------------------------------------------------%    
+        %Save the j results (acconting for all columns)
 
         %Do the mole balance on the ith tank for species j
-        feTa.n1.moleBal.(sComNums{j}) ...
-            = (1/feTaVolNorm) ...
-           .* (convfromFeRes-convOutToAds);                      
+        feTa.n1.moleBal.(sComNums{j}) = moleBalSpec;    
+        
+        %Do the total mole balance
+        moleBalTot = moleBalTot ...
+                   + moleBalSpec;
         %-----------------------------------------------------------------%                
 
     end
+    
+    %Save the overall mole balance for the raffinate tank
+    feTa.n1.moleBalTot = moleBalTot;
     %---------------------------------------------------------------------%
     
     
