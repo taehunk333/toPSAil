@@ -104,9 +104,12 @@ function units = getExTaEnerBal(params,units,nS)
     %---------------------------------------------------------------------%    
     %Do the CSTR wall energy balance for the feed tank
     
+    %Unpack the temperature of the extract product tank
+    exTaTempCstr = exTa.n1.temps.cstr;
+    
     %Compute the interior heat transfer rates
     dQndt = exTa.n1.temps.wall ...
-          - exTa.n1.temps.cstr;
+          - exTaTempCstr;
 
     %Compute the exterior heat transfer rates
     dQnwdt = tempAmbiNorm ...
@@ -133,10 +136,7 @@ function units = getExTaEnerBal(params,units,nS)
     %Unpack additional quantaties associated with the extract product tank
     
     %Unpack the net change in the total moles inside the tank
-    netChangeGasConcTot = exTa.n1.moleBalTot;
-    
-    %Unpack the temperature of the extract product tank
-    exTaTempCstr = exTa.n1.temps.cstr;
+    netChangeGasConcTot = exTa.n1.moleBalTot;        
     %---------------------------------------------------------------------%
     
     
@@ -186,7 +186,7 @@ function units = getExTaEnerBal(params,units,nS)
             convFlowEnerIn ...
                 = abs(min(0,col.(sColNums{i}).volFlRat(:,1))) ...
                 * (col.(sColNums{i}).temps.cstr(:,1)...
-                  -exTa.n1.temps.cstr) ...
+                  -exTaTempCstr) ...
                 * convFlowEnerIn;
         
         end
