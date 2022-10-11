@@ -105,9 +105,12 @@ function units = getRaTaEnerBal(params,units,nS)
     %---------------------------------------------------------------------%    
     %Do the CSTR wall energy balance for the feed tank
     
+    %Unpack the temperature of the raffinate product tank
+    raTaTempCstr = raTa.n1.temps.cstr;
+    
     %Compute the interior heat transfer rates
     dQndt = raTa.n1.temps.wall ...
-          - raTa.n1.temps.cstr;
+          - raTaTempCstr;
 
     %Compute the exterior heat transfer rates
     dQnwdt = tempAmbiNorm ...
@@ -135,10 +138,7 @@ function units = getRaTaEnerBal(params,units,nS)
     %tank
     
     %Unpack the net change in the total moles inside the tank
-    netChangeGasConcTot = raTa.n1.moleBalTot;
-    
-    %Unpack the temperature of the raffinate product tank
-    raTaTempCstr = raTa.n1.temps.cstr;
+    netChangeGasConcTot = raTa.n1.moleBalTot;        
     %---------------------------------------------------------------------%
     
     
@@ -187,7 +187,7 @@ function units = getRaTaEnerBal(params,units,nS)
             convFlowEnerIn ...
                 = max(0,col.(sColNums{i}).volFlRat(:,nVols+1)) ...
                 * (col.(sColNums{i}).temps.cstr(:,nVols)...
-                  -raTa.n1.temps.cstr) ...
+                  -raTaTempCstr) ...
                 * convFlowEnerIn;
             
         end           

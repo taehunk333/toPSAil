@@ -102,9 +102,12 @@ function units = getFeTaEnerBal(params,units)
     %---------------------------------------------------------------------%    
     %Do the CSTR wall energy balance for the feed tank
     
+    %Unpack the temperature of the feed tank
+    feTaTempCstr = feTa.n1.temps.cstr;
+    
     %Compute the interior heat transfer rates
     dQndt = feTa.n1.temps.wall ...
-          - feTa.n1.temps.cstr;
+          - feTaTempCstr;
 
     %Compute the exterior heat transfer rates
     dQnwdt = tempAmbiNorm ... 
@@ -131,10 +134,7 @@ function units = getFeTaEnerBal(params,units)
     %Unpack additional quantaties associated with the extract product tank
     
     %Unpack the net change in the total moles inside the feed tank
-    netChangeGasConcTot = feTa.n1.moleBalTot;
-    
-    %Unpack the temperature of the feed tank
-    feTaTempCstr = feTa.n1.temps.cstr;
+    netChangeGasConcTot = feTa.n1.moleBalTot;        
     %---------------------------------------------------------------------%
     
     

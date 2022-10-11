@@ -42,11 +42,13 @@ function options = setOdeSolverOpts(params,iStates,nS,nCy)
     %Define known quantities
     
     %Name the function ID
-    funcId = 'setOdeSolverOpts.m';    
+    %funcId = 'setOdeSolverOpts.m';    
     
     %Unpack params              
-    funcEve = params.funcEve{nS};
-    bool    = params.bool       ;
+    funcEve   = params.funcEve{nS};
+    bool      = params.bool       ;
+    odeAbsTol = params.odeAbsTol  ;
+    odeRelTol = params.odeRelTol  ;
     %---------------------------------------------------------------------%                            
    
     
@@ -112,7 +114,7 @@ function options = setOdeSolverOpts(params,iStates,nS,nCy)
     %Define a structure for the ode solver tolerance values
     
     %Assign the tolerance values
-    tols = odeset('RelTol',1e-3,'AbsTol',1e-6);
+    tols = odeset('RelTol',odeRelTol,'AbsTol',odeAbsTol);
     %---------------------------------------------------------------------%
     
     
