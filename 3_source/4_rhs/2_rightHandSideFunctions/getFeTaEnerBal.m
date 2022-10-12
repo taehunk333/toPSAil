@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/28/Thursday
-%Code last modified on : 2022/10/10/Monday
+%Code last modified on : 2022/10/12/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -50,17 +50,8 @@ function units = getFeTaEnerBal(params,units)
         
         %-----------------------------------------------------------------%
         %Don't do the energy balance on the feed tank
-        feTa.n1.cstrEnBal = 0;            
-        feTa.n1.wallEnBal = 0;  
-        %-----------------------------------------------------------------%
-        
-        
-        
-        %-----------------------------------------------------------------%                          
-        %Return the updated structure for the units
-
-        %Pack units
-        units.feTa = feTa;
+        units.feTa.n1.cstrEnBal = 0;            
+        units.feTa.n1.wallEnBal = 0;  
         %-----------------------------------------------------------------%
         
         

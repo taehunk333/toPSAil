@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2020/12/12/Saturday
-%Code last modified on : 2022/8/29/Monday
+%Code last modified on : 2022/10/12/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -60,13 +60,16 @@ function newStates = calcIsothermLinear(params,states,nAds)
     %funcId = 'calcIsothermLinear.m';
     
     %Unpack params
-    nStates  = params.nStates ;
-    nColStT  = params.nColStT ;
-    nComs    = params.nComs   ;
-    sComNums = params.sComNums; 
-    nVols    = params.nVols   ;
-    bool     = params.bool    ;
-    nRows    = params.nRows   ;       
+    nStates      = params.nStates      ;
+    nColStT      = params.nColStT      ;
+    nComs        = params.nComs        ;
+    sComNums     = params.sComNums     ; 
+    nVols        = params.nVols        ;
+    bool         = params.bool         ;
+    nRows        = params.nRows        ; 
+    qSatC        = params.qSatC        ;
+    gConScaleFac = params.gConScaleFac ;
+    aConScaleFac = params.aConScaleFac ; 
     %---------------------------------------------------------------------%
     
 
@@ -110,12 +113,7 @@ function newStates = calcIsothermLinear(params,states,nAds)
     isIsoNonThermal = bool(5);
 
     %If non-isothermal operation,
-    if isIsoNonThermal == 1
-
-        %Unpack params additionally
-        qSatC         = params.qSatC        ;
-        gConScaleFac  = params.gConScaleFac ;
-        aConScaleFac  = params.aConScaleFac ; 
+    if isIsoNonThermal == 1        
                        
         %Get the affinity parameter matrix at a specified CSTR temperature 
         %for all CSTRs
@@ -163,7 +161,11 @@ function newStates = calcIsothermLinear(params,states,nAds)
     elseif isIsoNonThermal == 0            
         
         %Unpack params additionally 
-        dimLessHenry = params.dimLessHenry;
+        bC = params.bC;
+        
+        %Calculae the dimensionless Henry's constant
+        dimLessHenry = (qSatC.*bC) ...
+                     * (gConScaleFac/aConScaleFac);
 
         %Check to see if we have a singel CSTR
         if nAds == 0

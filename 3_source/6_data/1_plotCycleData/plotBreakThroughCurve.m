@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/10/Wednesday
-%Code last modified on : 2022/2/17/Thursday
+%Code last modified on : 2022/10/12/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -46,8 +46,14 @@ function plotBreakThroughCurve(params,sol,colNum)
     %Unpack Params
     brkThrPur  = params.yRaC(1)   ;   
     tiScaleFac = params.tiScaleFac;    
+    sStepCol   = params.sStepCol  ;
     sComNums   = params.sComNums  ;
-    sColNums   = params.sColNums  ;    
+    sColNums   = params.sColNums  ; 
+    eveLoc     = params.eveLoc    ;
+    lastStep   = sol.lastStep     ;
+    nSteps     = params.nSteps    ;
+    nRows      = params.nRows     ;
+    nLKs       = params.nLKs      ; 
     %---------------------------------------------------------------------%
 
   
@@ -85,12 +91,25 @@ function plotBreakThroughCurve(params,sol,colNum)
     %---------------------------------------------------------------------%
     %Calcualte needed quantities
             
-    %Find all the indices for the high pressure step in the current
-    %adsorption column
-    [indHpEnd,eveCount] = grabHighPresFeedEvent(params,sol,colNum);
+    %Find the high pressure steps
+    indHp = contains(sStepCol,"HP");
     
-    %If no event happened at all,
-    if sum(eveCount) == 0
+    %Find the last high pressure step
+    indHp = find(indHp,1,'last');
+    
+    %Get the current adsorber name
+    adsNameCurr = strcat("Adsorber","_",int2str(colNum));
+    
+    %If an event is expected in the current HP step in the current adsorber
+    if contains(eveLoc{indHp},adsNameCurr)
+
+        %Find the last high pressure step with the event
+        indHpEnd = lastStep ...
+                 - nSteps ...
+                 + indHp;     
+
+    %If no event happened at all,    
+    else
 
         %Close the figure
         close(figure(figNum));
@@ -98,12 +117,6 @@ function plotBreakThroughCurve(params,sol,colNum)
         %Return to the invoking function
         return
     
-    %If an event happened, 
-    else
-        
-        %Pick the last high pressure step with the event
-        indHpEnd= indHpEnd(end); 
-        
     end
     %---------------------------------------------------------------------%
     
@@ -125,10 +138,23 @@ function plotBreakThroughCurve(params,sol,colNum)
     %Grab the total concentration
     totConc = sol.(append('Step',int2str(indHpEnd))). ...
               col.(sColNums{colNum}).gasConsTot(:,end);
+    
+    %Initialize the sum of the light key concentrations
+    sumLkConcs = zeros(nRows,1);
 
+    %Obtain the sum of the light key concentrations
+    for j = 1 : nLKs
+
+        %Update the currnet sum of the total gas concentration in the
+        %raffinate product tank
+        sumLkConcs = sumLkConcs ...
+                   + sol.(append('Step',int2str(indHpEnd))). ...
+                     col.(sColNums{colNum}).gasCons.(sComNums{j})(:,end);
+
+    end        
+          
     %Grab the total pressure for jth adsorption column in ith step
-    purity = sol.(append('Step',int2str(indHpEnd))). ...
-             col.(sColNums{colNum}).gasCons.(sComNums{1})(:,end) ...
+    purity = sumLkConcs ...
           ./ totConc;
 
     %Plot the ith step with jth column

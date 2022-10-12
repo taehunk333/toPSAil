@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/10/Wednesday
-%Code last modified on : 2022/8/23/Tuesday
+%Code last modified on : 2022/10/12/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -92,8 +92,11 @@ function plotGasConsHighPresFeed(params,sol,colNum)
     %Calculate axial distance for the adsorption column 
     height = linspace(1,heightCol,nVols);
     
-    %Find the high pressure step
+    %Find the high pressure steps
     indHp = contains(sStepCol,"HP");
+    
+    %Find the last high pressure step
+    indHp = find(indHp,1,'last');
     
     %Find the last high pressure step
     indHpEnd = lastStep ...

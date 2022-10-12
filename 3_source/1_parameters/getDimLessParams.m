@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/5/Tuesday
-%Code last modified on : 2022/8/8/Monday
+%Code last modified on : 2022/10/12/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -158,74 +158,7 @@ function params = getDimLessParams(params)
                        .* valScaleFac;
 
     end
-    %---------------------------------------------------------------------%               
-    
-
-    
-    %---------------------------------------------------------------------%               
-    %Get dimensionless isotherm parameters
-
-    %Determine to see if we have an isothermal case or not
-    isNonIsothermal = bool(5);
-
-    %Determine which isotherm model we have
-    whichIsotherm = modSp(1);
-
-    %If we have a custom isotherm
-    if whichIsotherm == 0
-
-        %Currently, no custom isotherm model is supported.
-        error("toPSAil: No custom isotherm model is supported.")
-
-    %If we have the Henry's law,
-    elseif whichIsotherm == 1
-                
-        %When we have an isothermal case
-        if isNonIsothermal == 0
-
-            %Unpack additional params
-            bC    = params.bC   ;
-            qSatC = params.qSatC;
-
-            %Define dimensionless Henry's constants
-            dimLessHenry = (qSatC.*bC) ...
-                         * (gConScaleFac/aConScaleFac);
-
-            %Remove unnecessary fields
-            params = rmfield(params,'bC')   ; 
-            params = rmfield(params,'qSatC'); 
-
-            %Save to params
-            params.dimLessHenry = dimLessHenry;
-
-        end
-
-    %If we have the Extended Langmuir Isotherm,
-    elseif whichIsotherm == 2
-
-        %When we have an isothermal case
-        if isNonIsothermal == 0
-
-            %Unpack additional params
-            bC    = params.bC   ;
-            qSatC = params.qSatC;
-    
-            %Obtain dimensionless isotherm paramters
-            bCDimLess   = bC / gConScaleFac   ;
-            qSatDimLess = qSatC / aConScaleFac;
-
-            %Remove unnecessary fields
-            params = rmfield(params,'bC')   ; 
-            params = rmfield(params,'qSatC'); 
-
-            %Save to params
-            params.bCDimLess   = bCDimLess  ;
-            params.qSatDimLess = qSatDimLess;
-
-        end
-
-    end
-    %---------------------------------------------------------------------%               
+    %---------------------------------------------------------------------%             
 
 
 

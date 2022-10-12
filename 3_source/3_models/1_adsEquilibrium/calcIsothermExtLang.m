@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2020/12/14/Monday
-%Code last modified on : 2022/8/30/Tuesday
+%Code last modified on : 2022/10/12/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -55,13 +55,17 @@ function newStates = calcIsothermExtLang(params,states,nAds)
     %funcId = 'calcIsothermExtLang.m';
     
     %Unpack params
-    nStates  = params.nStates ;
-    nColStT  = params.nColStT ;
-    nComs    = params.nComs   ;
-    sComNums = params.sComNums; 
-    nVols    = params.nVols   ;
-    bool     = params.bool    ;
-    nRows    = params.nRows   ;
+    nStates      = params.nStates     ;
+    nColStT      = params.nColStT     ;
+    nComs        = params.nComs       ;
+    sComNums     = params.sComNums    ; 
+    nVols        = params.nVols       ;
+    bool         = params.bool        ;
+    nRows        = params.nRows       ;    
+    bC           = params.bC          ;
+    qSatC        = params.qSatC       ;
+    gConScaleFac = params.gConScaleFac;
+    aConScaleFac = params.aConScaleFac;
     %---------------------------------------------------------------------%
     
     
@@ -174,8 +178,8 @@ function newStates = calcIsothermExtLang(params,states,nAds)
     elseif isIsoNonThermal == 0            
         
         %Unpack params additionally 
-        bCDimLess   = params.bCDimLess  ;
-        qSatDimLess = params.qSatDimLess;
+        bCDimLess   = (bC/gConScaleFac)   ;
+        qSatDimLess = (qSatC/aConScaleFac);
 
         %Check to see if we have a singel CSTR
         if nAds == 0

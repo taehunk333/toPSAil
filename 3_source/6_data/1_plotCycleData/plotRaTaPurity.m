@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/10/Wednesday
-%Code last modified on : 2022/2/14/Monday
+%Code last modified on : 2022/10/12/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -44,9 +44,11 @@ function plotRaTaPurity(params,sol,raTaNum)
     lastStep   = sol.lastStep     ;
     tiScaleFac = params.tiScaleFac;
     color      = params.color     ;
+    nLKs       = params.nLKs      ;
+    sComNums   = params.sComNums  ;
+    nRows      = params.nRows     ;
     %---------------------------------------------------------------------%
 
-    
     
     
     %---------------------------------------------------------------------%
@@ -96,9 +98,23 @@ function plotRaTaPurity(params,sol,raTaNum)
             
         %Hold on to the figure
         hold on;
+        
+        %Initialize the sum of the light key concentrations
+        sumLkConcs = zeros(nRows,1);
+        
+        %Obtain the sum of the light key concentrations
+        for j = 1 : nLKs
+            
+            %Update the currnet sum of the total gas concentration in the
+            %raffinate product tank
+            sumLkConcs = sumLkConcs ...
+                       + sol.(append('Step',int2str(i))). ...
+                         raTa.n1.gasCons.(sComNums{j});
+            
+        end    
 
         %Grab total pressure for jth adsorption column in ith step
-        purity = sol.(append('Step',int2str(i))).raTa.n1.gasCons.C1 ...
+        purity = sumLkConcs ...
               ./ sol.(append('Step',int2str(i))).raTa.n1.gasConsTot;
 
         %Plot the ith step with jth column
