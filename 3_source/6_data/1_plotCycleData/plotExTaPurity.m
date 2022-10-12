@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/1/31/Monday
-%Code last modified on : 2022/2/14/Monday
+%Code last modified on : 2022/10/12/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -44,11 +44,14 @@ function plotExTaPurity(params,sol,exTaNum)
     lastStep   = sol.lastStep     ;
     tiScaleFac = params.tiScaleFac;
     color      = params.color     ;
+    nLKs       = params.nLKs      ;
+    nComs      = params.nComs     ;
+    sComNums   = params.sComNums  ;
+    nRows      = params.nRows     ;
     %---------------------------------------------------------------------%
 
     
-    
-    
+        
     %---------------------------------------------------------------------%
     %Set up the figure for plotting
     
@@ -96,9 +99,23 @@ function plotExTaPurity(params,sol,exTaNum)
             
         %Hold on to the figure
         hold on;
+        
+        %Initialize the sum of the light key concentrations
+        sumHkConcs = zeros(nRows,1);
+        
+        %Obtain the sum of the light key concentrations
+        for j = (nLKs+1) : nComs
+            
+            %Update the currnet sum of the total gas concentration in the
+            %raffinate product tank
+            sumHkConcs = sumHkConcs ...
+                       + sol.(append('Step',int2str(i))). ...
+                         exTa.n1.gasCons.(sComNums{j});
+            
+        end    
 
         %Grab total pressure for jth adsorption column in ith step
-        purity = sol.(append('Step',int2str(i))).exTa.n1.gasCons.C1 ...
+        purity = sumHkConcs ...
               ./ sol.(append('Step',int2str(i))).exTa.n1.gasConsTot;
 
         %Plot the ith step with jth column

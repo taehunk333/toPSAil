@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/1/28/Friday
-%Code last modified on : 2022/10/9/Sunday
+%Code last modified on : 2022/10/12/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -52,20 +52,11 @@ function units = getExTaEnerBal(params,units,nS)
         
         %-----------------------------------------------------------------%
         %Don't do the energy balance on the feed tank
-        exTa.n1.cstrEnBal = 0;            
-        exTa.n1.wallEnBal = 0;  
+        units.exTa.n1.cstrEnBal = 0;            
+        units.exTa.n1.wallEnBal = 0;  
         %-----------------------------------------------------------------%
         
-        
-        
-        %-----------------------------------------------------------------%                          
-        %Return the updated structure for the units
-
-        %Pack units
-        units.exTa = exTa;
-        %-----------------------------------------------------------------%
-        
-        
+     
         
         %-----------------------------------------------------------------%
         %Skip non-isothermal simulation

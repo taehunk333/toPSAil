@@ -91,8 +91,11 @@ function plotColCstrTempProfiles(params,sol,colNum)
     %Calculate axial distance for the adsorption column 
     height = linspace(1,heightCol,nVols);
     
-    %Find the high pressure step
+    %Find the high pressure steps
     indHp = contains(sStepCol,"HP");
+    
+    %Find the last high pressure step
+    indHp = find(indHp,1,'last');
     
     %Find the last high pressure step
     indHpEnd = lastStep ...

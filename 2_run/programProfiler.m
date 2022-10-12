@@ -64,10 +64,15 @@ function programProfiler()
 %                   "/2_event_driven", ...
 %                   "/1-col_non-isothermal_no_axial_pressure_drop");
              
-    %test 4 (Windows)
+%     %test 4 (Windows)
+%     name = strcat("1_kayser", ...
+%                   "\2_event_driven", ...
+%                   "\1-col_non-isothermal_no_axial_pressure_drop");
+              
+    %test 5 (windows)
     name = strcat("1_kayser", ...
                   "\2_event_driven", ...
-                  "\1-col_non-isothermal_no_axial_pressure_drop");
+                  "\1-col_isothermal_no_axial_pressure_drop");
     
     %---------------------------------------------------------------------%
     

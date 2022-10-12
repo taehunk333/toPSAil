@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/4/11/Monday
-%Code last modified on : 2022/4/11/Monday
+%Code last modified on : 2022/10/12/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -57,21 +57,12 @@ function units = getColEnerBal(params,units)
         for i = 1 : nCols
         
             %Don't do the energy balance on the columns
-            col.(sColNums{i}).cstrEnBal = zeros(1,nVols);            
-            col.(sColNums{i}).wallEnBal = zeros(1,nVols);  
+            units.col.(sColNums{i}).cstrEnBal = zeros(1,nVols);            
+            units.col.(sColNums{i}).wallEnBal = zeros(1,nVols);  
             
         end
         %-----------------------------------------------------------------%
-        
-        
-        
-        %-----------------------------------------------------------------%                          
-        %Return the updated structure for the units
-
-        %Pack units
-        units.col = col;
-        %-----------------------------------------------------------------%
-        
+    
         
         
         %-----------------------------------------------------------------%
