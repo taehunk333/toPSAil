@@ -431,9 +431,9 @@ function sol = runPsaCycle(params)
                 %Find the event column name
                 eveLocStep = eveLoc{currStepNum};
                 
-                %Calculate actual step duration
-                eTi = round(stTimePts(end)*tiScaleFac); %round to a 
-                                                        %nearest integer
+                %Calculate actual step duration (round to a nearest
+                %integer)
+                eTi = round(stTimePts(end)*tiScaleFac);
                 
                 %Get the requested step duration
                 eTi0 = round(stepTimes(currStepNum));
