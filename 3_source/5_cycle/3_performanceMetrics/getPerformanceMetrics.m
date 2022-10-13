@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/16/Tuesday
-%Code last modified on : 2022/1/31/Monday
+%Code last modified on : 2022/10/13/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -45,6 +45,8 @@ function sol = getPerformanceMetrics(params,sol,nS,nCy)
     
     %Define function ID
     %funcId = 'getPerformanceMetrics.m';
+    nLKs  = params.nLKs ;
+    nComs = params.nComs;
     %---------------------------------------------------------------------%
     
     
@@ -60,7 +62,7 @@ function sol = getPerformanceMetrics(params,sol,nS,nCy)
     %product harnessed in a given PSA cycle
     [extrProd,extrWaste] = getExtrMoleCycle(params,sol,nS,nCy);  
     
-    %Amount should be a positive quantity
+    %Amounts should be positive quantities
     extrProd  = abs(extrProd) ;
     extrWaste = abs(extrWaste);
     
@@ -103,22 +105,22 @@ function sol = getPerformanceMetrics(params,sol,nS,nCy)
     
     %Mole fraction of light key in the raffinate
     sol.perMet.productPurity(nCy,1) ...
-        = raffProd(1) ...
+        = sum(raffProd(1:nLKs)) ...
         / prodMolRaffTot;      
     
     %Mole fraction of heavy keys in the extract
-    sol.perMet.productPurity(nCy,2:end) ...
-        = extrProd(2:end) ...
+    sol.perMet.productPurity(nCy,2) ...
+        = sum(extrProd(nLKs+1:nComs)) ...
        ./ prodMolExtrTot;      
           
     %Save the product recovery
     %[=] moles of product/moles of feed
-    sol.perMet.productRecovery(nCy,1) ...
-        = raffProd(1) ...
-       ./ feed(1);  
-    sol.perMet.productRecovery(nCy,2:end) ...
-        = extrProd(2:end) ...
-       ./ feed(2:end);  
+    sol.perMet.productRecovery(nCy,1:nLKs) ...
+        = raffProd(1:nLKs) ...
+       ./ feed(1:nLKs);  
+    sol.perMet.productRecovery(nCy,nLKs+1:nComs) ...
+        = extrProd(nLKs+1:nComs) ...
+       ./ feed(nLKs+1:nComs);  
     
     %Save the productivity
     %[=] millimoles of product/seconds

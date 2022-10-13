@@ -169,7 +169,7 @@ function [params,fullParams] = getSimParams(exampleFolder)
     
     %---------------------------------------------------------------------%    
     %Identify system information
-        
+    
     %Get parameters associated with the system's state variables
     params = getStatesParams(params);
     

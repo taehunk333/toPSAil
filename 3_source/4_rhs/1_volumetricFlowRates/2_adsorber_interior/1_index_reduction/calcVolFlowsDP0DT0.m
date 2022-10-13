@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/24/Sunday
-%Code last modified on : 2022/5/11/Wednesday
+%Code last modified on : 2022/10/12/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -94,8 +94,11 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
 
                 %---------------------------------------------------------%
                 %Unpack additional params
-                coefMatPlus  = params.coefMat{i,nS}{1};
-                coefMatMinus = params.coefMat{i,nS}{2};
+                coefMat      = params.coefMat  ;    
+                
+                %Define the coefficient matrices
+                coefMatPlus  = coefMat{i,nS}{1};
+                coefMatMinus = coefMat{i,nS}{2};
                 %---------------------------------------------------------%                        
 
 
@@ -133,8 +136,8 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                     %-----------------------------------------------------% 
                     %Handle the boundary condition
                     
-                    %Take account for the boundary condition on the right 
-                    %hand side vector
+                    %Take account for the boundary condition on the 
+                    %right-hand side vector
                     vFlBoFe ...
                         = vFlBo{2,i,nS}(params,col,feTa,raTa,exTa,nS,i);
                     
@@ -163,7 +166,7 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
                     if flowDirStep == 1
                         
                         %-------------------------------------------------%
-                        %Calculate the pseudo volumetric flwo rates
+                        %Calculate the pseudo volumetric flow rates
                         
                         %Set the positive pseudo volumetric flow rates
                         %equal to a zero vector

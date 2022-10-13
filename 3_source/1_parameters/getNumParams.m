@@ -47,6 +47,7 @@ function params = getNumParams(params)
     nSteps         = params.nSteps        ;
     valFeedColNorm = params.valFeedColNorm;
     valProdColNorm = params.valProdColNorm;
+    flowDirCol     = params.flowDirCol    ;
     %---------------------------------------------------------------------%    
     
     
@@ -105,11 +106,11 @@ function params = getNumParams(params)
         %is given
         
         %Create a vector for the diagonal at +1 position
-        abovDiag = ones(1,params.nVols-1);
+        abovDiag = ones(1,nVols-1);
 
         %Create a coefficient matrix for a specified value of v_N
         upTriPlusCoPr = diag(abovDiag,+1) ...
-                      - eye(params.nVols);
+                      - eye(nVols);
 
         %Save as a sparse matrix
         upTriPlusCoPr = sparse(upTriPlusCoPr);
@@ -138,7 +139,10 @@ function params = getNumParams(params)
             
             %See if the feed-end of the column has a Cv
             feedHasCv = valFeedColNorm(j,i) ~= 1 && ...
-                        valFeedColNorm(j,i) ~= 0;                        
+                        valFeedColNorm(j,i) ~= 0;       
+                    
+            %Get the flow direction
+            flowDirColCurr = flowDirCol(j,i);
             %-------------------------------------------------------------%
             
             
@@ -155,14 +159,18 @@ function params = getNumParams(params)
             
             %If we have a constant pressure DAE model with a CV in the
             %product-end,
-            elseif typeDaeModel(j,i) == 0 && prodHasCv
+            elseif typeDaeModel(j,i) == 0 && ...
+                   prodHasCv && ...
+                   flowDirColCurr == 1
                 
                 %We assign the coefficient matrix for the product-end
                 coefMat{j,i} = {upTriPlusCoPr,-upTriPlusCoPr};
             
             %If we have a constant pressure DAE model with a CV in the
             %feed-end,    
-            elseif typeDaeModel(j,i) == 0 && feedHasCv    
+            elseif typeDaeModel(j,i) == 0 && ...
+                   feedHasCv && ...
+                   flowDirColCurr == 0
                 
                 %We assign the coefficient matrix for the feed-end
                 coefMat{j,i} = {loTriPlusCoPr,-loTriPlusCoPr};

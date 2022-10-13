@@ -134,8 +134,8 @@ function runPsaProcessSimulation(folderName)
     end            
     
     %Run the timer
-    [initime,time] = startFuncTimer();
-       
+    [initime,time] = startFuncTimer();         
+    
     %Call runPsaCycle.m function to simulate a given cycle
     sol = runPsaCycle(params);        
       

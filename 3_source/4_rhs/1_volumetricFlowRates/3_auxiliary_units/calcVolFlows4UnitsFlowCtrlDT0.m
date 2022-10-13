@@ -126,13 +126,13 @@ function units = calcVolFlows4UnitsFlowCtrlDT0(params,units,nS)
         %Get the sign of the current concentration difference
         testPres = gasConsNormEq*raTaTotCon(t)*raTaIntTemp(t) ...
                  - pRatRa;
-
+        
         %Obtain the volumetric flow rate out of the constant pressure 
         %regulator valve. The exit valve is opened only when the raffinate 
         %tank pressure equals the raffinate product pressure.
         vFlRaTa(t,(nCols+1)) = (testPres >= 0) ...
                              * vFlNetRaTa(t);
-       
+                         
     end
     %---------------------------------------------------------------------%
     
