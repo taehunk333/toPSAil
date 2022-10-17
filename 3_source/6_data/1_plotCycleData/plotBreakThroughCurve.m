@@ -92,7 +92,7 @@ function plotBreakThroughCurve(params,sol,colNum)
     %Calcualte needed quantities
             
     %Find the high pressure steps
-    indHp = contains(sStepCol,"HP");
+    indHp = contains(sStepCol(colNum,:),"HP");
     
     %Find the last high pressure step
     indHp = find(indHp,1,'last');
