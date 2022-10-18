@@ -70,6 +70,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
     gasConsNormExTa = params.gasConsNormExTa; 
     sColNums        = params.sColNums       ;
     sComNums        = params.sComNums       ;
+    numZero         = params.numZero        ;
     
     %Unpack units
     col  = units.col ;
@@ -269,18 +270,20 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
         for t = 1 : nRows          
             
             %Get the sign of the current concentration difference
-            testPres = gasConsNormEq*raTaConTot(t)*raTaTempCstr(t);
+            testPres = gasConsNormEq*raTaConTot(t)*raTaTempCstr(t) ...
+                     - pRatRa;
             
             %If the raffinate tank pressure needs to build up, 
-            if testPres < pRatRa
+            if testPres >= numZero
                 
                 %---------------------------------------------------------%
                 %Obtain the volumetric flow rate out of the constant 
                 %pressure regulator valve.
                 
-                %We need to build up the pressure; therefore, the
-                %volumetric flow rate should equal zero.
-                vFlRaTa(t,(nCols+1)) = 0;
+                %Save the feed volumetric flow rate to maintain a constant
+                %pressure inside the raffinate product tank
+                vFlRaTa(t,(nCols+1)) = -(1./phiZeroRaff(t)) ...
+                                    .* (vFlRaffSum(t)+raTaBeta(t));                
                 %---------------------------------------------------------%
     
             %If the raffinate tank pressure is at (or above) the desired 
@@ -290,10 +293,9 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
                 %---------------------------------------------------------%
                 %Save the results
 
-                %Save the feed volumetric flow rate to maintain a constant
-                %pressure inside the raffinate product tank
-                vFlRaTa(t,(nCols+1)) = -(1./phiZeroRaff(t)) ...
-                                    .* (vFlRaffSum(t)+raTaBeta(t));
+                %We need to build up the pressure; therefore, the
+                %volumetric flow rate should equal zero.
+                vFlRaTa(t,(nCols+1)) = 0;
                 %---------------------------------------------------------%
     
             end
@@ -402,18 +404,20 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
         for t = 1 : nRows          
             
             %Get the sign of the current concentration difference
-            testPres = gasConsNormEq*exTaConTot(t)*exTaTempCstr(t);
+            testPres = gasConsNormEq*exTaConTot(t)*exTaTempCstr(t) ...
+                     - pRatEx;
             
             %If the extract tank pressure needs to build up, 
-            if testPres < pRatEx
+            if testPres >= numZero
                 
                 %---------------------------------------------------------%
                 %Obtain the volumetric flow rate out of the constant 
                 %pressure regulator valve.
                 
-                %We need to build up the pressure; therefore, the
-                %volumetric flow rate should equal zero.
-                vFlExTa(t,(nCols+1)) = 0;
+                %Save the feed volumetric flow rate to maintain a constant
+                %pressure inside the extract product tank
+                vFlExTa(t,(nCols+1)) = -(1./phiZeroExtr(t)) ...
+                                    .* (vFlExtrSum(t)+exTaBeta(t));                                                
                 %---------------------------------------------------------%
     
             %If the extract tank pressure is at (or above) the desired 
@@ -423,10 +427,9 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
                 %---------------------------------------------------------%
                 %Save the results
 
-                %Save the feed volumetric flow rate to maintain a constant
-                %pressure inside the extract product tank
-                vFlExTa(t,(nCols+1)) = -(1./phiZeroExtr(t)) ...
-                                    .* (vFlExtrSum(t)+exTaBeta(t));
+                %We need to build up the pressure; therefore, the
+                %volumetric flow rate should equal zero.
+                vFlExTa(t,(nCols+1)) = 0;
                 %---------------------------------------------------------%
     
             end
