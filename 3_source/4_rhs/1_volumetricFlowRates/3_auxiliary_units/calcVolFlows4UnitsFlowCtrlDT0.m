@@ -56,6 +56,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT0(params,units,nS)
     pRatEx        = params.pRatEx       ;
     pRatRa        = params.pRatRa       ;
     gasConsNormEq = params.gasConsNormEq;
+    numZero       = params.numZero      ;
     
     %Unpack units
     raTa = units.raTa;
@@ -127,11 +128,21 @@ function units = calcVolFlows4UnitsFlowCtrlDT0(params,units,nS)
         testPres = gasConsNormEq*raTaTotCon(t)*raTaIntTemp(t) ...
                  - pRatRa;
         
-        %Obtain the volumetric flow rate out of the constant pressure 
-        %regulator valve. The exit valve is opened only when the raffinate 
-        %tank pressure equals the raffinate product pressure.
-        vFlRaTa(t,(nCols+1)) = (testPres >= 0) ...
-                             * vFlNetRaTa(t);
+        %If the absolute value of testPres is less than the numerical zero
+        if testPres >= numZero
+             
+            %Obtain the volumetric flow rate out of the constant pressure 
+            %regulator valve. The exit valve is opened only when the 
+            %raffinate tank pressure equals the raffinate product pressure.
+            vFlRaTa(t,(nCols+1)) = vFlNetRaTa(t);
+
+        %Otherwise,                  
+        else
+            
+            %Let the pressure build up inside the tank
+            vFlRaTa(t,(nCols+1)) = 0;
+            
+        end
                          
     end
     %---------------------------------------------------------------------%
@@ -162,11 +173,21 @@ function units = calcVolFlows4UnitsFlowCtrlDT0(params,units,nS)
         testPres = gasConsNormEq*exTaTotCon(t)*exTaIntTemp(t) ...
                  - pRatEx;
 
-        %Obtain the volumetric flow rate out of the constant pressure 
-        %regulator valve. The exit valve is opened only when the extract 
-        %tank pressure equals the high pressure.  
-        vFlExTa(t,(nCols+1)) = (testPres >= 0) ...
-                             * vFlNetExTa(t);
+        %If the absolute value of testPres is less than the numerical zero
+        if testPres >= numZero
+             
+            %Obtain the volumetric flow rate out of the constant pressure 
+            %regulator valve. The exit valve is opened only when the 
+            %extract tank pressure equals the high pressure.  
+            vFlExTa(t,(nCols+1)) = vFlNetExTa(t);
+                      
+        %Otherwise,                  
+        else
+            
+            %Let the pressure build up
+            vFlExTa(t,(nCols+1)) = 0 ;
+            
+        end
        
     end
     %---------------------------------------------------------------------%
