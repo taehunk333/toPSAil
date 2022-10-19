@@ -19,9 +19,9 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/23/Tuesday
-%Code last modified on : 2021/3/29/Monday
+%Code last modified on : 2022/10/19/Wednesday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : plotProductRecovery.m
 %Source     : common
@@ -46,6 +46,8 @@ function plotProductRecovery(params,sol)
     nSteps          = params.nSteps             ;
     laststep        = sol.lastStep              ;    
     productRecovery = sol.perMet.productRecovery;
+    colorBnW        = params.colorBnW           ;
+    nLKs            = params.nLKs               ;
     %---------------------------------------------------------------------%
 
   
@@ -80,11 +82,26 @@ function plotProductRecovery(params,sol)
     %For each component, 
     for i = 1 : nComs            
         
+        %If light key, then
+        if i <= nLKs
+            
+            %Get the vector for the color
+            rgb = grabColor(2,colorBnW);
+        
+        else
+        %If heavy key, then
+             
+            %Get the vector for the color
+            rgb = grabColor(1,colorBnW);
+            
+        end        
+        
         %Plot the data
         semilogx(cycleNums, ...
                  productRecovery(1:lastCycNo,i).*100, ...
                  '-x', ...
-                 'LineWidth',2.0);    
+                 'LineWidth',2.0, ...
+                 'Color',rgb);    
         
         %Hold on to the figure
         hold on;
@@ -107,10 +124,10 @@ function plotProductRecovery(params,sol)
     %title(strTitle);
 
     %Determine x-axis (ordinate) label
-    xlabel('Cycle Number [=] -');
+    xlabel('Cycle Number');
 
     %Determine y-axis (absicissa) label
-    ylabel('Recovery [=] %');
+    ylabel('Recovery [%]');
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');

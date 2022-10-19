@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/10/Wednesday
-%Code last modified on : 2022/10/12/Wednesday
+%Code last modified on : 2022/10/19/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -51,6 +51,8 @@ function plotGasConsHighPresFeed(params,sol,colNum)
     sStepCol     = params.sStepCol(colNum,:); %For the current column
     nSteps       = params.nSteps            ;
     sCom         = params.sCom              ;
+    colorBnW     = params.colorBnW          ;
+    nLKs         = params.nLKs              ;
     %---------------------------------------------------------------------%
 
   
@@ -74,10 +76,10 @@ function plotGasConsHighPresFeed(params,sol,colNum)
     %title(strTitle);
 
     %Determine x-axis (ordinate) label
-    xlabel('Height [=] cm');
+    xlabel('Height [cm]');
 
     %Determine y-axis (absicissa) label
-    ylabel('Conc. [=] mol/cc');
+    ylabel('Conc. [mol/cc]');
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');
@@ -121,9 +123,23 @@ function plotGasConsHighPresFeed(params,sol,colNum)
                    col.(append('n',int2str(colNum))).gasCons. ...
                    (append('C',int2str(i)))(end,:) ...
                  * gConScaleFac;
-
+        
+        %If light key, then
+        if i <= nLKs
+            
+            %Get the vector for the color
+            rgb = grabColor(2,colorBnW);
+        
+        else
+        %If heavy key, then
+             
+            %Get the vector for the color
+            rgb = grabColor(1,colorBnW);
+            
+        end
+             
         %Plot the ith step with jth column
-        plot(height,pressure,'LineWidth',2.0);                
+        plot(height,pressure,'LineWidth',2.0,'Color',rgb);                
 
     end                 
     %---------------------------------------------------------------------%  

@@ -19,9 +19,9 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/3/25/Thursday
-%Code last modified on : 2021/4/29/Thursday
+%Code last modified on : 2022/10/19/Wednesday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : plotCssConv.m
 %Source     : common
@@ -46,6 +46,7 @@ function plotCssConv(params,sol)
     numZero  = params.numZero ;
     laststep = sol.lastStep   ; 
     css      = sol.css        ;    
+    colorBnW = params.colorBnW;
     %---------------------------------------------------------------------%
 
               
@@ -80,8 +81,11 @@ function plotCssConv(params,sol)
     %---------------------------------------------------------------------%  
     %Plot the CSS convergence values over the cycles for all species
                                   
+    %Get the string for the color
+    rgb = grabColor(1,colorBnW);
+    
     %Plot the CSS convergence data
-    loglog(cycleNums,css(2:lastCycNo+1),'-x','LineWidth',2.0);
+    loglog(cycleNums,css(2:lastCycNo+1),'-x','LineWidth',2.0,'Color',rgb);
     
     %Hold on to the figure
     hold on;
@@ -111,10 +115,10 @@ function plotCssConv(params,sol)
     %title(strTitle);
 
     %Determine x-axis (ordinate) label
-    xlabel('Start of the n^{th} PSA Cycle [=] -');
+    xlabel('Start of the n^{th} PSA Cycle');
 
     %Determine y-axis (absicissa) label
-    ylabel('L2-Norm Diff. [=] -');
+    ylabel("L2-Norm Diff. Sq.");
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');

@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/10/Wednesday
-%Code last modified on : 2022/3/8/Tuesday
+%Code last modified on : 2022/10/19/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -44,11 +44,12 @@ function plotColPresProfiles(params,sol)
     tiScaleFac   = params.tiScaleFac  ;
     lastStep     = sol.lastStep       ;
     presColHigh  = params.presColHigh ;
-    color        = params.color       ;
+    colorBnW     = params.colorBnW    ;
     nVols        = params.nVols       ;
     gasCons      = params.gasCons     ;
     teScaleFac   = params.teScaleFac  ;
     gConScaleFac = params.gConScaleFac;
+    presColLow   = params.presColLow  ;
     %---------------------------------------------------------------------%
 
   
@@ -60,7 +61,7 @@ function plotColPresProfiles(params,sol)
     figNum = grabNextFigNum();
     
     %Create the figure
-    figure(figNum);      
+    fig = figure(figNum);      
     %---------------------------------------------------------------------%
     
     
@@ -93,6 +94,10 @@ function plotColPresProfiles(params,sol)
     %Plot the pressure profiles for all columns for all simulated steps all
     %in one plot
       
+    %Plot a horizontal line, demarcating nominal pressure levels
+    yline(presColHigh,'--','color', [.5 .5 .5]);  
+    yline(presColLow,'--','color', [.5 .5 .5]);
+    
     %For each step that was simulated,
     for i = 1 : lastStep
        
@@ -106,7 +111,7 @@ function plotColPresProfiles(params,sol)
             hold on;
             
             %Get the string for the color
-            rgb = grabColor(j,color);                        
+            rgb = grabColor(j,colorBnW);                       
                                     
             %Grab total pressure for jth adsorption column in ith step
             %(For the sake of computational efforts, just plot the last
@@ -123,14 +128,6 @@ function plotColPresProfiles(params,sol)
                ./ nVols ...
                .* teScaleFac;
             
-            %Use subplot only when we have more than 1 columns
-            if nCols > 1
-                
-                %Use subplot
-                subplot(nCols,1,j);
-                
-            end
-            
             %Plot the ith step with jth column
             plot(time,pressure,'LineWidth',2.0,'Color',rgb);
             
@@ -138,39 +135,36 @@ function plotColPresProfiles(params,sol)
             hold on;
             
             %Plot a vertical line, demarcating different step
-            xline(time(end),'--','color', [.5 .5 .5]);
-            
-            %Get the plot title
-            titleStr ...
-                = append('Adsorption Column ', ...
-                          int2str(j), ...
-                          ' Average Pressure Profile');
-            
-            %Set the title for the figure
-            %title(titleStr);
-
-            %Determine x-axis (ordinate) label
-            xlabel('Time [=] sec');
-
-            %Determine y-axis (absicissa) label
-            ylabel('Pressure [=] bar');
-
-            %Set the style of the axis font as LaTeX type
-            set(gca,'TickLabelInterpreter','latex');
-            set(gca,'FontSize',14)                 ; 
-            
-            %Set the limit on th y-axis
-            ylim([0,yLimUp]);
+            xline(time(end),'--','color', [.5 .5 .5]);                               
             
         end
+
+        %Set the limit on th y-axis
+        ylim([0,yLimUp]);
                 
-    end    
+    end
+    
+    %Set the title for the figure
+    %title('Adsorption Column Pressure Profile(s)');
+
+    %Determine x-axis (ordinate) label
+    xlabel('Time [seconds]');
+
+    %Determine y-axis (absicissa) label
+    ylabel('Pressure [bar]');
+    
+    %Set the style of the axis font as LaTeX type
+    set(gca,'TickLabelInterpreter','latex');
+    set(gca,'FontSize',14)                 ;
+    
+    %Set the limit on the x-axis
+    xlim([0,time(end)]);
     %---------------------------------------------------------------------%  
     
     
     
     %---------------------------------------------------------------------%  
-    %Make any terminal settings
+    %Make any terminal settings         
     
     %Resize the figure
     set(gcf,'Position',[100,25,600,250]);

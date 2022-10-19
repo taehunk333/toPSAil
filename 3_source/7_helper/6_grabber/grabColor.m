@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/2/14/Monday
-%Code last modified on : 2022/2/14/Monday
+%Code last modified on : 2022/10/19/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -53,7 +53,7 @@ function rgb = grabColor(nUnit,color)
     index = rem(nUnit,numColor);
             
     %If we are at the last color, add the length
-    if index == numColor
+    if index == 0
 
         %In this case, the remainder should be zero
         index = index ...

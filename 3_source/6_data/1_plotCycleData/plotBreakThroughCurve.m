@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/10/Wednesday
-%Code last modified on : 2022/10/12/Wednesday
+%Code last modified on : 2022/10/19/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -54,6 +54,7 @@ function plotBreakThroughCurve(params,sol,colNum)
     nSteps     = params.nSteps    ;
     nRows      = params.nRows     ;
     nLKs       = params.nLKs      ; 
+    colorBnW   = params.colorBnW  ;
     %---------------------------------------------------------------------%
 
   
@@ -76,10 +77,10 @@ function plotBreakThroughCurve(params,sol,colNum)
     %title(strTitle);
 
     %Determine x-axis (ordinate) label
-    xlabel('Time [=] sec');
+    xlabel('Time [seconds]');
 
     %Determine y-axis (absicissa) label
-    ylabel('LK purity [=] -');
+    ylabel('LK mole fraction');
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');
@@ -156,9 +157,12 @@ function plotBreakThroughCurve(params,sol,colNum)
     %Grab the total pressure for jth adsorption column in ith step
     purity = sumLkConcs ...
           ./ totConc;
+      
+    %Get the string for the color
+    rgb = grabColor(1,colorBnW);
 
     %Plot the ith step with jth column
-    plot(time,purity,'LineWidth',2.0);                   
+    plot(time,purity,'LineWidth',2.0,'Color',rgb);                   
     %---------------------------------------------------------------------%  
     
     
