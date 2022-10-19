@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/10/Wednesday
-%Code last modified on : 2022/3/8/Tuesday
+%Code last modified on : 2022/10/19/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -103,6 +103,9 @@ function plotExTaPresProfiles(params,sol)
         plot(time,pressure,'LineWidth',2.0,'Color',rgb);
  
     end            
+    
+    %Set the limit on the x-axis
+    xlim([0,time(end)]);
     %---------------------------------------------------------------------%  
     
     
