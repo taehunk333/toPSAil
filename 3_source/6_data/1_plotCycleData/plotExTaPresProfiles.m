@@ -42,7 +42,7 @@ function plotExTaPresProfiles(params,sol)
     %Unpack Params
     tiScaleFac   = params.tiScaleFac  ;
     lastStep     = sol.lastStep       ;
-    color        = params.color       ;
+    colorBnW     = params.colorBnW    ;
     teScaleFac   = params.teScaleFac  ;
     gConScaleFac = params.gConScaleFac;
     gasCons      = params.gasCons     ;
@@ -63,10 +63,10 @@ function plotExTaPresProfiles(params,sol)
     %title('Extract Product Tank Pressure Profile');
 
     %Determine x-axis (ordinate) label
-    xlabel('Time [=] sec');
+    xlabel('Time [seconds]');
 
     %Determine y-axis (absicissa) label
-    ylabel('Pressure [=] bar');
+    ylabel('Pressure [bar]');
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');
@@ -80,7 +80,7 @@ function plotExTaPresProfiles(params,sol)
     %in one plot
       
     %Get the string for the color
-    rgb = grabColor(1,color);
+    rgb = grabColor(1,colorBnW);
     
     %For each step that was simulated,
     for i = 1 : lastStep  

@@ -19,9 +19,9 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/2/Tuesday
-%Code last modified on : 2021/2/2/Tuesday
+%Code last modified on : 2022/10/19/Wednesday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : calcCssConvOverall.m
 %Source     : common
@@ -54,8 +54,9 @@ function css = calcCssConvOverall(~,initCondCurr,initCondPrev)
     %Compute the difference between the cycle initial conditions
     diffInitCond = initCondCurr-initCondPrev;
     
-    %Compute the l2-norm of the difference and save it inside the struct
-    css = sum(diffInitCond.^2,2);     
+    %Compute the l2-norm of the difference and square it. (Convergence
+    %criteria from Westerberg 1992)
+    css = norm(diffInitCond,2)^2;       
     %---------------------------------------------------------------------%    
     
 end

@@ -19,9 +19,9 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/10/Wednesday
-%Code last modified on : 2022/10/12/Wednesday
+%Code last modified on : 2022/10/19/Wednesday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : plotColWallTempProfiles.m
 %Source     : common
@@ -50,6 +50,7 @@ function plotColWallTempProfiles(params,sol,colNum)
     sStepCol   = params.sStepCol(colNum,:); %For the current column
     nSteps     = params.nSteps            ;
     teScaleFac = params.teScaleFac        ;
+    colorBnW   = params.colorBnW          ;
     %---------------------------------------------------------------------%
 
   
@@ -73,10 +74,10 @@ function plotColWallTempProfiles(params,sol,colNum)
     %title(strTitle);
 
     %Determine x-axis (ordinate) label
-    xlabel('Height [=] cm');
+    xlabel('Height [cm]');
 
     %Determine y-axis (absicissa) label
-    ylabel('Temp. [=] K');
+    ylabel('Temp. [K]');
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');
@@ -108,6 +109,9 @@ function plotColWallTempProfiles(params,sol,colNum)
     %---------------------------------------------------------------------%  
     %Plot the inital temperature profile for the last HP step
 
+    %For the wall temperature, use a black color
+    rgb = grabColor(1,colorBnW);
+    
     %Hold on to the figure
     hold on;
 
@@ -117,7 +121,7 @@ function plotColWallTempProfiles(params,sol,colNum)
                  * teScaleFac;
 
     %Plot the ith step with jth column
-    plot(height,initTempCstr,'LineWidth',2.0);                
+    plot(height,initTempCstr,'LineWidth',2.0,'Color',rgb);                
     %---------------------------------------------------------------------%  
 
 
@@ -134,7 +138,7 @@ function plotColWallTempProfiles(params,sol,colNum)
                   * teScaleFac;
  
     %Plot the ith step with jth column
-    plot(height,finalTempCstr,'LineWidth',2.0);            
+    plot(height,finalTempCstr,'LineWidth',2.0,'Color',rgb);            
     %---------------------------------------------------------------------%  
 
     

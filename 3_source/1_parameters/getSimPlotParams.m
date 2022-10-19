@@ -52,6 +52,10 @@ function params = getSimPlotParams(params)
                     [0.4660 0.6740 0.1880], ... %Green
                     [0.3010 0.7450 0.9330], ... %Cyan
                     [0.6350 0.0780 0.1840]};    %Red
+                
+    %Define B&W color schemes
+    params.colorBnW = {[0 0 0], ...             %Black
+                       [0.6 0.6 0.6]};          %Light Gray
     %---------------------------------------------------------------------%                                                          
     
 end

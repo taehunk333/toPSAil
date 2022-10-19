@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/1/31/Monday
-%Code last modified on : 2022/10/12/Wednesday
+%Code last modified on : 2022/10/19/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -43,7 +43,7 @@ function plotExTaPurity(params,sol,exTaNum)
     %Unpack Params 
     lastStep   = sol.lastStep     ;
     tiScaleFac = params.tiScaleFac;
-    color      = params.color     ;
+    colorBnW   = params.colorBnW  ;
     nLKs       = params.nLKs      ;
     nComs      = params.nComs     ;
     sComNums   = params.sComNums  ;
@@ -71,10 +71,10 @@ function plotExTaPurity(params,sol,exTaNum)
     %title(strTitle);
 
     %Determine x-axis (ordinate) label
-    xlabel('Time [=] sec');
+    xlabel('Time [seconds]');
 
     %Determine y-axis (absicissa) label
-    ylabel('HK purity [=] -');
+    ylabel('HK mole fraction');
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');
@@ -88,7 +88,7 @@ function plotExTaPurity(params,sol,exTaNum)
     %feed
                              
     %Get the string for the color
-    rgb = grabColor(1,color);     
+    rgb = grabColor(1,colorBnW);     
     
     %For each step that was simulated,
     for i = 1 : lastStep

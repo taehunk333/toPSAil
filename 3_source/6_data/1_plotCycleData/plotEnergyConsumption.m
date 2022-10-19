@@ -19,9 +19,9 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/23/Tuesday
-%Code last modified on : 2021/4/28/Wednesday
+%Code last modified on : 2022/10/19/Wednesday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : plotEnergyConsumption.m
 %Source     : common
@@ -45,6 +45,7 @@ function plotEnergyConsumption(params,sol)
     laststep  = sol.lastStep               ;    
     energyEff = sol.perMet.energyEfficiency;
     maxNoBC   = params.maxNoBC             ;
+    colorBnW  = params.colorBnW            ;
     %---------------------------------------------------------------------%
 
   
@@ -77,14 +78,17 @@ function plotEnergyConsumption(params,sol)
     %Plot the energy efficiency values over the cycles for all species
     
     %For each boundary, 
-    for i = 1 : maxNoBC            
+    for i = 1 : maxNoBC          
+        
+        %Get the vector for the color
+        rgb = grabColor(1,colorBnW);
         
         %Scale the units from kJ to kWh: 3,600kJ = 1kWh
         energyData = energyEff(1:lastCycNo,i) ...
                    / 3600;
         
         %Plot the data
-        semilogx(cycleNums,energyData,'-x','LineWidth',2.0);    
+        semilogx(cycleNums,energyData,'-x','LineWidth',2.0,'Color',rgb);    
         
         %Hold on to the figure
         hold on;
@@ -107,10 +111,10 @@ function plotEnergyConsumption(params,sol)
     %title(strTitle);
 
     %Determine x-axis (ordinate) label
-    xlabel('Cycle Number [=] -');
+    xlabel('Cycle Number');
 
     %Determine y-axis (absicissa) label
-    ylabel('E. Cons. [=] kWh_{e}/mol');
+    ylabel('E. Req. [kWh_{e}/mol]');
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');
