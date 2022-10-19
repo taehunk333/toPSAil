@@ -475,9 +475,9 @@ function sol = runPsaCycle(params)
         elseif sol.css(nCy) < numZero            
             
             %Print the simulation information
-            fprintf("\n*******************************************\n")   ;
-            fprintf("CSS convergence at %dth PSA Cycle. \n",nCy);    
-            fprintf("*******************************************\n")     ;
+            fprintf("\n*******************************************\n");
+            fprintf("CSS convergence at %dth PSA Cycle. \n",nCy-1)    ;    
+            fprintf("*******************************************\n")  ;
             
             %Save the information about the last step
             sol.lastStep = currStep-1;
