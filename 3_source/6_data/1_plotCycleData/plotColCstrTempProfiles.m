@@ -19,9 +19,9 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/10/Wednesday
-%Code last modified on : 2022/10/19/Wednesday
+%Code last modified on : 2022/10/20/Thursday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : plotColCstrTempProfiles.m
 %Source     : common
@@ -90,7 +90,7 @@ function plotColCstrTempProfiles(params,sol,colNum)
     %Calcualte needed quantities
     
     %Calculate axial distance for the adsorption column 
-    height = linspace(1,heightCol,nVols);
+    height = linspace(0,heightCol,nVols);
     
     %Find the high pressure steps
     indHp = contains(sStepCol,"HP");
