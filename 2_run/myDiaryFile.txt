@@ -1,0 +1,295 @@
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+
+*******************************************
+Beginning a PSA cycle simulation...
+*******************************************
+{Operation terminated by user during <a href="matlab:matlab.internal.language.introspective.errorDocCallback('defineRhsFunc', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\4_rhs\2_rightHandSideFunctions\defineRhsFunc.m', 119)" style="font-weight:bold">defineRhsFunc</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\4_rhs\2_rightHandSideFunctions\defineRhsFunc.m',119,0)">line 119</a>)
+
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('runPsaCycleStep>@(t,x)defineRhsFunc(t,x,params)', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycleStep.m', 70)" style="font-weight:bold">runPsaCycleStep>@(t,x)defineRhsFunc(t,x,params)</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycleStep.m',70,0)">line 70</a>)
+    funcRhs = @(t,x) defineRhsFunc(t,x,params);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('odenumjac', 'C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\funfun\private\odenumjac.m', 131)" style="font-weight:bold">odenumjac</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\funfun\private\odenumjac.m',131,0)">line 131</a>)
+      Fdel(:,j) = feval(F,Fargs{1:diffvar-1},ydel(:,j),Fargs{diffvar+1:end});
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('ode15s', 'C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\funfun\ode15s.m', 640)" style="font-weight:bold">ode15s</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\funfun\ode15s.m',640,0)">line 640</a>)
+              [dfdy,Joptions.fac,nF] = odenumjac(odeFcn, {t,y,odeArgs{:}}, f0, Joptions);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('runPsaCycleStep', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycleStep.m', 116)" style="font-weight:bold">runPsaCycleStep</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycleStep.m',116,0)">line 116</a>)
+        sol = ode15s(funcRhs,tDom,iStates',options);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('runPsaCycle', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m', 181)" style="font-weight:bold">runPsaCycle</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m',181,0)">line 181</a>)
+                    = runPsaCycleStep(params,iStates,tDom,nS,nCy);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('runPsaProcessSimulation', 'C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m', 140)" style="font-weight:bold">runPsaProcessSimulation</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m',140,0)">line 140</a>)
+    sol = runPsaCycle(params);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('runPsaProcessSimulationApp/StartButtonPushed', 'C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulationApp.mlapp', 79)" style="font-weight:bold">runPsaProcessSimulationApp/StartButtonPushed</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulationApp.mlapp',79,0)">line 79</a>)
+                runPsaProcessSimulation(app.folderName);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('appdesigner.internal.service.AppManagementService/tryCallback', 'C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\appdesigner\appdesigner\runtime\+appdesigner\+internal\+service\AppManagementService.m', 362)" style="font-weight:bold">appdesigner.internal.service.AppManagementService/tryCallback</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\appdesigner\appdesigner\runtime\+appdesigner\+internal\+service\AppManagementService.m',362,0)">line 362</a>)
+                    callback(app, event);
+
+In
+<a href="matlab:matlab.internal.language.introspective.errorDocCallback('matlab.apps.AppBase>@(source,event)tryCallback(appdesigner.internal.service.AppManagementService.instance(),app,callback,requiresEventData,event)', 'C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\appdesigner\appdesigner\runtime\+matlab\+apps\AppBase.m', 37)" style="font-weight:bold">matlab.apps.AppBase>@(source,event)tryCallback(appdesigner.internal.service.AppManagementService.instance(),app,callback,requiresEventData,event)</a>
+(<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\appdesigner\appdesigner\runtime\+matlab\+apps\AppBase.m',37,0)">line 37</a>)
+            newCallback = @(source,
+            event)tryCallback(appdesigner.internal.service.AppManagementService.instance(), ...
+} 
+Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('matlab.ui.control.internal.controller.ComponentController/executeUserCallback', 'C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\uicomponents\uicomponents\+matlab\+ui\+control\+internal\+controller\ComponentController.m', 386)" style="font-weight:bold">matlab.ui.control.internal.controller.ComponentController/executeUserCallback</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\uicomponents\uicomponents\+matlab\+ui\+control\+internal\+controller\ComponentController.m',386,0)">line 386</a>)
+Interrupt while evaluating Button PrivateButtonPushedFcn.
+
+if system_dependent('IsDebugMode')==1, dbquit; end
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+
+*******************************************
+Beginning a PSA cycle simulation...
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 50 
+*Number of Failed Steps         : 3 
+*Number of Function Evaluations : 5883 
+*Number of Jacobian Evaluations : 4 
+*Number of LU Decompositions    : 16 
+*Number of Linear Solves        : 102 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.1 is finished. 
+*Adsorber Steps : RP-XXX-RAF HP-FEE-RAF 
+*Step duration  : 4(4) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 57 
+*Number of Failed Steps         : 2 
+*Number of Function Evaluations : 4658 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 15 
+*Number of Linear Solves        : 103 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.2 is finished. 
+*Adsorber Steps : RP-FEE-XXX HP-FEE-RAF 
+*Step duration  : 1(1) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 108 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 3500 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 22 
+*Number of Linear Solves        : 183 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.3 is finished. 
+*Adsorber Steps : HP-FEE-RAF DP-ATM-XXX 
+*Step duration  : 35(35) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 198 
+*Number of Failed Steps         : 16 
+*Number of Function Evaluations : 9877 
+*Number of Jacobian Evaluations : 7 
+*Number of LU Decompositions    : 47 
+*Number of Linear Solves        : 396 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.4 is finished. 
+*Adsorber Steps : HP-FEE-RAF LP-ATM-RAF 
+*Step duration  : 65(65) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 83 
+*Number of Failed Steps         : 9 
+*Number of Function Evaluations : 5950 
+*Number of Jacobian Evaluations : 4 
+*Number of LU Decompositions    : 28 
+*Number of Linear Solves        : 169 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.5 is finished. 
+*Adsorber Steps : HP-FEE-RAF RP-XXX-RAF 
+*Step duration  : 4(4) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 36 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 3381 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 10 
+*Number of Linear Solves        : 62 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.6 is finished. 
+*Adsorber Steps : HP-FEE-RAF RP-FEE-XXX 
+*Step duration  : 1(1) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 105 
+*Number of Failed Steps         : 4 
+*Number of Function Evaluations : 3508 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 27 
+*Number of Linear Solves        : 191 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.7 is finished. 
+*Adsorber Steps : DP-ATM-XXX HP-FEE-RAF 
+*Step duration  : 35(35) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 183 
+*Number of Failed Steps         : 12 
+*Number of Function Evaluations : 7346 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 35 
+*Number of Linear Solves        : 333 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.8 is finished. 
+*Adsorber Steps : LP-ATM-RAF HP-FEE-RAF 
+*Step duration  : 65(65) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 79 
+*Number of Failed Steps         : 9 
+*Number of Function Evaluations : 5950 
+*Number of Jacobian Evaluations : 4 
+*Number of LU Decompositions    : 28 
+*Number of Linear Solves        : 169 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.1 is finished. 
+*Adsorber Steps : RP-XXX-RAF HP-FEE-RAF 
+*Step duration  : 4(4) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 38 
+*Number of Failed Steps         : 2 
+*Number of Function Evaluations : 4623 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 12 
+*Number of Linear Solves        : 68 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.2 is finished. 
+*Adsorber Steps : RP-FEE-XXX HP-FEE-RAF 
+*Step duration  : 1(1) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 106 
+*Number of Failed Steps         : 4 
+*Number of Function Evaluations : 3509 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 26 
+*Number of Linear Solves        : 192 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.3 is finished. 
+*Adsorber Steps : HP-FEE-RAF DP-ATM-XXX 
+*Step duration  : 35(35) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 176 
+*Number of Failed Steps         : 14 
+*Number of Function Evaluations : 8580 
+*Number of Jacobian Evaluations : 6 
+*Number of LU Decompositions    : 37 
+*Number of Linear Solves        : 333 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.4 is finished. 
+*Adsorber Steps : HP-FEE-RAF LP-ATM-RAF 
+*Step duration  : 65(65) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 82 
+*Number of Failed Steps         : 4 
+*Number of Function Evaluations : 7169 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 24 
+*Number of Linear Solves        : 154 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.5 is finished. 
+*Adsorber Steps : HP-FEE-RAF RP-XXX-RAF 
+*Step duration  : 4(4) seconds
+*The step was a time driven step
+*******************************************
