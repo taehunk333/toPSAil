@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/2/3/Thursday
-%Code last modified on : 2022/8/16/Tuesday
+%Code last modified on : 2022/10/20/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -100,7 +100,6 @@ function params = removeParams(params)
     params = rmfield(params,'overVoid');
     
     %Remove adsorbent physical properties
-    params = rmfield(params,'skelDens');
     params = rmfield(params,'pellDens');
     params = rmfield(params,'bulkDens');
     

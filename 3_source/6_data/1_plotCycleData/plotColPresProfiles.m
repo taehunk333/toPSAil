@@ -93,11 +93,7 @@ function plotColPresProfiles(params,sol)
     %---------------------------------------------------------------------%
     %Plot the pressure profiles for all columns for all simulated steps all
     %in one plot
-      
-    %Plot a horizontal line, demarcating nominal pressure levels
-    yline(presColHigh,'--','color', [.5 .5 .5]);  
-    yline(presColLow,'--','color', [.5 .5 .5]);
-    
+              
     %For each step that was simulated,
     for i = 1 : lastStep
        
@@ -105,8 +101,8 @@ function plotColPresProfiles(params,sol)
         time = tiScaleFac*sol.(append('Step',int2str(i))).timePts;
                 
         %For each adsorption column,
-        for j = 1 : nCols                        
-            
+        for j = nCols : -1 : 1
+                      
             %Hold on to the figure
             hold on;
             
@@ -129,13 +125,21 @@ function plotColPresProfiles(params,sol)
                .* teScaleFac;
             
             %Plot the ith step with jth column
-            plot(time,pressure,'LineWidth',2.0,'Color',rgb);
+            objPlot = plot(time,pressure,'LineWidth',2.0,'Color',rgb);
+            
+            %If we have the plot for the first column,
+            if j == 1
+               
+                %bring it up,
+                uistack(objPlot,'top');
+                
+            end
             
             %Hold on to the figure
             hold on;
             
             %Plot a vertical line, demarcating different step
-            xline(time(end),'--','color', [.5 .5 .5]);                               
+%             xline(time(end),'--','color', [.5 .5 .5]);                               
             
         end
 
@@ -159,6 +163,14 @@ function plotColPresProfiles(params,sol)
     
     %Set the limit on the x-axis
     xlim([0,time(end)]);
+    
+    %Plot a horizontal line, demarcating nominal pressure levels
+    topLine = yline(presColHigh,'--','color', [.5 .5 .5]);  
+    botLine = yline(presColLow,'--','color', [.5 .5 .5]);
+    
+    %Bring the dotted lines to the backgrond
+    uistack(topLine,'bottom');
+    uistack(botLine,'bottom');
     %---------------------------------------------------------------------%  
     
     

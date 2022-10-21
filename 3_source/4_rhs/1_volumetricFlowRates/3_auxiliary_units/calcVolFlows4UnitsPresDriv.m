@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/8/13/Saturday
-%Code last modified on : 2022/10/6/Thursday
+%Code last modified on : 2022/10/21/Friday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -68,7 +68,6 @@ function units = calcVolFlows4UnitsPresDriv(params,units,nS)
     bool            = params.bool           ;
     tempFeedNorm    = params.tempFeedNorm   ;
     feTaVolNorm     = params.feTaVolNorm    ;
-    gasConsNormFeTa = params.gasConsNormFeTa;
     htCapCpNorm     = params.htCapCpNorm    ;
     pRatFe          = params.pRatFe         ;
     yFeC            = params.yFeC           ;
@@ -124,6 +123,9 @@ function units = calcVolFlows4UnitsPresDriv(params,units,nS)
    
         %-----------------------------------------------------------------%
         %Unpack feed tank states variables
+        
+        %Unpack additional params
+        gasConsNormFeTa = params.gasConsNormFeTa;
         
         %Unpack feTa tank overall heat capacity at time t
         feTaHtCO = feTa.n1.htCO;

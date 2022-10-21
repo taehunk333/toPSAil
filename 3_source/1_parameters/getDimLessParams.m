@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/5/Tuesday
-%Code last modified on : 2022/10/12/Wednesday
+%Code last modified on : 2022/10/21/Friday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -57,14 +57,10 @@ function params = getDimLessParams(params)
     valScaleFac   = params.valScaleFac  ;
     valFeedCol    = params.valFeedCol   ;
     valProdCol    = params.valProdCol   ;    
-    modSp         = params.modSp        ;
     bool          = params.bool         ;
     feTaVol       = params.feTaVol      ;
     raTaVol       = params.raTaVol      ;
-    exTaVol       = params.exTaVol      ;
-    htTrCoInFeTa  = params.htTrCoInFeTa ;
-    htTrCoInRaTa  = params.htTrCoInRaTa ;
-    htTrCoInExTa  = params.htTrCoInExTa ;  
+    exTaVol       = params.exTaVol      ;      
     crsAreaInFeTa = params.crsAreaInFeTa;
     crsAreaInRaTa = params.crsAreaInFeTa;
     crsAreaInExTa = params.crsAreaInFeTa;
@@ -89,6 +85,7 @@ function params = getDimLessParams(params)
     params.cstrHt = ones(1,nVols) ...
                   * cstrVol ...
                   / colVol;     
+              
     %Define scaling factor for volume for tanks [-]; actually this is the
     %inverse of the tank scale factor derived in the derivation.
     params.feTaVolNorm = feTaVol ...
@@ -127,14 +124,24 @@ function params = getDimLessParams(params)
                   * teScaleFac ...
                   / presColHigh;
 
-    %Define dimensionless gas constants for the tank units:
-    %(J/mol-k*mol/cc*cc/sec)/(J/m^2-sec*m^2)
-    gasConsNormFeTa = ((gasCons/10)*gConScaleFac*volScaleFac) ...
-                    / (htTrCoInFeTa*crsAreaInFeTa/10000);
-    gasConsNormRaTa = ((gasCons/10)*gConScaleFac*volScaleFac) ...
-                    / (htTrCoInRaTa*crsAreaInRaTa/10000);
-    gasConsNormExTa = ((gasCons/10)*gConScaleFac*volScaleFac) ...
-                    / (htTrCoInExTa*crsAreaInExTa/10000);
+    %When nonisothermal,
+    if bool(5) == 1       
+        
+        %Unpack additional params
+        htTrCoInFeTa  = params.htTrCoInFeTa ;
+        htTrCoInRaTa  = params.htTrCoInRaTa ;
+        htTrCoInExTa  = params.htTrCoInExTa ;
+              
+        %Define dimensionless gas constants for the tank units:
+        %(J/mol-k*mol/cc*cc/sec)/(J/m^2-sec*m^2)
+        gasConsNormFeTa = ((gasCons/10)*gConScaleFac*volScaleFac) ...
+                        / (htTrCoInFeTa*crsAreaInFeTa/10000);
+        gasConsNormRaTa = ((gasCons/10)*gConScaleFac*volScaleFac) ...
+                        / (htTrCoInRaTa*crsAreaInRaTa/10000);
+        gasConsNormExTa = ((gasCons/10)*gConScaleFac*volScaleFac) ...
+                        / (htTrCoInExTa*crsAreaInExTa/10000);
+                    
+    end
     %---------------------------------------------------------------------%           
 
 
@@ -171,9 +178,16 @@ function params = getDimLessParams(params)
     params.gasConsNormEq   = gasConsNormEq  ;
     params.valFeedColNorm  = valFeedColNorm ;
     params.valProdColNorm  = valProdColNorm ;
-    params.gasConsNormFeTa = gasConsNormFeTa;
-    params.gasConsNormRaTa = gasConsNormRaTa;
-    params.gasConsNormExTa = gasConsNormExTa;
+    
+    %When nonisothermal
+    if bool(5) == 1
+    
+        %Save the relevant parameters
+        params.gasConsNormFeTa = gasConsNormFeTa;
+        params.gasConsNormRaTa = gasConsNormRaTa;
+        params.gasConsNormExTa = gasConsNormExTa;
+        
+    end
     
     %When there is axial pressure drop
     if bool(3) == 1

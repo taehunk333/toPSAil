@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Simulation Runtime:
 %-the simulation will run about 6 minutes for its 4-PSA cycle simualton
-%-the simulation will reacha a CSS, after it is finished running
+%-the simulation will reach a CSS, after it is finished running
 %-lowering the number of CSTRs down can help increase the simulation speed but 
 % will result in less accurate simulation results
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

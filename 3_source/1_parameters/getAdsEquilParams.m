@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/1/24/Monday
-%Code last modified on : 2022/1/24/Monday
+%Code last modified on : 2022/10/20/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -41,6 +41,7 @@ function params = getAdsEquilParams(params)
     
     %Unpack params            
     modSp = params.modSp;
+    bool  = params.bool ;
     %---------------------------------------------------------------------% 
     
     
@@ -60,29 +61,28 @@ function params = getAdsEquilParams(params)
     %Henry's law or Extended Langmuir isotherm
     elseif whichIsotherm == 1 || ...
            whichIsotherm == 2
+        
+        %If nonisothermal,
+        if bool(5) == 1
+       
+            %Unpack additional params
+            gasCons    = params.gasCons   ; 
+            tempRefIso = params.tempRefIso;
+            isoStHtC   = params.isoStHtC  ;
 
-        %Unpack additional params
-        gasCons    = params.gasCons   ; 
-        tempRefIso = params.tempRefIso;
-        isoStHtC   = params.isoStHtC  ;
+            %Calculate the constant factor inside the exponent: 
+            %(J/mol-L)/(J/mol-L)
+            dimLessIsoStHtRef = isoStHtC ...
+                             ./ ((gasCons/10)*tempRefIso);
 
-        %Calculate the constant factor inside the exponent: 
-        %(J/mol-L)/(J/mol-L)
-        dimLessIsoStHtRef = isoStHtC ...
-                         ./ ((gasCons/10)*tempRefIso);
+            %Update params
+            params.dimLessIsoStHtRef = dimLessIsoStHtRef;
+                     
+        end
        
     end
     %---------------------------------------------------------------------%
 
-
-
-    %---------------------------------------------------------------------%
-    %Return the updated structure
-
-    %Update params
-    params.dimLessIsoStHtRef = dimLessIsoStHtRef;
-    %---------------------------------------------------------------------%
-    
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

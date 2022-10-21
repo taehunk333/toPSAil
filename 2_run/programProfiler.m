@@ -43,8 +43,10 @@ function programProfiler()
     %---------------------------------------------------------------------%
     %Profile the main function
     
-    %test 6 (Windows)
-    name = strcat("case_study_1");
+    %Examples
+%     name = strcat("case_study_1");
+    name = strcat("case_study_2");
+%     name = strcat("case_study_2");
     %---------------------------------------------------------------------%
     
     
