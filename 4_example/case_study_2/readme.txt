@@ -8,10 +8,10 @@
 %-isothermal operation
 %-time-driven mode
 %-flow-controlled mode
-%-Shin's experimental system (Run no.xx)
+%-Shin's experimental system (Run no.17)
 %-binary mixture (O2 and N2)
-%-linear isotherm
+%-Linear isotherm
 %-LDF adsorption rate
-%-a kinetic separation
+%-a kinetic separation (O2 is more mobile)
 %-XX CSTRs per adsorber
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

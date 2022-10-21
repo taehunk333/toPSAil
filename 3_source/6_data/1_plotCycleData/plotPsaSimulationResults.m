@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2019/5/13/Monday
-%Code last modified on : 2022/1/21/Friday
+%Code last modified on : 2022/10/20/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -74,10 +74,10 @@ function plotPsaSimulationResults(params,sol)
         figObj = gcf;
         
         %Get the full filename
-        figName = 'colPresProfile.eps'; 
+        figName = 'colPresProfile.pdf'; 
                 
-        %Save the figure to a .eps file
-        saveFigs2Eps(figObj,figPath,figName);
+        %Save the figure to a .pdf file
+        saveFigs2Files(figObj,figPath,figName);
                 
     end              
     %---------------------------------------------------------------------%
@@ -97,10 +97,10 @@ function plotPsaSimulationResults(params,sol)
         figObj = gcf;
         
         %Get the full filename
-        figName = 'raTaPresProfile.eps'; 
+        figName = 'raTaPresProfile.pdf'; 
                 
-        %Save the figure to a .eps file
-        saveFigs2Eps(figObj,figPath,figName);
+        %Save the figure to a .pdf file
+        saveFigs2Files(figObj,figPath,figName);
         
         %Plot the pressure profiles for the extract product receiver tank
         plotExTaPresProfiles(params,sol);
@@ -109,10 +109,10 @@ function plotPsaSimulationResults(params,sol)
         figObj = gcf;
         
         %Get the full filename
-        figName = 'exTaPresProfile.eps'; 
+        figName = 'exTaPresProfile.pdf'; 
                 
-        %Save the figure to a .eps file
-        saveFigs2Eps(figObj,figPath,figName);
+        %Save the figure to a .pdf file
+        saveFigs2Files(figObj,figPath,figName);
                         
     end              
     %---------------------------------------------------------------------%  
@@ -138,10 +138,10 @@ function plotPsaSimulationResults(params,sol)
             %Get the full filename
             figName = strcat('gasConsCol', ...
                              int2str(i), ...
-                             '.eps'); 
+                             '.pdf'); 
 
-            %Save the figure to a .eps file
-            saveFigs2Eps(figObj,figPath,figName);
+            %Save the figure to a .pdf file
+            saveFigs2Files(figObj,figPath,figName);
             
         end
                 
@@ -169,10 +169,10 @@ function plotPsaSimulationResults(params,sol)
             %Get the full filename
             figName = strcat('adsConsCol', ...
                              int2str(i), ...
-                             '.eps'); 
+                             '.pdf'); 
 
-            %Save the figure to a .eps file
-            saveFigs2Eps(figObj,figPath,figName);
+            %Save the figure to a .pdf file
+            saveFigs2Files(figObj,figPath,figName);
             
         end
                         
@@ -199,10 +199,10 @@ function plotPsaSimulationResults(params,sol)
             %Get the full filename
             figName = strcat('brkThrCol', ...
                              int2str(i), ...
-                             '.eps'); 
+                             '.pdf'); 
 
-            %Save the figure to a .eps file
-            saveFigs2Eps(figObj,figPath,figName);
+            %Save the figure to a .pdf file
+            saveFigs2Files(figObj,figPath,figName);
             
         end 
                         
@@ -224,10 +224,10 @@ function plotPsaSimulationResults(params,sol)
         figObj = gcf;
         
         %Get the full filename
-        figName = 'raTaPurity.eps'; 
+        figName = 'raTaPurity.pdf'; 
                 
-        %Save the figure to a .eps file
-        saveFigs2Eps(figObj,figPath,figName);
+        %Save the figure to a .pdf file
+        saveFigs2Files(figObj,figPath,figName);
         
         %Plot product purity inside the extract product tank
         plotExTaPurity(params,sol,1);
@@ -236,10 +236,10 @@ function plotPsaSimulationResults(params,sol)
         figObj = gcf;
         
         %Get the full filename
-        figName = 'exTaPurity.eps'; 
+        figName = 'exTaPurity.pdf'; 
                 
-        %Save the figure to a .eps file
-        saveFigs2Eps(figObj,figPath,figName);
+        %Save the figure to a .pdf file
+        saveFigs2Files(figObj,figPath,figName);
      
     end              
     %---------------------------------------------------------------------%  
@@ -265,10 +265,10 @@ function plotPsaSimulationResults(params,sol)
             %Get the full filename
             figName = strcat('cstrTempCol', ...
                              int2str(i), ...
-                             '.eps'); 
+                             '.pdf'); 
 
-            %Save the figure to a .eps file
-            saveFigs2Eps(figObj,figPath,figName);
+            %Save the figure to a .pdf file
+            saveFigs2Files(figObj,figPath,figName);
             
             %Plot temperature profile for the cstr walls associated with a
             %given adsorption column
@@ -280,10 +280,10 @@ function plotPsaSimulationResults(params,sol)
             %Get the full filename
             figName = strcat('wallTempCol', ...
                              int2str(i), ...
-                             '.eps'); 
+                             '.pdf'); 
 
-            %Save the figure to a .eps file
-            saveFigs2Eps(figObj,figPath,figName);
+            %Save the figure to a .pdf file
+            saveFigs2Files(figObj,figPath,figName);
             
         end        
                         
@@ -305,10 +305,10 @@ function plotPsaSimulationResults(params,sol)
         figObj = gcf;
         
         %Get the full filename
-        figName = 'productPurity.eps'; 
+        figName = 'productPurity.pdf'; 
                 
-        %Save the figure to a .eps file
-        saveFigs2Eps(figObj,figPath,figName);
+        %Save the figure to a .pdf file
+        saveFigs2Files(figObj,figPath,figName);
         
     end       
     %---------------------------------------------------------------------%   
@@ -328,10 +328,10 @@ function plotPsaSimulationResults(params,sol)
         figObj = gcf;
         
         %Get the full filename
-        figName = 'productRecovery.eps'; 
+        figName = 'productRecovery.pdf'; 
                 
-        %Save the figure to a .eps file
-        saveFigs2Eps(figObj,figPath,figName);
+        %Save the figure to a .pdf file
+        saveFigs2Files(figObj,figPath,figName);
         
     end       
     %---------------------------------------------------------------------% 
@@ -351,10 +351,10 @@ function plotPsaSimulationResults(params,sol)
         figObj = gcf;
         
         %Get the full filename
-        figName = 'productivity.eps'; 
+        figName = 'productivity.pdf'; 
                 
-        %Save the figure to a .eps file
-        saveFigs2Eps(figObj,figPath,figName);
+        %Save the figure to a .pdf file
+        saveFigs2Files(figObj,figPath,figName);
         
     end       
     %---------------------------------------------------------------------% 
@@ -374,10 +374,10 @@ function plotPsaSimulationResults(params,sol)
         figObj = gcf;
         
         %Get the full filename
-        figName = 'energyConsumption.eps'; 
+        figName = 'energyConsumption.pdf'; 
                 
-        %Save the figure to a .eps file
-        saveFigs2Eps(figObj,figPath,figName);
+        %Save the figure to a .pdf file
+        saveFigs2Files(figObj,figPath,figName);
         
     end       
     %---------------------------------------------------------------------% 
@@ -397,10 +397,10 @@ function plotPsaSimulationResults(params,sol)
         figObj = gcf;
         
         %Get the full filename
-        figName = 'css.eps'; 
+        figName = 'css.pdf'; 
                 
-        %Save the figure to a .eps file
-        saveFigs2Eps(figObj,figPath,figName);
+        %Save the figure to a .pdf file
+        saveFigs2Files(figObj,figPath,figName);
         
     end       
     %---------------------------------------------------------------------% 

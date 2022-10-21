@@ -19,11 +19,11 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/7/12/Tuesday
-%Code last modified on : 2022/7/12/Tuesday
+%Code last modified on : 2022/10/20/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : saveFigs2Eps.m
+%Function   : saveFigs2Files.m
 %Source     : common
 %Description: This .m function saves the currently active plot into .eps
 %             file format under the example folder subdirectory:
@@ -36,13 +36,13 @@
 %Outputs    : a .eps file in the designated folder.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function saveFigs2Eps(figObj,figPath,figName)
+function saveFigs2Files(figObj,figPath,figName)
   
     %---------------------------------------------------------------------%
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'saveFigs2Eps.m';
+    %funcId = 'saveFigs2Files.m';
     %---------------------------------------------------------------------%           
     
     
