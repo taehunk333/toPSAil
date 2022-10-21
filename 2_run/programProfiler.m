@@ -44,9 +44,7 @@ function programProfiler()
     %Profile the main function
     
     %Examples
-%     name = strcat("case_study_1");
     name = strcat("case_study_2");
-%     name = strcat("case_study_2");
     %---------------------------------------------------------------------%
     
     
