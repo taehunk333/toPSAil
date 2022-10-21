@@ -1,17 +1,18 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Simulation Runtime
-%-the simulation will run for xx minutes
+%Simulation Runtime:
+%-TBD
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%-1 adsorption column
+%Assumptions:
+%-1 adsorption columns
 %-isothermal operation
 %-time-driven mode
 %-flow-controlled mode
-%-Shin's experimental system (Run no.17)
+%-Kayser's experimental system (Run no.1)
 %-binary mixture (O2 and N2)
-%-Linear isotherm
+%-linear isotherm
 %-LDF adsorption rate
-%-a kinetic separation (O2 is more mobile)
-%-XX CSTRs per adsorber
+%-near-equilibrium operation (MTCs assumed large)
+%-100 CSTRs per adsorber
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
