@@ -133,7 +133,7 @@ function plotProductivity(params,sol)
     xlabel('Cycle Number');
 
     %Determine y-axis (absicissa) label
-    ylabel('Productivity [mmol/kg-sec]');
+    ylabel('Prod. [mmol/kg-sec]');
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');

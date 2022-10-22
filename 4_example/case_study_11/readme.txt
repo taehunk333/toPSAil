@@ -1,0 +1,17 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Simulation Runtime
+%-the simulation will run for xx minutes...
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-2 adsorption columns
+%-nonisothermal operation
+%-event-driven mode
+%-pressure-driven mode
+%-Shin's experimental system (Run no.xx)
+%-binary mixture (CO2 and CH4)
+%-XXX isotherm
+%-LDF adsorption rate
+%-an equilibrium separation
+%-XX CSTRs per adsorber
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

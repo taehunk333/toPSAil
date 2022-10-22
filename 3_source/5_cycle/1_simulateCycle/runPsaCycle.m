@@ -433,7 +433,7 @@ function sol = runPsaCycle(params)
                 
                 %Calculate actual step duration (round to a nearest
                 %integer)
-                eTi = round(stTimePts(end)*tiScaleFac);
+                eTi = round(stTimePts(end)*tiScaleFac,2);
                 
                 %Get the requested step duration
                 eTi0 = round(stepTimes(currStepNum));
@@ -445,21 +445,21 @@ function sol = runPsaCycle(params)
                 if flags.event == 0 && eveTrue == 1
                      
                     %Print the information
-                    fprintf("\n*Step duration  : %d(%d) seconds",eTi,eTi0);
+                    fprintf("\n*Step duration: %.1f(%d) seconds",eTi,eTi0);
                     fprintf("\n*No event happened for the step")          ;          
                 
                 %No Event was requested
                 elseif flags.event == 0 && eveTrue == 0
                     
                     %Print the information
-                    fprintf("\n*Step duration  : %d(%d) seconds",eTi,eTi0);
+                    fprintf("\n*Step duration: %.1f(%d) seconds",eTi,eTi0);
                     fprintf("\n*The step was a time driven step")         ;           
                     
                 %Event did happen
                 elseif flags.event == 1                                        
                     
                     %Print the information
-                    fprintf("\n*Step duration  : %d(%d) seconds",eTi,eTi0);
+                    fprintf("\n*Step duration  %.1f(%d) seconds",eTi,eTi0);
                     fprintf("\n*An event happened in %s",eveLocStep)      ;
                     
                 end                
