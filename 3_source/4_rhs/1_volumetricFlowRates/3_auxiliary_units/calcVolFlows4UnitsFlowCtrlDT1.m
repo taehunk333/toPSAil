@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/8/13/Saturday
-%Code last modified on : 2022/10/7/Friday
+%Code last modified on : 2022/10/22/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -272,9 +272,10 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
             %Get the sign of the current concentration difference
             testPres = gasConsNormEq*raTaConTot(t)*raTaTempCstr(t) ...
                      - pRatRa;
-            
-            %If the raffinate tank pressure needs to build up, 
-            if testPres >= numZero
+                        
+            %If the raffinate tank pressure is at (or above) the desired 
+            %pressure
+            if abs(testPres) <= numZero || testPres > numZero
                 
                 %---------------------------------------------------------%
                 %Obtain the volumetric flow rate out of the constant 
@@ -286,8 +287,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
                                     .* (vFlRaffSum(t)+raTaBeta(t));                
                 %---------------------------------------------------------%
     
-            %If the raffinate tank pressure is at (or above) the desired 
-            %pressure
+            %If the raffinate tank pressure needs to build up, 
             else
                              
                 %---------------------------------------------------------%
@@ -407,8 +407,9 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
             testPres = gasConsNormEq*exTaConTot(t)*exTaTempCstr(t) ...
                      - pRatEx;
             
-            %If the extract tank pressure needs to build up, 
-            if testPres >= numZero
+            %If the extract tank pressure is at (or above) the desired 
+            %pressure 
+            if abs(testPres) <= numZero || testPres > numZero
                 
                 %---------------------------------------------------------%
                 %Obtain the volumetric flow rate out of the constant 
@@ -420,8 +421,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
                                     .* (vFlExtrSum(t)+exTaBeta(t));                                                
                 %---------------------------------------------------------%
     
-            %If the extract tank pressure is at (or above) the desired 
-            %pressure
+            %If the extract tank pressure needs to build up,               
             else
                              
                 %---------------------------------------------------------%
