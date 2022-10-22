@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/10/Wednesday
-%Code last modified on : 2022/10/20/Thursday
+%Code last modified on : 2022/10/21/Friday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -129,6 +129,9 @@ function plotColCstrTempProfiles(params,sol,colNum)
     %---------------------------------------------------------------------%  
     %Plot the final temperature profile for the last HP step
 
+    %For the CSTR temperature, use a light gray color
+    rgb = grabColor(2,colorBnW);
+    
     %Hold on to the figure
     hold on;
 

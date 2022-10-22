@@ -1,17 +1,19 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Simulation Runtime
-%-the simulation will run for xx minutes...
+%Simulation Runtime:
+%-Less than 2 minutes for 4 PSA cycle simulation and a CSS convergence to the 
+% tolerance of 1e-6.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%-2 adsorption columns
-%-nonisothermal operation
-%-event-driven mode
-%-pressure-driven mode
-%-Shin's experimental system (Run no.xx)
-%-binary mixture (CO2 and CH4)
-%-XXX isotherm
+%Assumptions:
+%-1 adsorption columns
+%-isothermal operation
+%-time-driven mode
+%-flow-controlled mode
+%-Kayser's experimental system (Run no.1)
+%-binary mixture (O2 and N2)
+%-linear isotherm
 %-LDF adsorption rate
-%-an equilibrium separation
-%-XX CSTRs per adsorber
+%-near-equilibrium operation (MTCs assumed large)
+%-100 CSTRs per adsorber
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
