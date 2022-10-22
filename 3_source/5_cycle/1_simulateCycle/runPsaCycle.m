@@ -472,7 +472,7 @@ function sol = runPsaCycle(params)
             %-------------------------------------------------------------%
         
         %When cyclic steady state is attained
-        elseif sol.css(nCy) < numZero            
+        else
             
             %Print the simulation information
             fprintf("\n*******************************************\n")   ;
@@ -499,10 +499,23 @@ function sol = runPsaCycle(params)
     %Print out the message saying that the desired number of cycles have
     %been simulated without attaining the cyclic steady state
     
-    %Print the simulation information
-    fprintf("\n*******************************************\n");
-    fprintf("Simulated %d PSA cycles. \n",nCy)                ;
-    fprintf("*******************************************\n")  ;
+    %Check to see if the last step had a CSS
+    if sol.css(nCy+1) < numZero
+        
+        %Print the simulation information
+        fprintf("\n*******************************************\n") ;
+        fprintf("CSS convergence after the %dth PSA Cycle. \n",nCy);    
+        fprintf("*******************************************\n")   ;
+            
+    %If the last step was not at a CSS,
+    else
+    
+        %Print the simulation information
+        fprintf("\n*******************************************\n");
+        fprintf("Simulated %d PSA cycles. \n",nCy)                ;
+        fprintf("*******************************************\n")  ;
+        
+    end
     %---------------------------------------------------------------------%                
     
     
