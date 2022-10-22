@@ -270,12 +270,12 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
         for t = 1 : nRows          
             
             %Get the sign of the current concentration difference
-            testPres = gasConsNormEq*raTaConTot(t)*raTaTempCstr(t) ...
-                     - pRatRa;
-                        
+            testPres = sign(gasConsNormEq*raTaConTot(t)*raTaTempCstr(t) ...
+                           -pRatRa);
+                     
             %If the raffinate tank pressure is at (or above) the desired 
             %pressure
-            if abs(testPres) <= numZero || testPres > numZero
+            if testPres >= numZero
                 
                 %---------------------------------------------------------%
                 %Obtain the volumetric flow rate out of the constant 
@@ -409,7 +409,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
             
             %If the extract tank pressure is at (or above) the desired 
             %pressure 
-            if abs(testPres) <= numZero || testPres > numZero
+            if testPres >= numZero
                 
                 %---------------------------------------------------------%
                 %Obtain the volumetric flow rate out of the constant 

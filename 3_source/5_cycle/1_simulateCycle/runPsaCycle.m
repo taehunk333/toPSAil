@@ -494,6 +494,16 @@ function sol = runPsaCycle(params)
     
     
     %---------------------------------------------------------------------%                
+    %Compute a cyclic steady state (CSS) convergence for the (nCycle+1)th
+    %PSA cycle    
+
+    %Get the cyclic steady state convergence using L2-Norm
+    sol.css(nCy+1) = funcCss(params,iCondCurr,iCondPrev);   
+    %---------------------------------------------------------------------% 
+    
+    
+    
+    %---------------------------------------------------------------------%                
     %Print out the exiting message for the function
     
     %Print out the message saying that the desired number of cycles have
@@ -516,17 +526,7 @@ function sol = runPsaCycle(params)
         fprintf("*******************************************\n")  ;
         
     end
-    %---------------------------------------------------------------------%                
-    
-    
-    
-    %---------------------------------------------------------------------%                
-    %Compute a cyclic steady state (CSS) convergence for the (nCycle+1)th
-    %PSA cycle    
-
-    %Get the cyclic steady state convergence using L2-Norm
-    sol.css(nCy+1) = funcCss(params,iCondCurr,iCondPrev);   
-    %---------------------------------------------------------------------%                
+    %---------------------------------------------------------------------%                                               
     
 end
 
