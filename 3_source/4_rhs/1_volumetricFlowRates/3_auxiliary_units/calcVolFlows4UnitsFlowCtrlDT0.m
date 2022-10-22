@@ -129,7 +129,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT0(params,units,nS)
                  - pRatRa;
         
         %If the absolute value of testPres is less than the numerical zero
-        if abs(testPres) <= numZero || testPres > numZero
+        if testPres >= numZero
              
             %Obtain the volumetric flow rate out of the constant pressure 
             %regulator valve. The exit valve is opened only when the 
@@ -174,7 +174,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT0(params,units,nS)
                  - pRatEx;
 
         %If the absolute value of testPres is less than the numerical zero
-        if abs(testPres) <= numZero || testPres > numZero
+        if testPres >= numZero
              
             %Obtain the volumetric flow rate out of the constant pressure 
             %regulator valve. The exit valve is opened only when the 
