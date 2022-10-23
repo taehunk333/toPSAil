@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/10/22/Saturday
-%Code last modified on : 2022/10/22/Saturday
+%Code last modified on : 2022/10/3/Sunday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -43,13 +43,11 @@
 %                            outputs
 %             tDom0        - the new time span for the numerical 
 %                            integration of the original set of ODES
-%             iStates0     - a new initial condition vector for the state
-%                            varialbles in the original system of ODEs
 %             preInt       - a boolean variable that returns 1, if the 
 %                            pre-numerical integration had happened
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [sol0,tDom0,iStates0,preInt] = solvOdes0(params,tDom,iStates,nS)
+function [sol0,tDom0,preInt] = solvOdes0(params,tDom,iStates,nS)
 
     %---------------------------------------------------------------------%
     %Define known quantities
@@ -189,9 +187,9 @@ function [sol0,tDom0,iStates0,preInt] = solvOdes0(params,tDom,iStates,nS)
             noteNumIntStats(sol0,numIntSolv);
             
             %Print additional helpful message
-            fprintf("\n*******************************************\n") ; 
-            fprintf("Pre-integration for 'RP-XXX-RAF' finished."); 
-            fprintf("\n*******************************************\n") ; 
+            fprintf("\n*******************************************\n"); 
+            fprintf("Pre-integration for 'HP-FEE-RAF' finished.")     ; 
+            fprintf("\n*******************************************\n"); 
             %-------------------------------------------------------------%
             
             
@@ -202,11 +200,22 @@ function [sol0,tDom0,iStates0,preInt] = solvOdes0(params,tDom,iStates,nS)
             %We've done the pre-integration
             preInt = 1;
             
-            %Update the time domain
-            tDom0 = [0,sol0.xe];
+            %Grab the event time
+            xe0 = sol0.xe;
             
-            %Update the initial state
-            iStates0 = sol0.ye';
+            %If the event time is empty
+            if isempty(xe0)
+                
+                %Set the time domain equal to the original time span
+                tDom0 = tDom;
+            
+            %Otherwise, event has happened
+            else
+                
+                %Update the time domain
+                tDom0 = [0,sol0.xe];
+            
+            end
             %-------------------------------------------------------------%
             
         %Otherwise,
@@ -221,9 +230,6 @@ function [sol0,tDom0,iStates0,preInt] = solvOdes0(params,tDom,iStates,nS)
 
             %Set the new time domain
             tDom0 = tDom;
-
-            %Set the new initial states
-            iStates0 = iStates;
             %-------------------------------------------------------------%
         
         end
@@ -285,9 +291,9 @@ function [sol0,tDom0,iStates0,preInt] = solvOdes0(params,tDom,iStates,nS)
             noteNumIntStats(sol0,numIntSolv);
             
             %Print additional helpful message
-            fprintf("\n*******************************************\n") ; 
-            fprintf("Pre-integration for 'DP-EXT-XXX' finished."); 
-            fprintf("\n*******************************************\n") ; 
+            fprintf("\n*******************************************\n"); 
+            fprintf("Pre-integration for 'DP-EXT-XXX' finished.")     ; 
+            fprintf("\n*******************************************\n"); 
             %-------------------------------------------------------------%
             
             
@@ -298,11 +304,22 @@ function [sol0,tDom0,iStates0,preInt] = solvOdes0(params,tDom,iStates,nS)
             %We've done the pre-integration
             preInt = 1;
             
-            %Update the time domain
-            tDom0 = [0,sol0.xe];
+            %Grab the event time
+            xe0 = sol0.xe;
             
-            %Update the initial state
-            iStates0 = sol0.ye';
+            %If the event time is empty
+            if isempty(xe0)
+                
+                %Set the time domain equal to the original time span
+                tDom0 = tDom;
+            
+            %Otherwise, event has happened
+            else
+                
+                %Update the time domain
+                tDom0 = [0,sol0.xe];
+            
+            end                        
             %-------------------------------------------------------------%
             
         %Otherwise,
@@ -317,9 +334,6 @@ function [sol0,tDom0,iStates0,preInt] = solvOdes0(params,tDom,iStates,nS)
 
             %Set the new time domain
             tDom0 = tDom;
-
-            %Set the new initial states
-            iStates0 = iStates;
             %-------------------------------------------------------------%
         
         end
@@ -337,9 +351,6 @@ function [sol0,tDom0,iStates0,preInt] = solvOdes0(params,tDom,iStates,nS)
     
         %Set the new time domain
         tDom0 = tDom;
-        
-        %Set the new initial states
-        iStates0 = iStates;
         %-----------------------------------------------------------------%        
 
     end

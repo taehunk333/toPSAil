@@ -203,7 +203,7 @@ function [params,fullParams] = getSimParams(exampleFolder)
     params.funcVal = models{4};
     
     %Specify a volumetric flow rate calculation model
-    params.funcVol      = models{6};
+    params.funcVol      = models{6}   ;
     params.funcVolUnits = subModels{6};
     
     %Specify a CSS convergence model

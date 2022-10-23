@@ -88,7 +88,7 @@ function [stTime,stStates,flags] ...
         
         %Let the pressure build up inside the raffinate product tank and/or
         %the extract product tank, if needed
-        [sol0,tDom0,~,preInt] = solvOdes0(params,tDom,iStates,nS);
+        [sol0,tDom0,preInt] = solvOdes0(params,tDom,iStates,nS);
         %-----------------------------------------------------------------%
         
         
