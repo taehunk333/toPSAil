@@ -55,7 +55,7 @@ function [sol0,tDom0,iStates0,preInt] = solvOdes0(params,tDom,iStates,nS)
     %Define known quantities
     
     %Define function ID
-    %funcId = 'solvOdes0.m';
+    funcId = 'solvOdes0.m';
     
     %Unpack params
     sStepCol      = params.sStepCol(:,nS);  
@@ -123,10 +123,14 @@ function [sol0,tDom0,iStates0,preInt] = solvOdes0(params,tDom,iStates,nS)
     if raffTrue == 1 && extrTrue == 1
         
         %-----------------------------------------------------------------%
+        %When both extract and raffinate product tanks must be pressurized
         
+        %Currently, we do not support multiple events
         
-        
-        
+        %Print the error message
+        msg = 'Multiple events not allowed for pre-integration.';
+        msg = append(funcId,': ',msg);
+        error(msg);                
         %-----------------------------------------------------------------%
         
     %If the raffinate product is flowing into the raffinate tank, but the
@@ -169,7 +173,7 @@ function [sol0,tDom0,iStates0,preInt] = solvOdes0(params,tDom,iStates,nS)
                 
             end
                   
-            %Define the right hand side function
+            %Define the right-hand side function
             funcRhs = @(t,x) defineRhsFunc(t,x,params);  
             %-------------------------------------------------------------%
             
@@ -230,12 +234,95 @@ function [sol0,tDom0,iStates0,preInt] = solvOdes0(params,tDom,iStates,nS)
     elseif raffTrue == 0 && extrTrue == 1
         
         %-----------------------------------------------------------------%
+        %If the pressure needs to build up
+        if exTaSign < 0
+                       
+            %-------------------------------------------------------------%
+            %Update relevant information and define a new function handle
+            %for the right-hand side
+            
+            %Set the option for the event function
+            options ...
+                = odeset('Events', ...
+                         @(t,states) ...
+                         getExTaEventPressureAcc(params,t,states));
+            
+            %When noisothermal,
+            if enerBalTrue == 1
+                
+                %Redefine the submodel for the volumetric flow rate
+                %calculations for the extract tank
+                params.funcVolUnits ...
+                    = @(params,units,nS) ...
+                      calcVolFlows4UnitsFlowCtrlDT1AccExTa(params, ...
+                                                           units,nS);
+                
+            %When isothermal,
+            elseif enerBalTrue == 0
+                
+                %Redefine the submodel for the volumetric flow rate
+                %calculations for the extract tank
+                params.funcVolUnits ...
+                    = @(params,units,nS) ...
+                      calcVolFlows4UnitsFlowCtrlDT0AccExTa(params, ...
+                                                           units,nS);
+                
+            end
+                  
+            %Define the right-hand side function
+            funcRhs = @(t,x) defineRhsFunc(t,x,params);  
+            %-------------------------------------------------------------%
+            
+            
+            
+            %-------------------------------------------------------------%
+            %Numerically integrate the ODEs
+            
+            %Perform the numerical integration for the step
+            sol0 = solvOdes(funcRhs,tDom,iStates,options,numIntSolv);
+            
+            %Print out the numerical integration stats
+            noteNumIntStats(sol0,numIntSolv);
+            
+            %Print additional helpful message
+            fprintf("\n*******************************************\n") ; 
+            fprintf("Pre-integration for 'DP-EXT-XXX' finished."); 
+            fprintf("\n*******************************************\n") ; 
+            %-------------------------------------------------------------%
+            
+            
+            
+            %-------------------------------------------------------------%
+            %Update the solution information
+            
+            %We've done the pre-integration
+            preInt = 1;
+            
+            %Update the time domain
+            tDom0 = [0,sol0.xe];
+            
+            %Update the initial state
+            iStates0 = sol0.ye';
+            %-------------------------------------------------------------%
+            
+        %Otherwise,
+        else
         
-        
-        
-        
-        
+            %-------------------------------------------------------------%
+            %Set the solution structure as an empty vector
+            sol0 = [];
 
+            %No need for us to do the pre-integration
+            preInt = 0;
+
+            %Set the new time domain
+            tDom0 = tDom;
+
+            %Set the new initial states
+            iStates0 = iStates;
+            %-------------------------------------------------------------%
+        
+        end
         %-----------------------------------------------------------------%
         
     %If no products flow into the product tanks
