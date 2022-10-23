@@ -166,7 +166,7 @@ function [stTime,stStates,flags] ...
         if preInt == 1
             
             %Perform the numerical integration for the step
-            sol = odextend(sol0,funcRhs,tDom(2),[],options);
+            sol = odextend(sol0,funcRhs,tDom(2),[],options);            
             
         %If we are doing the original numerical integration
         else
@@ -197,6 +197,36 @@ function [stTime,stStates,flags] ...
     
     %If we have the results from event driven numerical integration,
     if isempty(funcEve) ~= 1     
+        
+        %-----------------------------------------------------------------%
+        %Make sure that the event had happened for the original numerical
+        %integration
+        
+        %When the pre-integration triggered an event, i.e., there is a
+        %field named 'xe' in the solution structure sol0, 
+        if isfield(sol0,'xe') == 1 
+        
+            %The soluation structure sol for the original integration,
+            %following the pre-integration, will surely contain 'xe', 'ye',
+            %and 'ie' as it fields. Can we say that the event times from 
+            %the pre-integration and the original integration are the same?
+            %In other words, if they are the same, then no event has
+            %happened for the original integration
+            if isequal(sol0.xe,sol.xe)
+                
+               %No event has happened for the original integration.
+               %Therefore, return empty values for the event related
+               %parameters
+               sol.xe = [];
+               sol.ye = [];
+               sol.ie = 0 ;               
+                
+            end
+  
+        end
+        %-----------------------------------------------------------------%
+        
+        
         
         %-----------------------------------------------------------------%
         %Test to see if the event function is what caused the integration 

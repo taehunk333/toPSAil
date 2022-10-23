@@ -92,7 +92,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT0AccRaTa(params,units,nS)
     %maintain a constant pressure inside the feed tank. Therefore, we can 
     %control the volumetric flow rate so that a constant pressure is 
     %maintained inside the feed tank
-    vFlFeTa(:,(nCols+1)) = sum(vFlFeTa(:,1:nCols),2);    
+    vFlFeTa(:,(nCols+1)) = max(0,sum(vFlFeTa(:,1:nCols),2));    
     %---------------------------------------------------------------------%       
     
     
@@ -113,20 +113,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT0AccRaTa(params,units,nS)
     
     %Get the net volumetric flow rate in the extract product tank from 
     %the streams associated with the columns
-    vFlNetExTa = sum(vFlExTa(:,1:nCols),2);   
-    
-    %When the extract product tank pressure is greater than equal to the 
-    %high pressure and there is a net flow out, maintain it!
-
-    %For each time point t,
-    for t = 1 : nRows          
-        
-            %Obtain the volumetric flow rate out of the constant pressure 
-            %regulator valve. The exit valve is opened only when the 
-            %extract tank pressure equals the high pressure.  
-            vFlExTa(t,(nCols+1)) = vFlNetExTa(t);
-       
-    end
+    vFlExTa(:,(nCols+1)) = max(0,sum(vFlExTa(:,1:nCols),2));   
     %---------------------------------------------------------------------%
     
     

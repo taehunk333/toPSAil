@@ -51,16 +51,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT0(params,units,nS)
     %funcId = 'calcVolFlows4UnitsFlowCtrlDT0.m';
     
     %Unpack params   
-    nCols         = params.nCols        ;  
-    nRows         = params.nRows        ;
-%     pRatEx        = params.pRatEx       ;
-%     pRatRa        = params.pRatRa       ;
-%     gasConsNormEq = params.gasConsNormEq;
-%     numZero       = params.numZero      ;
-    
-    %Unpack units
-%     raTa = units.raTa;
-%     exTa = units.exTa;
+    nCols = params.nCols;
     %---------------------------------------------------------------------%       
     
     
@@ -99,7 +90,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT0(params,units,nS)
     %maintain a constant pressure inside the feed tank. Therefore, we can 
     %control the volumetric flow rate so that a constant pressure is 
     %maintained inside the feed tank
-    vFlFeTa(:,(nCols+1)) = sum(vFlFeTa(:,1:nCols),2);    
+    vFlFeTa(:,(nCols+1)) = max(0,sum(vFlFeTa(:,1:nCols),2));    
     %---------------------------------------------------------------------%       
     
     
