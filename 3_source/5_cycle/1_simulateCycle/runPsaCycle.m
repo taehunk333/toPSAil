@@ -373,7 +373,7 @@ function sol = runPsaCycle(params)
                 %PSA cycle
                 if currStepNum == nSteps
                 
-                    %Calcualte the performance metrics and save the results
+                    %Calculate the performance metrics and save the results
                     sol = getPerformanceMetrics(params,sol,nS,nCy);                
                     
                 end

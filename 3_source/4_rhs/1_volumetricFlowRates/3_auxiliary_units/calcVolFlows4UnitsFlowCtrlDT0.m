@@ -110,41 +110,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT0(params,units,nS)
     
     %Get the net volumetric flow rate in the raffinate product tank from 
     %the streams associated with the columns
-    vFlNetRaTa = sum(vFlRaTa(:,1:nCols),2);
-
-%     %Get the total concentration of the raffinate product tank at time t
-%     raTaTotCon = raTa.n1.gasConsTot;
-%     
-%     %Get the interior temperature of the raffinate product tank at time t
-%     raTaIntTemp = raTa.n1.temps.cstr;    
-    
-    %When the raffinate product tank pressure is greater than equal to the 
-    %raffinate product pressure and there is a net flow out, maintain it!
-
-    %For each time point t,
-    for t = 1 : nRows          
-        
-%         %Get the sign of the current concentration difference
-%         testPres = gasConsNormEq*raTaTotCon(t)*raTaIntTemp(t) ...
-%                  - pRatRa;
-%         
-%         %If the absolute value of testPres is less than the numerical zero
-%         if testPres >= numZero
-             
-            %Obtain the volumetric flow rate out of the constant pressure 
-            %regulator valve. The exit valve is opened only when the 
-            %raffinate tank pressure equals the raffinate product pressure.
-            vFlRaTa(t,(nCols+1)) = vFlNetRaTa(t);
-% 
-%         %Otherwise,                  
-%         else
-%             
-%             %Let the pressure build up inside the tank
-%             vFlRaTa(t,(nCols+1)) = 0;
-%             
-%         end
-                         
-    end
+    vFlRaTa(:,(nCols+1)) = max(0,sum(vFlRaTa(:,1:nCols),2));
     %---------------------------------------------------------------------%
     
     
@@ -155,41 +121,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT0(params,units,nS)
     
     %Get the net volumetric flow rate in the extract product tank from 
     %the streams associated with the columns
-    vFlNetExTa = sum(vFlExTa(:,1:nCols),2);
-
-%     %Get the total concentration of the extract product tank at time t
-%     exTaTotCon = exTa.n1.gasConsTot;
-%     
-%     %Get the interior temperature of the extract product tank at time t
-%     exTaIntTemp = exTa.n1.temps.cstr;    
-    
-    %When the extract product tank pressure is greater than equal to the 
-    %high pressure and there is a net flow out, maintain it!
-
-    %For each time point t,
-    for t = 1 : nRows          
-        
-%         %Get the sign of the current concentration difference
-%         testPres = gasConsNormEq*exTaTotCon(t)*exTaIntTemp(t) ...
-%                  - pRatEx;
-% 
-%         %If the absolute value of testPres is less than the numerical zero
-%         if testPres >= numZero
-             
-            %Obtain the volumetric flow rate out of the constant pressure 
-            %regulator valve. The exit valve is opened only when the 
-            %extract tank pressure equals the high pressure.  
-            vFlExTa(t,(nCols+1)) = vFlNetExTa(t);
-                      
-%         %Otherwise,                  
-%         else
-%             
-%             %Let the pressure build up
-%             vFlExTa(t,(nCols+1)) = 0 ;
-%             
-%         end
-       
-    end
+    vFlExTa(:,(nCols+1)) = max(0,sum(vFlExTa(:,1:nCols),2));
     %---------------------------------------------------------------------%
     
     
