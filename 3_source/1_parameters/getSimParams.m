@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2019/2/4/Monday
-%Code last modified on : 2022/9/15/Thursday
+%Code last modified on : 2022/10/22/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -186,7 +186,7 @@ function [params,fullParams] = getSimParams(exampleFolder)
     %Define functions for the sub-models used in the simulator. 
     
     %Specify sub-models from user inputs in params        
-    models = getSubModels(params);
+    [models,subModels] = getSubModels(params);
     
     %Unpack models (basic):
         
@@ -203,7 +203,8 @@ function [params,fullParams] = getSimParams(exampleFolder)
     params.funcVal = models{4};
     
     %Specify a volumetric flow rate calculation model
-    params.funcVol = models{6};
+    params.funcVol      = models{6};
+    params.funcVolUnits = subModels{6};
     
     %Specify a CSS convergence model
     params.funcCss = models{7};

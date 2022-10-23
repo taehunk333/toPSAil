@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/3/12/Saturday
-%Code last modified on : 2022/7/18/Monday
+%Code last modified on : 2022/10/22/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -47,12 +47,13 @@ function units = calcVolFlowsDP1ER(params,units,nS)
     %funcId = 'calcVolFlowsDP1ER.m';
     
     %Unpack params   
-    nCols       = params.nCols                 ; 
-    nVols       = params.nVols                 ;        
-    vFlBo       = params.volFlBo               ;    
-    sColNums    = params.sColNums              ;
-    nRows       = params.nRows                 ;
-    coefLinNorm = params.coefLinNorm(1:nVols-1);
+    nCols        = params.nCols                 ; 
+    nVols        = params.nVols                 ;        
+    vFlBo        = params.volFlBo               ;    
+    sColNums     = params.sColNums              ;
+    nRows        = params.nRows                 ;
+    coefLinNorm  = params.coefLinNorm(1:nVols-1);
+    funcVolUnits = params.funcVolUnits          ;
             
     %Unpack units
     col  = units.col ;
@@ -212,7 +213,7 @@ function units = calcVolFlowsDP1ER(params,units,nS)
 
     %Grab the unknown volumetric flow rates from the calculated volumetric
     %flow rates from the adsorption columns
-    units = calcVolFlows4UnitsPresDriv(params,units,nS);
+    units = funcVolUnits(params,units,nS);
     %---------------------------------------------------------------------% 
     
 end

@@ -77,6 +77,7 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
     htCapCpNorm  = params.htCapCpNorm ; 
     volFlBoFree  = params.volFlBoFree ;
     flowDirCol   = params.flowDirCol  ;
+    funcVolUnits = params.funcVolUnits;
     
     %Unpack units
     col  = units.col ;
@@ -787,7 +788,7 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
 
     %Grab the unknown volumetric flow rates from the calculated volumetric
     %flow rates from the adsorption columns
-    units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS);
+    units = funcVolUnits(params,units,nS);
     %---------------------------------------------------------------------%  
     
 end

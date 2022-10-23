@@ -36,7 +36,7 @@
 %Outputs    : options      - a struct 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function options = setOdeSolverOpts(params,iStates,nS,nCy)
+function options = setOdeSolverOpts(params,iStates,nS,~)
 
     %---------------------------------------------------------------------%    
     %Define known quantities

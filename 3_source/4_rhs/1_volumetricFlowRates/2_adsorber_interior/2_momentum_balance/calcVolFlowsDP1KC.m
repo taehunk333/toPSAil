@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/4/17/Sunday
-%Code last modified on : 2022/5/14/Saturday
+%Code last modified on : 2022/10/22/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -53,6 +53,7 @@ function units = calcVolFlowsDP1KC(params,units,nS)
     sColNums      = params.sColNums                  ;
     nRows         = params.nRows                     ;
     preFacLinFlow = params.preFacLinFlow(1,1:nVols-1);
+    funcVolUnits  = params.funcVolUnits              ;
     
     %Unpack units
     col  = units.col ;
@@ -168,7 +169,7 @@ function units = calcVolFlowsDP1KC(params,units,nS)
 
     %Grab the unknown volumetric flow rates from the calculated volumetric
     %flow rates from the adsorption columns
-    units = calcVolFlows4UnitsPresDriv(params,units,nS);
+    units = funcVolUnits(params,units,nS);
     %---------------------------------------------------------------------% 
     
 end

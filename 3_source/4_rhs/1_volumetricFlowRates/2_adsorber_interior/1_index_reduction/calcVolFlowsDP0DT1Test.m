@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/6/6/Monday
-%Code last modified on : 2022/6/14/Tuesday
+%Code last modified on : 2022/10/22/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -73,6 +73,7 @@ function units = calcVolFlowsDP0DT1Test(params,units,nS)
     htCapCpNorm  = params.htCapCpNorm ; 
     volFlBoFree  = params.volFlBoFree ;
     flowDirCol   = params.flowDirCol  ;
+    funcVolUnits = params.funcVolUnits;
     
     %Unpack units
     col  = units.col ;
@@ -568,7 +569,7 @@ function units = calcVolFlowsDP0DT1Test(params,units,nS)
 
     %Grab the unknown volumetric flow rates from the calculated volumetric
     %flow rates from the adsorption columns
-    units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS);
+    units = funcVolUnits(params,units,nS);
     %---------------------------------------------------------------------%  
     
 end

@@ -19,11 +19,11 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/10/3/Monday
-%Code last modified on : 2022/10/3/Monday
+%Code last modified on : 2022/10/22/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : updateParams4Step.m
+%Function   : grabParams4Step.m
 %Source     : common
 %Description: This function takes in a structure called params, containing
 %             the parameters needed for running the entire PSA cycle
@@ -38,16 +38,15 @@
 %Outputs    : params       - a struct containing simulation parameters.             
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function params = updateParams4Step(params,nS)
+function params = grabParams4Step(params,nS)
 
     %---------------------------------------------------------------------%
     %Define known quantities
     
     %Define function ID
-    %funcId = 'updateParams4Step.m';
+    %funcId = 'grabParams4Step.m';
     
     %Unpack params
-
     %---------------------------------------------------------------------%
     
     
@@ -75,37 +74,7 @@ function params = updateParams4Step(params,nS)
     
     %Grab the current event value for the interior temperature
     params.eveTempNorm = params.eveTempNorm(nS);        
-    %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %
-    
-    
-    
-    
-    %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %
-    
-    
-    
-    
-    %---------------------------------------------------------------------%            
-    
-    
-    
-    %---------------------------------------------------------------------%            
-    %
-    
-    
-    
-    
-    %---------------------------------------------------------------------%     
+    %---------------------------------------------------------------------%  
     
 end
 

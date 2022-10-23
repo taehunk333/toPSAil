@@ -18,16 +18,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2022/8/13/Saturday
+%Code created on       : 2022/10/22/Saturday
 %Code last modified on : 2022/10/22/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : calcVolFlows4UnitsFlowCtrlDT0.m
+%Function   : calcVolFlows4UnitsFlowCtrlDT0AccRaTa.m
 %Source     : common
 %Description: This function calculates volumetric flow rates for the rest
 %             of the process flow diagram, based on the calcualted and thus
-%             became known volumetric flow rates in the adsorbers.
+%             became known volumetric flow rates in the adsorbers. For the
+%             raffinate product tank, we let the pressure to accumulate.
 %Inputs     : params       - a struct containing simulation parameters.
 %             units        - a nested structure containing all the units in
 %                            the process flow diagram. 
@@ -42,25 +43,17 @@
 %                            the process flow diagram. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function units = calcVolFlows4UnitsFlowCtrlDT0(params,units,nS)
+function units = calcVolFlows4UnitsFlowCtrlDT0AccRaTa(params,units,nS)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'calcVolFlows4UnitsFlowCtrlDT0.m';
+    %funcId = 'calcVolFlows4UnitsFlowCtrlDT0AccRaTa.m';
     
     %Unpack params   
-    nCols         = params.nCols        ;  
-    nRows         = params.nRows        ;
-%     pRatEx        = params.pRatEx       ;
-%     pRatRa        = params.pRatRa       ;
-%     gasConsNormEq = params.gasConsNormEq;
-%     numZero       = params.numZero      ;
-    
-    %Unpack units
-%     raTa = units.raTa;
-%     exTa = units.exTa;
+    nCols = params.nCols;  
+    nRows = params.nRows;
     %---------------------------------------------------------------------%       
     
     
@@ -108,43 +101,8 @@ function units = calcVolFlows4UnitsFlowCtrlDT0(params,units,nS)
     %Calculate the remaining boundary conditions for the raffinate product
     %tank unit
     
-    %Get the net volumetric flow rate in the raffinate product tank from 
-    %the streams associated with the columns
-    vFlNetRaTa = sum(vFlRaTa(:,1:nCols),2);
-
-%     %Get the total concentration of the raffinate product tank at time t
-%     raTaTotCon = raTa.n1.gasConsTot;
-%     
-%     %Get the interior temperature of the raffinate product tank at time t
-%     raTaIntTemp = raTa.n1.temps.cstr;    
-    
-    %When the raffinate product tank pressure is greater than equal to the 
-    %raffinate product pressure and there is a net flow out, maintain it!
-
-    %For each time point t,
-    for t = 1 : nRows          
-        
-%         %Get the sign of the current concentration difference
-%         testPres = gasConsNormEq*raTaTotCon(t)*raTaIntTemp(t) ...
-%                  - pRatRa;
-%         
-%         %If the absolute value of testPres is less than the numerical zero
-%         if testPres >= numZero
-             
-            %Obtain the volumetric flow rate out of the constant pressure 
-            %regulator valve. The exit valve is opened only when the 
-            %raffinate tank pressure equals the raffinate product pressure.
-            vFlRaTa(t,(nCols+1)) = vFlNetRaTa(t);
-% 
-%         %Otherwise,                  
-%         else
-%             
-%             %Let the pressure build up inside the tank
-%             vFlRaTa(t,(nCols+1)) = 0;
-%             
-%         end
-                         
-    end
+    %Nothing to do; we let the pressure accumulate inside the raffinate
+    %product tank.
     %---------------------------------------------------------------------%
     
     
@@ -155,13 +113,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT0(params,units,nS)
     
     %Get the net volumetric flow rate in the extract product tank from 
     %the streams associated with the columns
-    vFlNetExTa = sum(vFlExTa(:,1:nCols),2);
-
-%     %Get the total concentration of the extract product tank at time t
-%     exTaTotCon = exTa.n1.gasConsTot;
-%     
-%     %Get the interior temperature of the extract product tank at time t
-%     exTaIntTemp = exTa.n1.temps.cstr;    
+    vFlNetExTa = sum(vFlExTa(:,1:nCols),2);   
     
     %When the extract product tank pressure is greater than equal to the 
     %high pressure and there is a net flow out, maintain it!
@@ -169,25 +121,10 @@ function units = calcVolFlows4UnitsFlowCtrlDT0(params,units,nS)
     %For each time point t,
     for t = 1 : nRows          
         
-%         %Get the sign of the current concentration difference
-%         testPres = gasConsNormEq*exTaTotCon(t)*exTaIntTemp(t) ...
-%                  - pRatEx;
-% 
-%         %If the absolute value of testPres is less than the numerical zero
-%         if testPres >= numZero
-             
             %Obtain the volumetric flow rate out of the constant pressure 
             %regulator valve. The exit valve is opened only when the 
             %extract tank pressure equals the high pressure.  
             vFlExTa(t,(nCols+1)) = vFlNetExTa(t);
-                      
-%         %Otherwise,                  
-%         else
-%             
-%             %Let the pressure build up
-%             vFlExTa(t,(nCols+1)) = 0 ;
-%             
-%         end
        
     end
     %---------------------------------------------------------------------%
