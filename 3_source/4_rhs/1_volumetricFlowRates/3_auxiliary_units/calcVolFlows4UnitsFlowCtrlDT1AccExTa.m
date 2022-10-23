@@ -160,7 +160,8 @@ function units = calcVolFlows4UnitsFlowCtrlDT1AccExTa(params,units,nS)
 
         %Save the feed volumetric flow rate to maintain a constant pressure
         %inside the feed tank
-        vFlFeTa(:,nCols+1) = -(1./phiPlusFeed).*(vFlFeedSum+feTaBeta);
+        vFlFeTa(:,nCols+1) = max(0,-(1./phiPlusFeed) ...
+                          .*(vFlFeedSum+feTaBeta));
         %-----------------------------------------------------------------%
 
     %---------------------------------------------------------------------%       
@@ -261,20 +262,8 @@ function units = calcVolFlows4UnitsFlowCtrlDT1AccExTa(params,units,nS)
         %Calculate the volumateric flow rate for the raffinate product
         %stream
 
-        %For each time point t,
-        for t = 1 : nRows          
-                         
-            %-------------------------------------------------------------%
-            %Obtain the volumetric flow rate out of the constant 
-            %pressure regulator valve.
-
-            %Save the feed volumetric flow rate to maintain a constant
-            %pressure inside the raffinate product tank
-            vFlRaTa(t,(nCols+1)) = -(1./phiZeroRaff(t)) ...
-                                .* (vFlRaffSum(t)+raTaBeta(t));                
-            %-------------------------------------------------------------%
-           
-        end
+        vFlRaTa(:,(nCols+1)) = max(0,-(1./phiZeroRaff) ...
+                            .* (vFlRaffSum+raTaBeta));                            
         %-----------------------------------------------------------------%
     
     %---------------------------------------------------------------------%

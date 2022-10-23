@@ -162,7 +162,8 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
 
         %Save the feed volumetric flow rate to maintain a constant pressure
         %inside the feed tank
-        vFlFeTa(:,nCols+1) = -(1./phiPlusFeed).*(vFlFeedSum+feTaBeta);
+        vFlFeTa(:,nCols+1) = max(0,-(1./phiPlusFeed) ...
+                          .*(vFlFeedSum+feTaBeta));
         %-----------------------------------------------------------------%
 
     %---------------------------------------------------------------------%       

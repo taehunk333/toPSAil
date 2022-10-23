@@ -92,7 +92,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT0AccExTa(params,units,nS)
     %maintain a constant pressure inside the feed tank. Therefore, we can 
     %control the volumetric flow rate so that a constant pressure is 
     %maintained inside the feed tank
-    vFlFeTa(:,(nCols+1)) = sum(vFlFeTa(:,1:nCols),2);    
+    vFlFeTa(:,(nCols+1)) = max(0,sum(vFlFeTa(:,1:nCols),2));    
     %---------------------------------------------------------------------%       
     
     
@@ -103,20 +103,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT0AccExTa(params,units,nS)
     
     %Get the net volumetric flow rate in the raffinate product tank from 
     %the streams associated with the columns
-    vFlNetRaTa = sum(vFlRaTa(:,1:nCols),2);    
-    
-    %When the raffinate product tank pressure is greater than equal to the 
-    %raffinate product pressure and there is a net flow out, maintain it!
-
-    %For each time point t,
-    for t = 1 : nRows          
- 
-            %Obtain the volumetric flow rate out of the constant pressure 
-            %regulator valve. The exit valve is opened only when the 
-            %raffinate tank pressure equals the raffinate product pressure.
-            vFlRaTa(t,(nCols+1)) = vFlNetRaTa(t);
-                         
-    end
+    vFlRaTa(:,(nCols+1)) = max(0,sum(vFlRaTa(:,1:nCols),2));       
     %---------------------------------------------------------------------%
     
     
