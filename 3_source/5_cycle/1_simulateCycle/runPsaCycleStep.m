@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/18/Monday
-%Code last modified on : 2022/10/3/Monday
+%Code last modified on : 2022/10/22/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -61,112 +61,134 @@ function [stTime,stStates,flags] ...
     nTiPts     = params.nTiPts     ;
     numIntSolv = params.numIntSolv ;
     funcEve    = params.funcEve{nS};
+    bool       = params.bool       ;
+    numZero    = params.numZero    ;
     
     %Update the data structure with integration specific information for
     %the given step
-    params = updateParams4Step(params,nS);              
+    params = grabParams4Step(params,nS);              
    
     %Define the right hand side function
-    funcRhs = @(t,x) defineRhsFunc(t,x,params);
+    funcRhs = @(t,x) defineRhsFunc(t,x,params);  
     
-    %Update the initial state vector
-    params.initStates = iStates;
+    %Initialize the original integration; it must be done, to begin with
+    orgInt = 1;
     %---------------------------------------------------------------------%
     
     
         
     %---------------------------------------------------------------------%
-    %Define the options for the ode solver to solver the system of odes
-    
-    %Get the ode solver option from setOdeSolverOpts.m
-    options = setOdeSolverOpts(params,iStates,nS,nCy);
-    %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %Simulate all the steps in a scheduled PSA cycle        
-          
-    %Nonstiff and medium accuracy: Most of the time. This should be the 
-    %first solver you try.
-    if numIntSolv == "ode45"
-    
-        %Call the solver
-        sol = ode45(funcRhs,tDom,iStates',options);                    
-    
-    %Nonstiff and low accuracy: If using crude error tolerances or solving 
-    %moderately stiff problems.
-    elseif numIntSolv == "ode23" 
-    
-        %Call the solver
-        sol = ode23(funcRhs,tDom,iStates',options);   
-                       
-    %Nonstiff and low to high accuracy: If using stringent error tolerances
-    %or solving a computationally intensive ODE file.
-    elseif numIntSolv == "ode113"
+    %Update the initial condition vector
+            
+    %If we are doing a flow driven simulation
+    if bool(3) == 0
         
-        %Call the solver
-        sol = ode113(funcRhs,tDom,iStates',options);
-    
-    %Stiff and low to medium accuracy: If ode45 is slow because the problem
-    %is stiff.
-    elseif numIntSolv == "ode15s"
-    
-        %Call the solver
-        sol = ode15s(funcRhs,tDom,iStates',options);  
-    
-    %Stiff and low accuracy: If using crude error tolerances to solve stiff
-    %systems and the mass matrix is constant.
-    elseif numIntSolv == "ode23s"
+        %-----------------------------------------------------------------%
+        %Do the pre-integration, if needed
         
-        %Call the solver
-        sol = ode23s(funcRhs,tDom,iStates',options); 
-    
-    %Moderately stiff and low accuracy: If the problem is only moderately 
-    %stiff and you need a solution without numerical damping.
-    elseif numIntSolv == "ode23t"
+        %Let the pressure build up inside the raffinate product tank and/or
+        %the extract product tank, if needed
+        [sol0,tDom0,~,preInt] = solvOdes0(params,tDom,iStates,nS);
+        %-----------------------------------------------------------------%
         
-        %Call the solver
-        sol = ode23t(funcRhs,tDom,iStates',options); 
-    
-    %Stiff and low accuracy: If using crude error tolerances to solve stiff
-    %systems.
-    elseif numIntSolv == "ode23tb"
         
-        %Call the solver
-        sol = ode23tb(funcRhs,tDom,iStates',options); 
-    
+        
+        %-----------------------------------------------------------------%
+        %Update the information for the original numerical integration
+        
+        %If pre-integration was needed and done,
+        if preInt == 1
+                 
+            %-------------------------------------------------------------%                        
+            %Get the terminal time points
+            tf  = tDom(2) ;
+            tf0 = tDom0(2);                
+
+            %Consider the duration of the pre-integration. If we are pretty
+            %much done with the numerical integration for the step, within 
+            %the numerical tolerance, then
+            if abs(tf-tf0) < numZero
+                
+                %Update the solution data structure
+                sol = sol0;
+                
+                %We've effectively finished simulating the step, so no need 
+                %to do the original integration
+                orgInt = 0;
+
+            end
+            %-------------------------------------------------------------%
+                                            
+        %If the pre-integation was not needed
+        elseif preInt == 0
+            
+            %-------------------------------------------------------------%        
+            %Update the flag for the pre-integration
+            preInt = 0;                                    
+            %-------------------------------------------------------------%
+            
+        end                        
+        %-----------------------------------------------------------------%
+        
+    %If we are doing a pressure driven simulation   
+    else
+        
+        %-----------------------------------------------------------------%    
+        %Update the flag for the pre-integration
+        preInt = 0;
+        %-----------------------------------------------------------------%
+        
     end
     %---------------------------------------------------------------------%
     
     
     
     %---------------------------------------------------------------------%
-    %Print numerical integration summary
+    %If we still need to do the original integration, then do the 
+    %followings
     
-    %Print a divider line
-    fprintf("\n*******************************************\n")           ;
-    fprintf("Numerical Integration Summary. \n")                         ;
-    fprintf("*Solver                         : %s \n",numIntSolv)        ;
-    fprintf("*Number of Successful Steps     : %d \n",sol.stats.nsteps)  ;
-    fprintf("*Number of Failed Steps         : %d \n",sol.stats.nfailed) ;
-    fprintf("*Number of Function Evaluations : %d \n",sol.stats.nfevals) ;
+    %If we still need to do the original numerical integration,
+    if orgInt == 1
     
-    %When using an implicit solver, print additional statistics
-    if numIntSolv ~= "ode45" && ...
-       numIntSolv ~= "ode23" && ...
-       numIntSolv ~= "ode113"
-        fprintf("*Number of Jacobian Evaluations : %d \n", ...
-                sol.stats.npds);
-        fprintf("*Number of LU Decompositions    : %d \n", ...
-                sol.stats.ndecomps);
-        fprintf("*Number of Linear Solves        : %d \n", ...
-                sol.stats.nsolves);
+        %-----------------------------------------------------------------%
+        %Define the options for the ODE solver to solver the system of ODEs
+
+        %Get the ode solver option from setOdeSolverOpts.m
+        options = setOdeSolverOpts(params,iStates,nS,nCy);
+        %-----------------------------------------------------------------%
+
+
+
+        %-----------------------------------------------------------------%
+        %Simulate the step in a scheduled PSA cycle        
+
+        %If we were to extend the solution
+        if preInt == 1
+            
+            %Perform the numerical integration for the step
+            sol = odextend(sol0,funcRhs,tDom(2),[],options);
+            
+        %If we are doing the original numerical integration
+        else
+            
+            %Perform the numerical integration for the step
+            sol = solvOdes(funcRhs,tDom,iStates,options,numIntSolv);
+        
+        end
+        %-----------------------------------------------------------------%
+
+
+
+        %-----------------------------------------------------------------%
+        %Print numerical integration summary
+        
+        %Print out the numerical integration results
+        noteNumIntStats(sol,numIntSolv);        
+        %-----------------------------------------------------------------% 
+                
     end
-    
-    fprintf("*******************************************\n");
     %---------------------------------------------------------------------%
-    
+      
     
     
     %---------------------------------------------------------------------%
@@ -266,7 +288,7 @@ function [stTime,stStates,flags] ...
     end        
     %---------------------------------------------------------------------%            
     
-    
+
     
     %---------------------------------------------------------------------%            
     %Check the solution output

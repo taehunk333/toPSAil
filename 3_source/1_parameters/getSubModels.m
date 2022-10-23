@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/2/Saturday
-%Code last modified on : 2022/2/18/Friday
+%Code last modified on : 2022/10/22/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -29,10 +29,12 @@
 %             simulator are flobally defined
 %Inputs     : params       - a struct containing simulation parameters.
 %Outputs    : models       - a cell array containing function handles for
+%                            the models.
+%             subModels    - a cell array containing function handles for
 %                            the sub-models.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function models = getSubModels(params)
+function [models,subModels] = getSubModels(params)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
@@ -43,6 +45,9 @@ function models = getSubModels(params)
     %Unpack params
     modSp = params.modSp;
     bool  = params.bool ;
+    
+    %Get the number of models needed
+    modNum = length(modSp);
     %---------------------------------------------------------------------%        
     
     
@@ -50,9 +55,11 @@ function models = getSubModels(params)
     %---------------------------------------------------------------------%        
     %Initialize solution arrays
     
-    %Initialize the array for containing the model function as a column
-    %vector
-    models = cell(length(modSp),1);        
+    %Initialize the array for containing the model functions
+    models = cell(modNum,1);   
+    
+    %Initialize the array for containing the sub-model functions
+    subModels = cell(modNum,1);
     %---------------------------------------------------------------------%        
     
     
@@ -578,6 +585,12 @@ function models = getSubModels(params)
         %Define the function for calculating the volumetric flow rates
         models{modNo6} ...
             = @(params,units,nS) calcVolFlowsDP0DT0(params,units,nS); 
+        
+        %Define submodels for the calculating the unit volumetric flow
+        %rates
+        subModels{modNo6} ...
+            = @(params,units,nS) ...
+              calcVolFlows4UnitsFlowCtrlDT0(params,units,nS);
       
     %No axial pressure drop and non-isothermal                 
     elseif modSp(modNo6) == 0 && ... %No axial pressure drop
@@ -586,7 +599,13 @@ function models = getSubModels(params)
         
         %Define the function for calculating the volumetric flow rates
         models{modNo6} ...
-            = @(params,units,nS) calcVolFlowsDP0DT1(params,units,nS);                 
+            = @(params,units,nS) calcVolFlowsDP0DT1(params,units,nS); 
+        
+        %Define submodels for the calculating the unit volumetric flow
+        %rates
+        subModels{modNo6} ...
+            = @(params,units,nS) ...
+              calcVolFlows4UnitsFlowCtrlDT1(params,units,nS);
                               
     %Carman-Kozeny equation discretized momentum balance
     elseif modSp(modNo6) == 1 && ... %linear axial pressure drop
@@ -596,13 +615,25 @@ function models = getSubModels(params)
         models{modNo6} ...
             = @(params,units,nS) calcVolFlowsDP1KC(params,units,nS);  
         
+        %Define submodels for the calculating the unit volumetric flow
+        %rates
+        subModels{modNo6} ...
+            = @(params,units,nS) ...
+              calcVolFlows4UnitsPresDriv(params,units,nS);
+        
     %Ergun's equation discretized momentum balance
     elseif modSp(modNo6) == 2 && ... %quadratic axial pressure drop
                  bool(3) == 1  %axial pressure drop
         
         %Define the function for calculating the volumetric flow rates
         models{modNo6} ...
-            = @(params,units,nS) calcVolFlowsDP1ER(params,units,nS) ;
+            = @(params,units,nS) calcVolFlowsDP1ER(params,units,nS);
+        
+        %Define submodels for the calculating the unit volumetric flow
+        %rates
+        subModels{modNo6} ...
+            = @(params,units,nS) ...
+              calcVolFlows4UnitsPresDriv(params,units,nS);
         
     elseif modSp(modNo6) == 3 && bool(3) == 1 %TBD
         %models{modNo6} = 0;
