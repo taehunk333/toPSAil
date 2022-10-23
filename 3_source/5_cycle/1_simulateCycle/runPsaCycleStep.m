@@ -211,8 +211,9 @@ function [stTime,stStates,flags] ...
             %and 'ie' as it fields. Can we say that the event times from 
             %the pre-integration and the original integration are the same?
             %In other words, if they are the same, then no event has
-            %happened for the original integration
-            if isequal(sol0.xe,sol.xe)
+            %happened for the original integration. Note that the next
+            %event is just added to the next element as a vector.
+            if length(sol.xe) == 1
                 
                %No event has happened for the original integration.
                %Therefore, return empty values for the event related
@@ -278,7 +279,7 @@ function [stTime,stStates,flags] ...
             %integration. Since the event is used, an upperbound would be 
             %the event time. Also, we want nTimePts number of time points 
             %from the solution.
-            stTime = linspace(0,sol.xe,nTiPts);
+            stTime = linspace(0,sol.xe(end),nTiPts);
 
             %Use deval to evaluate the solution of a differential equation 
             %problem.

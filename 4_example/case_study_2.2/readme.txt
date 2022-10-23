@@ -8,7 +8,7 @@
 %Assumptions:
 %-1 adsorption columns
 %-isothermal operation
-%-event-driven mode
+%-time-driven mode
 %-flow-controlled mode
 %-Kayser's experimental system (Run no.1)
 %-binary mixture (O2 and N2)
