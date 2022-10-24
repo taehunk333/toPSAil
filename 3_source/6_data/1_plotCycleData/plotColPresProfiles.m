@@ -122,10 +122,10 @@ function plotColPresProfiles(params,sol)
                .* sum(sol.(append('Step',int2str(i))). ...
                       col.(append('n',int2str(j))).temps.cstr,2) ...
                ./ nVols ...
-               .* teScaleFac;
-            
+               .* teScaleFac;                        
+           
             %Plot the ith step with jth column
-            objPlot = plot(time,pressure,'LineWidth',2.0,'Color',rgb);
+            objPlot = plot(time,pressure,'LineWidth',2.0,'Color',rgb);                                    
             
             %If we have the plot for the first column,
             if j == 1

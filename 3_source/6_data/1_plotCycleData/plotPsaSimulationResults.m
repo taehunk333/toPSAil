@@ -66,18 +66,25 @@ function plotPsaSimulationResults(params,sol)
     
     %If user requested the plot,     
     if plot(1) == 1
-        
+                                
         %Plot the pressure profiles for the adsorption column(s)
         plotColPresProfiles(params,sol);
         
         %Get the current figure and its information
         figObj = gcf;
-        
+                        
         %Get the full filename
         figName = 'colPresProfile.pdf'; 
-                
+        
+        %Adjust margin by adding a white rectangle
+        a = annotation('rectangle',[0.05 0.00 0.87 1],'Color','w'); 
+        %[X Y W H]                 
+        
         %Save the figure to a .pdf file
-        saveFigs2Files(figObj,figPath,figName);
+        saveFigs2Files(figObj,figPath,figName);       
+        
+        %Delete the annotation
+        delete(a);
                 
     end              
     %---------------------------------------------------------------------%
@@ -98,9 +105,16 @@ function plotPsaSimulationResults(params,sol)
         
         %Get the full filename
         figName = 'raTaPresProfile.pdf'; 
+        
+        %Adjust margin by adding a white rectangle
+        a = annotation('rectangle',[0.015 0.00 0.90 1],'Color','w'); 
+        %[X Y W H]
                 
         %Save the figure to a .pdf file
         saveFigs2Files(figObj,figPath,figName);
+        
+        %Delete the annotation
+        delete(a);
         
         %Plot the pressure profiles for the extract product receiver tank
         plotExTaPresProfiles(params,sol);
@@ -110,9 +124,16 @@ function plotPsaSimulationResults(params,sol)
         
         %Get the full filename
         figName = 'exTaPresProfile.pdf'; 
+        
+        %Adjust margin by adding a white rectangle
+        a = annotation('rectangle',[0.025 0.00 0.89 1],'Color','w'); 
+        %[X Y W H]
                 
         %Save the figure to a .pdf file
         saveFigs2Files(figObj,figPath,figName);
+        
+        %Delete the annotation
+        delete(a);
                         
     end              
     %---------------------------------------------------------------------%  
@@ -139,9 +160,15 @@ function plotPsaSimulationResults(params,sol)
             figName = strcat('gasConsCol', ...
                              int2str(i), ...
                              '.pdf'); 
+            %Adjust margin by adding a white rectangle
+            a = annotation('rectangle',[0.03 0.00 0.88 1],'Color','w'); 
+            %[X Y W H]
 
             %Save the figure to a .pdf file
             saveFigs2Files(figObj,figPath,figName);
+            
+            %Delete the annotation
+            delete(a);
             
         end
                 
@@ -162,7 +189,7 @@ function plotPsaSimulationResults(params,sol)
             %Plot adsorbed phase concentrations for all species for all 
             %adsorption columns
             plotAdsConsHighPresFeed(params,sol,i);
-            
+                        
             %Get the current figure and its information
             figObj = gcf;
 
@@ -171,8 +198,15 @@ function plotPsaSimulationResults(params,sol)
                              int2str(i), ...
                              '.pdf'); 
 
+            %Adjust margin by adding a white rectangle
+            a = annotation('rectangle',[0.03 0.00 0.88 1],'Color','w'); 
+            %[X Y W H]
+          
             %Save the figure to a .pdf file
             saveFigs2Files(figObj,figPath,figName);
+            
+            %Delete the annotation
+            delete(a);
             
         end
                         
@@ -184,6 +218,9 @@ function plotPsaSimulationResults(params,sol)
     %---------------------------------------------------------------------%
     %Check for the fifth plotting mode
     
+    %Save the previous figObj
+    prevFigObj = figObj;  
+    
     %If user requested the plot,     
     if plot(5) == 1
         
@@ -191,18 +228,37 @@ function plotPsaSimulationResults(params,sol)
         for i = 1 : nCols
             
             %Plot the breakthrough curve for ith adsorption column
-            plotBreakThroughCurve(params,sol,i);
+            plotBreakThroughCurve(params,sol,i);                                  
             
             %Get the current figure and its information
             figObj = gcf;
+                
+            %Add the annotation, only when the breakthrough plots have been
+            %generated
+            if ~eq(prevFigObj,figObj)
+                      
+                %Get the full filename
+                figName = strcat('brkThrCol', ...
+                                 int2str(i), ...
+                                 '.pdf'); 
+                
+                %Adjust margin by adding a white rectangle
+                a = annotation('rectangle',[0.00 0.00 0.95 1],'Color','w'); 
+                %[X Y W H]                                
 
-            %Get the full filename
-            figName = strcat('brkThrCol', ...
-                             int2str(i), ...
-                             '.pdf'); 
-
-            %Save the figure to a .pdf file
-            saveFigs2Files(figObj,figPath,figName);
+                %Save the figure to a .pdf file
+                saveFigs2Files(figObj,figPath,figName);
+                
+                
+                %Delete the annotation
+                delete(a);
+                
+            %Otherwise,
+            else
+                
+                %Do nothing
+            
+            end
             
         end 
                         
@@ -225,9 +281,16 @@ function plotPsaSimulationResults(params,sol)
         
         %Get the full filename
         figName = 'raTaPurity.pdf'; 
+        
+        %Adjust margin by adding a white rectangle
+        a = annotation('rectangle',[0.00 0.00 0.94 1],'Color','w'); 
+        %[X Y W H]          
                 
         %Save the figure to a .pdf file
         saveFigs2Files(figObj,figPath,figName);
+        
+        %Delete the annotation
+        delete(a);
         
         %Plot product purity inside the extract product tank
         plotExTaPurity(params,sol,1);
@@ -237,9 +300,16 @@ function plotPsaSimulationResults(params,sol)
         
         %Get the full filename
         figName = 'exTaPurity.pdf'; 
+        
+        %Adjust margin by adding a white rectangle
+        a = annotation('rectangle',[0.03 0.00 0.93 1],'Color','w'); 
+        %[X Y W H]                 
                 
         %Save the figure to a .pdf file
         saveFigs2Files(figObj,figPath,figName);
+        
+        %Delete the annotation
+        delete(a);
      
     end              
     %---------------------------------------------------------------------%  
@@ -266,9 +336,16 @@ function plotPsaSimulationResults(params,sol)
             figName = strcat('cstrTempCol', ...
                              int2str(i), ...
                              '.pdf'); 
-
+            
+            %Adjust margin by adding a white rectangle
+            a = annotation('rectangle',[0.00 0.00 0.92 1],'Color','w'); 
+            %[X Y W H]                     
+                         
             %Save the figure to a .pdf file
             saveFigs2Files(figObj,figPath,figName);
+            
+            %Delete the annotation
+            delete(a);  
             
             %Plot temperature profile for the cstr walls associated with a
             %given adsorption column
@@ -281,9 +358,16 @@ function plotPsaSimulationResults(params,sol)
             figName = strcat('wallTempCol', ...
                              int2str(i), ...
                              '.pdf'); 
-
+            
+            %Adjust margin by adding a white rectangle
+            a = annotation('rectangle',[0.00 0.00 0.92 1],'Color','w'); 
+            %[X Y W H]
+   
             %Save the figure to a .pdf file
             saveFigs2Files(figObj,figPath,figName);
+            
+            %Delete the annotation
+            delete(a);  
             
         end        
                         
@@ -306,9 +390,16 @@ function plotPsaSimulationResults(params,sol)
         
         %Get the full filename
         figName = 'productPurity.pdf'; 
-                
+        
+        %Adjust margin by adding a white rectangle
+        a = annotation('rectangle',[0.02 0.00 0.91 1],'Color','w'); 
+        %[X Y W H]                 
+        
         %Save the figure to a .pdf file
         saveFigs2Files(figObj,figPath,figName);
+        
+        %Delete the annotation
+        delete(a);
         
     end       
     %---------------------------------------------------------------------%   
@@ -329,9 +420,16 @@ function plotPsaSimulationResults(params,sol)
         
         %Get the full filename
         figName = 'productRecovery.pdf'; 
-                
+        
+        %Adjust margin by adding a white rectangle
+        a = annotation('rectangle',[0.02 0.00 0.91 1],'Color','w'); 
+        %[X Y W H]                 
+        
         %Save the figure to a .pdf file
         saveFigs2Files(figObj,figPath,figName);
+        
+        %Delete the annotation
+        delete(a);
         
     end       
     %---------------------------------------------------------------------% 
@@ -352,9 +450,16 @@ function plotPsaSimulationResults(params,sol)
         
         %Get the full filename
         figName = 'productivity.pdf'; 
-                
+        
+        %Adjust margin by adding a white rectangle
+        a = annotation('rectangle',[0.02 0.00 0.91 1],'Color','w'); 
+        %[X Y W H]
+                 
         %Save the figure to a .pdf file
         saveFigs2Files(figObj,figPath,figName);
+        
+        %Delete the annotation
+        delete(a);        
         
     end       
     %---------------------------------------------------------------------% 
@@ -375,9 +480,16 @@ function plotPsaSimulationResults(params,sol)
         
         %Get the full filename
         figName = 'energyConsumption.pdf'; 
-                
+        
+        %Adjust margin by adding a white rectangle
+        a = annotation('rectangle',[0.00 0.00 0.93 1],'Color','w'); 
+        %[X Y W H]                 
+        
         %Save the figure to a .pdf file
         saveFigs2Files(figObj,figPath,figName);
+        
+        %Delete the annotation
+        delete(a);
         
     end       
     %---------------------------------------------------------------------% 
@@ -398,9 +510,16 @@ function plotPsaSimulationResults(params,sol)
         
         %Get the full filename
         figName = 'css.pdf'; 
-                
+        
+        %Adjust margin by adding a white rectangle
+        a = annotation('rectangle',[0.02 0.00 0.91 1],'Color','w'); 
+        %[X Y W H]                 
+        
         %Save the figure to a .pdf file
         saveFigs2Files(figObj,figPath,figName);
+        
+        %Delete the annotation
+        delete(a);
         
     end       
     %---------------------------------------------------------------------% 

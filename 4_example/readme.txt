@@ -22,21 +22,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Single Adsorber Simulation I
+% TITLE
 % Purpose:
-%	- to compare the isothermal vs. nonisothermal adsorbed phase 
-%	  concentration profiles, as well as events vs. no events
-% 	- to demonstrate an acceleration to a CSS, using the event 
-% 	  functions and flow-driven vs. pressure-driven 
+% 	- TBD
 % Case Studies:
-% 	- case_study_2.1: case_study_1.0 with 1 adsorber.
-%			  Reference: Kayser (1986)
-% 	- case_study_2.2: case_study_2.1 with the event-driven mode.
-%			  Reference: Kayser (1986)
-% 	- case_study_2.3: case_study_2.1 with nonisothermal operation.
-%			  Reference: Kayser (1986)
-%	- case_study_2.4: case_study_2.3 with the event-driven mode.
-% 			  Reference: Kayser (1986)
+% 	- TBD
 % Plots
 % 	- TBD
 % Data:
@@ -44,11 +34,21 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% TITLE
+% Single Adsorber Simulation I
 % Purpose:
-% 	- TBD
+%	- to compare the isothermal vs. nonisothermal adsorbed phase 
+%	  concentration profiles, as well as events vs. no events
+% 	- to demonstrate an acceleration to a CSS, using the event 
+% 	  functions and flow-driven vs. pressure-driven 
 % Case Studies:
-% 	- TBD
+% 	- case_study_4.1: case_study_1.0 with 1 adsorber.
+%			  Reference: Kayser (1986)
+% 	- case_study_4.2: case_study_2.1 with the event-driven mode.
+%			  Reference: Kayser (1986)
+% 	- case_study_4.3: case_study_2.1 with nonisothermal operation.
+%			  Reference: Kayser (1986)
+%	- case_study_4.4: case_study_2.3 with the event-driven mode.
+% 			  Reference: Kayser (1986)
 % Plots
 % 	- TBD
 % Data:
