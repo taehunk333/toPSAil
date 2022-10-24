@@ -88,7 +88,7 @@ function plotEnergyConsumption(params,sol)
                    / 3600;
         
         %Plot the data
-        semilogx(cycleNums,energyData,'-x','LineWidth',2.0,'Color',rgb);    
+        plot(cycleNums,energyData,'-x','LineWidth',2.0,'Color',rgb);    
         
         %Hold on to the figure
         hold on;
@@ -127,7 +127,7 @@ function plotEnergyConsumption(params,sol)
     set(gcf,'Position',[100,25,600,250]);
     
     %Set the limit on the x-axis
-    %xlim([1,laststep/nSteps]);
+    xlim([1,lastCycNo]);
     
     %Set integer spacing
     set(gca,'xtick',0:laststep/nSteps);

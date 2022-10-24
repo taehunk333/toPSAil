@@ -171,8 +171,14 @@ function plotCompareGasConsHighPresFeed()
     %Make sure that the plot is surrounded by a box
     box on;
     
+    %Adjust margin
+    a = annotation('rectangle',[0.03 0.00 0.89 1],'Color','w');
+    
     %Save the figure as .eps
     exportgraphics(gcf,fullfile(pwd,'comp.pdf'),'ContentType','vector');
+    
+    %Delete the annotation
+    delete(a);
     %---------------------------------------------------------------------%  
     
 end

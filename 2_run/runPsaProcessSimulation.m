@@ -207,7 +207,7 @@ function runPsaProcessSimulation(folderName)
     %---------------------------------------------------------------------%
     %Save simulation results
     
-    %Insert a preamlbe for the command window output
+    %Insert a preamble for the command window output
     fprintf("\n*******************************************\n");
     fprintf('Saving simulation results... \n')                ;
     fprintf("*******************************************\n")  ;

@@ -85,7 +85,7 @@ function plotCssConv(params,sol)
     rgb = grabColor(1,colorBnW);
     
     %Plot the CSS convergence data
-    loglog(cycleNums,css(2:lastCycNo+1),'-x','LineWidth',2.0,'Color',rgb);
+    semilogy(cycleNums,css(2:lastCycNo+1),'-x','LineWidth',2.0,'Color',rgb);
     
     %Hold on to the figure
     hold on;
@@ -122,7 +122,10 @@ function plotCssConv(params,sol)
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');
-    set(gca,'FontSize',14)                 ;                
+    set(gca,'FontSize',14)                 ;  
+    
+    %Set the x limit
+    xlim([2,lastCycNo+1]);
     %---------------------------------------------------------------------%
     
     
