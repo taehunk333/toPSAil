@@ -127,7 +127,7 @@ function newStates = calcIsothermLinear(params,states,nAds)
         dimLessHenry = (qSatCRep.*bC) ...
                      * (gConScaleFac/aConScaleFac);
 
-        %Check to see if we have a singel CSTR
+        %Check to see if we have a single CSTR
         if nAds == 0
 
             %Make sure that nAds = 1 so that the indexing will work out
