@@ -40,8 +40,9 @@ function params = getAdsEquilParams(params)
     %funcId = 'getAdsEquilParams.m';
     
     %Unpack params            
-    modSp = params.modSp;
-    bool  = params.bool ;
+    modSp   = params.modSp  ;
+    bool    = params.bool   ;
+    gasCons = params.gasCons;
     %---------------------------------------------------------------------% 
     
     
@@ -58,17 +59,30 @@ function params = getAdsEquilParams(params)
         %Currently, no custom isotherm model is supported.
         error("toPSAil: No custom isotherm model is supported.")
 
-    %Henry's law or Extended Langmuir isotherm
-    elseif whichIsotherm == 1 || ...
-           whichIsotherm == 2
+    %Extended Langmuir isotherm
+    elseif whichIsotherm == 2
+        
+        %Unpack additional params
+        teScaleFac   = params.teScaleFac  ;
+        gConScaleFac = params.gConScaleFac;
+        bC           = params.bC          ; 
+        qSatC        = params.qSatC       ;
+        aConScaleFac = params.aConScaleFac;
+            
+        %Calcualte the dimensionless bC and qSatC
+        dimLessBC    = bC*gasCons*teScaleFac*gConScaleFac;
+        dimLessQsatC = qSatC/aConScaleFac                ;
+        
+        %Save the results
+        params.dimLessBC    = dimLessBC   ;
+        params.dimLessQsatC = dimLessQsatC;
         
         %If nonisothermal,
         if bool(5) == 1
        
-            %Unpack additional params
-            gasCons    = params.gasCons   ; 
+            %Unpack additional params             
             tempRefIso = params.tempRefIso;
-            isoStHtC   = params.isoStHtC  ;
+            isoStHtC   = params.isoStHtC  ;                                   
 
             %Calculate the constant factor inside the exponent: 
             %(J/mol-L)/(J/mol-L)
