@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2020/12/12/Saturday
-%Code last modified on : 2022/10/12/Wednesday
+%Code last modified on : 2022/10/26/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -60,16 +60,18 @@ function newStates = calcIsothermLinear(params,states,nAds)
     %funcId = 'calcIsothermLinear.m';
     
     %Unpack params
-    nStates      = params.nStates      ;
-    nColStT      = params.nColStT      ;
-    nComs        = params.nComs        ;
-    sComNums     = params.sComNums     ; 
-    nVols        = params.nVols        ;
-    bool         = params.bool         ;
-    nRows        = params.nRows        ; 
-    qSatC        = params.qSatC        ;
-    gConScaleFac = params.gConScaleFac ;
-    aConScaleFac = params.aConScaleFac ; 
+    nStates      = params.nStates     ;
+    nColStT      = params.nColStT     ;
+    nComs        = params.nComs       ;
+    sComNums     = params.sComNums    ; 
+    nVols        = params.nVols       ;
+    bool         = params.bool        ;
+    nRows        = params.nRows       ; 
+    gConScaleFac = params.gConScaleFac;
+    aConScaleFac = params.aConScaleFac; 
+    teScaleFac   = params.teScaleFac  ;
+    henryC       = params.henryC      ;
+    gasCons      = params.gasCons     ;
     %---------------------------------------------------------------------%
     
 
@@ -82,6 +84,9 @@ function newStates = calcIsothermLinear(params,states,nAds)
     
         %Grab dimensionless gas phases concentrations as fields in a struct
         colGasCons = convert2ColGasConc(params,states);  
+        
+        %Grab dimensionless temperatures as fidlds in a struct
+        colTemps = convert2ColTemps(params,states);
 
         %Locally reset the number of volume parameter
         nVols = 1;        
@@ -91,6 +96,9 @@ function newStates = calcIsothermLinear(params,states,nAds)
         
         %Grab dimensionless gas phases concentrations as fields in a struct
         colGasCons = convert2ColGasConc(params,states,nAds);  
+        
+        %Grab dimensionless temperatures as fidlds in a struct
+        colTemps = convert2ColTemps(params,states);
 
     end
     %---------------------------------------------------------------------%
@@ -110,23 +118,20 @@ function newStates = calcIsothermLinear(params,states,nAds)
     %Calculate adsorption equilibrium (Explicit)
 
     %Check if the simulation is an isothermal simulation
-    isIsoNonThermal = bool(5);
+    isNonIsothermal = bool(5);
 
     %If non-isothermal operation,
-    if isIsoNonThermal == 1        
+    if isNonIsothermal == 1        
                        
-        %Get the affinity parameter matrix at a specified CSTR temperature 
-        %for all CSTRs
-        bC = getAdsAffConstant(params,states,nRows,nAds); 
-        
-        %Replicate the elements of qSatC
-        qSatCRep = repelem(qSatC,nVols)';
-
         %Calaulate the matrix containing the state dependent dimensionless
         %Henry's constant
-        dimLessHenry = (qSatCRep.*bC) ...
+        dimLessHenry = henryC*gasCons*teScaleFac  ...
                      * (gConScaleFac/aConScaleFac);
-
+                 
+        %Take account for the exponential temperature dependence
+        dimLessHenry ...
+            = getAdsConstPreExpFac(params,states,dimLessHenry,nRows,nAds);
+                 
         %Check to see if we have a single CSTR
         if nAds == 0
 
@@ -141,6 +146,7 @@ function newStates = calcIsothermLinear(params,states,nAds)
             
             %Calculate the adsoption equilibrium loading
             loading = dimLessHenry(:,nVols*(i-1)+1:nVols*i) ...
+                   .* colTemps.cstr ...
                    .* colGasCons.(sComNums{i});
             
             %Get the beginning index
@@ -158,16 +164,13 @@ function newStates = calcIsothermLinear(params,states,nAds)
         end  
     
     %For isothermal operation,
-    elseif isIsoNonThermal == 0            
-        
-        %Unpack params additionally 
-        bC = params.bC;
-        
-        %Calculae the dimensionless Henry's constant
-        dimLessHenry = (qSatC.*bC) ...
+    elseif isNonIsothermal == 0            
+
+        %Calculate the dimensionless Henry's constant
+        dimLessHenry = henryC*gasCons*teScaleFac  ...
                      * (gConScaleFac/aConScaleFac);
 
-        %Check to see if we have a singel CSTR
+        %Check to see if we have a single CSTR
         if nAds == 0
 
             %Make sure that nAds = 1 so that the indexing will work out
@@ -181,6 +184,7 @@ function newStates = calcIsothermLinear(params,states,nAds)
             
             %Calculate the adsoption equilibrium loading
             loading = dimLessHenry(i) ...
+                   .* colTemps.cstr ...
                    .* colGasCons.(sComNums{i});
             
             %Get the beginning index

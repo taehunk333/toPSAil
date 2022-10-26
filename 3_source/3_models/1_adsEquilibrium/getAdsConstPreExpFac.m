@@ -18,17 +18,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2021/1/29/Friday
+%Code created on       : 2022/10/26/Wednesday
 %Code last modified on : 2022/10/26/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : getAdsAffConstant.m
+%Function   : getAdsConstPreExpFac.m
 %Source     : common
 %Description: takes in all CSTR temperature values for the CSTRs associated
 %             with a given adsorption column and updates a temperature
-%             dependent adsorption affinity constants for all species in
-%             the system.
+%             dependent adsorption prefactor using exponential of the ratio
+%             of the isosteric heat capacity and the temperatures.
 %Inputs     : params       - a struct containing simulation parameters 
 %                            (scalars, vectors, functions, strings, etc.) 
 %                            as its fields.
@@ -36,6 +36,8 @@
 %                            following dimension:
 %                            number of rows = nTimePts
 %                            number of columns = nColStT
+%             preExpFacIn  - the pre-exponential factor before accounting
+%                            for the temperature dependence
 %             nRows        - the number of rows in the state matrix; if the
 %                            state matrix is a vector, nRows = 1.
 %             nAds         - the adsober number where we will evaluate the
@@ -43,22 +45,23 @@
 %Outputs    : bCNew        - a vector or matrix of affinity constants 
 %                            for all species updated with a current 
 %                            temperature of the system.
+%             preExpFacOut - the pre-exponential factor after accounting
+%                            for the temperature dependence
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function bCNew = getAdsAffConstant(params,states,nRows,nAds)
+function preExpFacOut ...
+    = getAdsConstPreExpFac(params,states,preExpFacIn,nRows,nAds)
     
     %---------------------------------------------------------------------%
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'getAdsAffConstant.m';
+    %funcId = 'getAdsConstPreExpFac.m';
     
     %Unpack params
     nVols             = params.nVols            ;
-    tempRefNorm       = params.tempRefNorm      ;
     nComs             = params.nComs            ;    
     dimLessIsoStHtRef = params.dimLessIsoStHtRef;
-    dimLessBC         = params.dimLessBC        ;
     %---------------------------------------------------------------------%
     
        
@@ -84,13 +87,13 @@ function bCNew = getAdsAffConstant(params,states,nRows,nAds)
     end
     %---------------------------------------------------------------------%
     
-          
+    
     
     %---------------------------------------------------------------------%
     %Initialize solution arrays
     
     %Initialize the solution output
-    bCNew = zeros(nRows,nVols*nComs);
+    preExpFacOut = zeros(nRows,nVols*nComs);
     %---------------------------------------------------------------------%
 
 
@@ -102,10 +105,10 @@ function bCNew = getAdsAffConstant(params,states,nRows,nAds)
     for i = 1 : nComs
                 
         %Update the affinity constant at the current CSTR temperatures
-        bCNew(:,nVols*(i-1)+1:nVols*i) ...
-            = dimLessBC(i) ...
+        preExpFacOut(:,nVols*(i-1)+1:nVols*i) ...
+            = preExpFacIn(i) ...
            .* exp(-dimLessIsoStHtRef(i) ...
-           .* (1-tempRefNorm./temps.cstr));
+           ./ temps.cstr);
                 
     end            
     %---------------------------------------------------------------------%            

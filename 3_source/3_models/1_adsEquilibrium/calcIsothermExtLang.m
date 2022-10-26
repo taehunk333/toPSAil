@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2020/12/14/Monday
-%Code last modified on : 2022/10/12/Wednesday
+%Code last modified on : 2022/10/26/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -62,9 +62,7 @@ function newStates = calcIsothermExtLang(params,states,nAds)
     nVols        = params.nVols       ;
     bool         = params.bool        ;
     nRows        = params.nRows       ;    
-    bC           = params.bC          ;
     qSatC        = params.qSatC       ;
-    gConScaleFac = params.gConScaleFac;
     aConScaleFac = params.aConScaleFac;
     %---------------------------------------------------------------------%
     
@@ -77,7 +75,10 @@ function newStates = calcIsothermExtLang(params,states,nAds)
     if nAds == 0
     
         %Grab dimensionless gas phases concentrations as fields in a struct
-        colGasCons = convert2ColGasConc(params,states);  
+        colGasCons = convert2ColGasConc(params,states); 
+        
+        %Grab dimensionless temperatures as fidlds in a struct
+        colTemps = convert2ColTemps(params,states);
 
         %Locally reset the number of volume parameter
         nVols = 1;        
@@ -87,6 +88,9 @@ function newStates = calcIsothermExtLang(params,states,nAds)
         
         %Grab dimensionless gas phases concentrations as fields in a struct
         colGasCons = convert2ColGasConc(params,states,nAds);  
+        
+        %Grab dimensionless temperatures as fidlds in a struct
+        colTemps = convert2ColTemps(params,states);
 
     end
     %---------------------------------------------------------------------%
@@ -106,28 +110,23 @@ function newStates = calcIsothermExtLang(params,states,nAds)
     %Calculate adsorption equilibrium (Explicit)
 
     %Check if the simulation is an isothermal simulation
-    isIsoNonThermal = bool(5);
+    isNonIsothermal = bool(5);
 
     %If non-isothermal operation,
-    if isIsoNonThermal == 1
+    if isNonIsothermal == 1
 
-        %Unpack params additionally
-        qSatC        = params.qSatC       ;
-        gConScaleFac = params.gConScaleFac;
-        aConScaleFac = params.aConScaleFac; 
-                       
         %Get the affinity parameter matrix at a specified CSTR temperature 
         %for all CSTRs
-        bC = getAdsAffConstant(params,states,nRows,nAds); 
+        dimLessbC = getAdsAffConstant(params,states,nRows,nAds); 
         
         %Replicate the elements of qSatC
         qSatCRep = repelem(qSatC,nVols)';
 
         %Calaulate the matrix containing the state dependent dimensionless
         %Henry's constant
-        dimLessHenry = (qSatCRep.*bC) ...
-                     * (gConScaleFac/aConScaleFac);
-
+        dimLessHenry = (dimLessbC) ...
+                    .* (qSatCRep./aConScaleFac);
+        
         %Check to see if we have a singel CSTR
         if nAds == 0
 
@@ -145,7 +144,8 @@ function newStates = calcIsothermExtLang(params,states,nAds)
 
             %Update the denominator vector
             denominator = denominator ...
-                        + (bC*gConScaleFac) ...
+                        + dimLessbC ...
+                       .* colTemps.cstr ...
                        .* colGasCons.(sComNums{i});
 
         end
@@ -157,6 +157,7 @@ function newStates = calcIsothermExtLang(params,states,nAds)
             
             %Calculate the adsoption equilibrium loading
             loading = dimLessHenry(:,nVols*(i-1)+1:nVols*i) ...
+                   .* colTemps.cstr ...
                    .* colGasCons.(sComNums{i});
 
             %Get the beginning index
@@ -175,11 +176,11 @@ function newStates = calcIsothermExtLang(params,states,nAds)
         end   
     
     %For isothermal operation,
-    elseif isIsoNonThermal == 0            
+    elseif isNonIsothermal == 0            
         
         %Unpack params additionally 
-        bCDimLess   = (bC/gConScaleFac)   ;
-        qSatDimLess = (qSatC/aConScaleFac);
+        dimLessBC    = params.dimLessBC   ;
+        dimLessQsatC = params.dimLessQsatC;
 
         %Check to see if we have a singel CSTR
         if nAds == 0
@@ -198,7 +199,8 @@ function newStates = calcIsothermExtLang(params,states,nAds)
 
             %Update the denominator vector
             denominator = denominator ...
-                        + bCDimLess(i) ...
+                        + dimLessBC(i) ...
+                       .* colTemps.cstr ...
                        .* colGasCons.(sComNums{i});
 
         end
@@ -209,7 +211,8 @@ function newStates = calcIsothermExtLang(params,states,nAds)
         for i = 1 : nComs
             
             %Calculate the adsoption equilibrium loading
-            loading = (qSatDimLess(i)*bCDimLess(i)) ...
+            loading = (dimLessQsatC(i)*dimLessBC(i)) ...
+                   .* colTemps.cstr ...
                    .* colGasCons.(sComNums{i});
 
             %Get the beginning index
