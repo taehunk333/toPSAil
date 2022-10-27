@@ -117,17 +117,17 @@ function newStates = calcIsothermExtLang(params,states,nAds)
 
         %Get the affinity parameter matrix at a specified CSTR temperature 
         %for all CSTRs
-        dimLessbC = getAdsAffConstant(params,states,nRows,nAds); 
+        dimLessBC = getAdsAffConstant(params,states,nRows,nAds); 
         
         %Replicate the elements of qSatC
         qSatCRep = repelem(qSatC,nVols)';
 
         %Calaulate the matrix containing the state dependent dimensionless
         %Henry's constant
-        dimLessHenry = (dimLessbC) ...
+        dimLessHenry = (dimLessBC) ...
                     .* (qSatCRep./aConScaleFac);
         
-        %Check to see if we have a singel CSTR
+        %Check to see if we have a single CSTR
         if nAds == 0
 
             %Make sure that nAds = 1 so that the indexing will work out
@@ -144,7 +144,7 @@ function newStates = calcIsothermExtLang(params,states,nAds)
 
             %Update the denominator vector
             denominator = denominator ...
-                        + dimLessbC ...
+                        + dimLessBC ...
                        .* colTemps.cstr ...
                        .* colGasCons.(sComNums{i});
 
@@ -178,11 +178,18 @@ function newStates = calcIsothermExtLang(params,states,nAds)
     %For isothermal operation,
     elseif isNonIsothermal == 0            
         
-        %Unpack params additionally 
-        dimLessBC    = params.dimLessBC   ;
-        dimLessQsatC = params.dimLessQsatC;
+        %Unpack additional params
+        teScaleFac   = params.teScaleFac  ;
+        gConScaleFac = params.gConScaleFac;
+        bC           = params.bC          ; 
+        qSatC        = params.qSatC       ;
+        aConScaleFac = params.aConScaleFac;
+            
+        %Calcualte the dimensionless bC and qSatC
+        dimLessBC    = bC*gasCons*teScaleFac*gConScaleFac;
+        dimLessQsatC = qSatC/aConScaleFac                ;               
 
-        %Check to see if we have a singel CSTR
+        %Check to see if we have a single CSTR
         if nAds == 0
 
             %Make sure that nAds = 1 so that the indexing will work out

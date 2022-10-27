@@ -75,6 +75,7 @@ function units = calcVolFlows4UnitsPresDriv(params,units,nS)
     %Unpack units
     raTa = units.raTa;
     exTa = units.exTa;
+    feTa = units.feTa;
     %---------------------------------------------------------------------%                                                                           
                 
     

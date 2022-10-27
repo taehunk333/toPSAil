@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2019/2/4/Monday
-%Code last modified on : 2022/10/22/Saturday
+%Code last modified on : 2022/10/27/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -183,6 +183,15 @@ function [params,fullParams] = getSimParams(exampleFolder)
     
     
     %---------------------------------------------------------------------%
+    %Get solver related parameters
+
+    %Get solver options
+    params = getSolverOpts(params);
+    %---------------------------------------------------------------------%
+    
+    
+    
+    %---------------------------------------------------------------------%
     %Define functions for the sub-models used in the simulator. 
     
     %Specify sub-models from user inputs in params        
@@ -219,21 +228,7 @@ function [params,fullParams] = getSimParams(exampleFolder)
     %---------------------------------------------------------------------%          
     
     
-    
-    %---------------------------------------------------------------------%
-    %Define sub-model parameters (Work in progress)
-    
-    %Define adsorption isotherm (equilibrium) parameters
-    params = getAdsEquilParams(params); %This is the right place to 
-                                        %generalize the isotherm parameter
-                                        %input handling
-    
-    %Define adsorption rate parameters
-    params = getAdsRateParams(params); %currently an empty function
-    %---------------------------------------------------------------------%
-    
-    
-                    
+       
     %---------------------------------------------------------------------%    
     %Determine the definition of the void fraction and the density to be
     %used for mole balance based on the controlling resistance specified by
@@ -265,11 +260,26 @@ function [params,fullParams] = getSimParams(exampleFolder)
     
     
                                 
+    %---------------------------------------------------------------------%
+    %Define sub-model parameters
+    
+    %Calculate the total gas phase concentrations
+    params = getTotalGasConc(params); 
+    
+    %Define adsorption isotherm (equilibrium) parameters
+    params = getAdsEquilParams(params); %Not used, currently.
+    
+    %Define adsorption rate parameters
+    params = getAdsRateParams(params); %currently an empty function
+    %---------------------------------------------------------------------%
+    
+    
+    
     %---------------------------------------------------------------------%                           
     %Compute gas properties for the feed gas
     
-    %Calculate the total concentrations
-    params = getTotalConc(params);           
+    %Calculate the total adsorbed phase concentrations
+    params = getTotalAdsConc(params);           
     
     %Calculate the overall heat capacity ratio for the feed mixture
     params = getFeHtCapRatio(params);
@@ -417,15 +427,6 @@ function [params,fullParams] = getSimParams(exampleFolder)
     %params as fields
     params = getNumParams(params);                        
     %---------------------------------------------------------------------% 
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %Get solver related parameters
-
-    %Get solver options
-    params = getSolverOpts(params);
-    %---------------------------------------------------------------------%
     
     
     

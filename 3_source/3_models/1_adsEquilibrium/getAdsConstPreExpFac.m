@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/10/26/Wednesday
-%Code last modified on : 2022/10/26/Wednesday
+%Code last modified on : 2022/10/27/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -47,6 +47,12 @@
 %                            temperature of the system.
 %             preExpFacOut - the pre-exponential factor after accounting
 %                            for the temperature dependence
+%                            out_t ...
+%                               = [comp1_cstr_1, ..., comp_n_s_cstr_1 ...,
+%                                  ..., ..., ...
+%                                  comp1_cstr_n_c, ..., comp_n_s_cstr_n_c];
+%                            preExpFacOut ...
+%                               = [out_1 ; ... ; out_nRows];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function preExpFacOut ...
@@ -60,8 +66,8 @@ function preExpFacOut ...
     
     %Unpack params
     nVols             = params.nVols            ;
-    nComs             = params.nComs            ;    
-    dimLessIsoStHtRef = params.dimLessIsoStHtRef;
+    nComs             = params.nComs            ;              
+    dimLessIsoStHtRef = params.dimLessIsoStHtRef;        
     %---------------------------------------------------------------------%
     
        
@@ -105,9 +111,9 @@ function preExpFacOut ...
     for i = 1 : nComs
                 
         %Update the affinity constant at the current CSTR temperatures
-        preExpFacOut(:,nVols*(i-1)+1:nVols*i) ...
+        preExpFacOut(:,i:nComs:nComs*(nVols-1)+i) ...
             = preExpFacIn(i) ...
-           .* exp(-dimLessIsoStHtRef(i) ...
+           .* exp(dimLessIsoStHtRef(i) ...
            ./ temps.cstr);
                 
     end            

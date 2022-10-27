@@ -117,17 +117,16 @@ function newStates = calcIsothermLinear(params,states,nAds)
     %---------------------------------------------------------------------%
     %Calculate adsorption equilibrium (Explicit)
 
+    %Calculate the dimensionless Henry's constant
+    dimLessHenry = henryC*gasCons*teScaleFac  ...
+                 * (gConScaleFac/aConScaleFac);
+    
     %Check if the simulation is an isothermal simulation
     isNonIsothermal = bool(5);
 
     %If non-isothermal operation,
     if isNonIsothermal == 1        
                        
-        %Calaulate the matrix containing the state dependent dimensionless
-        %Henry's constant
-        dimLessHenry = henryC*gasCons*teScaleFac  ...
-                     * (gConScaleFac/aConScaleFac);
-                 
         %Take account for the exponential temperature dependence
         dimLessHenry ...
             = getAdsConstPreExpFac(params,states,dimLessHenry,nRows,nAds);
@@ -164,11 +163,7 @@ function newStates = calcIsothermLinear(params,states,nAds)
         end  
     
     %For isothermal operation,
-    elseif isNonIsothermal == 0            
-
-        %Calculate the dimensionless Henry's constant
-        dimLessHenry = henryC*gasCons*teScaleFac  ...
-                     * (gConScaleFac/aConScaleFac);
+    elseif isNonIsothermal == 0                    
 
         %Check to see if we have a single CSTR
         if nAds == 0

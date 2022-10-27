@@ -19,9 +19,9 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2020/1/28/Tuesday
-%Code last modified on : 2021/2/16/Tuesday
+%Code last modified on : 2022/10/27/Thursday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : calcEqTheoryHighPres.m
 %Source     : common 
@@ -64,18 +64,18 @@ function [maxMolPr,maxMolFe,maxMolAdsC] = calcEqTheoryHighPres(params)
     %funcId = 'calcEqTheoryHighPres.m';
     
     %Unpack Params
-    massAds     = params.massAds    ;    
-    yRaC        = params.yRaC       ;
-    yFeC        = params.yFeC       ;
-    overVoid    = params.overVoid   ;
-    presColHigh = params.presColHigh;
-    colVol      = params.colVol     ;    
-    tempCol     = params.tempCol    ;
-    funcIso     = params.funcIso    ;    
-    tempAmbi    = params.tempAmbi   ;
-    nComs       = params.nComs      ;
-    sComNums    = params.sComNums   ;
-    funcEos     = params.funcEos    ;
+    massAds      = params.massAds     ;    
+    yRaC         = params.yRaC        ;
+    yFeC         = params.yFeC        ;
+    overVoid     = params.overVoid    ;
+    presColHigh  = params.presColHigh ;
+    colVol       = params.colVol      ;    
+    tempCol      = params.tempCol     ;
+    funcIso      = params.funcIso     ;    
+    tempAmbi     = params.tempAmbi    ;
+    nComs        = params.nComs       ;
+    sComNums     = params.sComNums    ;
+    funcEos      = params.funcEos     ;
     
     %Make local params specifications
     
@@ -106,7 +106,7 @@ function [maxMolPr,maxMolFe,maxMolAdsC] = calcEqTheoryHighPres(params)
     
     %Define a column vector holding dimensionless product gas compositions
     statesHpPrGas = [yRaC', ...
-                     zeros(1,nComs), ...
+                     [1,zeros(1,nComs-1)], ...
                      tempCol/tempAmbi, ...
                      tempAmbi/tempAmbi];    
 
@@ -132,7 +132,7 @@ function [maxMolPr,maxMolFe,maxMolAdsC] = calcEqTheoryHighPres(params)
     
     %Define a column vector holding dimensionless feed gas compositions
     statesHpFeGas = [yFeC', ...
-                     zeros(1,nComs), ...
+                     [1,zeros(1,nComs-1)], ...
                      tempCol/tempAmbi, ...
                      tempAmbi/tempAmbi];
     

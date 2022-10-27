@@ -19,9 +19,9 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2020/2/19/Wednesday
-%Code last modified on : 2021/2/16/Tuesday
+%Code last modified on : 2022/10/27/Thursday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : calcEqTheoryRePresAds.m
 %Source     : common
@@ -80,7 +80,7 @@ function adsMolDiff = calcEqTheoryRePresAds(params)
             
     %Define an initial state for a single CSTR
     statesLpPrGas = [yLpPrC, ...
-                     zeros(1,nComs), ...
+                     [1,zeros(1,nComs-1)], ...
                      tempCol/tempAmbi, ...
                      tempAmbi/tempAmbi];   
         
@@ -110,7 +110,7 @@ function adsMolDiff = calcEqTheoryRePresAds(params)
             
     %Define an initial state for a single CSTR
     statesHpPrGas = [yHpPrC, ...
-                     zeros(1,nComs), ...
+                     [1,zeros(1,nComs-1)], ...
                      tempCol/tempAmbi, ...
                      tempAmbi/tempAmbi];   
     

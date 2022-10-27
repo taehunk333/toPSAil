@@ -94,13 +94,12 @@ function [models,subModels] = getSubModels(params)
         models{modNo1} = @(params,states,nAds) ...
                          calcIsothermExtLang(params,states,nAds);
                    
-    %TBD
+    %Multisite Langmuir isotherm
     elseif modSp(modNo1) == 3 
-        
-        %models{modNo1} = 0;
-        
-        %Model under development
-        noteModelNotReady(modNo1);
+                
+        %Define the isotherm
+        models{modNo1} = @(params,states,nAds) ...
+                         calcIsothermMultiSiteLang(params,states,nAds);
     
     %TBD    
     elseif modSp(modNo1) == 4
