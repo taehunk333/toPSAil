@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/4/13/Wednesday
-%Code last modified on : 2022/4/19/Tuesday
+%Code last modified on : 2022/10/27/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -38,6 +38,7 @@ function params = getSolverOpts(params)
     %Name the function ID
     %funcId = 'getSolverOpts.m';    
     nVols = params.nVols;
+    nComs = params.nComs;
     %---------------------------------------------------------------------%    
     
     
@@ -45,7 +46,7 @@ function params = getSolverOpts(params)
     %---------------------------------------------------------------------%        
     %Define parameters related to linprog.m
     
-    %Set the option for linprog.m
+    %Set the options for linprog.m
     %1. 'interior-point' (faster in this case)
     %2. 'dual-simplex' 
     params.linprog.opts = optimoptions('linprog','Display','none'); 
@@ -56,6 +57,32 @@ function params = getSolverOpts(params)
     %Set the lower and upper bounds
     params.linprog.lbs = zeros(1,2*(nVols-1))   ;
     params.linprog.ubs = Inf*ones(1,2*(nVols-1));
+    %---------------------------------------------------------------------%              
+
+    
+    
+    %---------------------------------------------------------------------%              
+    %Define parameters related to fsolve.m
+                
+    %Specify the Jacobian matrix
+    
+    %Create a block matrix 
+    A = ones(nComs,nComs);
+    
+    %Convert to the cell array of nVols copies of the block matrix
+    Ac = repmat({A}, 1, nVols);  
+    
+    %Convert to the block diagonal matrix by using blkdiag.m, providing the
+    %cell array containing the replicated block matrices as inputs
+    Jstr = blkdiag(Ac{:});
+
+    %Set options for fsolve.m
+    params.fsolve.opts ...
+        = optimoptions('fsolve', ...
+                       'Algorithm','trust-region', ...
+                       'Display','iter', ...
+                       'FunValCheck','on', ... %complex # show error
+                       'JacobPattern',Jstr);   %Turn off the display
     %---------------------------------------------------------------------%              
     
 end

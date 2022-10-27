@@ -65,7 +65,6 @@ function params = removeParams(params)
     %Remove dimensional temperatures
     params = rmfield(params,'tempAmbi');
     params = rmfield(params,'tempStan');
-    params = rmfield(params,'tempRefIso');
     params = rmfield(params,'tempFeed');
     params = rmfield(params,'tempCol');
     params = rmfield(params,'tempFeTa');

@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/1/24/Monday
-%Code last modified on : 2022/10/20/Thursday
+%Code last modified on : 2022/10/27/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -40,9 +40,8 @@ function params = getAdsEquilParams(params)
     %funcId = 'getAdsEquilParams.m';
     
     %Unpack params            
-    modSp   = params.modSp  ;
-    bool    = params.bool   ;
-    gasCons = params.gasCons;
+    modSp = params.modSp;
+    bool  = params.bool ;
     %---------------------------------------------------------------------% 
     
     
@@ -59,43 +58,57 @@ function params = getAdsEquilParams(params)
         %Currently, no custom isotherm model is supported.
         error("toPSAil: No custom isotherm model is supported.")
 
+    %Linear isotherm
+    elseif whichIsotherm == 1
+          
+        %TBD
+        
     %Extended Langmuir isotherm
     elseif whichIsotherm == 2
         
+        %TBD
+        
+    %Miltisite Langmuir isotherm
+    elseif whichIsotherm == 3
+        
         %Unpack additional params
-        teScaleFac   = params.teScaleFac  ;
-        gConScaleFac = params.gConScaleFac;
-        bC           = params.bC          ; 
-        qSatC        = params.qSatC       ;
-        aConScaleFac = params.aConScaleFac;
-            
-        %Calcualte the dimensionless bC and qSatC
-        dimLessBC    = bC*gasCons*teScaleFac*gConScaleFac;
-        dimLessQsatC = qSatC/aConScaleFac                ;
+        KC       = params.KC      ;
+        gasConT  = params.gasConT ;
+        tempAmbi = params.tempAmbi;
+        gasCons  = params.gasCons ;        
         
-        %Save the results
-        params.dimLessBC    = dimLessBC   ;
-        params.dimLessQsatC = dimLessQsatC;
+        %Get dimensionless exponential prefactor
+        dimLessKC = KC*gasCons*tempAmbi*gasConT;
         
-        %If nonisothermal,
-        if bool(5) == 1
-       
-            %Unpack additional params             
-            tempRefIso = params.tempRefIso;
-            isoStHtC   = params.isoStHtC  ;                                   
-
-            %Calculate the constant factor inside the exponent: 
-            %(J/mol-L)/(J/mol-L)
-            dimLessIsoStHtRef = isoStHtC ...
-                             ./ ((gasCons/10)*tempRefIso);
-
-            %Update params
-            params.dimLessIsoStHtRef = dimLessIsoStHtRef;
-                     
-        end
-       
+        %Save the result
+        params.dimLessKC = dimLessKC;
+        
     end
     %---------------------------------------------------------------------%
+    
+        
+    
+    %---------------------------------------------------------------------%    
+    %Based on the energy balance model, specify additional parameters
+    
+    %If nonisothermal
+    if bool(5) == 1
+        
+        %Unpack additional params
+        tempRefIso = params.tempRefIso;
+        isoStHtC   = params.isoStHtC  ;   
+        gasCons    = params.gasCons   ;
+
+        %Calculate the constant factor inside the exponent: 
+        %(J/mol-L)/(J/mol-L)
+        dimLessIsoStHtRef = isoStHtC ...
+                         ./ ((gasCons/10)*tempRefIso);
+                     
+        %Save the result
+        params.dimLessIsoStHtRef = dimLessIsoStHtRef;    
+    
+    end
+    %---------------------------------------------------------------------%    
 
 end
 

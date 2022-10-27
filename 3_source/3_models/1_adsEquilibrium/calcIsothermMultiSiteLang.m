@@ -18,12 +18,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2020/12/14/Monday
+%Code created on       : 2020/10/26/Wednesday
 %Code last modified on : 2022/10/26/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : calcIsothermExtLang.m
+%Function   : calcIsothermMultiSiteLang.m
 %Source     : common
 %Description: takes in a state solution (either matrix or vector) and 
 %             returns the corresponding adsorbed phase concentration in 
@@ -46,13 +46,13 @@
 %                            gas phase concentrations.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function newStates = calcIsothermExtLang(params,states,nAds)
+function newStates = calcIsothermMultiSiteLang(params,states,nAds)
   
     %---------------------------------------------------------------------%
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'calcIsothermExtLang.m';
+    funcId = 'calcIsothermMultiSiteLang.m';
     
     %Unpack params
     nStates      = params.nStates     ;
@@ -63,6 +63,8 @@ function newStates = calcIsothermExtLang(params,states,nAds)
     bool         = params.bool        ;
     nRows        = params.nRows       ;    
     qSatC        = params.qSatC       ;
+    aC           = params.aC          ;
+    dimLessKC    = params.dimLessKC   ;
     aConScaleFac = params.aConScaleFac;
     %---------------------------------------------------------------------%
     
@@ -73,24 +75,70 @@ function newStates = calcIsothermExtLang(params,states,nAds)
 
     %If we have a single CSTR,
     if nAds == 0
-    
-        %Grab dimensionless gas phases concentrations as fields in a struct
+        
+        %-----------------------------------------------------------------%
+        %Unpack the states
+        
+        %Grab dimensionless gas phase concentrations as fields in a struct
         colGasCons = convert2ColGasConc(params,states); 
+        
+        %Grab dimensionless adsorbed phase concentrations as fields in a 
+        %struct
+        colAdsCons = convert2ColAdsConc(params,states); 
         
         %Grab dimensionless temperatures as fidlds in a struct
         colTemps = convert2ColTemps(params,states);
-
-        %Locally reset the number of volume parameter
-        nVols = 1;        
-
+        %-----------------------------------------------------------------%
+        
+        
+        
+        %-----------------------------------------------------------------%
+        %Update a few quantities, depending on the calculations needed
+        
+        %Locally reset the number of volume parameter and the adsorbers
+        nVols = 1;  
+        %-----------------------------------------------------------------%
+        
+        
+        
+        %-----------------------------------------------------------------%
+        %Specify the option for fsolve.m for a single CSTR isotherm
+        %calculation
+        
+        %Set options for fsolve.m; no need to specify the pattern for the
+        %Jacobian matrix in this case
+        options = optimoptions('fsolve', ...
+                               'Algorithm','trust-region', ...
+                               'Display','iter'); %Turn off the display
+        %-----------------------------------------------------------------%
+        
     %Otherwise, we have an adsorption column number specified by nAds
     else
+        
+        %-----------------------------------------------------------------%
+        %Unpack the states
         
         %Grab dimensionless gas phases concentrations as fields in a struct
         colGasCons = convert2ColGasConc(params,states,nAds);  
         
+        %Grab dimensionless adsorbed phases concentrations as fields in a 
+        %struct
+        colAdsCons = convert2ColAdsConc(params,states,nAds);  
+        
         %Grab dimensionless temperatures as fidlds in a struct
-        colTemps = convert2ColTemps(params,states);
+        colTemps = convert2ColTemps(params,states,nAds);
+        %-----------------------------------------------------------------%
+        
+        
+        
+        %-----------------------------------------------------------------%
+        %Specify the options for fsolve.m
+        
+        %Unpack the solver option for fsolve.m, including the specification
+        %of the pattern for the Jacobian matrix; the structure is stored
+        %inside params
+        options = params.fsolve.opts;        
+        %-----------------------------------------------------------------%
 
     end
     %---------------------------------------------------------------------%
@@ -102,78 +150,104 @@ function newStates = calcIsothermExtLang(params,states,nAds)
     
     %Define an output state solution vector/matrix
     newStates = states; 
+    
+    %Initialize the initial guess vector
+    adsConsGuess = zeros(nRows,nVols*nComs);
+    
+    %Initialize the solution array
+    adsConsEq = zeros(nRows,nComs*nVols);
     %---------------------------------------------------------------------%
     
 
     
     %---------------------------------------------------------------------%
-    %Calculate adsorption equilibrium (Explicit)
+    %Calculate adsorption equilibrium (Implicit)
 
     %Check if the simulation is an isothermal simulation
     isNonIsothermal = bool(5);
 
     %If non-isothermal operation,
     if isNonIsothermal == 1
-
-        %Get the affinity parameter matrix at a specified CSTR temperature 
-        %for all CSTRs
-        dimLessBC = getAdsAffConstant(params,states,nRows,nAds); 
         
         %Replicate the elements of qSatC
-        qSatCRep = repelem(qSatC,nVols)';
+        qSatC = repmat(qSatC',nVols);
 
-        %Calaulate the matrix containing the state dependent dimensionless
-        %Henry's constant
-        dimLessHenry = (dimLessBC) ...
-                    .* (qSatCRep./aConScaleFac);
+        %Nondimensionalize qSatC
+        qSatC = (qSatC/aConScaleFac);
         
-        %Check to see if we have a single CSTR
-        if nAds == 0
-
-            %Make sure that nAds = 1 so that the indexing will work out
-            nAds = 1;
-
+        %Obtain the temperature dependent pre-exponential factors
+        dimLessKC ...
+            = getAdsConstPreExpFac(params,states,dimLessKC,nRows,nAds);
+                                       
+        %For each species,
+        for i = 1 : nComs
+        
+            %Update the initial guess vector
+            adsConsGuess(:,i:nComs:nComs*(nVols-1)+i) ...
+                = colAdsCons.(sComNums{i});
+        
         end
 
-        %Initialize the denominator
-        denominator = ones(nRows,nVols);
-
-        %Update the species dependent term in the denominator of the
-        %Extended Langmuir expression
-        for i = 1 : nComs
-
-            %Update the denominator vector
-            denominator = denominator ...
-                        + dimLessBC ...
-                       .* colTemps.cstr ...
-                       .* colGasCons.(sComNums{i});
-
-        end
-        
-        %Evaluate explicit form of linear isotherm (i.e., Extened Langmuir
-        %isotherm) and update the corresponding value to the output 
-        %solution
-        for i = 1 : nComs
+        %For each time point
+        for i = 1 : nRows
+                        
+            %Unpack the column temperature (CSTR)
+            colTempCstrCurr = colTemps.cstr(i,:);
             
-            %Calculate the adsoption equilibrium loading
-            loading = dimLessHenry(:,nVols*(i-1)+1:nVols*i) ...
-                   .* colTemps.cstr ...
-                   .* colGasCons.(sComNums{i});
-
-            %Get the beginning index
-            n0 = nColStT*(nAds-1) ...
-               + nComs+i;
+            %Get the current pre-exponential factor
+            KCurr = dimLessKC(i,:);
             
-            %Get the final index
-            nf = nColStT*(nAds-1) ...
-               + nStates*(nVols-1)+nComs+i;
+            %Define a function-handle for the coupled system of nonlinear
+            %equations
+            resFunc ...
+                = @(qEqC) funcMultiSiteLang(qEqC,qSatC,KCurr,aC, ...
+                                            colGasCons, ...
+                                            colTempCstrCurr, ...
+                                            nVols,nComs,sComNums,i); 
+                           
+            %Call fsolve.m to solve the coupled implicit system of 
+            %nonlinear equations
+            [adsConsEq(i,:),~,EXITFLAG] ...
+                = fsolve(resFunc,adsConsGuess(i,:),options);
+                     
+            %Check the function output
+            if EXITFLAG ~= 1
                
-            %For adosrbed concentrations, update with equilibrium 
-            %concentrations with the current gas phase compositions
-            newStates(:,n0:nStates:nf) = loading ...
-                                      ./ denominator;
+                %Get the message
+                message = "possibly no solution to the implicit isotherm.";
+                
+                %Print warning
+                warning("%s: ",funcId,message);
+                
+            end
+            
+            %For the single CSTR case, 
+            if nAds == 0
+               
+                %update nAds to be 1, temporarily
+                nAds = 1;
+                
+            end
+            
+            %Save the solutions to the struct       
+            for j = 1 : nComs
+            
+                %Get the beginning index
+                n0 = nColStT*(nAds-1) ...
+                   + nComs+j;
+
+                %Get the final index
+                nf = nColStT*(nAds-1) ...
+                   + nStates*(nVols-1)+nComs+j;
+
+                %For adosrbed concentrations, update with equilibrium 
+                %concentrations with the current gas phase compositions
+                newStates(i,n0:nStates:nf) ...
+                    = adsConsEq(i,j:nComs:nComs*(nVols-1)+j);
                       
-        end   
+            end   
+
+        end                
     
     %For isothermal operation,
     elseif isNonIsothermal == 0            
@@ -189,7 +263,7 @@ function newStates = calcIsothermExtLang(params,states,nAds)
         dimLessBC    = bC*gasCons*teScaleFac*gConScaleFac;
         dimLessQsatC = qSatC/aConScaleFac                ;               
 
-        %Check to see if we have a single CSTR
+        %Check to see if we have a singel CSTR
         if nAds == 0
 
             %Make sure that nAds = 1 so that the indexing will work out

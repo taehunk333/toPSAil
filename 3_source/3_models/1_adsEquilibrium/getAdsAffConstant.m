@@ -54,11 +54,28 @@ function bCNew = getAdsAffConstant(params,states,nRows,nAds)
     %funcId = 'getAdsAffConstant.m';
     
     %Unpack params
-    nVols             = params.nVols            ;
-    tempRefNorm       = params.tempRefNorm      ;
-    nComs             = params.nComs            ;    
-    dimLessIsoStHtRef = params.dimLessIsoStHtRef;
-    dimLessBC         = params.dimLessBC        ;
+    nVols        = params.nVols       ;
+    tempRefNorm  = params.tempRefNorm ;
+    nComs        = params.nComs       ;    
+    teScaleFac   = params.teScaleFac  ;
+    gConScaleFac = params.gConScaleFac;
+    bC           = params.bC          ;             
+    tempRefIso   = params.tempRefIso  ;
+    isoStHtC     = params.isoStHtC    ;                                   
+
+    %Calculate the constant factor inside the exponent: 
+    %(J/mol-L)/(J/mol-L)
+    dimLessIsoStHtRef = isoStHtC ...
+                     ./ ((gasCons/10)*tempRefIso);
+    %---------------------------------------------------------------------%
+    
+    
+    
+    %---------------------------------------------------------------------%
+    %Calculate needed quantities
+        
+    %Calculate the dimensionless bC and qSatC
+    dimLessBC = bC*gasCons*teScaleFac*gConScaleFac;
     %---------------------------------------------------------------------%
     
        

@@ -19,38 +19,36 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/3/Sunday
-%Code last modified on : 2021/2/16/Tuesday
+%Code last modified on : 2022/10/27/Thursday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : getTotalConc.m
+%Function   : getTotalAdsConc.m
 %Source     : common
-%Description: a function that calculates total gas phase concentration and
-%             total adsorbed phase concentation at a feed composition at a
-%             high pressure inside an adsorption column.
+%Description: a function that calculates total adsorbed phase concentation
+%             at a feed composition at a high pressure inside an adsorption 
+%             column.
 %Inputs     : params       - a struct containing simulation parameters.
 %Outputs    : gasConT      - a total gas phase concentration at a high
 %                            pressure feed composition and pressure
 %             params       - a struct containing simulation parameters.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function params = getTotalConc(params)
+function params = getTotalAdsConc(params)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'getTotalConc.m';
+    %funcId = 'getTotalAdsConc.m';
     
     %Unpack params
-    presColHigh = params.presColHigh;
-    cstrVoidVol = params.cstrVoidVol;
-    tempCol     = params.tempCol    ;
-    tempAmbi    = params.tempAmbi   ;
-    yFeC        = params.yFeC       ;
-    nComs       = params.nComs      ;
-    funcIso     = params.funcIso    ;
-    funcEos     = params.funcEos    ;
+    tempCol  = params.tempCol ;
+    tempAmbi = params.tempAmbi;
+    yFeC     = params.yFeC    ;
+    nComs    = params.nComs   ;
+    funcIso  = params.funcIso ;    
+    gasConT  = params.gasConT ;
     %---------------------------------------------------------------------%    
     
     
@@ -59,17 +57,9 @@ function params = getTotalConc(params)
     %Compute dimensional total gas phase concentration and total adsorbed 
     %phase concentration
             
-    %Compute state variables at a high pressure feed condition using ideal 
-    %gas law in a single CSTR (n=0 means solve for n)
-    [~,voidVol,~,voidMol] ...
-        = funcEos(params,presColHigh,cstrVoidVol,tempCol,0);
-    
-    %Define the total concentration of high pressure feed
-    params.gasConT = voidMol/voidVol;
-    
     %Define a term to scale dimensional gas phase concentrations to 
     %non-dimensional concentrations (for now)
-    params.gConScaleFac = params.gasConT; 
+    params.gConScaleFac = gasConT; 
     
     %Define a term to scale dimensional adsorbed phase concentration to
     %non-dimensional concentrations (for now). Use the value of 1 to just
@@ -105,7 +95,7 @@ function params = getTotalConc(params)
     newStates(1,2*nComs+1:end) = params.teScaleFac ...
                                * newStates(1,2*nComs+1:end);
                           
-    %Get adsorbed phase concentrations in equilibrium with feed gas
+    %Get adsorbed phase concentrations in equilibrium with the feed gas
     %composition
     params.adsConC = newStates(1,nComs+1:2*nComs);
     

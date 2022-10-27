@@ -18,52 +18,51 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2011/2/4/Thursday
-%Code last modified on : 2022/2/17/Thursday
+%Code created on       : 2021/1/3/Sunday
+%Code last modified on : 2022/10/27/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : programProfiler.m
+%Function   : getTotalGasConc.m
 %Source     : common
-%Description: this is a function that calls runPsaProcessSimulation.m so
-%             that MATLAB's profiler can be used to optimize the program.
+%Description: a function that calculates total gas phase concentration and
+%             total adsorbed phase concentation at a feed composition at a
+%             high pressure inside an adsorption column.
+%Inputs     : params       - a struct containing simulation parameters.
+%Outputs    : gasConT      - a total gas phase concentration at a high
+%                            pressure feed composition and pressure
+%             params       - a struct containing simulation parameters.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function programProfiler()        
-    
+function params = getTotalGasConc(params)
+
     %---------------------------------------------------------------------%    
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'programProfiler.m';
+    %funcId = 'getTotalGasConc.m';
+    
+    %Unpack params
+    presColHigh = params.presColHigh;
+    cstrVoidVol = params.cstrVoidVol;
+    tempCol     = params.tempCol    ;
+    funcEos     = params.funcEos    ;
     %---------------------------------------------------------------------%    
     
-
     
-    %---------------------------------------------------------------------%
-    %Profile the main function
+                         
+    %---------------------------------------------------------------------%                           
+    %Compute dimensional total gas phase concentration and total adsorbed 
+    %phase concentration
+            
+    %Compute state variables at a high pressure feed condition using ideal 
+    %gas law in a single CSTR (n=0 means solve for n)
+    [~,voidVol,~,voidMol] ...
+        = funcEos(params,presColHigh,cstrVoidVol,tempCol,0);
     
-    %Examples
-    name = strcat("case_study_2.0");
-    %---------------------------------------------------------------------%
-        
-    
-    
-    %---------------------------------------------------------------------%
-    %Get the final folder name
-    
-    %Append the name
-    name = append(name);
-    %---------------------------------------------------------------------%
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %Profile the code
-    
-    %Run the PSA process simulator
-    runPsaProcessSimulation(name);
-    %---------------------------------------------------------------------%            
+    %Define the total concentration of high pressure feed
+    params.gasConT = voidMol/voidVol;           
+    %---------------------------------------------------------------------%              
     
 end
 
