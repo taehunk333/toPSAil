@@ -28,17 +28,14 @@
 %Description: the function computes the residual to the coupled system of
 %             nonlinear functions, implicitly defining the expression for
 %             the unknown equalibrium adsorbed phase concentrations.
-%Inputs     : qEqC         - the vector of unkonwn equilibrium adsorbed
-%                            phase concentrations, evaluated at the current
-%                            state (gas phase concentrations and the
+%Inputs     : theta        - the vector of unkonwn adsorber equilibrium 
+%                            site fraction, evaluated at the current state
+%                            (gas phase concentrations and the adsorber
 %                            temperatures)
-%             qSatC        - a row vector that contains the dimensionless
-%                            saturation adsorption capacity constants
-%                            [1 x nComs*nVols]
 %             KC           - a row vector that contains the temperature 
 %                            dependent pre-exponential factors
 %                            [1 x nComs*nVols]
-%             aC           - a vector that contains the exponential
+%             aC           - a column vector that contains the exponential
 %                            constants for the multi-site Langmuir isotherm
 %                            model
 %                            [nComs x 1]
@@ -56,7 +53,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function residual ...
-    = funcMultiSiteLang(qEqC,qSatC,KC,aC,colGasCons,colTempCstr, ...
+    = funcMultiSiteLang(theta,KC,aC,colGasCons,colTempCstr, ...
                         nVols,nComs,sComNums,t)
   
     %---------------------------------------------------------------------%
@@ -75,7 +72,7 @@ function residual ...
     residual = zeros(nVols*nComs,1);
     
     %Initialize the sum of the dimensionless adsorbed phase concentratiosn
-    sumQeqC = zeros(1,nVols);
+    sumTheta = zeros(1,nVols);
     %---------------------------------------------------------------------%
     
     
@@ -89,14 +86,11 @@ function residual ...
         
         %Define the unknown adsorbed phase concentrations corresponding to
         %the current species
-        qEqCurr = qEqC(i:nComs:nComs*(nVols-1)+i);
-        
-        %Define the current qSatC values
-        qSatCurr = qSatC(i:nComs:nComs*(nVols-1)+i);
-        
+        thetaCurr = theta(i:nComs:nComs*(nVols-1)+i);
+
         %Update the sum 
-        sumQeqC = sumQeqC ...
-                + (qEqCurr./qSatCurr);
+        sumTheta = sumTheta ...
+                + thetaCurr;
     
     end
         
@@ -105,10 +99,7 @@ function residual ...
 
         %Define the unknown adsorbed phase concentrations corresponding to
         %the current species
-        qEqCurr = qEqC(i:nComs:nComs*(nVols-1)+i);
-        
-        %Define the current qSatC values
-        qSatCurr = qSatC(i:nComs:nComs*(nVols-1)+i);
+        thetaCurr = theta(i:nComs:nComs*(nVols-1)+i);
         
         %Get the current temperature dependent pre-exponential factor
         KCurr = KC(i:nComs:nComs*(nVols-1)+i);
@@ -121,10 +112,10 @@ function residual ...
         
         %Evaluate the nonlinear function
         residual(i:nComs:nComs*(nVols-1)+i) ...
-            = ((-qEqCurr./qSatCurr) ...
+            = ((-thetaCurr) ...
             + (KCurr.*colTempCstr.*colGasConsSpecCurr) ...
-           .* (1-sumQeqC).^aCurr)';
-            
+           .* (1-sumTheta).^aCurr)';
+
     end
     %---------------------------------------------------------------------%
     

@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2020/10/26/Wednesday
-%Code last modified on : 2022/10/26/Wednesday
+%Code last modified on : 2022/10/28/Friday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -109,6 +109,7 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
         %Jacobian matrix in this case
         options = optimoptions('fsolve', ...
                                'Algorithm','trust-region', ...
+                               'FunValCheck','on', ... %complex # show error
                                'Display','iter'); %Turn off the display
         %-----------------------------------------------------------------%
         
@@ -152,10 +153,7 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
     newStates = states; 
     
     %Initialize the initial guess vector
-    adsConsGuess = zeros(nRows,nVols*nComs);
-    
-    %Initialize the solution array
-    adsConsEq = zeros(nRows,nComs*nVols);
+    thetaGuess = zeros(nRows,nVols*nComs);
     %---------------------------------------------------------------------%
     
 
@@ -170,7 +168,7 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
     if isNonIsothermal == 1
         
         %Replicate the elements of qSatC
-        qSatC = repmat(qSatC',nVols);
+        qSatC = repmat(qSatC',1,nVols);
 
         %Nondimensionalize qSatC
         qSatC = (qSatC/aConScaleFac);
@@ -183,8 +181,9 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
         for i = 1 : nComs
         
             %Update the initial guess vector
-            adsConsGuess(:,i:nComs:nComs*(nVols-1)+i) ...
-                = colAdsCons.(sComNums{i});
+            thetaGuess(:,i:nComs:nComs*(nVols-1)+i) ...
+                = colAdsCons.(sComNums{i}) ...
+               ./ qSatC(i:nComs:nComs*(nVols-1)+i);
         
         end
 
@@ -200,16 +199,19 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
             %Define a function-handle for the coupled system of nonlinear
             %equations
             resFunc ...
-                = @(qEqC) funcMultiSiteLang(qEqC,qSatC,KCurr,aC, ...
+                = @(qEqC) funcMultiSiteLang(qEqC,KCurr,aC, ...
                                             colGasCons, ...
                                             colTempCstrCurr, ...
                                             nVols,nComs,sComNums,i); 
                            
             %Call fsolve.m to solve the coupled implicit system of 
             %nonlinear equations
-            [adsConsEq(i,:),~,EXITFLAG] ...
-                = fsolve(resFunc,adsConsGuess(i,:),options);
-                     
+            [theta,~,EXITFLAG] ...
+                = fsolve(resFunc,thetaGuess(i,:),options);            
+            
+            %Update the site fractions theta by the saturation capacities
+            adsConsEq = theta.*qSatC(i,:);            
+            
             %Check the function output
             if EXITFLAG ~= 1
                
