@@ -19,9 +19,9 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/19/Friday
-%Code last modified on : 2021/2/19/Friday
+%Code last modified on : 2022/10/29/Saturday
 %Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
+%Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : getFeHtCapRatio.m
 %Source     : common
@@ -44,6 +44,7 @@ function params = getFeHtCapRatio(params)
     yFeC     = params.yFeC    ;
     htCapCpC = params.htCapCpC;
     htCapCvC = params.htCapCvC;
+    gasCons  = params.gasCons ;
     %---------------------------------------------------------------------% 
     
     
@@ -58,6 +59,13 @@ function params = getFeHtCapRatio(params)
     %Take the ratio of the heat capacities (avg(Cp)/avg(Cv))
     params.htCapRatioFe = htCapCpAvg ...
                         / htCapCvAvg;
+                    
+    %Define the dimensionless heat capacities for the gas phase species
+    %Ideal gas constant in [J/mol-K]
+    params.htCapCpNorm = htCapCpC ...
+                      ./ (gasCons/10);
+    params.htCapCvNorm = htCapCvC ...
+                      ./ (gasCons/10);
     %---------------------------------------------------------------------%                                                          
     
 end

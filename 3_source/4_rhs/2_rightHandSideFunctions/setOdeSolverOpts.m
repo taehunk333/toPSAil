@@ -126,8 +126,8 @@ function options = setOdeSolverOpts(params,iStates,nS,~)
     %pattern for the Jacobian matrix, once before the numerical integration
     if bool(3) == 1
         
-        %Call the helper function to obtain the jacobian matrix and its
-        %sparsity pattern
+        %Call the helper function to obtain the jacobian matrix's sparsity
+        %pattern
         [~,spyPat] = calcJacMatFiniteDiff(0,iStates,params);       
 
         %Specify the sparsity pattern for the Jacobian matrix

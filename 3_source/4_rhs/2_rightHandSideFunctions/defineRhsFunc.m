@@ -36,7 +36,7 @@
 %                            This is a column vector.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function xDot = defineRhsFunc(~,x,params)
+function xDot = defineRhsFunc(t,x,params)
 
     %---------------------------------------------------------------------%    
     %Define known quantities

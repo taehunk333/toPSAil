@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/13/Wednesday
-%Code last modified on : 2022/6/9/Thursday
+%Code last modified on : 2022/10/29/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -128,14 +128,7 @@ function params = getEnergyBalanceParams(params)
     params.gConsNormRaTa = ((gasCons/10)*gConScaleFac*volScaleFac)...
                          / (htTrCoInRaTa*crsAreaInRaTa/10000);   
     params.gConsNormExTa = ((gasCons/10)*gConScaleFac*volScaleFac)...
-                         / (htTrCoInExTa*crsAreaInExTa/10000);   
-                   
-    %Define the dimensionless heat capacities for the gas phase species
-    %Ideal gas constant in [J/mol-K]
-    params.htCapCpNorm = htCapCpC ...
-                      ./ (gasCons/10);
-    params.htCapCvNorm = htCapCvC ...
-                      ./ (gasCons/10);
+                         / (htTrCoInExTa*crsAreaInExTa/10000);                          
     
     %Define the dimensionless solid adsorbent heat capacity
     %Ideal gas constant in [J/mol-K]
