@@ -190,7 +190,7 @@ function runPsaProcessSimulation(folderName)
     
     %Insert a preamlbe for the command window output
     fprintf("\n*******************************************\n");
-    fprintf('Begin plotting simulation results... \n')           ;
+    fprintf('Begin plotting simulation results... \n')        ;
     fprintf("*******************************************\n")  ;
     
     %Plot the simulation results
@@ -198,7 +198,7 @@ function runPsaProcessSimulation(folderName)
     
     %Insert a conclusion for the command window output
     fprintf("\n*******************************************\n");
-    fprintf('The plotting has finished! \n')                     ; 
+    fprintf('The plotting has finished! \n')                  ; 
     fprintf("*******************************************\n")  ;
     %---------------------------------------------------------------------%
     

@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2020/12/14/Monday
-%Code last modified on : 2022/10/26/Wednesday
+%Code last modified on : 2022/10/29/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -90,7 +90,7 @@ function newStates = calcIsothermExtLang(params,states,nAds)
         colGasCons = convert2ColGasConc(params,states,nAds);  
         
         %Grab dimensionless temperatures as fidlds in a struct
-        colTemps = convert2ColTemps(params,states);
+        colTemps = convert2ColTemps(params,states,nAds);
 
     end
     %---------------------------------------------------------------------%

@@ -90,7 +90,7 @@ function residual ...
 
         %Update the sum 
         sumTheta = sumTheta ...
-                + thetaCurr;
+                 + thetaCurr;
     
     end
         

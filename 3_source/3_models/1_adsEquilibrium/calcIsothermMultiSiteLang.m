@@ -66,6 +66,7 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
     aC           = params.aC          ;
     dimLessKC    = params.dimLessKC   ;
     aConScaleFac = params.aConScaleFac;
+    numZero      = params.numZero     ;
     %---------------------------------------------------------------------%
     
     
@@ -110,7 +111,7 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
         options = optimoptions('fsolve', ...
                                'Algorithm','trust-region', ...
                                'FunValCheck','on', ... %complex # show error
-                               'Display','iter'); %Turn off the display
+                               'Display','off'); %'iter' to turn on
         %-----------------------------------------------------------------%
         
     %Otherwise, we have an adsorption column number specified by nAds
@@ -199,7 +200,7 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
             %Define a function-handle for the coupled system of nonlinear
             %equations
             resFunc ...
-                = @(qEqC) funcMultiSiteLang(qEqC,KCurr,aC, ...
+                = @(theta) funcMultiSiteLang(theta,KCurr,aC, ...
                                             colGasCons, ...
                                             colTempCstrCurr, ...
                                             nVols,nComs,sComNums,i); 
@@ -209,11 +210,19 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
             [theta,~,EXITFLAG] ...
                 = fsolve(resFunc,thetaGuess(i,:),options);            
             
+            %Get the real component of the solution
+            thetaReal = real(theta);
+            
             %Update the site fractions theta by the saturation capacities
-            adsConsEq = theta.*qSatC(i,:);            
+            adsConsEq = real(theta).*qSatC;          
+            
+            %Calculate the minimum element in theta
+            thetaRealMin = min(thetaReal);
             
             %Check the function output
-            if EXITFLAG ~= 1
+            if EXITFLAG ~= 1 && ...
+               thetaRealMin < 0 && ...
+               abs(thetaRealMin) > numZero
                
                 %Get the message
                 message = "possibly no solution to the implicit isotherm.";
@@ -242,10 +251,10 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
                 nf = nColStT*(nAds-1) ...
                    + nStates*(nVols-1)+nComs+j;
 
-                %For adosrbed concentrations, update with equilibrium 
+                %For the adosrbed concentrations, update with equilibrium 
                 %concentrations with the current gas phase compositions
                 newStates(i,n0:nStates:nf) ...
-                    = adsConsEq(i,j:nComs:nComs*(nVols-1)+j);
+                    = adsConsEq(1,j:nComs:nComs*(nVols-1)+j);
                       
             end   
 
@@ -254,64 +263,14 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
     %For isothermal operation,
     elseif isNonIsothermal == 0            
         
-        %Unpack additional params
-        teScaleFac   = params.teScaleFac  ;
-        gConScaleFac = params.gConScaleFac;
-        bC           = params.bC          ; 
-        qSatC        = params.qSatC       ;
-        aConScaleFac = params.aConScaleFac;
-            
-        %Calcualte the dimensionless bC and qSatC
-        dimLessBC    = bC*gasCons*teScaleFac*gConScaleFac;
-        dimLessQsatC = qSatC/aConScaleFac                ;               
-
-        %Check to see if we have a singel CSTR
-        if nAds == 0
-
-            %Make sure that nAds = 1 so that the indexing will work out
-            nAds = 1;
-
-        end
-
-        %Initialize the denominator
-        denominator = ones(nRows,nVols);
-
-        %Update the species dependent term in the denominator of the
-        %Extended Langmuir expression
-        for i = 1 : nComs
-
-            %Update the denominator vector
-            denominator = denominator ...
-                        + dimLessBC(i) ...
-                       .* colTemps.cstr ...
-                       .* colGasCons.(sComNums{i});
-
-        end
-
-        %Evaluate explicit form of linear isotherm (i.e., Extened Langmuir
-        %isotherm) and update the corresponding value to the output 
-        %solution
-        for i = 1 : nComs
-            
-            %Calculate the adsoption equilibrium loading
-            loading = (dimLessQsatC(i)*dimLessBC(i)) ...
-                   .* colTemps.cstr ...
-                   .* colGasCons.(sComNums{i});
-
-            %Get the beginning index
-            n0 = nColStT*(nAds-1) ...
-               + nComs+i;
-            
-            %Get the final index
-            nf = nColStT*(nAds-1) ...
-               + nStates*(nVols-1)+nComs+i;
-               
-            %For adosrbed concentrations, update with equilibrium 
-            %concentrations with the current gas phase compositions
-            newStates(:,n0:nStates:nf) = loading ...
-                                      ./ denominator;
-                      
-        end    
+        
+        
+        
+        
+        
+        
+        
+        
 
     end      
     %---------------------------------------------------------------------%
