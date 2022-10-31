@@ -6,8 +6,21 @@
 %	  equilibrium PSA process system.
 % Case Studies:
 % 	- case_study_1.0: 2-adsorber, isothermal, flow-controlled, 
-%		          time-driven O2-N2-Zeolite_5A.
+%		          time-driven, O2-N2-Zeolite_5A.
+%			  linear isotherm, LDF kinetics,
 %			  Reference: Kayser (1986)
+% 	- case_study_1.1: 2-adsorber, isothermal, pressure-driven 
+%	  		  (Kozeny-Carman), time-driven 
+%			  linear isotherm, LDF kinetics,
+%	 		  O2-N2-Zeolite_5A
+%	- case_study_1.2: 2-adsorber, nonisothermal, pressure-driven
+%			  (Kozeny-Carman), time-driven
+%			  linear isotherm, LDF kinetics,
+%	 		  O2-N2-Zeolite_5A
+%	- case_study_1.3: 1-adsorber, nonisothermal, pressure-driven
+%			  (Kozeny-Carman), time-driven,
+%			  linear isotherm, LDF kinetics,
+%	 		  O2-N2-Zeolite_5A
 % Plots:
 % 	- Pressure profiles (vs. time) for the two adsorption columns
 %	- Adsorbed phase concentration of the 1st adsorber at the last
@@ -22,11 +35,24 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% TITLE
+% Single Adsorber Simulation I
 % Purpose:
-% 	- TBD
+%	- to compare the isothermal vs. nonisothermal adsorbed phase 
+%	  concentration profiles, as well as events vs. no events
+% 	- to demonstrate an acceleration to a CSS, using the event 
+% 	  functions and flow-driven vs. pressure-driven 
 % Case Studies:
-% 	- TBD
+% 	- case_study_2.0: 1-adsorber, nonisothermal, pressure-driven
+%			  (Kozeny-Carman), time-driven, 
+%			  multisite Langmuir isotherm, LDF kinetics,
+%		  	  CH4-N2-CO2-Zeolite_13X
+% 	- case_study_2.1: 1-adsorber, nonisothermal, flow-controlled,
+%			  multisite Langmuir isotherm, LDF kinetics,
+%			  time-driven, CH4-N2-CO2-Zeolite_13X
+% 	- case_study_2.2: 1-adsorber, isothermal, pressure-driven
+%			  (Kozeny-Carman), time-driven, 
+%			  multisite Langmuir isotherm, LDF kinetics,
+%		  	  CH4-N2-CO2-Zeolite_13X
 % Plots
 % 	- TBD
 % Data:
@@ -34,7 +60,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Single Adsorber Simulation I
+% Single Adsorber Simulation II
 % Purpose:
 %	- to compare the isothermal vs. nonisothermal adsorbed phase 
 %	  concentration profiles, as well as events vs. no events

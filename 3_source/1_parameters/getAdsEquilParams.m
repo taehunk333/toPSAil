@@ -95,14 +95,14 @@ function params = getAdsEquilParams(params)
     if bool(5) == 1
         
         %Unpack additional params
-        tempRefIso = params.tempRefIso;
-        isoStHtC   = params.isoStHtC  ;   
-        gasCons    = params.gasCons   ;
+        tempAmbi = params.tempAmbi;
+        isoStHtC = params.isoStHtC;   
+        gasCons  = params.gasCons ;
 
         %Calculate the constant factor inside the exponent: 
         %(J/mol-L)/(J/mol-L)
         dimLessIsoStHtRef = isoStHtC ...
-                         ./ ((gasCons/10)*tempRefIso);
+                         ./ ((gasCons/10)*tempAmbi);
                      
         %Save the result
         params.dimLessIsoStHtRef = dimLessIsoStHtRef;    

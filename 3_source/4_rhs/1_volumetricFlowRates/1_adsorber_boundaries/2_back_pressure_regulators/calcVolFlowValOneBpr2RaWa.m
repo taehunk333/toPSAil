@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/8/27/Saturday
-%Code last modified on : 2022/8/30/Tuesday
+%Code last modified on : 2022/10/29/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -119,7 +119,7 @@ function volFlowRat = calcVolFlowValOneBpr2RaWa(params,col,~,~,~,nS,nCo)
         molFlPrEnd2RaWa(t) ...
             = valProdColNorm*tempColNorm/1000 ...
             * median([0,deltaPres(t),1]) ...
-            * min(0,presTotCol(t)-presRaWa);
+            * max(0,presTotCol(t)-presRaWa);
                      
     end         
     

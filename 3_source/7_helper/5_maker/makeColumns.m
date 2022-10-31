@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/17/Sunday
-%Code last modified on : 2022/2/27/Sunday
+%Code last modified on : 2022/10/31/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -54,7 +54,7 @@ function col = makeColumns(params,states)
     nVols      = params.nVols     ;
     sColNums   = params.sColNums  ;
     sComNums   = params.sComNums  ;
-    nR         = params.nRows     ;
+    nRows      = params.nRows     ;
     bool       = params.bool      ;
     cstrHt     = params.cstrHt    ;
     partCoefHp = params.partCoefHp;
@@ -104,10 +104,10 @@ function col = makeColumns(params,states)
         %Initialize soltion arrays
         
         %A numeric array for adsorption column total concentrations 
-        col.(sColNums{i}).gasConsTot = zeros(nR,nVols);  
+        col.(sColNums{i}).gasConsTot = zeros(nRows,nVols);  
         
         %A numeric array for adsorption column total concentrations 
-        col.(sColNums{i}).adsRatSum = zeros(nR,nVols);
+        col.(sColNums{i}).adsRatSum = zeros(nRows,nVols);
         %-----------------------------------------------------------------%          
         
         
