@@ -152,7 +152,7 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
     
     %Define an output state solution vector/matrix
     newStates = states; 
-    
+
     %Initialize the initial guess vector
     thetaGuess = zeros(nRows,nVols*nComs);
     %---------------------------------------------------------------------%
@@ -192,7 +192,7 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
         for i = 1 : nRows
                         
             %Unpack the column temperature (CSTR)
-            colTempCstrCurr = colTemps.cstr(i,:);
+            tempCstrCurr = colTemps.cstr(i,:);
             
             %Get the current pre-exponential factor
             KCurr = dimLessKC(i,:);
@@ -201,9 +201,9 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
             %equations
             resFunc ...
                 = @(theta) funcMultiSiteLang(theta,KCurr,aC, ...
-                                            colGasCons, ...
-                                            colTempCstrCurr, ...
-                                            nVols,nComs,sComNums,i); 
+                                             colGasCons, ...
+                                             tempCstrCurr, ...
+                                             nVols,nComs,sComNums,i); 
                            
             %Call fsolve.m to solve the coupled implicit system of 
             %nonlinear equations
@@ -225,7 +225,7 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
                abs(thetaRealMin) > numZero
                
                 %Get the message
-                message = "possibly no solution to the implicit isotherm.";
+                message = "No solution to the implicit isotherm.";
                 
                 %Print warning
                 warning("%s: ",funcId,message);
@@ -251,10 +251,10 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
                 nf = nColStT*(nAds-1) ...
                    + nStates*(nVols-1)+nComs+j;
 
-                %For the adosrbed concentrations, update with equilibrium 
+                %For the adsorbed concentrations, update with equilibrium 
                 %concentrations with the current gas phase compositions
                 newStates(i,n0:nStates:nf) ...
-                    = adsConsEq(1,j:nComs:nComs*(nVols-1)+j);
+                    = adsConsEq(j:nComs:nComs*(nVols-1)+j);
                       
             end   
 

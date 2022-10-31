@@ -11,7 +11,7 @@
 %-2 adsorption columns
 %-isothermal operation
 %-time-driven mode
-%-flow-controlled mode
+%-pressure-driven mode (Kozeny-Carman)
 %-Kayser's experimental system (Run no.1)
 %-binary mixture (O2 and N2)
 %-linear isotherm

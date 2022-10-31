@@ -32,7 +32,7 @@
 %                            site fraction, evaluated at the current state
 %                            (gas phase concentrations and the adsorber
 %                            temperatures)
-%             KC           - a row vector that contains the temperature 
+%             KCurr        - a row vector that contains the temperature 
 %                            dependent pre-exponential factors
 %                            [1 x nComs*nVols]
 %             aC           - a column vector that contains the exponential
@@ -42,7 +42,7 @@
 %             colGasCons   - a structure containing the state solutions
 %                            corresponding to the species gas phase
 %                            concentrations 
-%             colTempCstr  - a structure containing the state solutions
+%             tempCstrCurr - a structure containing the state solutions
 %                            corresponding to the CSTR temperatures
 %             nVols        - the number of CSTRs per adsorber
 %             nComs        - the total number of adsorbates in the syste
@@ -53,7 +53,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function residual ...
-    = funcMultiSiteLang(theta,KC,aC,colGasCons,colTempCstr, ...
+    = funcMultiSiteLang(theta,KCurr,aC,colGasCons,tempCstrCurr, ...
                         nVols,nComs,sComNums,t)
   
     %---------------------------------------------------------------------%
@@ -102,18 +102,18 @@ function residual ...
         thetaCurr = theta(i:nComs:nComs*(nVols-1)+i);
         
         %Get the current temperature dependent pre-exponential factor
-        KCurr = KC(i:nComs:nComs*(nVols-1)+i);
+        KCurrSpec = KCurr(i:nComs:nComs*(nVols-1)+i);
         
         %Get the current exponent
         aCurr = aC(i);
         
         %Get the gas phase concentrations for the current species
-        colGasConsSpecCurr = colGasCons.(sComNums{i})(t,:);
+        gasConsSpecCurr = colGasCons.(sComNums{i})(t,:);
         
         %Evaluate the nonlinear function
         residual(i:nComs:nComs*(nVols-1)+i) ...
             = ((-thetaCurr) ...
-            + (KCurr.*colTempCstr.*colGasConsSpecCurr) ...
+            + (KCurrSpec.*tempCstrCurr.*gasConsSpecCurr) ...
            .* (1-sumTheta).^aCurr)';
 
     end

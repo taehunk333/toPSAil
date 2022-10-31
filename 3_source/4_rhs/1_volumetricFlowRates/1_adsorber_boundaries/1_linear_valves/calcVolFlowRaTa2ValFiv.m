@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/26/Tuesday
-%Code last modified on : 2022/8/9/Tuesday
+%Code last modified on : 2022/10/30/Sunday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -59,6 +59,7 @@ function volFlowRat = calcVolFlowRaTa2ValFiv(params,col,~,raTa,~,nS,nCo)
     valProdColNorm = params.valProdColNorm;    
     sColNums       = params.sColNums      ;
     funcVal        = params.funcVal       ;
+    nVols          = params.nVols         ;
     
     %Get a dimensionless valve constant value for the purge/pressurization
     %valve (i.e., valve 5)
@@ -71,7 +72,7 @@ function volFlowRat = calcVolFlowRaTa2ValFiv(params,col,~,raTa,~,nS,nCo)
     %Get the total concentrations
         
     %Dimensionless total concentration for the Nth CSTR
-    gasConTotCol = col.(sColNums{nCo}).gasConsTot(:,end);
+    gasConTotCol = col.(sColNums{nCo}).gasConsTot(:,nVols);
     
     %Dimensionless total concentration for the product tank
     gasConTotRaTa = raTa.n1.gasConsTot;  
@@ -83,7 +84,7 @@ function volFlowRat = calcVolFlowRaTa2ValFiv(params,col,~,raTa,~,nS,nCo)
     %Get the dimensionless temperatures
         
     %Dimensionless temperature for the Nth CSTR
-    cstrTempCol = col.(sColNums{nCo}).temps.cstr(:,end);
+    cstrTempCol = col.(sColNums{nCo}).temps.cstr(:,nVols);
     
     %Dimensionless temperature for the product tank
     cstrTempRaTa = raTa.n1.temps.cstr;  

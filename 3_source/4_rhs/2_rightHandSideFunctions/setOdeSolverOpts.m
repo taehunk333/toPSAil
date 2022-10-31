@@ -132,6 +132,9 @@ function options = setOdeSolverOpts(params,iStates,nS,~)
 
         %Specify the sparsity pattern for the Jacobian matrix
         jacOpts = odeset('JPattern',spyPat);
+        
+%         %Do not specify anything about the Jacobian matrix
+%         jacOpts = [];
     
     %When there is no axial pressure drop, let us specify a function handle
     %for the Jacobian matrix, once before the numerical inetgration

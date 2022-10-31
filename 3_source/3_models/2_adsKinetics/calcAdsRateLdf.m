@@ -59,7 +59,7 @@ function adsRates = calcAdsRateLdf(params,states,nAds)
     sComNums = params.sComNums;     
     damkoNo  = params.damkoNo ;    
     funcIso  = params.funcIso ;
-    nR       = params.nRows   ;
+    nRows    = params.nRows   ;
     %---------------------------------------------------------------------%
     
     
@@ -87,7 +87,7 @@ function adsRates = calcAdsRateLdf(params,states,nAds)
     %Initialize solution arrays
     
     %Define a solution array for containing dimensionless adsorption rates
-    adsRates = zeros(nR,nVols*nComs);    
+    adsRates = zeros(nRows,nVols*nComs);    
     %---------------------------------------------------------------------%
     
     
