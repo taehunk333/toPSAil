@@ -110,7 +110,7 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
         %Jacobian matrix in this case
         options = optimoptions('fsolve', ...
                                'Algorithm','trust-region', ...
-                               'FunValCheck','on', ... %complex # show error
+                               'FunValCheck','on', ... %complex # = error
                                'Display','off'); %'iter' to turn on
         %-----------------------------------------------------------------%
         
@@ -162,117 +162,112 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
     %---------------------------------------------------------------------%
     %Calculate adsorption equilibrium (Implicit)
 
+    %Replicate the elements of qSatC
+    qSatC = repmat(qSatC',1,nVols);
+    
+    %Nondimensionalize qSatC
+    qSatC = (qSatC/aConScaleFac);
+    
+    %For each species,
+    for i = 1 : nComs
+
+        %Update the initial guess vector
+        thetaGuess(:,i:nComs:nComs*(nVols-1)+i) ...
+            = colAdsCons.(sComNums{i}) ...
+           ./ qSatC(i:nComs:nComs*(nVols-1)+i);
+
+    end 
+        
     %Check if the simulation is an isothermal simulation
     isNonIsothermal = bool(5);
 
     %If non-isothermal operation,
-    if isNonIsothermal == 1
-        
-        %Replicate the elements of qSatC
-        qSatC = repmat(qSatC',1,nVols);
-
-        %Nondimensionalize qSatC
-        qSatC = (qSatC/aConScaleFac);
+    if isNonIsothermal == 1                        
         
         %Obtain the temperature dependent pre-exponential factors
         dimLessKC ...
-            = getAdsConstPreExpFac(params,states,dimLessKC,nRows,nAds);
-                                       
-        %For each species,
-        for i = 1 : nComs
-        
-            %Update the initial guess vector
-            thetaGuess(:,i:nComs:nComs*(nVols-1)+i) ...
-                = colAdsCons.(sComNums{i}) ...
-               ./ qSatC(i:nComs:nComs*(nVols-1)+i);
-        
-        end
-
-        %For each time point
-        for i = 1 : nRows
-                        
-            %Unpack the column temperature (CSTR)
-            tempCstrCurr = colTemps.cstr(i,:);
-            
-            %Get the current pre-exponential factor
-            KCurr = dimLessKC(i,:);
-            
-            %Define a function-handle for the coupled system of nonlinear
-            %equations
-            resFunc ...
-                = @(theta) funcMultiSiteLang(theta,KCurr,aC, ...
-                                             colGasCons, ...
-                                             tempCstrCurr, ...
-                                             nVols,nComs,sComNums,i); 
-                           
-            %Call fsolve.m to solve the coupled implicit system of 
-            %nonlinear equations
-            [theta,~,EXITFLAG] ...
-                = fsolve(resFunc,thetaGuess(i,:),options);            
-            
-            %Get the real component of the solution
-            thetaReal = real(theta);
-            
-            %Update the site fractions theta by the saturation capacities
-            adsConsEq = real(theta).*qSatC;          
-            
-            %Calculate the minimum element in theta
-            thetaRealMin = min(thetaReal);
-            
-            %Check the function output
-            if EXITFLAG ~= 1 && ...
-               thetaRealMin < 0 && ...
-               abs(thetaRealMin) > numZero
-               
-                %Get the message
-                message = "No solution to the implicit isotherm.";
-                
-                %Print warning
-                warning("%s: ",funcId,message);
-                
-            end
-            
-            %For the single CSTR case, 
-            if nAds == 0
-               
-                %update nAds to be 1, temporarily
-                nAds = 1;
-                
-            end
-            
-            %Save the solutions to the struct       
-            for j = 1 : nComs
-            
-                %Get the beginning index
-                n0 = nColStT*(nAds-1) ...
-                   + nComs+j;
-
-                %Get the final index
-                nf = nColStT*(nAds-1) ...
-                   + nStates*(nVols-1)+nComs+j;
-
-                %For the adsorbed concentrations, update with equilibrium 
-                %concentrations with the current gas phase compositions
-                newStates(i,n0:nStates:nf) ...
-                    = adsConsEq(j:nComs:nComs*(nVols-1)+j);
-                      
-            end   
-
-        end                
-    
+            = getAdsConstPreExpFac(params,colTemps.cstr, ...
+                                   dimLessKC,nRows);
+                                                                        
     %For isothermal operation,
     elseif isNonIsothermal == 0            
         
-        
-        
-        
-        
-        
-        
-        
-        
+        %Replicate the pre-exponential factors
+        dimLessKC = repmat(dimLessKC',nRows,nVols);
 
-    end      
+    end   
+            
+    %For each time point
+    for i = 1 : nRows
+
+        %Unpack the column temperature (CSTR)
+        tempCstrCurr = colTemps.cstr(i,:);
+
+        %Get the current pre-exponential factor
+        KCurr = dimLessKC(i,:);
+
+        %Define a function-handle for the coupled system of nonlinear
+        %equations
+        resFunc ...
+            = @(theta) funcMultiSiteLang(theta,KCurr,aC, ...
+                                         colGasCons, ...
+                                         tempCstrCurr, ...
+                                         nVols,nComs,sComNums,i); 
+
+        %Call fsolve.m to solve the coupled implicit system of 
+        %nonlinear equations
+        [theta,~,EXITFLAG] ...
+            = fsolve(resFunc,thetaGuess(i,:),options);            
+
+        %Get the real component of the solution
+        thetaReal = real(theta);
+
+        %Update the site fractions theta by the saturation capacities
+        adsConsEq = real(theta).*qSatC;          
+
+        %Calculate the minimum element in theta
+        thetaRealMin = min(thetaReal);
+
+        %Check the function output
+        if EXITFLAG ~= 1 && ...
+           thetaRealMin < 0 && ...
+           abs(thetaRealMin) > numZero
+
+            %Get the message
+            message = "No solution to the implicit isotherm.";
+
+            %Print warning
+            warning("%s: ",funcId,message);
+
+        end
+
+        %For the single CSTR case, 
+        if nAds == 0
+
+            %update nAds to be 1, temporarily
+            nAds = 1;
+
+        end
+
+        %Save the solutions to the struct       
+        for j = 1 : nComs
+
+            %Get the beginning index
+            n0 = nColStT*(nAds-1) ...
+               + nComs+j;
+
+            %Get the final index
+            nf = nColStT*(nAds-1) ...
+               + nStates*(nVols-1)+nComs+j;
+
+            %For the adsorbed concentrations, update with equilibrium 
+            %concentrations with the current gas phase compositions
+            newStates(i,n0:nStates:nf) ...
+                = adsConsEq(j:nComs:nComs*(nVols-1)+j);
+
+        end   
+
+    end  
     %---------------------------------------------------------------------%
     
 end

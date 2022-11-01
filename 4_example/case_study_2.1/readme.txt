@@ -8,7 +8,7 @@
 %-1 adsorption column
 %-nonisothermal operation
 %-time-driven mode
-%-flow-controlled mode (no axial pressure drop)
+%-pressure-driven mode (axial pressure drop)
 %-Cavenati's experimental system (Run no.1)
 %-ternary mixture (CH4, N2, and CO2)
 %-multisite Langmuir isotherm

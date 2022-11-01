@@ -129,7 +129,8 @@ function newStates = calcIsothermLinear(params,states,nAds)
                        
         %Take account for the exponential temperature dependence
         dimLessHenry ...
-            = getAdsConstPreExpFac(params,states,dimLessHenry,nRows,nAds);
+            = getAdsConstPreExpFac(params,colTemps.cstr, ...
+                                   dimLessHenry,nRows);
                  
         %Check to see if we have a single CSTR
         if nAds == 0
