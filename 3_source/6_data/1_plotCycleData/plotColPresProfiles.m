@@ -165,12 +165,12 @@ function plotColPresProfiles(params,sol)
     xlim([0,time(end)]);
     
     %Plot a horizontal line, demarcating nominal pressure levels
-    topLine = yline(presColHigh,'--','color', [.5 .5 .5]);  
-    botLine = yline(presColLow,'--','color', [.5 .5 .5]);
+%     topLine = yline(presColHigh,'--','color', [.5 .5 .5]);  
+%     botLine = yline(presColLow,'--','color', [.5 .5 .5]);
     
-    %Bring the dotted lines to the backgrond
-    uistack(topLine,'bottom');
-    uistack(botLine,'bottom');
+%     %Bring the dotted lines to the backgrond
+%     uistack(topLine,'bottom');
+%     uistack(botLine,'bottom');
     %---------------------------------------------------------------------%  
     
     

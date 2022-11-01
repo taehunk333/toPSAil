@@ -5,7 +5,7 @@
 %         most challenging (numerically) simulation problem for an 
 %	  equilibrium PSA process system.
 % Case Studies:
-% 	- case_study_1.0: 2-adsorber, isothermal, flow-controlled, 
+% 	* case_study_1.0: 2-adsorber, isothermal, flow-controlled, 
 %		          time-driven, O2-N2-Zeolite_5A.
 %			  linear isotherm, LDF kinetics,
 %			  Reference: Kayser (1986)
@@ -46,13 +46,16 @@
 %			  (Kozeny-Carman), time-driven, 
 %			  multisite Langmuir isotherm, LDF kinetics,
 %		  	  CH4-N2-CO2-Zeolite_13X
-% 	- case_study_2.1: 1-adsorber, nonisothermal, flow-controlled,
-%			  multisite Langmuir isotherm, LDF kinetics,
-%			  time-driven, CH4-N2-CO2-Zeolite_13X
-% 	- case_study_2.2: 1-adsorber, isothermal, pressure-driven
+% 	- case_study_2.1: 1-adsorber, isothermal, pressure-driven
 %			  (Kozeny-Carman), time-driven, 
 %			  multisite Langmuir isotherm, LDF kinetics,
 %		  	  CH4-N2-CO2-Zeolite_13X
+% 	- case_study_2.2: 1-adsorber, nonisothermal, flow-controlled,
+%			  multisite Langmuir isotherm, LDF kinetics,
+%			  time-driven, CH4-N2-CO2-Zeolite_13X
+% 	- case_study_2.3: 1-adsorber, isothermal, flow-controlled,
+%			  multisite Langmuir isotherm, LDF kinetics,
+%			  time-driven, CH4-N2-CO2-Zeolite_13X
 % Plots
 % 	- TBD
 % Data:

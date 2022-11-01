@@ -71,7 +71,7 @@ function plotPsaSimulationResults(params,sol)
         plotColPresProfiles(params,sol);
         
         %Get the current figure and its information
-        figObj = gcf;
+        figObj = gcf;   
                         
         %Get the full filename
         figName = 'colPresProfile.pdf'; 

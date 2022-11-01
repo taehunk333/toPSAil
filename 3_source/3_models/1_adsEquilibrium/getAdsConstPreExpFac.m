@@ -32,16 +32,13 @@
 %Inputs     : params       - a struct containing simulation parameters 
 %                            (scalars, vectors, functions, strings, etc.) 
 %                            as its fields.
-%             states       - a dimensionless state solution of the
-%                            following dimension:
-%                            number of rows = nTimePts
-%                            number of columns = nColStT
+%             colTemps     - a dimensionless temperature matrix for the
+%                            current time point for a given adsorber
+%                            [nRows x nVols]
 %             preExpFacIn  - the pre-exponential factor before accounting
 %                            for the temperature dependence
 %             nRows        - the number of rows in the state matrix; if the
 %                            state matrix is a vector, nRows = 1.
-%             nAds         - the adsober number where we will evaluate the
-%                            adsorption equilibrium
 %Outputs    : bCNew        - a vector or matrix of affinity constants 
 %                            for all species updated with a current 
 %                            temperature of the system.
@@ -56,7 +53,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function preExpFacOut ...
-    = getAdsConstPreExpFac(params,states,preExpFacIn,nRows,nAds)
+    = getAdsConstPreExpFac(params,colTemps,preExpFacIn,nRows)
     
     %---------------------------------------------------------------------%
     %Define known quantities
@@ -68,30 +65,7 @@ function preExpFacOut ...
     nVols             = params.nVols            ;
     nComs             = params.nComs            ;              
     dimLessIsoStHtRef = params.dimLessIsoStHtRef;        
-    %---------------------------------------------------------------------%
-    
-       
-    
-    %---------------------------------------------------------------------%
-    %Unpack states
-   
-    %If we have a single CSTR,
-    if nAds == 0
-    
-        %Grab dimensionless CSTR temperatures from the struct
-        temps = convert2ColTemps(params,states);  
-    
-        %Locally reset the number of volume parameter
-        nVols = 1;
-    
-    %Otherwise, we have an adsorption column number specified by nAds
-    else
-        
-        %Grab dimensionless CSTR temperatures from the struct
-        temps = convert2ColTemps(params,states,nAds); 
-        
-    end
-    %---------------------------------------------------------------------%
+    %---------------------------------------------------------------------%                   
     
     
     
@@ -113,7 +87,7 @@ function preExpFacOut ...
         %Update the affinity constant at the current CSTR temperatures
         preExpFacOut(:,i:nComs:nComs*(nVols-1)+i) ...
             = preExpFacIn(i) ...
-           .* exp(dimLessIsoStHtRef(i)./temps.cstr);
+           .* exp(dimLessIsoStHtRef(i)./colTemps);
                 
     end            
     %---------------------------------------------------------------------%            
