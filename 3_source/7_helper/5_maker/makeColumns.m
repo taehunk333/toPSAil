@@ -245,8 +245,9 @@ function col = makeColumns(params,states)
             %Unpack additional params
             
             %Unpack params
-            molecWtC    = params.molecWtC   ;   
-            coefQuadPre = params.coefQuadPre;
+            molecWtC     = params.molecWtC    ;   
+            coefQuadPre  = params.coefQuadPre ;
+            gConScaleFac = params.gConScaleFac;
             %-------------------------------------------------------------%
             
             
@@ -270,7 +271,7 @@ function col = makeColumns(params,states)
                 %phase concentration with the corresponding molecular
                 %weight
                 quadCoeffEval = quadCoeffEval ...
-                              + molecWtC(j) ...
+                              + molecWtC(j)*gConScaleFac ...
                              .* col.(sColNums{i}). ...
                                 gasCons.(sComNums{j});
                 

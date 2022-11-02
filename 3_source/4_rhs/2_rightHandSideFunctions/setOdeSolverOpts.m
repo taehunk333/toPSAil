@@ -36,7 +36,7 @@
 %Outputs    : options      - a struct 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function options = setOdeSolverOpts(params,iStates,nS,~)
+function options = setOdeSolverOpts(params,iStates,nS,nCy)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
@@ -139,6 +139,13 @@ function options = setOdeSolverOpts(params,iStates,nS,~)
     %When there is no axial pressure drop, let us specify a function handle
     %for the Jacobian matrix, once before the numerical inetgration
     elseif bool(3) == 0
+        
+%         %Call the helper function to obtain the jacobian matrix's sparsity
+%         %pattern
+%         [~,spyPat] = calcJacMatFiniteDiff(0,iStates,params);
+%         
+%         %Specify the sparsity pattern for the Jacobian matrix
+%         jacOpts = odeset('JPattern',spyPat);
         
         %Do not specify anything about the Jacobian matrix
         jacOpts = [];

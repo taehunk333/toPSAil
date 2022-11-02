@@ -196,7 +196,7 @@ function [stTime,stStates,flags] ...
     %the mode of integration (i.e. event vs time).
     
     %If we have the results from event driven numerical integration,
-    if isempty(funcEve) ~= 1     
+   if isempty(funcEve) ~= 1     
         
         %-----------------------------------------------------------------%
         %Make sure that the event had happened for the original numerical

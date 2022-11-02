@@ -8,19 +8,24 @@
 % 	* case_study_1.0: 2-adsorber, isothermal, flow-controlled, 
 %		          time-driven, O2-N2-Zeolite_5A.
 %			  linear isotherm, LDF kinetics,
-%			  Reference: Kayser (1986)
+%			  Reference: Kayser (1986), 5 step PSA cycle
 % 	- case_study_1.1: 2-adsorber, isothermal, pressure-driven 
 %	  		  (Kozeny-Carman), time-driven 
 %			  linear isotherm, LDF kinetics,
-%	 		  O2-N2-Zeolite_5A
+%	 		  O2-N2-Zeolite_5A, 5 step PSA cycle
 %	- case_study_1.2: 2-adsorber, nonisothermal, pressure-driven
 %			  (Kozeny-Carman), time-driven
 %			  linear isotherm, LDF kinetics,
-%	 		  O2-N2-Zeolite_5A
+%	 		  O2-N2-Zeolite_5A, 5 step PSA cycle
 %	- case_study_1.3: 1-adsorber, nonisothermal, pressure-driven
 %			  (Kozeny-Carman), time-driven,
 %			  linear isotherm, LDF kinetics,
-%	 		  O2-N2-Zeolite_5A
+%	 		  O2-N2-Zeolite_5A, 5 step PSA cycle
+%	- case_study_1.4: 1-adsorber, isothermal, pressure-driven
+%			  (Kozeny-Carman), time-driven,
+%			  linear isotherm, LDF kinetics,
+%	 		  O2-N2-Zeolite_5A, a single high pressure 
+%			  step
 % Plots:
 % 	- Pressure profiles (vs. time) for the two adsorption columns
 %	- Adsorbed phase concentration of the 1st adsorber at the last
@@ -43,19 +48,21 @@
 % 	  functions and flow-driven vs. pressure-driven 
 % Case Studies:
 % 	- case_study_2.0: 1-adsorber, nonisothermal, pressure-driven
-%			  (Kozeny-Carman), time-driven, 
+%			  (Ergun), time-driven, 
 %			  multisite Langmuir isotherm, LDF kinetics,
-%		  	  CH4-N2-CO2-Zeolite_13X
+%		  	  CH4-N2-CO2-Zeolite_13X, 5 step PSA cycle
 % 	- case_study_2.1: 1-adsorber, isothermal, pressure-driven
 %			  (Kozeny-Carman), time-driven, 
 %			  multisite Langmuir isotherm, LDF kinetics,
-%		  	  CH4-N2-CO2-Zeolite_13X
+%		  	  CH4-N2-CO2-Zeolite_13X, 5 step PSA cycle
 % 	- case_study_2.2: 1-adsorber, nonisothermal, flow-controlled,
 %			  multisite Langmuir isotherm, LDF kinetics,
-%			  time-driven, CH4-N2-CO2-Zeolite_13X
+%			  time-driven, CH4-N2-CO2-Zeolite_13X, 
+%			  5 step PSA cycle
 % 	- case_study_2.3: 1-adsorber, isothermal, flow-controlled,
 %			  multisite Langmuir isotherm, LDF kinetics,
-%			  time-driven, CH4-N2-CO2-Zeolite_13X
+%			  time-driven, CH4-N2-CO2-Zeolite_13X,
+%			  5 step PSA cycle
 % Plots
 % 	- TBD
 % Data:

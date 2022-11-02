@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/8/27/Saturday
-%Code last modified on : 2022/10/29/Saturday
+%Code last modified on : 2022/11/2/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -66,7 +66,6 @@ function volFlowRat = calcVolFlowValOneBpr2RaWa(params,col,~,~,~,nS,nCo)
     nVols          = params.nVols                 ;
     nRows          = params.nRows                 ;
     pRatAmb        = params.pRatAmb               ;
-    tempColNorm    = params.tempColNorm           ;
     %---------------------------------------------------------------------%                
     
     
@@ -94,8 +93,8 @@ function volFlowRat = calcVolFlowValOneBpr2RaWa(params,col,~,~,~,nS,nCo)
     
     %Calculate the pressure inside the product-end CSTR and the raffinate
     %waste stream
-    presTotCol = gasConsNormEq.*gasConTotCol.*cstrTempCol;
-    presRaWa   = pRatAmb                                 ;    
+    presTotCol = gasConTotCol.*cstrTempCol;
+    presRaWa   = pRatAmb/gasConsNormEq    ;    
     %---------------------------------------------------------------------%
 
 
@@ -105,9 +104,9 @@ function volFlowRat = calcVolFlowValOneBpr2RaWa(params,col,~,~,~,nS,nCo)
 
     %Calculate the dimensionless pressure difference term
     deltaPres ...
-        = (presTotCol-pRatHighSet) ...
+        = (gasConsNormEq*presTotCol-pRatHighSet) ...
        ./ (pRatHighFull-pRatHighSet);
-   
+    
     %Initialize the molar flow rate vector
     molFlPrEnd2RaWa = zeros(nRows,1);   
        
@@ -117,7 +116,7 @@ function volFlowRat = calcVolFlowValOneBpr2RaWa(params,col,~,~,~,nS,nCo)
         %The molar flow rate over the back pressure regulator and check
         %valve is calculated as below
         molFlPrEnd2RaWa(t) ...
-            = valProdColNorm*tempColNorm/1000 ...
+            = valProdColNorm ...
             * median([0,deltaPres(t),1]) ...
             * max(0,presTotCol(t)-presRaWa);
                      

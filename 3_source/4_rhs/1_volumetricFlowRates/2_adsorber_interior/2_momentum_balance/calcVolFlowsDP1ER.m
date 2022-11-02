@@ -84,7 +84,7 @@ function units = calcVolFlowsDP1ER(params,units,nS)
         %-----------------------------------------------------------------%
         %Unpack states
         
-        %Unpack the total concentrstion variables
+        %Unpack the total concentra tion variables
         gasConsTot = col.(sColNums{i}).gasConsTot;
 
         %Unpack the interior temperature variables 
@@ -116,7 +116,7 @@ function units = calcVolFlowsDP1ER(params,units,nS)
             %Compute the product of the total concentrations with the 
             %interior temperature
             coefConNorm = -(cNm0(t,:).*Tnm0(t,:)-cNp1(t,:).*Tnp1(t,:));        
-
+    
             %Evaluate the quadratic dependence of the pressure and compute
             %the volumetric flow rates         
             vFlInterior ...

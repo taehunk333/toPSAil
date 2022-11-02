@@ -172,7 +172,7 @@ function sol = runPsaCycle(params)
                 %---------------------------------------------------------%
                 %Simulate the step
                 
-                %Set the number of time points within the right hand side
+                %Set the number of time points within the right-hand side
                 %function
                 params.nRows = 1;
                 
