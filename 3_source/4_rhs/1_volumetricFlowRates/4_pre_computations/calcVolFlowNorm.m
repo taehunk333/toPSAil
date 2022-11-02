@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/3/Sunday
-%Code last modified on : 2022/8/24/Wednesday
+%Code last modified on : 2022/11/1/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -63,9 +63,7 @@ function volFlowNorm = calcVolFlowNorm(params)
     gasConT     = params.gasConT    ;
     
     %Define scale factors for using valve equation in a dimensional form
-    valScaleFac = 1000 ...
-                * gasCons ...
-                * tempAmbi;    
+    valScaleFac = (1000*gasCons*tempAmbi);    
     
     %Define a test volume for computing a total concentration
     testVol = 1;
@@ -193,13 +191,11 @@ function volFlowNorm = calcVolFlowNorm(params)
         
     end
         
-    %Calculate upstream total concentration
-    gasConsTotUp = voidMolUp ...
-                 / testVol;
+    %Calculate the dimensionless upstream total concentration
+    gasConsTotUp = (voidMolUp/testVol)/gasConT;
     
-    %Calculate downstream total concentration
-    gasConsTotDo = voidMolDo ...
-                 / testVol;
+    %Calculate the dimensionless downstream total concentration
+    gasConsTotDo = (voidMolDo/testVol)/gasConT;
     %---------------------------------------------------------------------%
     
     
@@ -208,14 +204,18 @@ function volFlowNorm = calcVolFlowNorm(params)
     %Calculate necessary volumetric flow rates from valve constants and the
     %total concentrations below and above the valve
     
-    %Calculate feed-end or product-end volumetric flow rate (we are using a 
-    %dimensionless version of the function but getting dimensional values 
-    %out)
-    volFlowNorm = funcVal(valConHp, ...
-                          gasConsTotDo/gasConT, ...
-                          gasConsTotUp/gasConT, ...
-                          tempFeTa/tempAmbi, ...
-                          tempColNorm);         
+    %Calculate feed-end or product-end molar flow rate; the valve constant
+    %used here is the dimensionless valve constant times the volFlowNorm,
+    %which is yet to be determined.
+    molFlowRat = funcVal(valConHp, ...
+                         (gasConsTotDo), ...
+                         (gasConsTotUp), ...
+                         (tempFeTa/tempAmbi), ...
+                         tempColNorm);                       
+                      
+    %Calculate the volumetric flow rate at the stream exiting the valve
+    volFlowNorm = molFlowRat ...
+               ./ (gasConsTotDo);                                       
     %---------------------------------------------------------------------%              
     
 end

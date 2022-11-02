@@ -100,11 +100,11 @@ function units = calcVolFlowsDP1KC(params,units,nS)
         %temperature
         deltaP = cNm0.*Tnm0 ...
                - cNp1.*Tnp1;        
-
+           
         %Evaluate the linear difference in the pressure and compute the 
         %volumetric flow rates         
         vFlInterior = preFacLinFlow ...
-                   .* deltaP;     
+                   .* deltaP;            
                
         %Save the interior volumetric flow rates
         col.vFlInterior = vFlInterior;

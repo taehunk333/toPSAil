@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/8/27/Saturday
-%Code last modified on : 2022/10/29/Saturday
+%Code last modified on : 2022/11/2/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -65,7 +65,6 @@ function volFlowRat = calcVolFlowValOneBpr2RaTa(params,col,~,raTa,~,nS,nCo)
     gasConsNormEq  = params.gasConsNormEq         ;
     nVols          = params.nVols                 ;
     nRows          = params.nRows                 ;
-    tempColNorm    = params.tempColNorm           ;
     %---------------------------------------------------------------------%                
     
     
@@ -99,8 +98,8 @@ function volFlowRat = calcVolFlowValOneBpr2RaTa(params,col,~,raTa,~,nS,nCo)
     
     %Calculate the pressure inside the product-end CSTR and the raffinate
     %product tank
-    presTotCol = gasConsNormEq.*gasConTotCol.*cstrTempCol  ;
-    presRaTa   = gasConsNormEq.*gasConTotRaTa.*cstrTempRaTa;    
+    presTotCol = gasConTotCol.*cstrTempCol  ;
+    presRaTa   = gasConTotRaTa.*cstrTempRaTa;    
     %---------------------------------------------------------------------%
 
 
@@ -110,7 +109,7 @@ function volFlowRat = calcVolFlowValOneBpr2RaTa(params,col,~,raTa,~,nS,nCo)
 
     %Calculate the dimensionless pressure difference term
     deltaPres ...
-        = (presTotCol-pRatHighSet) ...
+        = (gasConsNormEq*presTotCol-pRatHighSet) ...
        ./ (pRatHighFull-pRatHighSet);
    
     %Initialize the molar flow rate vector
@@ -122,7 +121,7 @@ function volFlowRat = calcVolFlowValOneBpr2RaTa(params,col,~,raTa,~,nS,nCo)
         %The molar flow rate over the back pressure regulator and check
         %valve is calculated as below
         molFlPrEnd2RaTa(t) ...
-            = valProdColNorm*tempColNorm/1000 ...
+            = valProdColNorm ...
             * median([0,deltaPres(t),1]) ...
             * max(0,presTotCol(t)-presRaTa(t));
                      
