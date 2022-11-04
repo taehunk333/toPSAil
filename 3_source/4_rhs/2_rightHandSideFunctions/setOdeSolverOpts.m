@@ -126,15 +126,15 @@ function options = setOdeSolverOpts(params,iStates,nS,nCy)
     %pattern for the Jacobian matrix, once before the numerical integration
     if bool(3) == 1
         
-        %Call the helper function to obtain the jacobian matrix's sparsity
-        %pattern
-        [~,spyPat] = calcJacMatFiniteDiff(0,iStates,params);       
-
-        %Specify the sparsity pattern for the Jacobian matrix
-        jacOpts = odeset('JPattern',spyPat);
+%         %Call the helper function to obtain the jacobian matrix's sparsity
+%         %pattern
+%         [~,spyPat] = calcJacMatFiniteDiff(0,iStates,params);       
+% 
+%         %Specify the sparsity pattern for the Jacobian matrix
+%         jacOpts = odeset('JPattern',spyPat);
         
-%         %Do not specify anything about the Jacobian matrix
-%         jacOpts = [];
+        %Do not specify anything about the Jacobian matrix
+        jacOpts = [];
     
     %When there is no axial pressure drop, let us specify a function handle
     %for the Jacobian matrix, once before the numerical inetgration
