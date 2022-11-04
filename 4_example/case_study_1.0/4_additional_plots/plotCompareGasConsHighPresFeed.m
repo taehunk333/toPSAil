@@ -161,9 +161,9 @@ function plotCompareGasConsHighPresFeed()
     xlim([0,heightCol]);
     
     %Add descriptors
-    text(55,5.75e-5,'n_c = 10','FontSize',14);
-    text(60,1.025e-4,'n_c = 100','FontSize',14);
-    text(60,1.50e-5,'n_c = 100','FontSize',14);
+%     text(55,5.75e-5,'n_c = 10','FontSize',14);
+%     text(60,1.025e-4,'n_c = 100','FontSize',14);
+%     text(60,1.50e-5,'n_c = 100','FontSize',14);
     
     %Hold off of the figure
     hold off;    
@@ -172,7 +172,7 @@ function plotCompareGasConsHighPresFeed()
     box on;
     
     %Adjust margin
-    a = annotation('rectangle',[0.03 0.00 0.89 1],'Color','w');
+    a = annotation('rectangle',[0.03 0.10 0.89 1],'Color','w');
     
     %Save the figure as .eps
     exportgraphics(gcf,fullfile(pwd,'comp.pdf'),'ContentType','vector');

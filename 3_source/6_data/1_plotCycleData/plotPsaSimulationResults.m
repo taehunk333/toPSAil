@@ -161,7 +161,7 @@ function plotPsaSimulationResults(params,sol)
                              int2str(i), ...
                              '.pdf'); 
             %Adjust margin by adding a white rectangle
-            a = annotation('rectangle',[0.03 0.00 0.88 1],'Color','w'); 
+            a = annotation('rectangle',[0.03 0.10 0.88 1],'Color','w'); 
             %[X Y W H]
 
             %Save the figure to a .pdf file
@@ -199,7 +199,7 @@ function plotPsaSimulationResults(params,sol)
                              '.pdf'); 
 
             %Adjust margin by adding a white rectangle
-            a = annotation('rectangle',[0.03 0.00 0.88 1],'Color','w'); 
+            a = annotation('rectangle',[0.03 0.10 0.88 1],'Color','w'); 
             %[X Y W H]
           
             %Save the figure to a .pdf file
@@ -392,7 +392,7 @@ function plotPsaSimulationResults(params,sol)
         figName = 'productPurity.pdf'; 
         
         %Adjust margin by adding a white rectangle
-        a = annotation('rectangle',[0.02 0.00 0.91 1],'Color','w'); 
+        a = annotation('rectangle',[0.02 0.10 0.91 1],'Color','w'); 
         %[X Y W H]                 
         
         %Save the figure to a .pdf file
@@ -422,7 +422,7 @@ function plotPsaSimulationResults(params,sol)
         figName = 'productRecovery.pdf'; 
         
         %Adjust margin by adding a white rectangle
-        a = annotation('rectangle',[0.02 0.00 0.91 1],'Color','w'); 
+        a = annotation('rectangle',[0.02 0.10 0.91 1],'Color','w'); 
         %[X Y W H]                 
         
         %Save the figure to a .pdf file
@@ -452,7 +452,7 @@ function plotPsaSimulationResults(params,sol)
         figName = 'productivity.pdf'; 
         
         %Adjust margin by adding a white rectangle
-        a = annotation('rectangle',[0.02 0.00 0.91 1],'Color','w'); 
+        a = annotation('rectangle',[0.02 0.10 0.91 1],'Color','w'); 
         %[X Y W H]
                  
         %Save the figure to a .pdf file
@@ -482,7 +482,7 @@ function plotPsaSimulationResults(params,sol)
         figName = 'energyConsumption.pdf'; 
         
         %Adjust margin by adding a white rectangle
-        a = annotation('rectangle',[0.00 0.00 0.93 1],'Color','w'); 
+        a = annotation('rectangle',[0.00 0.10 0.93 1],'Color','w'); 
         %[X Y W H]                 
         
         %Save the figure to a .pdf file
@@ -512,7 +512,7 @@ function plotPsaSimulationResults(params,sol)
         figName = 'css.pdf'; 
         
         %Adjust margin by adding a white rectangle
-        a = annotation('rectangle',[0.02 0.00 0.91 1],'Color','w'); 
+        a = annotation('rectangle',[0.02 0.12 0.91 1],'Color','w'); 
         %[X Y W H]                 
         
         %Save the figure to a .pdf file
