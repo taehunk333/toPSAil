@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/4/10/Monday
-%Code last modified on : 2022/10/10/Monday
+%Code last modified on : 2022/11/5/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -43,14 +43,14 @@ function units = getFeTaMoleBal(params,units)
     %funcId = 'getFeTaMoleBal.m';
     
     %Unpack params    
-    nComs        = params.nComs       ;
-    nCols        = params.nCols       ;
-    yFeC         = params.yFeC        ;
-    feTaVolNorm  = params.feTaVolNorm ;
-    pRatFe       = params.pRatFe      ;   
-    sComNums     = params.sComNums    ;
-    tempColNorm  = params.tempColNorm ;
-    tempFeedNorm = params.tempFeedNorm;
+    nComs         = params.nComs        ;
+    nCols         = params.nCols        ;
+    yFeC          = params.yFeC         ;
+    feTaVolNorm   = params.feTaVolNorm  ;
+    pRatFe        = params.pRatFe       ;   
+    sComNums      = params.sComNums     ;    
+    gasConsNormEq = params.gasConsNormEq;
+    tempFeedNorm  = params.tempFeedNorm ;
     
     %Unpack units
     feTa = units.feTa;
@@ -100,7 +100,8 @@ function units = getFeTaMoleBal(params,units)
         %Convective flow into the ith feed tank from the feed reservoir. We
         %have c_{feed}/c_{high} = P_{feed}/P_{high} * T_{high}/T_{Feed}.
         convfromFeRes = feTa.n1.volFlRat(:,end) ...
-                      * pRatFe*tempColNorm/tempFeedNorm*yFeC(j);
+                      * pRatFe/(gasConsNormEq*tempFeedNorm) ...
+                      * yFeC(j);
         %-----------------------------------------------------------------%    
 
 
