@@ -101,16 +101,6 @@ function units = calcVolFlowsDP1KC(params,units,nS)
         deltaP = cNm0.*Tnm0 ...
                - cNp1.*Tnp1;        
 
-%         pDown = cNm0.*Tnm0;
-%         pUp   = cNp1.*Tnp1;
-%         
-%         deltaP = (pDown.^2)./(pDown+pUp) ...
-%                - (pUp.^2)./(pDown+pUp); 
-
-%         deltaP = repmat(linspace(1e-1,1e-3,nVols-1),nRows,1);
-
-%         deltaP = (1e-1)*ones(nRows,nVols-1);
-
         %Evaluate the linear difference in the pressure and compute the 
         %volumetric flow rates         
         vFlInterior = preFacLinFlow ...

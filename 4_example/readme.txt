@@ -24,8 +24,26 @@
 %	- case_study_1.4: 1-adsorber, isothermal, pressure-driven
 %			  (Kozeny-Carman), time-driven,
 %			  linear isotherm, LDF kinetics,
-%	 		  O2-N2-Zeolite_5A, a single high pressure 
-%			  step
+%	 		  O2-N2-Zeolite_5A, two single high pressure 
+%			  steps
+%	- case_study_1.5: 1-adsorber, isothermal, pressure-driven
+%			  (Kozeny-Carman), time-driven,
+%			  linear isotherm, LDF kinetics,
+%	 		  O2-N2-Zeolite_5A, a single co-current 
+%		  	  repressurization with the raffinate product, 
+%		 	  followed by a single high pressure feed
+%	- case_study_1.6: 1-adsorber, isothermal, pressure-driven
+%			  (Kozeny-Carman), time-driven,
+%			  linear isotherm, LDF kinetics,
+%	 		  O2-N2-Zeolite_5A, a single co-current 
+%			  repressurization with the feed, followed by
+%			  a single high pressure feed
+%	- case_study_1.7: 1-adsorber, isothermal, pressure-driven
+%			  (Kozeny-Carman), time-driven,
+%			  linear isotherm, LDF kinetics,
+%	 		  O2-N2-Zeolite_5A, a single counter-current 
+%			  repressurization with the feed, followed by
+%			  a single high pressure feed
 % Plots:
 % 	- Pressure profiles (vs. time) for the two adsorption columns
 %	- Adsorbed phase concentration of the 1st adsorber at the last

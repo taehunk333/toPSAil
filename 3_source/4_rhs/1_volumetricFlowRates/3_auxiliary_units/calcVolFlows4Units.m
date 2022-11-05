@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/8/13/Saturday
-%Code last modified on : 2022/10/5/Wednesday
+%Code last modified on : 2022/11/5/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -58,7 +58,7 @@ function vFlUnits = calcVolFlows4Units(params,units,nS)
     nRows            = params.nRows           ;
     sColNums         = params.sColNums        ;        
     pRatAmb          = params.pRatAmb         ;
-    tempColNorm      = params.tempColNorm     ;
+    tempAmbiNorm     = params.tempAmbiNorm    ;
     gasConsNormEq    = params.gasConsNormEq   ;
     valFeTa2AdsPrEnd = params.valFeTa2AdsPrEnd;
     valFeTa2AdsFeEnd = params.valFeTa2AdsFeEnd;
@@ -218,7 +218,7 @@ function vFlUnits = calcVolFlows4Units(params,units,nS)
             vFlScaleFac1 = col.(sColNums{i}).gasConsTot(:,nVols) ...
                         ./ raTaTotCon;
             vFlScaleFac2 = col.(sColNums{i}).gasConsTot(:,nVols) ...
-                        ./ (pRatAmb/(gasConsNormEq*tempColNorm));      
+                        ./ (pRatAmb/(gasConsNormEq*tempAmbiNorm));      
             %c_{amb}/c_{0} = P_{amb}/P_{0} * T_{0}/T_{amb}
 
             %Grab a volumetric flow rate from the product-end of the jth 
@@ -277,7 +277,7 @@ function vFlUnits = calcVolFlows4Units(params,units,nS)
             vFlScaleFac1 = col.(sColNums{i}).gasConsTot(:,1) ...
                         ./ exTaTotCon;
             vFlScaleFac2 = col.(sColNums{i}).gasConsTot(:,1) ...
-                        ./ (pRatAmb*tempColNorm);      
+                        ./ (pRatAmb/(gasConsNormEq*tempAmbiNorm));      
             %c_{amb}/c_{0} = P_{amb}/P_{0} * T_{0}/T_{amb}
 
             %Grab a volumetric flow rate from the feed-end of the jth 
