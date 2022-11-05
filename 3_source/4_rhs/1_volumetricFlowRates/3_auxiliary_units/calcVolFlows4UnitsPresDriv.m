@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/8/13/Saturday
-%Code last modified on : 2022/10/21/Friday
+%Code last modified on : 2022/11/5/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -64,7 +64,6 @@ function units = calcVolFlows4UnitsPresDriv(params,units,nS)
     gasConsNormEq   = params.gasConsNormEq  ;
     pRatRa          = params.pRatRa         ;
     pRatEx          = params.pRatEx         ;
-    tempColNorm     = params.tempColNorm    ;
     bool            = params.bool           ;
     tempFeedNorm    = params.tempFeedNorm   ;
     feTaVolNorm     = params.feTaVolNorm    ;
