@@ -93,7 +93,7 @@ function units = getExTaMoleBal(params,units,nS)
         for k = 1 : nCols
 
             %-------------------------------------------------------------%    
-            %Account for the molar flow rate in between the raffinate
+            %Account for the molar flow rate in between the extract
             %product tank and the kth adsorber
 
             %Calculate the "min" of the feed end molar flow rate of the
@@ -112,11 +112,11 @@ function units = getExTaMoleBal(params,units,nS)
             convOutToAdsK = max(0,exTa.n1.volFlRat(:,k) ...
                          .* exTa.n1.gasCons.(sComNums{j}));
             
-            %Update the cumulative convective flow into the raffinate tank
+            %Update the cumulative convective flow into the extract tank
             convInFromAds = convInFromAds ...
                           + convInFromAdsK;                   
 
-            %Update the cumulative convective flow out from the raffinate 
+            %Update the cumulative convective flow out from the extract 
             %tank
             convOutToAds = convOutToAds ...                            
                          + convOutToAdsK;
@@ -163,7 +163,7 @@ function units = getExTaMoleBal(params,units,nS)
 
     end
     
-    %Save the overall mole balance for the raffinate tank
+    %Save the overall mole balance for the extract tank
     exTa.n1.moleBalTot = moleBalTot;
     %---------------------------------------------------------------------%
     
