@@ -85,17 +85,7 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
     raTa = units.raTa;
     exTa = units.exTa;
     %---------------------------------------------------------------------%                                                               
-                                                
-    
-    
-    %---------------------------------------------------------------------%                                                               
-    %Initialize solution arrays
-    
-    %Initialize numerical solution array
-    vFlPlusCol  = zeros(nRows,nVols+1);
-    vFlMinusCol = zeros(nRows,nVols+1);
-    %---------------------------------------------------------------------%                                                               
-    
+                                                                                                                               
     
     
     %---------------------------------------------------------------------%                            
@@ -104,6 +94,16 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
         
     %For each adsorber
     for i = 1 : nCols
+        
+        %-----------------------------------------------------------------%                                                               
+        %Initialize solution arrays
+
+        %Initialize numerical solution array
+        vFlPlusCol  = zeros(nRows,nVols+1);
+        vFlMinusCol = zeros(nRows,nVols+1);
+        %-----------------------------------------------------------------%
+        
+        
         
         %-----------------------------------------------------------------%
         %Obtain the information about the adsorber
@@ -450,8 +450,8 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                             %---------------------------------------------%
                             %Save the results
 
-                            %We are specifying a volumetric flow rate at the 
-                            %feed-end
+                            %We are specifying a volumetric flow rate at 
+                            %the feed-end
                             vFlMinusCol(t,:) ...
                                 = [vFlMinusColVal',vFlMinusBoPr(t)];
                             %---------------------------------------------%

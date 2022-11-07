@@ -19,19 +19,27 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/1/24/Monday
-%Code last modified on : 2022/10/27/Thursday
+%Code last modified on : 2022/11/6/Sunday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : getAdsEquilParams.m
 %Source     : common
 %Description: given an initial set of parameters, define parameters that
-%             are associated with adsorption equilibrium (isotherm)
+%             are associated with adsorption equilibrium (isotherm), and
+%             nondimensionalize the isotherm parameters as needed.
 %Inputs     : params       - a struct containing simulation parameters.
+%             varargin     - a cell array containing an additional element.
+%                            Specify "1" to indicate that we will perform
+%                            additional calculations to nondimensionalize
+%                            the adsorption isotherm parameters that
+%                            require the normalization by the adsorption
+%                            equilibrium amount, i.e., 
+%                            q^*\left(\mb{c}_0, T_0\right).
 %Outputs    : params       - a struct containing simulation parameters.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function params = getAdsEquilParams(params)    
+function params = getAdsEquilParams(params,varargin)    
     
     %---------------------------------------------------------------------%    
     %Define known quantities
@@ -46,6 +54,106 @@ function params = getAdsEquilParams(params)
     
     
     
+    %---------------------------------------------------------------------% 
+    %Check the additional inputs
+    
+    %Check to see if we have an additional input argument
+    hasAddArgs = ~isempty(varargin);
+    
+    %If there is an additional input argument,
+    if hasAddArgs
+        
+        %-----------------------------------------------------------------% 
+        %Perform additional calculations to obtain the rest of the
+        %dimensionless isotherm paramters requiring the normalization
+        %constant for the adsorbed phase in equilibrium with the feed gas
+        
+        %Check the isotherm model
+        whichIsotherm = modSp(1);
+        
+        %A custom isotherm
+        if whichIsotherm == 0
+        
+            %Currently, no custom isotherm model is supported.
+            error("toPSAil: No custom isotherm model is supported.")
+        
+        %Linear isotherm
+        elseif whichIsotherm == 1
+
+            %Unpack additional params
+            henryC   = params.henryC  ;
+            gasCons  = params.gasCons ;
+            tempAmbi = params.tempAmbi;
+            gasConT  = params.gasConT ;
+            adsConT  = params.adsConT ;
+
+            %Calculate dimensionless parameters (final)
+            dimLessHenry = henryC*gasCons*tempAmbi ...
+                         * (gasConT/adsConT);
+    
+            %Save the result
+            params.dimLessHenry = dimLessHenry;                        
+
+        %Extended Langmuir isotherm
+        elseif whichIsotherm == 2
+
+            %Unpack additional params
+            qSatC   = params.qSatC  ;
+            adsConT = params.adsConT;
+            
+            %Calculate dimensionless parameters (final)
+            dimLessQsatC = qSatC./adsConT;                       
+            
+            %Save the result
+            params.dimLessQsatC = dimLessQsatC;
+            
+        %Miltisite Langmuir isotherm
+        elseif whichIsotherm == 3   
+            
+            %Unpack additional params
+            qSatC   = params.qSatC  ;
+            adsConT = params.adsConT;
+            
+            %Calculate dimensionless parameters (final)
+            dimLessQsatC = qSatC./adsConT; 
+                        
+            %Save the result
+            params.dimLessQsatC = dimLessQsatC;
+            
+        %Extended Langmuir-Freundlich isotherm
+        elseif whichIsotherm == 4
+        
+            %Unpack additional params
+            kOneC    = params.kOneC   ;
+            kTwoC    = params.kTwoC   ;
+            tempAmbi = params.tempAmbi;
+            adsConT  = params.adsConT ;
+                        
+            %Calculate dimensionless parameters (final)
+            dimLessKOneC = kOneC/adsConT         ;
+            dimLessKTwoC = kTwoC*tempAmbi/adsConT;
+            
+            %Save the result
+            params.dimLessKOneC = dimLessKOneC;
+            params.dimLessKTwoC = dimLessKTwoC;            
+            
+        end
+        %-----------------------------------------------------------------% 
+        
+        
+        
+        %-----------------------------------------------------------------% 
+        %Return to the parent function
+        
+        %Return to the invoking function
+        return;
+        %-----------------------------------------------------------------% 
+    
+    end
+    %---------------------------------------------------------------------% 
+    
+    
+        
     %---------------------------------------------------------------------%    
     %Based on the isotherm model, compute any necessary parameters
 
@@ -61,12 +169,42 @@ function params = getAdsEquilParams(params)
     %Linear isotherm
     elseif whichIsotherm == 1
           
-        %TBD
+        %Unpack additional params
+        henryC   = params.henryC  ;
+        gasCons  = params.gasCons ;
+        tempAmbi = params.tempAmbi;
+        gasConT  = params.gasConT ;
+        
+        %Set the temporary constant
+        aConScaleFac = 1;
+                        
+        %Calculate dimensionless parameters (temporary)
+        dimLessHenry = henryC*gasCons*tempAmbi  ...
+                     * (gasConT/aConScaleFac);
+                                       
+        %Save the result
+        params.dimLessHenry = dimLessHenry; %Temporary
         
     %Extended Langmuir isotherm
     elseif whichIsotherm == 2
         
-        %TBD
+        %Unpack additional params
+        qSatC    = params.qSatC   ;
+        bC       = params.bC      ;
+        gasCons  = parama.gasCons ;
+        tempAmbi = params.tempAmbi;
+        gasConT  = params.gasConT ;
+        
+        %Set the temporary constant
+        aConScaleFac = 1;
+        
+        %Calculate dimensionless parameters (temporary)
+        dimLessBC    = bC*gasCons*tempAmbi*gasConT;
+        dimLessQsatC = qSatC/aConScaleFac         ;
+               
+        %Save the result   
+        params.dimLessQsatC = dimLessQsatC; %Temporary
+        params.dimLessBC    = dimLessBC   ; %Final
         
     %Miltisite Langmuir isotherm
     elseif whichIsotherm == 3
@@ -75,14 +213,53 @@ function params = getAdsEquilParams(params)
         KC       = params.KC      ;
         gasConT  = params.gasConT ;
         tempAmbi = params.tempAmbi;
-        gasCons  = params.gasCons ;        
+        gasCons  = params.gasCons ;      
+        qSatC    = params.qSatC   ;
         
-        %Get dimensionless exponential prefactor
-        dimLessKC = KC*gasCons*tempAmbi*gasConT;
+        %Set the temporary constant
+        aConScaleFac = 1;
+        
+        %Calculate dimensionless parameters (temporary)
+        dimLessKC    = KC*gasCons*tempAmbi*gasConT;
+        dimLessQsatC = qSatC/aConScaleFac         ;
         
         %Save the result
-        params.dimLessKC = dimLessKC;
+        params.dimLessKC    = dimLessKC   ; %Final
+        params.dimLessQsatC = dimLessQsatC; %Temporary
         
+    %Extended Langmuir-Freundlich isotherm
+    elseif whichIsotherm == 4
+        
+        %Unpack additional params
+        kOneC    = params.kOneC   ;
+        kTwoC    = params.kTwoC   ;
+        kThrC    = params.kThrC   ;
+        kFouC    = params.kFouC   ;
+        kFivC    = params.kFivC   ;
+        kSixC    = params.kSixC   ;
+        gasConT  = params.gasConT ;
+        tempAmbi = params.tempAmbi;
+        gasCons  = params.gasCons ;
+        
+        %Set the temporary constant
+        aConScaleFac = 1;
+        
+        %Calculate dimensionless parameters (temporary)
+        dimLessKOneC = kOneC/aConScaleFac              ;
+        dimLessKTwoC = kTwoC*tempAmbi/aConScaleFac     ;
+        dimLessKThrC = kThrC*(gasCons*gasConT*tempAmbi);
+        dimLessKFouC = kFouC/tempAmbi                  ;
+        dimLessKFivC = kFivC                           ;
+        dimLessKSixC = kSixC/tempAmbi                  ;
+                
+        %Save the result
+        params.dimLessKOneC = dimLessKOneC; %Temporary
+        params.dimLessKTwoC = dimLessKTwoC; %Temporary
+        params.dimLessKThrC = dimLessKThrC; %Final
+        params.dimLessKFouC = dimLessKFouC; %Final
+        params.dimLessKFivC = dimLessKFivC; %Final
+        params.dimLessKSixC = dimLessKSixC; %Final
+                        
     end
     %---------------------------------------------------------------------%
     

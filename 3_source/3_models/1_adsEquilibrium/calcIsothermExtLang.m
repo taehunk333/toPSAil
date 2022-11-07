@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2020/12/14/Monday
-%Code last modified on : 2022/10/31/Saturday
+%Code last modified on : 2022/11/6/Sunday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -62,8 +62,7 @@ function newStates = calcIsothermExtLang(params,states,nAds)
     nVols        = params.nVols       ;
     bool         = params.bool        ;
     nRows        = params.nRows       ;    
-    qSatC        = params.qSatC       ;
-    aConScaleFac = params.aConScaleFac;
+    dimLessQsatC = params.dimLessQsatC;
     %---------------------------------------------------------------------%
     
     
@@ -120,12 +119,11 @@ function newStates = calcIsothermExtLang(params,states,nAds)
         dimLessBC = getAdsAffConstant(params,states,nRows,nAds); 
         
         %Replicate the elements of qSatC
-        qSatCRep = repelem(qSatC,nVols)';
+        dimLessQsatC = repelem(dimLessQsatC,nVols)';
 
         %Calaulate the matrix containing the state dependent dimensionless
         %Henry's constant
-        dimLessHenry = (dimLessBC) ...
-                    .* (qSatCRep./aConScaleFac);
+        dimLessHenry = (dimLessBC).*(dimLessQsatC);
         
         %Check to see if we have a single CSTR
         if nAds == 0
@@ -182,12 +180,10 @@ function newStates = calcIsothermExtLang(params,states,nAds)
         teScaleFac   = params.teScaleFac  ;
         gConScaleFac = params.gConScaleFac;
         bC           = params.bC          ; 
-        qSatC        = params.qSatC       ;
-        aConScaleFac = params.aConScaleFac;
+        dimLessQsatC = params.dimLessQsatC;
             
         %Calcualte the dimensionless bC and qSatC
-        dimLessBC    = bC*gasCons*teScaleFac*gConScaleFac;
-        dimLessQsatC = qSatC/aConScaleFac                ;               
+        dimLessBC    = bC*gasCons*teScaleFac*gConScaleFac;            
 
         %Check to see if we have a single CSTR
         if nAds == 0
@@ -212,9 +208,8 @@ function newStates = calcIsothermExtLang(params,states,nAds)
 
         end
 
-        %Evaluate explicit form of linear isotherm (i.e., Extened Langmuir
-        %isotherm) and update the corresponding value to the output 
-        %solution
+        %Evaluate the explicit isotherm (i.e., Extened Langmuir isotherm) 
+        %and update the corresponding value to the output solution
         for i = 1 : nComs
             
             %Calculate the adsoption equilibrium loading

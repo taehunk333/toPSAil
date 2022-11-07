@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/10/22/Saturday
-%Code last modified on : 2022/10/22/Saturday
+%Code last modified on : 2022/11/7/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -257,8 +257,8 @@ function units = calcVolFlows4UnitsFlowCtrlDT1AccRaTa(params,units,nS)
             %Update the term including the sum of the product of the state
             %dependent coefficients and the pseudo volumetric flow rates
             vFlExtrSum = vFlExtrSum ...
-                       + (phiPlusAdsCurr.*vFlExTaIn(:,i)) ...
-                       + (phiZeroExtr.*vFlExTaOut(:,i));
+                       + (phiPlusAdsCurr.*vFlExTaIn) ...
+                       + (phiZeroExtr.*vFlExTaOut);
 
         end
         %-----------------------------------------------------------------%

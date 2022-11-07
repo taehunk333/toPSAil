@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/10/22/Saturday
-%Code last modified on : 2022/10/22/Saturday
+%Code last modified on : 2022/11/7/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -53,7 +53,6 @@ function units = calcVolFlows4UnitsFlowCtrlDT0AccRaTa(params,units,nS)
     
     %Unpack params   
     nCols = params.nCols;  
-    nRows = params.nRows;
     %---------------------------------------------------------------------%       
     
     

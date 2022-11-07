@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2020/10/26/Wednesday
-%Code last modified on : 2022/10/28/Friday
+%Code last modified on : 2022/11/6/Sunday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -62,10 +62,9 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
     nVols        = params.nVols       ;
     bool         = params.bool        ;
     nRows        = params.nRows       ;    
-    qSatC        = params.qSatC       ;
     aC           = params.aC          ;
     dimLessKC    = params.dimLessKC   ;
-    aConScaleFac = params.aConScaleFac;
+    dimLessQsatC = params.dimLessQsatC;
     numZero      = params.numZero     ;
     %---------------------------------------------------------------------%
     
@@ -163,10 +162,7 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
     %Calculate adsorption equilibrium (Implicit)
 
     %Replicate the elements of qSatC
-    qSatC = repmat(qSatC',1,nVols);
-    
-    %Nondimensionalize qSatC
-    qSatC = (qSatC/aConScaleFac);
+    dimLessQsatC = repmat(dimLessQsatC',1,nVols);
     
     %For each species,
     for i = 1 : nComs
@@ -174,7 +170,7 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
         %Update the initial guess vector
         thetaGuess(:,i:nComs:nComs*(nVols-1)+i) ...
             = colAdsCons.(sComNums{i}) ...
-           ./ qSatC(i:nComs:nComs*(nVols-1)+i);
+           ./ dimLessQsatC(i:nComs:nComs*(nVols-1)+i);
 
     end 
         
@@ -223,7 +219,7 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
         thetaReal = real(theta);
 
         %Update the site fractions theta by the saturation capacities
-        adsConsEq = real(theta).*qSatC;          
+        adsConsEq = real(theta).*dimLessQsatC;          
 
         %Calculate the minimum element in theta
         thetaRealMin = min(thetaReal);
