@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/3/Sunday
-%Code last modified on : 2022/10/27/Thursday
+%Code last modified on : 2022/11/6/Sunday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -61,11 +61,6 @@ function params = getTotalAdsConc(params)
     %non-dimensional concentrations (for now)
     params.gConScaleFac = gasConT; 
     
-    %Define a term to scale dimensional adsorbed phase concentration to
-    %non-dimensional concentrations (for now). Use the value of 1 to just
-    %get the dimensional solution out.
-    params.aConScaleFac = 1;
-    
     %Define a term to scale dimensional temperatures to non-dimensional
     %temperatures (for now)
     params.teScaleFac = tempAmbi;
@@ -106,7 +101,6 @@ function params = getTotalAdsConc(params)
     %Remove gConScaleFac, aConScaleFac, and teScaleFac for now. We want to 
     %define the scaling factors later all together
     params = rmfield(params,'gConScaleFac');  
-    params = rmfield(params,'aConScaleFac'); 
     params = rmfield(params,'teScaleFac')  ; 
               
     %compute the total adsorbed phase concentration in equilibrium with the

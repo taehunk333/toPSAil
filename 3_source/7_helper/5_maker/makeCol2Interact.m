@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/2/18/Friday
-%Code last modified on : 2022/8/27/Saturday
+%Code last modified on : 2022/11/7/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -107,7 +107,7 @@ function units = makeCol2Interact(params,units,nS)
 
                 %Get the concentration of species at the product end of
                 %the adsorber
-                units.col.(sColNums{i}).prEnd.gasCons.(sComNums{j}) ...
+                col.(sColNums{i}).prEnd.gasCons.(sComNums{j}) ...
                     = (gasConSpePrEnd/gasConTotPrEnd) ...
                     * gasConTotCstr;
                 

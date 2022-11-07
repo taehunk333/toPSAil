@@ -267,10 +267,10 @@ function [params,fullParams] = getSimParams(exampleFolder)
     params = getTotalGasConc(params); 
     
     %Define adsorption isotherm (equilibrium) parameters
-    params = getAdsEquilParams(params); %Not used, currently.
+    params = getAdsEquilParams(params);
     
     %Define adsorption rate parameters
-    params = getAdsRateParams(params); %currently an empty function
+    params = getAdsRateParams(params); 
     %---------------------------------------------------------------------%
     
     
@@ -280,6 +280,10 @@ function [params,fullParams] = getSimParams(exampleFolder)
     
     %Calculate the total adsorbed phase concentrations
     params = getTotalAdsConc(params);           
+    
+    %Furtherm obtain dimensionless isotherm parameters that depend on the
+    %adsorbed phase normalization constant, based on the feed condition
+    params = getAdsEquilParams(params,1);
     
     %Calculate the overall heat capacity ratio for the feed mixture
     params = getFeHtCapRatio(params);

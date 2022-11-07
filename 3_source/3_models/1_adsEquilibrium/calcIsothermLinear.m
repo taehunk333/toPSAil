@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2020/12/12/Saturday
-%Code last modified on : 2022/10/29/Saturday
+%Code last modified on : 2022/11/6/Sunday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -67,11 +67,7 @@ function newStates = calcIsothermLinear(params,states,nAds)
     nVols        = params.nVols       ;
     bool         = params.bool        ;
     nRows        = params.nRows       ; 
-    gConScaleFac = params.gConScaleFac;
-    aConScaleFac = params.aConScaleFac; 
-    teScaleFac   = params.teScaleFac  ;
-    henryC       = params.henryC      ;
-    gasCons      = params.gasCons     ;
+    dimLessHenry = params.dimLessHenry;
     %---------------------------------------------------------------------%
     
 
@@ -116,10 +112,6 @@ function newStates = calcIsothermLinear(params,states,nAds)
     
     %---------------------------------------------------------------------%
     %Calculate adsorption equilibrium (Explicit)
-
-    %Calculate the dimensionless Henry's constant
-    dimLessHenry = henryC*gasCons*teScaleFac  ...
-                 * (gConScaleFac/aConScaleFac);
     
     %Check if the simulation is an isothermal simulation
     isNonIsothermal = bool(5);
