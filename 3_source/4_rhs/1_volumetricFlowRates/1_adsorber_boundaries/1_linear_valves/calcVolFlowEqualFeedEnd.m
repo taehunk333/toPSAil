@@ -68,8 +68,8 @@ function volFlowRat = calcVolFlowEqualFeedEnd(params,col,~,~,~,nS,nCo)
     %valve (i.e., valve 4). We choose the minimum of the two
     %valve constants associated with the two adsorbers undergoing the
     %pressure equalization.
-    val4Con1 = valFeedColNorm(nCo,nS)    ;
-    val4Con2 = valFeedColNorm(nC2,nS)    ;
+    val4Con1 = valFeedColNorm(nCo,nS);
+    val4Con2 = valFeedColNorm(nC2,nS);
     val4Con  = min(val4Con1,val4Con2);
     %---------------------------------------------------------------------%                
     
@@ -112,7 +112,8 @@ function volFlowRat = calcVolFlowEqualFeedEnd(params,col,~,~,~,nS,nCo)
                          cstrTempEqualAds); 
                      
     %Calculate the volumetric flow rate at the outlet stream of the valve
-    volFlowRat = molFlowRat ./ gasConTotCurrAds;    
+    volFlowRat = molFlowRat ...
+              ./ gasConTotCurrAds;    
     %---------------------------------------------------------------------%
   
 end

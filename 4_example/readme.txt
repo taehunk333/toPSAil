@@ -333,7 +333,7 @@
 %				5. High pressure feed
 %				6. Depressurization 
 %				   (equalization, product end)
-% 	[X] case_study_4.2: 
+% 	[O] case_study_4.2: 
 %	  	- 2-adsorber
 %		- Nonisothermal
 % 		- Flow-driven
