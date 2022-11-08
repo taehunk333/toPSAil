@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/1/24/Monday
-%Code last modified on : 2022/11/6/Sunday
+%Code last modified on : 2022/11/8/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -245,17 +245,19 @@ function params = getAdsEquilParams(params,varargin)
         aConScaleFac = 1;
         
         %Calculate dimensionless parameters (temporary)
-        dimLessKOneC = kOneC/aConScaleFac              ;
-        dimLessKTwoC = kTwoC*tempAmbi/aConScaleFac     ;
-        dimLessKThrC = kThrC*(gasCons*gasConT*tempAmbi);
-        dimLessKFouC = kFouC/tempAmbi                  ;
-        dimLessKFivC = kFivC                           ;
-        dimLessKSixC = kSixC/tempAmbi                  ;
+        dimLessKOneC = kOneC/aConScaleFac         ;
+        dimLessKTwoC = kTwoC*tempAmbi/aConScaleFac;
+        dimLessKThrC = kThrC                      ; %(dimensional)
+        scaleFacKThr = gasCons*tempAmbi*gasConT   ;
+        dimLessKFouC = kFouC/tempAmbi             ;
+        dimLessKFivC = kFivC                      ;
+        dimLessKSixC = kSixC/tempAmbi             ;
                 
         %Save the result
         params.dimLessKOneC = dimLessKOneC; %Temporary
         params.dimLessKTwoC = dimLessKTwoC; %Temporary
-        params.dimLessKThrC = dimLessKThrC; %Final
+        params.dimLessKThrC = dimLessKThrC; %Final (dim & state dependent)
+        params.scaleFacKThr = scaleFacKThr; %Final
         params.dimLessKFouC = dimLessKFouC; %Final
         params.dimLessKFivC = dimLessKFivC; %Final
         params.dimLessKSixC = dimLessKSixC; %Final
