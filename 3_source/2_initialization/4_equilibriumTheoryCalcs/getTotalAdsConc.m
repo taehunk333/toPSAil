@@ -77,7 +77,7 @@ function params = getTotalAdsConc(params)
     params.nRows = 1;
 
     %Compute the adsorbed phase composition for all species as per the
-    %chose isotherm function; Note that adsorbed phase concentrations will
+    %chosen isotherm function; Note that adsorbed phase concentrations will
     %be dimensional values because aConScaleFac = 1.
     newStates = funcIso(params,cstrStates,0);
     

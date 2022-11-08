@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/11/6/Sunday
-%Code last modified on : 2022/11/6/Sunday
+%Code last modified on : 2022/11/8/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -64,6 +64,7 @@ function newStates = calcIsothermExtLangFreu(params,states,nAds)
     dimLessKOneC = params.dimLessKOneC;
     dimLessKTwoC = params.dimLessKTwoC; 
     dimLessKThrC = params.dimLessKThrC; 
+    scaleFacKThr = params.scaleFacKThr;
     dimLessKFouC = params.dimLessKFouC; 
     dimLessKFivC = params.dimLessKFivC; 
     dimLessKSixC = params.dimLessKSixC; 
@@ -159,6 +160,18 @@ function newStates = calcIsothermExtLangFreu(params,states,nAds)
             + dimLessKTwoC(i)*tempCstrs;    
         %-----------------------------------------------------------------%
         
+                                        
+        
+        %-----------------------------------------------------------------%
+        %Obtain the temperature dependent dimensionless adsorption site
+        %number constant for the ith species
+        
+        %Compute the dimensionless adsorption site number constant for the 
+        %ith species
+        dimLessAdsSiteNo(:,n0:nf) ...
+            = (dimLessKFivC(i)+dimLessKSixC(i)./tempCstrs).^(-1);
+        %-----------------------------------------------------------------%
+        
         
         
         %-----------------------------------------------------------------%
@@ -169,20 +182,8 @@ function newStates = calcIsothermExtLangFreu(params,states,nAds)
         %species
         dimLessAdsAffCon(:,n0:nf) ...
             = dimLessKThrC(i) ...
-            * exp(dimLessKFouC(i)./tempCstrs);
-        %-----------------------------------------------------------------%
-        
-        
-        
-        %-----------------------------------------------------------------%
-        %Obtain the temperature dependent dimensionless adsorption site
-        %number constant for the ith species
-        
-        %Compute the dimensionless adsorption site number constant for the 
-        %ith species
-        dimLessAdsSiteNo(:,n0:nf) ...
-            = dimLessKFivC(i) ...
-            + dimLessKSixC(i)./tempCstrs;
+           .* scaleFacKThr.^(dimLessAdsSiteNo(:,n0:nf)) ...
+           .* exp(dimLessKFouC(i)./tempCstrs);
         %-----------------------------------------------------------------%
     
     end
@@ -244,7 +245,8 @@ function newStates = calcIsothermExtLangFreu(params,states,nAds)
 
         %Update the denominator vector
         denominator = denominator ...
-                    + (dimLessAdsAffConSpec.*colGasConsSpec.*tempCstrs) ...
+                    + dimLessAdsAffConSpec ...
+                   .* (colGasConsSpec.*tempCstrs) ...
                    .^ (dimLessAdsSiteNoSpec);
         %-----------------------------------------------------------------%
 
@@ -292,7 +294,8 @@ function newStates = calcIsothermExtLangFreu(params,states,nAds)
         
         %Calculate the adsoption equilibrium loading for the ith species
         loading = dimLessSatdConcSpec ...
-               .* (dimLessAdsAffConSpec.*colGasConsSpec.*tempCstrs) ...
+               .* dimLessAdsAffConSpec ...
+               .* (colGasConsSpec.*tempCstrs) ...
                .^ (dimLessAdsSiteNoSpec);        
         %-----------------------------------------------------------------%
         
