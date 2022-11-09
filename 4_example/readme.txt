@@ -68,7 +68,7 @@
 %		- Linear isotherm
 %		- LDF kinetics,
 %	        - 5 step PSA cycle (180 degrees out of phase)
-%%			- Adsorber 1
+%			- Adsorber 1
 %				1. Re-pressurization with raffinate
 %				   product
 %				2. Re-pressurization with feed
@@ -271,11 +271,11 @@
 %	- To demonstrate a complex PSA cycle, including a pressure 
 %	  equalization step
 % Reference: 
-%	- Yang, J., Lee, C.H., Chang, J.W., 1997. Separation of 
+%	- Yang, J., Lee, C.-H., Chang, J.-W., 1997. Separation of 
 %	  Hydrogen Mixture by a Two-Bed Pressure Swing Adsorption 
 %	  Process Using Zolite 5A. Ind. Eng. Chem. Res. 36, 2789–2798.
 % Case Studies:
-% 	[X] case_study_4.0: 
+% 	[O] case_study_4.0: 
 %	  	- 2-adsorber
 %		- Isothermal
 % 		- Flow-driven
@@ -391,6 +391,7 @@
 %				5. High pressure feed
 %				6. Depressurization 
 %				   (equalization, product end)
+% Plots
 % 	- TBD
 % Data:
 % 	- TBD
