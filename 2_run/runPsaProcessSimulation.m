@@ -214,7 +214,7 @@ function runPsaProcessSimulation(folderName)
     
     %Save simulation outputs into excel files
     savePsaSimulationResults(fullParams,sol,sol.path.data);
-    
+        
     %Insert a conclusion for the command window output
     fprintf("\n*******************************************\n");
     fprintf('Check the example folder! \n')                   ; 

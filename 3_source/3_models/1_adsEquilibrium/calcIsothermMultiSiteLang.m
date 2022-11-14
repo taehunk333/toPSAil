@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2020/10/26/Wednesday
-%Code last modified on : 2022/11/6/Sunday
+%Code last modified on : 2022/11/8/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -217,9 +217,12 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
 
         %Get the real component of the solution
         thetaReal = real(theta);
+        
+        %Make sure that we have no number smaller than numerical zero
+        thetaReal(abs(thetaReal)<eps) = 0;
 
         %Update the site fractions theta by the saturation capacities
-        adsConsEq = real(theta).*dimLessQsatC;          
+        adsConsEq = thetaReal.*dimLessQsatC;          
 
         %Calculate the minimum element in theta
         thetaRealMin = min(thetaReal);
