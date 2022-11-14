@@ -45,8 +45,9 @@ function sol = getPerformanceMetrics(params,sol,nS,nCy)
     
     %Define function ID
     %funcId = 'getPerformanceMetrics.m';
-    nLKs  = params.nLKs ;
-    nComs = params.nComs;
+    nLKs    = params.nLKs   ;
+    nComs   = params.nComs  ;
+    numZero = params.numZero;
     %---------------------------------------------------------------------%
     
     
@@ -67,10 +68,10 @@ function sol = getPerformanceMetrics(params,sol,nS,nCy)
     extrWaste = abs(extrWaste);
     
     %If the amount is tiny, then we should consider them to be zeros
-    raffProd(raffProd<eps)   = 0;
-    raffWaste(raffWaste<eps) = 0;
-    extrProd(extrProd<eps)   = 0;
-    extrWaste(extrWaste<eps) = 0;
+    raffProd(raffProd<numZero)   = 0;
+    raffWaste(raffWaste<numZero) = 0;
+    extrProd(extrProd<numZero)   = 0;
+    extrWaste(extrWaste<numZero) = 0;
     
     %Get a row vector of moles of species in the total amount of feed
     %processed in a given PSA cycle

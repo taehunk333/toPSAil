@@ -59,7 +59,7 @@
 %				4. Re-pressurization with raffinate 
 %				   product
 %				5. Re-pressurization with feed
-% 	[X] case_study_1.2: 
+% 	[O] case_study_1.2: 
 %	  	- 2-adsorber
 %		- Nonisothermal
 % 		- Flow-driven
@@ -121,6 +121,8 @@
 %	- Oxygen recovery %, and  Oxygen purity for the different 
 %	  simulations of Kayser's system over different n_c values
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Single Adsorber Simulation I
@@ -193,6 +195,8 @@
 % 	- TBD
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Single Adsorber Simulation I
 % Purpose:
@@ -203,7 +207,7 @@
 %	  of Carbon Dioxide from Natural Gas by Vacuum Pressure 
 %	  Swing Adsorption. Energy & Fuels 20, 2648–2659.
 % Case Studies:
-% 	[X] case_study_3.0: 
+% 	[O] case_study_3.0: 
 %		- 1-adsorber
 %		- Isothermal
 % 		- Flow-driven
@@ -231,7 +235,7 @@
 %			3. high pressure feed
 %			4. depressurization to a subambient pressure
 %			5. low pressure purge
-% 	[X] case_study_3.2: 
+% 	[O] case_study_3.2: 
 %		- 1-adsorber
 %		- Nonisothermal
 % 		- Flow-driven
@@ -264,6 +268,8 @@
 % Data:
 % 	- TBD
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Multiple Adsorber Simulation II
