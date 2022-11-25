@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/4/17/Sunday
-%Code last modified on : 2022/10/22/Saturday
+%Code last modified on : 2022/11/24/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -70,25 +70,24 @@ function units = calcVolFlowsDP1KC(params,units,nS)
         
     %For each column
     for i = 1 : nCols
-        
+               
         %-----------------------------------------------------------------%
         %Unpack states
         
-        %Unpack the total concentrstion variables
+        %Unpack the dimensionless total concentrstion variables
         gasConsTot = col.(sColNums{i}).gasConsTot;
 
-        %Unpack the interior temperature variables 
+        %Unpack the dimensionless interior temperature variables 
         cstrTemps = col.(sColNums{i}).temps.cstr;
+        %-----------------------------------------------------------------%
         
-        %Define the total concentration variables from the 1st CSTR to
-        %(nVols-1)th CSTR
-        cNm0 = gasConsTot(:,1:nVols-1);
-        cNp1 = gasConsTot(:,2:nVols)  ;
         
-        %Define the interior temperature variables from the 1st CSTR to
-        %(nVols-1)th CSTR       
-        Tnm0 = cstrTemps(:,1:nVols-1);        
-        Tnp1 = cstrTemps(:,2:nVols)  ;        
+        
+        %-----------------------------------------------------------------%
+        %Calculate state dependent quantities
+                
+        %Calculate the dimensionless pressure
+        presCol = gasConsTot.*cstrTemps;            
         %-----------------------------------------------------------------%
         
         
@@ -98,8 +97,7 @@ function units = calcVolFlowsDP1KC(params,units,nS)
         
         %Compute the product of the total concentrations with the interior
         %temperature
-        deltaP = cNm0.*Tnm0 ...
-               - cNp1.*Tnp1;        
+        deltaP = presCol(:,1:nVols-1)-presCol(:,2:nVols);      
 
         %Evaluate the linear difference in the pressure and compute the 
         %volumetric flow rates         
@@ -118,7 +116,7 @@ function units = calcVolFlowsDP1KC(params,units,nS)
         %Obtain the boundary condition for the product-end of the 
         %ith column under current step in a given PSA cycle
         vFlBoPr = ones(nRows,1) ...                   
-               .* vFlBo{1,i,nS}(params,col,feTa,raTa,exTa,nS,i); 
+               .* vFlBo{1,i,nS}(params,col,feTa,raTa,exTa,nS,i);         
 
         %Obtain the boundary condition for the feed-end of the ith
         %column under current step in a given PSA cycle
@@ -139,11 +137,10 @@ function units = calcVolFlowsDP1KC(params,units,nS)
         
         %-----------------------------------------------------------------% 
         %Compute the pseudo volumetric flow rates        
-        
-        %Call the helper function to calculate the pseudo volumetric flow 
-        %rates
-        
-        [vFlPlusCol,vFlMinusCol] = calcPseudoVolFlows(vFlCol); 
+          
+        %Call the helper function to calculate the pseudo 
+        %volumetric flow rates        
+        [vFlPlusCol,vFlMinusCol] = calcPseudoVolFlows(vFlCol);                                                    
         %-----------------------------------------------------------------% 
         
         
