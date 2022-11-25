@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/3/12/Saturday
-%Code last modified on : 2022/10/22/Saturday
+%Code last modified on : 2022/11/24/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -85,20 +85,16 @@ function units = calcVolFlowsDP1ER(params,units,nS)
         %Unpack states
         
         %Unpack the total concentra tion variables
-        gasConsTot = col.(sColNums{i}).gasConsTot;
-
-        %Unpack the interior temperature variables 
-        cstrTemps = col.(sColNums{i}).temps.cstr;
+        gasConsTot = col.(sColNums{i}).gasConsTot;                 
+        %-----------------------------------------------------------------%
         
-        %Define the total concentration variables from the 1st CSTR to
-        %(nVols-1)th CSTR
-        cNm0 = gasConsTot(:,1:nVols-1);
-        cNp1 = gasConsTot(:,2:nVols)  ;
         
-        %Define the interior temperature variables from the 1st CSTR to
-        %(nVols-1)th CSTR       
-        Tnm0 = cstrTemps(:,1:nVols-1);        
-        Tnp1 = cstrTemps(:,2:nVols)  ;                   
+        
+        %-----------------------------------------------------------------%
+        %Calculate state dependent quantities
+                
+        %Calculate the dimensionless pressure
+        presCol = gasConsTot.*cstrTemps;            
         %-----------------------------------------------------------------%
         
         
@@ -115,7 +111,7 @@ function units = calcVolFlowsDP1ER(params,units,nS)
                         
             %Compute the product of the total concentrations with the 
             %interior temperature
-            coefConNorm = -(cNm0(t,:).*Tnm0(t,:)-cNp1(t,:).*Tnp1(t,:));        
+            coefConNorm = -(presCol(t,1:nVols-1)-presCol(t,2:nVols));        
     
             %Evaluate the quadratic dependence of the pressure and compute
             %the volumetric flow rates         

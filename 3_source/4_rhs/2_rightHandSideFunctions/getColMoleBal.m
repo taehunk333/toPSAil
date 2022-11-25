@@ -76,8 +76,7 @@ function units = getColMoleBal(params,units)
             volFlMinus = col.(sColNums{i}).volFlMinus;
             
             %Unpack the total concentrstion variables
-            gasConsSpec = col.(sColNums{i}).gasCons. ...
-                          (sComNums{j});
+            gasConsSpec = col.(sColNums{i}).gasCons.(sComNums{j});
             
             %Get the pseudo volumetric flow rates
             vPlNm1 = volFlPlus(:,1:nVols)   ;
@@ -90,14 +89,9 @@ function units = getColMoleBal(params,units)
             gasConsSpecFe = col.(sColNums{i}).feEnd.gasCons.(sComNums{j});
             
             %Get the gas phase species concentrations
-            gSpecNm1 ...
-                = [gasConsSpecFe, ...
-                   gasConsSpec(:,1:nVols-1)];
-            gSpecNm0 ...
-                = gasConsSpec(:,1:nVols);
-            gSpecNp1 ...
-                = [gasConsSpec(:,2:nVols), ...
-                   gasConsSpecPr];                        
+            gSpecNm1 = [gasConsSpecFe,gasConsSpec(:,1:nVols-1)];
+            gSpecNm0 = gasConsSpec(:,1:nVols)                  ;
+            gSpecNp1 = [gasConsSpec(:,2:nVols),gasConsSpecPr]  ;                        
             %-------------------------------------------------------------%    
             
             
@@ -117,7 +111,7 @@ function units = getColMoleBal(params,units)
             %Get the adsorption rate term
             adsorption = partCoefHp ...
                        * col.(sColNums{i}).adsRat.(sComNums{j});
-
+        
             %Do the mole balance on the ith column
             col.(sColNums{i}).moleBal.(sComNums{j}) ...
                 = (1./cstrHt) ...

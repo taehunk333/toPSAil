@@ -253,7 +253,7 @@ function units = calcVolFlows4UnitsPresDriv(params,units,nS)
             * median([0,deltaPres(t),1]) ...
             * max(0,gasConTotExTa(t).*cstrTempExTa(t) ...
                  -pRatEx/gasConsNormEq);
-                     
+
     end         
                             
     %The exit valve for the raffinate product tank is opened only when the

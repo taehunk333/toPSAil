@@ -157,29 +157,33 @@ function status = testDaeConst(t,y,flag,varargin)
         %Perform the main tests on your condition at the current time
         %point, after having a successful integration step
                    
-        %Plot the closure of the right hand side function
-        hold off
-        plot(col.n1.cstrEnBal,'r','LineWidth',1.5)
         hold on
-        plot(col.n1.gasConsTot,'--r','LineWidth',1.5)        
-        hold on
-        plot((col.n1.moleBal.C1+col.n1.moleBal.C2+col.n1.moleBal.C3),'g','LineWidth',1.5)
-        hold on 
-        plot(col.n1.temps.cstr,'--g','LineWidth',1.5)
-        hold on
-        plot(col.n1.temps.cstr.*(col.n1.moleBal.C1+col.n1.moleBal.C2+col.n1.moleBal.C3) ...
-            +col.n1.gasConsTot.*col.n1.cstrEnBal,'--b','LineWidth',2)
-        hold on
+        plot(col.n1.moleBal.C1+col.n1.moleBal.C2)
         
-        legend('enerBal','gasConsTot','moleBal','tempCSTRs','closure');
         
-        %Print out the convergence criteria: (max-min)
-        max(col.n1.temps.cstr ...
-          .*(col.n1.moleBal.C1+col.n1.moleBal.C2+col.n1.moleBal.C3) ...
-           +col.n1.gasConsTot.*col.n1.cstrEnBal) ...
-        - min(col.n1.temps.cstr ...
-          .*(col.n1.moleBal.C1+col.n1.moleBal.C2+col.n1.moleBal.C3) ...
-           +col.n1.gasConsTot.*col.n1.cstrEnBal)
+%         %Plot the closure of the right hand side function
+%         hold off
+%         plot(col.n1.cstrEnBal,'r','LineWidth',1.5)
+%         hold on
+%         plot(col.n1.gasConsTot,'--r','LineWidth',1.5)        
+%         hold on
+%         plot((col.n1.moleBal.C1+col.n1.moleBal.C2+col.n1.moleBal.C3),'g','LineWidth',1.5)
+%         hold on 
+%         plot(col.n1.temps.cstr,'--g','LineWidth',1.5)
+%         hold on
+%         plot(col.n1.temps.cstr.*(col.n1.moleBal.C1+col.n1.moleBal.C2+col.n1.moleBal.C3) ...
+%             +col.n1.gasConsTot.*col.n1.cstrEnBal,'--b','LineWidth',2)
+%         hold on
+%         
+%         legend('enerBal','gasConsTot','moleBal','tempCSTRs','closure');
+%         
+%         %Print out the convergence criteria: (max-min)
+%         max(col.n1.temps.cstr ...
+%           .*(col.n1.moleBal.C1+col.n1.moleBal.C2+col.n1.moleBal.C3) ...
+%            +col.n1.gasConsTot.*col.n1.cstrEnBal) ...
+%         - min(col.n1.temps.cstr ...
+%           .*(col.n1.moleBal.C1+col.n1.moleBal.C2+col.n1.moleBal.C3) ...
+%            +col.n1.gasConsTot.*col.n1.cstrEnBal)
         %-----------------------------------------------------------------%
      
     %When there is a flag that is non-empty
