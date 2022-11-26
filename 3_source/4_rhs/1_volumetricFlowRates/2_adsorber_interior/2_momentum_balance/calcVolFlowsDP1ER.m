@@ -85,7 +85,10 @@ function units = calcVolFlowsDP1ER(params,units,nS)
         %Unpack states
         
         %Unpack the total concentra tion variables
-        gasConsTot = col.(sColNums{i}).gasConsTot;                 
+        gasConsTot = col.(sColNums{i}).gasConsTot;     
+        
+        %Unpack the dimensionless interior temperature variables 
+        cstrTemps = col.(sColNums{i}).temps.cstr;
         %-----------------------------------------------------------------%
         
         
