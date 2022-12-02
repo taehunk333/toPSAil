@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/15/Friday
-%Code last modified on : 2022/8/23/Tuesday
+%Code last modified on : 2022/11/28/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -53,6 +53,10 @@ function params = getStreamParams(params)
     %the top-end of the column and the other one for the bottom-end of the
     %column
     params.maxNoBC = 2;   
+    
+    %Define the number of product streams: there are "raffinate" and
+    %"extract" product streams: i.e., two product streams
+    params.numPrSt = 2;
     
     %Check if we have a consistent number of columns specified when
     %considering the uni-bed vs. poly-bed process

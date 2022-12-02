@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/23/Tuesday
-%Code last modified on : 2022/10/19/Wednesday
+%Code last modified on : 2022/11/28/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -41,13 +41,11 @@ function plotProductPurity(params,sol)
     %funcId = 'plotProductPurity';
     
     %Unpack Params        
-    sCom          = params.sCom             ;
-    nComs         = params.nComs            ;
+    numPrSt       = params.numPrSt          ;
     nSteps        = params.nSteps           ;
     laststep      = sol.lastStep            ;    
     productPurity = sol.perMet.productPurity;
     colorBnW      = params.colorBnW         ;
-    nLKs          = params.nLKs             ;
     %---------------------------------------------------------------------%
 
     
@@ -79,17 +77,17 @@ function plotProductPurity(params,sol)
     %---------------------------------------------------------------------%  
     %Plot the purity values over the cycles for all species
     
-    %For each component, 
-    for i = 1 : nComs
+    %For each product stream, 
+    for i = 1 : numPrSt
                     
-        %If light key, then
-        if i <= nLKs
+        %If raffainte stream, then
+        if i == 1
             
             %Get the vector for the color
             rgb = grabColor(2,colorBnW);
         
         else
-        %If heavy key, then
+        %If extract stream, then
              
             %Get the vector for the color
             rgb = grabColor(1,colorBnW);
@@ -134,7 +132,7 @@ function plotProductPurity(params,sol)
     set(gca,'FontSize',14)                 ;    
     
     %Add entry to the legend
-    legend(sCom,'Location','NorthWest');
+    legend({'Raffinate','Extract'},'Location','NorthWest');
     
     %Resize the figure
     set(gcf,'Position',[100,25,600,250]);

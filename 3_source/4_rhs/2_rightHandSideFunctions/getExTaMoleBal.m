@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/1/28/Friday
-%Code last modified on : 2022/10/9/Sunday
+%Code last modified on : 2022/12/1/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -51,6 +51,7 @@ function units = getExTaMoleBal(params,units,nS)
     sColNums         = params.sColNums        ;
     sComNums         = params.sComNums        ;
     valAdsFeEnd2ExWa = params.valAdsFeEnd2ExWa;
+    valFeEndEq       = params.valFeEndEq      ;
     
     %Unpack units
     col  = units.col ;
@@ -100,6 +101,7 @@ function units = getExTaMoleBal(params,units,nS)
             %kth column and 0. We neglect any streams diverted to the waste
             %stream.
             convInFromAdsK = min(0,valAdsFeEnd2ExWa(k,nS) ...
+                          .* valFeEndEq(k,nS) ...
                           .* col.(sColNums{k}).volFlRat(:,1) ...
                           .* col.(sColNums{k}).gasCons. ...
                              (sComNums{j})(:,1));

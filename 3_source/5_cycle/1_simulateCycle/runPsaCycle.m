@@ -367,7 +367,8 @@ function sol = runPsaCycle(params)
 
                 
                 %---------------------------------------------------------%
-                %Save the performance metrics at the end of a given cycle
+                %Save the performance metrics at the end of a given PSA 
+                %cycle
                 
                 %If we just finished simulating the last step in a given 
                 %PSA cycle

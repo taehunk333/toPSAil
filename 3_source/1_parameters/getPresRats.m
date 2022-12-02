@@ -40,8 +40,8 @@ function params = getPresRats(params)
     
     %Unpack params
     presFeTa    = params.presFeTa   ;
-    presRaTa    = params.presRaTa   ;
-    presExTa    = params.presExTa   ;
+    presRaTaSet = params.presRaTaSet;
+    presExTaSet = params.presExTaSet;
     presAmbi    = params.presAmbi   ;
     presColLow  = params.presColLow ;    
     presColHigh = params.presColHigh;    
@@ -90,11 +90,11 @@ function params = getPresRats(params)
     
     %Calculate the pressure ratio for the raffinate product tank, i.e., 
     %(tank pressure)/(high-pressure)        
-    params.pRatRa = (presRaTa/presColHigh); 
+    params.pRatRa = (presRaTaSet/presColHigh); 
     
     %Calculate the pressure ratio for the extract product tank, i.e., 
     %(tank pressure)/(high-pressure)        
-    params.pRatEx = (presExTa/presColHigh); 
+    params.pRatEx = (presExTaSet/presColHigh); 
     %---------------------------------------------------------------------%
     
     
