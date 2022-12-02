@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/4/10/Monday
-%Code last modified on : 2022/11/5/Saturday
+%Code last modified on : 2022/12/1/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -30,11 +30,12 @@
 %Inputs     : params       - a struct containing simulation parameters.
 %             units        - a nested structure containing all the units in
 %                            the process flow diagram.
+%             nS           - jth step in a given PSA cycle
 %Outputs    : units        - a nested structure containing all the units in
 %                            the process flow diagram.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function units = getFeTaMoleBal(params,units)
+function units = getFeTaMoleBal(params,units,nS)
     
     %---------------------------------------------------------------------%
     %Define known quantities
@@ -51,6 +52,7 @@ function units = getFeTaMoleBal(params,units)
     sComNums      = params.sComNums     ;    
     gasConsNormEq = params.gasConsNormEq;
     tempFeedNorm  = params.tempFeedNorm ;
+    valFeEndEq    = params.valFeEndEq   ;
     
     %Unpack units
     feTa = units.feTa;
@@ -91,6 +93,7 @@ function units = getFeTaMoleBal(params,units)
             %Molar flow coming out from the feed tank, heading to the kth
             %adsorber.
             convOutToAds = convOutToAds ...
+                        .* valFeEndEq(k,nS) ...
                          + feTa.n1.volFlRat(:,k) ...
                         .* feTa.n1.gasCons.(sComNums{j});                                    
             %-------------------------------------------------------------%    
