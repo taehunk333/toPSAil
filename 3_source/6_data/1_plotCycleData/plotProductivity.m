@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/23/Tuesday
-%Code last modified on : 2022/10/19/Wednesday
+%Code last modified on : 2022/11/28/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -44,7 +44,7 @@ function plotProductivity(params,sol)
     nSteps       = params.nSteps          ;
     laststep     = sol.lastStep           ;    
     productivity = sol.perMet.productivity;
-    maxNoBC      = params.maxNoBC         ;
+    numPrSt      = params.numPrSt         ;
     massAds      = params.massAds         ;
     nCols        = params.nCols           ;
     colorBnW     = params.colorBnW        ;
@@ -85,8 +85,8 @@ function plotProductivity(params,sol)
     %---------------------------------------------------------------------%  
     %Plot the productivity values over the cycles for all species
     
-    %For each boundary, 
-    for i = 1 : maxNoBC            
+    %For each product stream, 
+    for i = 1 : numPrSt            
         
         %If light key, then
         if i <= nLKs

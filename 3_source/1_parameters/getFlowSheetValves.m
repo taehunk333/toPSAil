@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/7/Thursday
-%Code last modified on : 2022/8/13/Saturday
+%Code last modified on : 2022/12/1/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -173,6 +173,20 @@ function params = getFlowSheetValves(params)
                      - strcmp(sStepCol,'LP-ATM-RAF') ...
                      - strcmp(sStepCol,'HR-ATM-EXT');                         
     %---------------------------------------------------------------------%
+
+    
+        
+    %---------------------------------------------------------------------%
+    %Check for the equalization interactions
+    
+    %Check for the equalizations in the product-end. We set 1 for no
+    %equalizations, and 0 for equalizations.
+    valPrEndEq = ~strcmp(sStepCol,'EQ-XXX-APR');
+    
+    %Check for the equalizations in the feed-end. We set 1 for no
+    %equalizations, and 0 for equalizations.
+    valFeEndEq = ~strcmp(sStepCol,'EQ-AFE-XXX');
+    %---------------------------------------------------------------------%
     
     
     
@@ -191,6 +205,8 @@ function params = getFlowSheetValves(params)
     params.valAdsPrEnd2RaWa = valAdsPrEnd2RaWa; 
     params.valAdsFeEnd2ExWa = valAdsFeEnd2ExWa; 
     params.valAdsFeEnd2ExTa = valAdsFeEnd2ExTa;
+    params.valPrEndEq       = valPrEndEq      ;
+    params.valFeEndEq       = valFeEndEq      ;
     %---------------------------------------------------------------------%
     
 end

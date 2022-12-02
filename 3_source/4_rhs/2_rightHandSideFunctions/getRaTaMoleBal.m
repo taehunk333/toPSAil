@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/28/Thursday
-%Code last modified on : 2022/10/9/Sunday
+%Code last modified on : 2022/12/1/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -52,6 +52,7 @@ function units = getRaTaMoleBal(params,units,nS)
     sColNums         = params.sColNums        ;
     sComNums         = params.sComNums        ;
     valAdsPrEnd2RaWa = params.valAdsPrEnd2RaWa;
+    valPrEndEq       = params.valPrEndEq      ;
     
     %Unapck units
     col  = units.col ;
@@ -101,6 +102,7 @@ function units = getRaTaMoleBal(params,units,nS)
             %kth column and 0. We neglect any streams diverted to the waste
             %stream.
             convInFromAdsK = max(0,valAdsPrEnd2RaWa(k,nS) ...
+                          .* valPrEndEq(k,nS) ...
                           .* col.(sColNums{k}).volFlRat(:,nVols+1) ...
                           .* col.(sColNums{k}).gasCons. ...
                              (sComNums{j})(:,end));

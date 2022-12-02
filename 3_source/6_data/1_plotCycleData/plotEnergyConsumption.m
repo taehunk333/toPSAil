@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/23/Tuesday
-%Code last modified on : 2022/10/19/Wednesday
+%Code last modified on : 2022/11/28/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -44,7 +44,7 @@ function plotEnergyConsumption(params,sol)
     nSteps    = params.nSteps              ;
     laststep  = sol.lastStep               ;    
     energyEff = sol.perMet.energyEfficiency;
-    maxNoBC   = params.maxNoBC             ;
+    numPrSt   = params.numPrSt             ;
     colorBnW  = params.colorBnW            ;
     %---------------------------------------------------------------------%
 
@@ -77,8 +77,8 @@ function plotEnergyConsumption(params,sol)
     %---------------------------------------------------------------------%  
     %Plot the energy efficiency values over the cycles for all species
     
-    %For each boundary, 
-    for i = 1 : maxNoBC          
+    %For each product stream, 
+    for i = 1 : numPrSt          
         
         %Get the vector for the color
         rgb = grabColor(1,colorBnW);
