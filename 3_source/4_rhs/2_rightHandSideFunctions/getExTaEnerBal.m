@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/1/28/Friday
-%Code last modified on : 2022/10/12/Wednesday
+%Code last modified on : 2022/12/1/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -88,6 +88,7 @@ function units = getExTaEnerBal(params,units,nS)
     gConsNormExTa    = params.gConsNormExTa   ;    
     valAdsFeEnd2ExTa = params.valAdsFeEnd2ExTa;
     exTaVolNorm      = params.exTaVolNorm     ;
+    valFeEndEq       = params.valFeEndEq      ;
     %---------------------------------------------------------------------%                                                 
     
     
@@ -176,6 +177,7 @@ function units = getExTaEnerBal(params,units,nS)
             %the temperature difference
             convFlowEnerIn ...
                 = abs(min(0,col.(sColNums{i}).volFlRat(:,1))) ...
+                * valFeEndEq(i,nS) ...
                 * (col.(sColNums{i}).temps.cstr(:,1)...
                   -exTaTempCstr) ...
                 * convFlowEnerIn;

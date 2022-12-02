@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/28/Thursday
-%Code last modified on : 2022/10/12/Wednesday
+%Code last modified on : 2022/12/1/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -85,6 +85,7 @@ function units = getRaTaEnerBal(params,units,nS)
     nVols            = params.nVols           ;
     valAdsPrEnd2RaTa = params.valAdsPrEnd2RaTa;
     raTaVolNorm      = params.raTaVolNorm     ;
+    valPrEndEq       = params.valPrEndEq      ;
     
     %Unpack units
     col  = units.col ;
@@ -177,6 +178,7 @@ function units = getRaTaEnerBal(params,units,nS)
             %the temperature difference
             convFlowEnerIn ...
                 = max(0,col.(sColNums{i}).volFlRat(:,nVols+1)) ...
+                * valPrEndEq(i,nS) ...
                 * (col.(sColNums{i}).temps.cstr(:,nVols)...
                   -raTaTempCstr) ...
                 * convFlowEnerIn;
