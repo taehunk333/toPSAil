@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/2/2/Wednesday
-%Code last modified on : 2022/2/2/Wednesday
+%Code last modified on : 2022/12/3/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -44,6 +44,7 @@ function params = getPresRats(params)
     presExTaSet = params.presExTaSet;
     presAmbi    = params.presAmbi   ;
     presColLow  = params.presColLow ;    
+    presDoSt    = params.presDoSt   ;
     presColHigh = params.presColHigh;    
     bool        = params.bool       ;
 
@@ -108,7 +109,7 @@ function params = getPresRats(params)
     
     %Calculate the downstream pressure ratio, i.e., 
     %(vacuum pressure)/(high-pressure)
-    params.pRatDoSt = (presColLow/presColHigh);
+    params.pRatDoSt = (presDoSt/presColHigh);
     %---------------------------------------------------------------------%
     
     
