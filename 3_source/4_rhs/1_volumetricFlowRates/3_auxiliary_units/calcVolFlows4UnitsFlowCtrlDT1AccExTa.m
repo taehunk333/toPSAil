@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/10/22/Saturday
-%Code last modified on : 2022/11/7/Monday
+%Code last modified on : 2022/12/3/Saturay
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -215,8 +215,9 @@ function units = calcVolFlows4UnitsFlowCtrlDT1AccExTa(params,units,nS)
         for i = 1 : nCols
 
             %Get the positive pseudo volumetric flow rate
-            vFlRaTaIn  = max(vFlCol2RaTa(:,i),0)     ;
-            vFlRaTaOut = abs(min(vFlCol2RaTa(:,i),0));
+%             vFlRaTaIn  = max(vFlCol2RaTa(:,i),0)     ;
+            vFlRaTaIn  = col.(sColNums{i}).volFlPlus(:,nVols+1);
+            vFlRaTaOut = abs(min(vFlCol2RaTa(:,i),0))          ;
 
             %Initialize the molar energy term 
             molarEnergyCurr = zeros(nRows,1);
