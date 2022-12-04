@@ -44,8 +44,8 @@ function units = getExTaCuMolBal(params,units)
     %funcId = 'getExTaCuMolBal.m';
     
     %Unpack params
-    nComs = params.nComs   ;
-    sComs = params.sComNums;    
+    nComs            = params.nComs           ;
+    sComs            = params.sComNums        ;    
     
     %Unpack units
     exTa = units.exTa;

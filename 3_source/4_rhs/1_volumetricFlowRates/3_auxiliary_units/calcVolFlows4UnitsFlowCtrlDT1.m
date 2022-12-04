@@ -51,23 +51,26 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
     %funcId = 'calcVolFlows4UnitsFlowCtrlDT1.m';
     
     %Unpack params   
-    nCols           = params.nCols          ; 
-    nComs           = params.nComs          ;
-    nVols           = params.nVols          ;
-    nRows           = params.nRows          ;
-    gasConsNormEq   = params.gasConsNormEq  ;
-    feTaVolNorm     = params.feTaVolNorm    ;
-    raTaVolNorm     = params.raTaVolNorm    ;
-    exTaVolNorm     = params.exTaVolNorm    ;
-    tempFeedNorm    = params.tempFeedNorm   ;
-    htCapCpNorm     = params.htCapCpNorm    ;
-    pRatFe          = params.pRatFe         ;
-    yFeC            = params.yFeC           ;
-    gasConsNormFeTa = params.gasConsNormFeTa;
-    gasConsNormRaTa = params.gasConsNormRaTa;
-    gasConsNormExTa = params.gasConsNormExTa; 
-    sColNums        = params.sColNums       ;
-    sComNums        = params.sComNums       ;
+    nCols            = params.nCols           ; 
+    nComs            = params.nComs           ;
+    nVols            = params.nVols           ;
+    nRows            = params.nRows           ;
+    gasConsNormEq    = params.gasConsNormEq   ;
+    feTaVolNorm      = params.feTaVolNorm     ;
+    raTaVolNorm      = params.raTaVolNorm     ;
+    exTaVolNorm      = params.exTaVolNorm     ;
+    tempFeedNorm     = params.tempFeedNorm    ;
+    htCapCpNorm      = params.htCapCpNorm     ;
+    pRatFe           = params.pRatFe          ;
+    yFeC             = params.yFeC            ;
+    gasConsNormFeTa  = params.gasConsNormFeTa ;
+    gasConsNormRaTa  = params.gasConsNormRaTa ;
+    gasConsNormExTa  = params.gasConsNormExTa ; 
+    sColNums         = params.sColNums        ;
+    sComNums         = params.sComNums        ;
+    valAdsFeEnd2ExTa = params.valAdsFeEnd2ExTa;
+    valAdsPrEnd2RaTa = params.valAdsPrEnd2RaTa;
+    bool             = params.bool            ;
     
     %Unpack units
     col  = units.col ;
@@ -217,8 +220,9 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
         for i = 1 : nCols
 
             %Get the positive pseudo volumetric flow rate
-            vFlRaTaIn  = col.(sColNums{i}).volFlPlus(:,nVols+1);
-            vFlRaTaOut = abs(min(vFlCol2RaTa(:,i),0))          ;
+            vFlRaTaIn  = max(0,col.(sColNums{i}).volFlRat(:,nVols+1)) ...
+                       * valAdsPrEnd2RaTa(i,nS)                         ;
+            vFlRaTaOut = abs(min(vFlCol2RaTa(:,i),0))                   ;
 
             %Initialize the molar energy term 
             molarEnergyCurr = zeros(nRows,1);
@@ -264,8 +268,8 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
         %Calculate the volumateric flow rate for the raffinate product
         %stream
    
-        %Save the feed volumetric flow rate to maintain a constant pressure
-        %inside the raffinate product tank
+        %Save the raffinate product volumetric flow rate to maintain a 
+        %constant pressure inside the raffinate product tank
         vFlRaTa(:,(nCols+1)) = max(0,-(1./phiZeroRaff) ...
                             .* (vFlRaffSum+raTaBeta));                
         %-----------------------------------------------------------------%
@@ -321,8 +325,9 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
         for i = 1 : nCols
 
             %Get the positive pseudo volumetric flow rate
-            vFlExTaIn  = col.(sColNums{i}).volFlMinus(:,1);
-            vFlExTaOut = max(vFlCol2ExTa(:,i),0)          ;             
+            vFlExTaIn  = -min(col.(sColNums{i}).volFlRat(:,1),0) ...
+                       * valAdsFeEnd2ExTa(i,nS)                    ;
+            vFlExTaOut = max(vFlCol2ExTa(:,i),0)                   ;             
 
             %Initialize the molar energy term 
             molarEnergyCurr = zeros(nRows,1);
@@ -367,10 +372,15 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
         %Calculate the volumateric flow rate for the extract product
         %stream
                        
-        %Save the feed volumetric flow rate to maintain a constant pressure
-        %inside the extract product tank
-        vFlExTa(:,(nCols+1)) = max(0,-(1./phiZeroExtr) ...
-                            .* (vFlExtrSum+exTaBeta));
+        %When we also need to recover the extract product, 
+        if bool(10) ~= 0
+            
+            %Save the extract product volumetric flow rate to maintain a 
+            %constant pressure inside the extract product tank
+            vFlExTa(:,(nCols+1)) = max(0,-(1./phiZeroExtr) ...
+                                .* (vFlExtrSum+exTaBeta));
+                            
+        end
         %-----------------------------------------------------------------%
     
     %---------------------------------------------------------------------%

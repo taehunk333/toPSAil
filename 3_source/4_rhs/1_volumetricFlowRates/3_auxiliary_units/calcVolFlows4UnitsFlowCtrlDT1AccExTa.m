@@ -215,9 +215,9 @@ function units = calcVolFlows4UnitsFlowCtrlDT1AccExTa(params,units,nS)
         for i = 1 : nCols
 
             %Get the positive pseudo volumetric flow rate
-%             vFlRaTaIn  = max(vFlCol2RaTa(:,i),0)     ;
-            vFlRaTaIn  = col.(sColNums{i}).volFlPlus(:,nVols+1);
-            vFlRaTaOut = abs(min(vFlCol2RaTa(:,i),0))          ;
+            vFlRaTaIn  = max(0,col.(sColNums{i}).volFlRat(:,nVols+1)) ...
+                       * valAdsPrEnd2RaTa(i,nS)                         ;
+            vFlRaTaOut = abs(min(vFlCol2RaTa(:,i),0))                   ;
 
             %Initialize the molar energy term 
             molarEnergyCurr = zeros(nRows,1);
@@ -263,6 +263,8 @@ function units = calcVolFlows4UnitsFlowCtrlDT1AccExTa(params,units,nS)
         %Calculate the volumateric flow rate for the raffinate product
         %stream
 
+        %Save the raffinate product volumetric flow rate to maintain a 
+        %constant pressure inside the raffinate product tank
         vFlRaTa(:,(nCols+1)) = max(0,-(1./phiZeroRaff) ...
                             .* (vFlRaffSum+raTaBeta));                            
         %-----------------------------------------------------------------%
