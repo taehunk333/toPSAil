@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/22/Friday
-%Code last modified on : 2022/9/16/Friday
+%Code last modified on : 2022/12/5/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -140,13 +140,93 @@ function params = getStringParams(params)
     for i = 1 : nCols         
         
         %-----------------------------------------------------------------%
-        %Get the ith column flow directions
+        %Get the ith column flow directions for the regular steps
                 
+        %Get the current flow directions for the adsorbers
+        flowDirColCurr = flowDirCol(i,:);                
+        
         %Find the indices for the counter-currents
-        indNegFlowDir = find(flowDirCol(i,:)=="1_(negative)");                
+        indNegFlowDir = find(flowDirColCurr=="1_(negative)");                
         
         %Save the flow directions
-        flowDir(i,indNegFlowDir) = ones(1,length(indNegFlowDir));        
+        flowDir(i,indNegFlowDir) = ones(1,length(indNegFlowDir)); 
+        %-----------------------------------------------------------------%
+        
+        
+        
+        %-----------------------------------------------------------------%
+        %Get the column flow directions for the equalization steps                        
+        
+        %Get the current steps for the adsorbers
+        sStepColCurr = sStepCol(i,:);
+        
+        %Find the indices for the equalizations
+        indEqFlowDir = find(flowDirColCurr=="TBD");
+                        
+        %Get the number of equalization steps for the adsorber
+        numEqStep = length(indEqFlowDir);
+        
+        %Only when there are equalization steps, 
+        if numEqStep > 0
+        
+            %For each equalization step
+            for j = 1 : numEqStep
+                
+                %Get the current index for the flow direction for the
+                %equalization
+                indEqFlowDirCurr = indEqFlowDir(j);
+                
+                %Check on which end the equalization is happening
+                eqAtPrdEnd ...
+                    = contains(sStepColCurr{indEqFlowDirCurr},'APR');
+                
+                %Grab the next index
+                indEqFlowDirPlusOne ...
+                    = round(indEqFlowDirCurr+1,nSteps);
+                
+                %Check if the next step is repressurization or high
+                %pressure feed
+                eqNextStepRepr ...
+                    = contains(sStepColCurr{indEqFlowDirPlusOne},'RP') ...
+                    || contains(sStepColCurr{indEqFlowDirPlusOne},'HP');               
+
+                %When the equalization is happening at the product end
+                if eqAtPrdEnd == 1
+                    
+                    %If repressurizing, then
+                    if eqNextStepRepr == 1
+                       
+                        %Set the flow direction to be countercurrent
+                        flowDir(i,indEqFlowDirCurr) = 1;
+                        
+                    %Otherwise, we are depressurizing
+                    else
+                        
+                        %Nothing to do
+                        
+                    end
+                    
+                %When the equalization is heppening at the feed end
+                else
+                                        
+                    %If repressurizing, then
+                    if eqNextStepRepr == 1
+                       
+                        %nothing to do
+                        
+                    %Otherwise, we are depressurizing
+                    else
+                        
+                        %Set the flow direction to be countercurrent
+                        flowDir(i,indEqFlowDirCurr) = 1;
+                        
+                    end                                        
+                    
+                end
+
+            end
+            
+        end
         %-----------------------------------------------------------------%       
 
 
