@@ -739,8 +739,8 @@ function units = calcVolFlowsDP0DT1(params,units,nS)
                 %Do the recourse measure                              
                 
                 %If flow reversed, then,
-                if flowDirCheck == 0
-
+                if flowDirCheck == 0                       
+                    
                     %Save nRows 
                     nRowsSave = nRows;
 

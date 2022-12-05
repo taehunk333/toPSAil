@@ -172,7 +172,7 @@ function plotCompareGasConsHighPresFeed()
     box on;
     
     %Adjust margin
-    a = annotation('rectangle',[0.03 0.10 0.89 1],'Color','w');
+    a = annotation('rectangle',[0.0 0.0 1 1],'Color','w');
     
     %Save the figure as .eps
     exportgraphics(gcf,fullfile(pwd,'comp.pdf'),'ContentType','vector');
