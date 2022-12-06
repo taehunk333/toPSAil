@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2019/2/4/Monday
-%Code last modified on : 2022/10/4/Tuesday
+%Code last modified on : 2022/12/6/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -52,12 +52,10 @@ function iCond = getInitialStates(params)
     nLKs        = params.nLKs       ;
     pRat        = params.pRat       ;
     pRatFe0     = params.pRatFe     ; 
-    pRatRa0     = params.pRatRa ...
-                * params.presRaTa ...
-                / params.presRaTaSet;                 
-    pRatEx0     = params.pRatEx ...
-                * params.presExTa ...
-                / params.presExTaSet;
+    pRatRa0     = params.presRaTa ...
+                / params.presColHigh;                 
+    pRatEx0     = params.presExTa ...
+                / params.presColHigh;
     nCols       = params.nCols      ;       
     iConBed     = params.inConBed   ;
     iConFeTa    = params.inConFeTa  ;

@@ -109,17 +109,6 @@
 %				4. Re-pressurization with raffinate 
 %				   product
 %				5. Re-pressurization with feed
-% Plots:
-% 	- Pressure profiles (vs. time) for the two adsorption columns
-%	- Adsorbed phase concentration of the 1st adsorber at the last
-%	  high pressure feed step, before reaching a CSS
-% 	- A comparison of the gas phase concentration profiles in the
-% 	  1st adsorber, as a function of the number of CSTRs (n_c)
-% Data: 
-%	- Data for the CPU times/cycle (4 PSA cycle simulations and 
-%	  take the average over 10 PSA cycles)
-%	- Oxygen recovery %, and  Oxygen purity for the different 
-%	  simulations of Kayser's system over different n_c values
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -189,10 +178,6 @@
 %			3. high pressure feed
 %			4. depressurization to a subambient pressure
 %			5. low pressure purge
-% Plots
-% 	- TBD
-% Data:
-% 	- TBD
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -263,10 +248,6 @@
 %			3. high pressure feed
 %			4. depressurization to a subambient pressure
 %			5. low pressure purge
-% Plots
-% 	- TBD
-% Data:
-% 	- TBD
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -291,25 +272,25 @@
 %		- LDF kinetics,
 %	        - 6 step PSA cycle
 %			- Adsorber 1
-%				1. Pressurization with feed
-%				2. High pressure feed
-%				3. Depressurization 
+%				1. Repressurization 
 %				   (equalization, product end)
-%				4. Depressurization down to the 
+%				2. Pressurization with feed
+%				3. High pressure feed
+%				4. Depressurization 
+%				   (equalization, product end)
+%				5. Depressurization down to the 
 %				   low pressure
-%				5. Low pressure purge
-%				6. Repressurization 
-%				   (equalization, product end)
+%				6. Low pressure purge
 %			- Adsorber 2
-%				1. Depressurization down to the 
+%				1. Depressurization 
+%				   (equalization, product end)
+%				2. Depressurization down to the 
 %				   low pressure
-%				2. Low pressure purge
-%				3. Repressurization 
+%				3. Low pressure purge
+%				4. Repressurization 
 %				   (equalization, product end)
-%				4. Pressurization with feed
-%				5. High pressure feed
-%				6. Depressurization 
-%				   (equalization, product end)
+%				5. Pressurization with feed
+%				6. High pressure feed
 % 	[X] case_study_4.1: 
 %	  	- 2-adsorber
 %		- Isothermal
@@ -320,25 +301,25 @@
 %		- LDF kinetics,
 %	        - 6 step PSA cycle
 %			- Adsorber 1
-%				1. Pressurization with feed
-%				2. High pressure feed
-%				3. Depressurization 
+%				1. Repressurization 
 %				   (equalization, product end)
-%				4. Depressurization down to the 
+%				2. Pressurization with feed
+%				3. High pressure feed
+%				4. Depressurization 
+%				   (equalization, product end)
+%				5. Depressurization down to the 
 %				   low pressure
-%				5. Low pressure purge
-%				6. Repressurization 
-%				   (equalization, product end)
+%				6. Low pressure purge
 %			- Adsorber 2
-%				1. Depressurization down to the 
+%				1. Depressurization 
+%				   (equalization, product end)
+%				2. Depressurization down to the 
 %				   low pressure
-%				2. Low pressure purge
-%				3. Repressurization 
+%				3. Low pressure purge
+%				4. Repressurization 
 %				   (equalization, product end)
-%				4. Pressurization with feed
-%				5. High pressure feed
-%				6. Depressurization 
-%				   (equalization, product end)
+%				5. Pressurization with feed
+%				6. High pressure feed
 % 	[O] case_study_4.2: 
 %	  	- 2-adsorber
 %		- Nonisothermal
@@ -349,26 +330,26 @@
 %		- LDF kinetics,
 %	        - 6 step PSA cycle
 %			- Adsorber 1
-%				1. Pressurization with feed
-%				2. High pressure feed
-%				3. Depressurization 
+%				1. Repressurization 
 %				   (equalization, product end)
-%				4. Depressurization down to the 
+%				2. Pressurization with feed
+%				3. High pressure feed
+%				4. Depressurization 
+%				   (equalization, product end)
+%				5. Depressurization down to the 
 %				   low pressure
-%				5. Low pressure purge
-%				6. Repressurization 
-%				   (equalization, product end)
+%				6. Low pressure purge
 %			- Adsorber 2
-%				1. Depressurization down to the 
+%				1. Depressurization 
+%				   (equalization, product end)
+%				2. Depressurization down to the 
 %				   low pressure
-%				2. Low pressure purge
-%				3. Repressurization 
+%				3. Low pressure purge
+%				4. Repressurization 
 %				   (equalization, product end)
-%				4. Pressurization with feed
-%				5. High pressure feed
-%				6. Depressurization 
-%				   (equalization, product end)
-% 	[X] case_study_4.3: 
+%				5. Pressurization with feed
+%				6. High pressure feed
+% 	[O] case_study_4.3: 
 %	  	- 2-adsorber
 %		- Nonisothermal
 % 		- Pressure-driven (Ergun)
@@ -378,27 +359,23 @@
 %		- LDF kinetics,
 %	        - 6 step PSA cycle
 %			- Adsorber 1
-%				1. Pressurization with feed
-%				2. High pressure feed
-%				3. Depressurization 
+%				1. Repressurization 
 %				   (equalization, product end)
-%				4. Depressurization down to the 
+%				2. Pressurization with feed
+%				3. High pressure feed
+%				4. Depressurization 
+%				   (equalization, product end)
+%				5. Depressurization down to the 
 %				   low pressure
-%				5. Low pressure purge
-%				6. Repressurization 
-%				   (equalization, product end)
+%				6. Low pressure purge
 %			- Adsorber 2
-%				1. Depressurization down to the 
+%				1. Depressurization 
+%				   (equalization, product end)
+%				2. Depressurization down to the 
 %				   low pressure
-%				2. Low pressure purge
-%				3. Repressurization 
+%				3. Low pressure purge
+%				4. Repressurization 
 %				   (equalization, product end)
-%				4. Pressurization with feed
-%				5. High pressure feed
-%				6. Depressurization 
-%				   (equalization, product end)
-% Plots
-% 	- TBD
-% Data:
-% 	- TBD
+%				5. Pressurization with feed
+%				6. High pressure feed
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

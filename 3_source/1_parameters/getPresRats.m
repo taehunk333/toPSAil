@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/2/2/Wednesday
-%Code last modified on : 2022/12/3/Saturday
+%Code last modified on : 2022/12/6/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -40,8 +40,8 @@ function params = getPresRats(params)
     
     %Unpack params
     presFeTa    = params.presFeTa   ;
-    presRaTaSet = params.presRaTaSet;
-    presExTaSet = params.presExTaSet;
+    presRaTa    = params.presRaTa   ;
+    presExTa    = params.presExTa   ;
     presAmbi    = params.presAmbi   ;
     presColLow  = params.presColLow ;    
     presDoSt    = params.presDoSt   ;
@@ -91,11 +91,11 @@ function params = getPresRats(params)
     
     %Calculate the pressure ratio for the raffinate product tank, i.e., 
     %(tank pressure)/(high-pressure)        
-    params.pRatRa = (presRaTaSet/presColHigh); 
+    params.pRatRa = (presRaTa/presColHigh); 
     
     %Calculate the pressure ratio for the extract product tank, i.e., 
     %(tank pressure)/(high-pressure)        
-    params.pRatEx = (presExTaSet/presColHigh); 
+    params.pRatEx = (presExTa/presColHigh); 
     %---------------------------------------------------------------------%
     
     
