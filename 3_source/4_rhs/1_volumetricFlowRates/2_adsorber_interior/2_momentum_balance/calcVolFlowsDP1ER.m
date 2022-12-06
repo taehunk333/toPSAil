@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/3/12/Saturday
-%Code last modified on : 2022/11/24/Thursday
+%Code last modified on : 2022/12/5/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -84,7 +84,7 @@ function units = calcVolFlowsDP1ER(params,units,nS)
         %-----------------------------------------------------------------%
         %Unpack states
         
-        %Unpack the total concentra tion variables
+        %Unpack the total concentration variables
         gasConsTot = col.(sColNums{i}).gasConsTot;     
         
         %Unpack the dimensionless interior temperature variables 
@@ -175,36 +175,37 @@ function units = calcVolFlowsDP1ER(params,units,nS)
         vFlCol(:,(nVols+1)*(i-1)+1) = vFlBoFe;
         vFlCol(:,(nVols+1)*i)       = vFlBoPr;
         %-----------------------------------------------------------------%
-               
+        
+        
+        
+        %-----------------------------------------------------------------% 
+        %Compute the pseudo volumetric flow rates
+
+        %Get the current set of volumetric flow rates for ith adsorber
+        vFlColCurr = vFlCol(:,(nVols+1)*(i-1)+1:(nVols+1)*i);
+
+        %Call the helper function to calculate the pseudo volumetric flow 
+        %rates
+        [vFlPlusColCurr,vFlMinusColCurr] = calcPseudoVolFlows(vFlColCurr); 
+        %-----------------------------------------------------------------% 
+
+
+
+        %-----------------------------------------------------------------%
+        %Save the results to units.col
+
+        %Save the pseudo volumetric flow rates
+        units.col.(sColNums{i}).volFlPlus  = vFlPlusColCurr ;
+        units.col.(sColNums{i}).volFlMinus = vFlMinusColCurr;
+
+        %Save the volumetric flow rates to a struct
+        units.col.(sColNums{i}).volFlRat = vFlColCurr;                
+        %-----------------------------------------------------------------%
+    
     end
     %---------------------------------------------------------------------% 
     
-
-    
-    %---------------------------------------------------------------------% 
-    %Compute the pseudo volumetric flow rates
-        
-    %Get the current set of volumetric flow rates for ith adsorber
-    vFlColCurr = vFlCol(:,(nVols+1)*(i-1)+1:(nVols+1)*i);
-    
-    %Call the helper function to calculate the pseudo volumetric flow rates
-    [vFlPlusColCurr,vFlMinusColCurr] = calcPseudoVolFlows(vFlColCurr); 
-    %---------------------------------------------------------------------% 
-    
-    
-    
-    %---------------------------------------------------------------------%
-    %Save the results to units.col
-
-    %Save the pseudo volumetric flow rates
-    units.col.(sColNums{i}).volFlPlus  = vFlPlusColCurr ;
-    units.col.(sColNums{i}).volFlMinus = vFlMinusColCurr;
-
-    %Save the volumetric flow rates to a struct
-    units.col.(sColNums{i}).volFlRat = vFlColCurr;                
-    %---------------------------------------------------------------------%
-    
-    
+                
     
     %---------------------------------------------------------------------% 
     %Determine the volumetric flow rates for the rest of the process flow

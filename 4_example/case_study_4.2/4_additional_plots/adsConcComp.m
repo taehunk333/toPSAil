@@ -58,8 +58,6 @@ function adsConcComp(wsVarName1,wsVarName2)
     nVols        = fullParams.nVols             ;
     sStepCol     = fullParams.sStepCol(colNum,:); %For the current column
     nSteps       = fullParams.nSteps            ;
-    sCom         = fullParams.sCom              ;
-    colorBnW     = fullParams.colorBnW          ;
     nLKs         = fullParams.nLKs              ;
     %---------------------------------------------------------------------%
 
@@ -130,13 +128,13 @@ function adsConcComp(wsVarName1,wsVarName2)
         if i <= nLKs
             
             %Get the vector for the color
-            rgb = grabColor(2,colorBnW);
+            rgb = [0.6 0.6 0.6];
         
         else
         %If heavy key, then
              
             %Get the vector for the color
-            rgb = grabColor(1,colorBnW);
+            rgb = [0 0 0];
             
         end
 
@@ -148,11 +146,103 @@ function adsConcComp(wsVarName1,wsVarName2)
     
     
     
+    %---------------------------------------------------------------------%
+    %Define known quantities
+    
+    %Clear the work space
+    clearvars -except wsVarName2;
+    
+    %Load the workspace variables    
+    load(wsVarName2);
+    
+    %Current adsorber
+    colNum = 1;
+    
+    %Unpack fullParams
+    nComs        = fullParams.nComs             ;  
+    lastStep     = sol.lastStep                 ;
+    aConScaleFac = fullParams.aConScaleFac      ;
+    heightCol    = fullParams.heightCol         ; 
+    nVols        = fullParams.nVols             ;
+    sStepCol     = fullParams.sStepCol(colNum,:); %For the current column
+    nSteps       = fullParams.nSteps            ;
+    nLKs         = fullParams.nLKs              ;
+    %---------------------------------------------------------------------%
+
+  
+    
+    %---------------------------------------------------------------------%
+    %Set up the figure for plotting
+    
+    %hold on to the figure
+    hold on;                
+    %---------------------------------------------------------------------%
+    
+    
+    
+    %---------------------------------------------------------------------%
+    %Calcualte needed quantities
+    
+    %Calculate axial distance for the adsorption column 
+    height = linspace(0,heightCol,nVols);
+    
+    %Find the high pressure steps
+    indHp = contains(sStepCol,"HP");
+    
+    %Find the last high pressure step
+    indHp = find(indHp,1,'last');
+    
+    %Find the last high pressure step
+    indHpEnd = lastStep-nSteps+indHp(end);
+    %---------------------------------------------------------------------%
+    
+    
+    
+    %---------------------------------------------------------------------%
+    %Plot the adsorbed phase concentration profiles for the last high 
+    %pressure feed
+                                 
+    %For each species,
+    for i = 1 : nComs
+
+        %Hold on to the figure
+        hold on;
+
+        %Grab total pressure for jth adsorption column in ith step
+        pressure = sol.(append('Step',int2str(indHpEnd))). ...
+                   col.(append('n',int2str(colNum))).adsCons. ...
+                   (append('C',int2str(i)))(end,:) ...
+                 * aConScaleFac;
+             
+        %If light key, then
+        if i <= nLKs
+            
+            %Get the vector for the color
+            rgb = [0.6 0.6 0.6];
+        
+        else
+        %If heavy key, then
+             
+            %Get the vector for the color
+            rgb = [0 0 0];
+            
+        end
+
+        %Plot the ith step with jth column
+        plot(height,pressure,'--','LineWidth',2.0,'Color',rgb);                
+
+    end                 
+    %---------------------------------------------------------------------%
+    
+    
+    
     %---------------------------------------------------------------------%  
     %Make any terminal settings
     
     %Add entry to the legend
-    legend('Nonisothermal','isothermal','Location','SouthWest');
+    legend('Nonisothermal (H2)','Nonisothermal (CO)', ...
+           'Isothermal (H2)', 'Isothermal (CO)', ...
+           'Location','SouthWest');
     
     %Resize the figure
     set(gcf,'Position',[100,25,600,250]);
@@ -170,7 +260,7 @@ function adsConcComp(wsVarName1,wsVarName2)
     a = annotation('rectangle',[0 0 1 1],'Color','w');
     
     %Save the figure as .eps
-    exportgraphics(gcf,fullfile(pwd,'temp.pdf'),'ContentType','vector');
+    exportgraphics(gcf,fullfile(pwd,'ads.pdf'),'ContentType','vector');
     
     %Delete the annotation
     delete(a);
