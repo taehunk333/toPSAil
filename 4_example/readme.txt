@@ -1,5 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Base Case Simulation
+% Multiple Adsorber Simulation I
+%
 % Purpose: 
 %	- to validate toPSAil's simulation capabilities against	the 
 %         most challenging (numerically) simulation problem for an 
@@ -34,7 +35,7 @@
 %				4. Re-pressurization with raffinate 
 %				   product
 %				5. Re-pressurization with feed
-% 	[X] case_study_1.1: 
+% 	[O] case_study_1.1: 
 %	  	- 2-adsorber
 %		- Isothermal
 % 		- Pressure-driven (Kozeny-Carman)
@@ -84,7 +85,7 @@
 %				4. Re-pressurization with raffinate 
 %				   product
 %				5. Re-pressurization with feed
-%	[X] case_study_1.3: 
+%	[O] case_study_1.3: 
 %	  	- 2-adsorber
 %		- Nonisothermal
 % 		- Pressure-driven (Kozeny-Carman)
@@ -115,6 +116,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Single Adsorber Simulation I
+%
 % Purpose:
 %	- To simulate a single adsorber PSA cycle
 % Reference: 
@@ -136,7 +138,7 @@
 %			3. high pressure feed
 %			4. depressurization to a subambient pressure
 %			5. low pressure purge
-%	[X] case_study_2.1: 
+%	[O] case_study_2.1: 
 %	  	- 1-adsorber
 %		- Isothermal
 % 		- Pressure-driven (Kozeny-Carman)
@@ -150,7 +152,7 @@
 %			3. high pressure feed
 %			4. depressurization to a subambient pressure
 %			5. low pressure purge
-%	[X] case_study_2.2: 
+%	[O] case_study_2.2: 
 %	  	- 1-adsorber
 %		- Nonisothermal
 % 		- Flow-driven
@@ -164,10 +166,10 @@
 %			3. high pressure feed
 %			4. depressurization to a subambient pressure
 %			5. low pressure purge
-%	[X] case_study_2.3: 
+%	[O] case_study_2.3: 
 %	  	- 1-adsorber
 %		- Nonisothermal
-% 		- Pressure-driven (Kozeny-Carman)
+% 		- Pressure-driven (Ergun)
 %		- Time-driven
 %	  	- O2-N2-Zeolite_5A
 %		- Linear isotherm
@@ -183,7 +185,8 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Single Adsorber Simulation I
+% Single Adsorber Simulation II
+%
 % Purpose:
 %	- To simulate a PSA cycle including nonisothermal operation 
 %	  and axial pressure drop.
@@ -254,6 +257,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Multiple Adsorber Simulation II
+%
 % Purpose:
 %	- To demonstrate a complex PSA cycle, including a pressure 
 %	  equalization step
@@ -291,7 +295,7 @@
 %				   (equalization, product end)
 %				5. Pressurization with feed
 %				6. High pressure feed
-% 	[X] case_study_4.1: 
+% 	[O] case_study_4.1: 
 %	  	- 2-adsorber
 %		- Isothermal
 % 		- Pressure-driven (Ergun)

@@ -25,10 +25,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : plotGasConsHighPresFeed.m
 %Source     : common
-%Description: plot the gas phase concentrations for an adsorption column at
-%             different number of CSTRs n_c. The data for the concentration
-%             of species vs position is read in from .csv file in the same
-%             directory.
+%Description: plots the gas phase concentrations for an adsorption column 
+%             at different number of CSTRs n_c. The data for the 
+%             concentration of species vs position is read in from .csv 
+%             file in the same directory.
 %Inputs     : none         - n.a.
 %Outputs    : the plots for gas phase concentrations for all species for
 %             an adsorption column, at different number of CSTRs.
