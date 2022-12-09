@@ -1,4 +1,41 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Totally Open Pressure Swing Adsorption Intensification Laboratory
+% (toPSAil)
+%
+% Release Version : 1.0
+%
+% Last Revised on : 12/8/2022
+% Last Revised by : Taehun Kim
+%
+% Notes:
+% 	- Nomenclature
+% 		- [O] indicates that the simulation is able to run
+% 		- [X] indicates that the simulation is not able to run
+%	- File Name
+%		- "_e" at the end of the file name denotes an event
+% 		  -driven simulation of the same simualtion without
+%		  "_e" at the end of the file name
+%		- "case_study_x.y" denotes a simulation for the xth 
+% 		  system, with the yth simulation configuration. The 
+%	 	  system is selected from the published papers on PSA 
+%		  experiment and simulations. The simulation 
+%		  configuration is determined, based on the modeling
+%		  assumptions.
+%	- Simulation Speed
+%		- Some simulations do take longer to converge a Cyclic
+%		  Steady State (CSS). One can reduce the number of 
+%		  PSA cycles to simulated, and just observe the trends
+%	          in the simulation results.
+%	- Adding more examples
+%		- One can simply copy an existing case_study folder 
+%		  and create a new simulation for toPSAil to run. The
+%		  user can simply specify the folder name, using the 
+%		  MATLAB® GUI for toPSAil.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Multiple Adsorber Simulation I
 %
 % Purpose: 
@@ -209,7 +246,7 @@
 %			3. high pressure feed
 %			4. depressurization to a subambient pressure
 %			5. low pressure purge
-% 	[X] case_study_3.1: 
+% 	[O] case_study_3.1: 
 %		- 1-adsorber
 %		- Isothermal
 % 		- Pressure-driven (Ergun)

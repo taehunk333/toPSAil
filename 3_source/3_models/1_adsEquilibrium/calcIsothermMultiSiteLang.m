@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2020/10/26/Wednesday
-%Code last modified on : 2022/11/8/Tuesday
+%Code last modified on : 2022/12/8/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -228,12 +228,13 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
         thetaRealMin = min(thetaReal);
 
         %Check the function output
-        if EXITFLAG ~= 1 && ...
-           thetaRealMin < 0 && ...
-           abs(thetaRealMin) > numZero
+        if EXITFLAG <= 0 && ... %Solution is not found
+           thetaRealMin < 0 && ... %Make sure no entries are negative
+           abs(thetaRealMin) > numZero %Make sure the negative entry is 
+                                       %actually a large number
 
             %Get the message
-            message = "No solution to the implicit isotherm.";
+            message = "No solution to the multisite Langmuir isotherm.";
 
             %Print warning
             warning("%s: ",funcId,message);

@@ -87,7 +87,7 @@ function plotAxialPressureProfiles(tableNameStr)
     xlabel('Height [cm]');
 
     %Determine y-axis (absicissa) label
-    ylabel('Pres. [bar]');
+    ylabel('Pressure [bar]');
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');
