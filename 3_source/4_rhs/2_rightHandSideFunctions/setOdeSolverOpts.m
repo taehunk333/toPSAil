@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/5/12/Thursday
-%Code last modified on : 2022/10/4/Tuesday
+%Code last modified on : 2022/12/8/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -36,7 +36,7 @@
 %Outputs    : options      - a struct 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function options = setOdeSolverOpts(params,iStates,nS,nCy)
+function options = setOdeSolverOpts(params,iStates,nS,~)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
@@ -49,6 +49,7 @@ function options = setOdeSolverOpts(params,iStates,nS,nCy)
     bool      = params.bool       ;
     odeAbsTol = params.odeAbsTol  ;
     odeRelTol = params.odeRelTol  ;
+    modSp     = params.modSp      ;
     %---------------------------------------------------------------------%                            
    
     
@@ -125,27 +126,17 @@ function options = setOdeSolverOpts(params,iStates,nS,nCy)
     %When there is an axial pressure drop, let us spcify the sparsity
     %pattern for the Jacobian matrix, once before the numerical integration
     if bool(3) == 1
-        
-        %Call the helper function to obtain the jacobian matrix's sparsity
-        %pattern
+                 
+        %Call the helper function to obtain the jacobian matrix's 
+        %sparsity pattern
         [~,spyPat] = calcJacMatFiniteDiff(0,iStates,params);       
 
         %Specify the sparsity pattern for the Jacobian matrix
-        jacOpts = odeset('JPattern',spyPat);
-        
-%         %Do not specify anything about the Jacobian matrix
-%         jacOpts = [];
+        jacOpts = odeset('JPattern',spyPat);     
     
     %When there is no axial pressure drop, let us specify a function handle
     %for the Jacobian matrix, once before the numerical inetgration
-    elseif bool(3) == 0
-        
-%         %Call the helper function to obtain the jacobian matrix's sparsity
-%         %pattern
-%         [~,spyPat] = calcJacMatFiniteDiff(0,iStates,params);
-%         
-%         %Specify the sparsity pattern for the Jacobian matrix
-%         jacOpts = odeset('JPattern',spyPat);
+    elseif bool(3) == 0        
         
         %Do not specify anything about the Jacobian matrix
         jacOpts = [];
@@ -157,6 +148,14 @@ function options = setOdeSolverOpts(params,iStates,nS,nCy)
 %         jacOpts = odeset('Jacobian',funcJacobMat);
         
     end       
+    
+    %If we have an implicit isotherm model, 
+    if modSp(1) == 3
+
+        %Do not specify anything about the Jacobian matrix
+        jacOpts = []; 
+
+    end
     %---------------------------------------------------------------------%
     
     
