@@ -183,12 +183,11 @@
 %	  	- O2-N2-Zeolite_5A
 %		- Linear isotherm
 %		- LDF kinetics,
-%	        - 5 step PSA cycle
+%	        - 4 step PSA cycle
 %			1. re-pressurization with raffinate product
-%			2. re-pressurization with feed
-%			3. high pressure feed
-%			4. depressurization to a subambient pressure
-%			5. low pressure purge
+%			2. high pressure feed
+%			3. depressurization to a subambient pressure
+%			4. low pressure purge
 %	[O] case_study_2.2: 
 %	  	- 1-adsorber
 %		- Nonisothermal
@@ -274,7 +273,7 @@
 %			3. high pressure feed
 %			4. depressurization to a subambient pressure
 %			5. low pressure purge
-% 	[X] case_study_3.3: 
+% 	[O] case_study_3.3: 
 %		- 1-adsorber
 %		- Nonisothermal
 % 		- Pressure-driven (Ergun)

@@ -95,7 +95,7 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
 
                 %---------------------------------------------------------%
                 %Unpack additional params
-                coefMat      = params.coefMat  ;    
+                coefMat = params.coefMat;    
                 
                 %Define the coefficient matrices
                 coefMatPlus  = coefMat{i,nS}{1};
@@ -492,7 +492,7 @@ function units = calcVolFlowsDP0DT0(params,units,nS)
 
                 %---------------------------------------------------------%
                 %Do the recourse measure
-
+                
                 %If flow reversed, then,
                 if flowDirCheck == 0
 
