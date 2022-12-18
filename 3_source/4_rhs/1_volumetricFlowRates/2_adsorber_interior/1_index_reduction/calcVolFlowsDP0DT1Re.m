@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/5/9/Monday
-%Code last modified on : 2022/6/14/Tuesday
+%Code last modified on : 2022/12/13/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -58,7 +58,6 @@ function [vFlPlus,vFlMinus] = calcVolFlowsDP0DT1Re(params,nS,nC,nTp)
     nVols        = params.nVols       ;          
     typeDaeModel = params.typeDaeModel;  
     volFlBoFree  = params.volFlBoFree ;
-%     flowDirCol  = params.flowDirCol ;
     
     %Unpack the time dependent at nTp
     alphaPlusN  = params.alphaPlusN(nTp,:) ;
