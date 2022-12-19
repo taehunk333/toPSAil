@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/5/12/Thursday
-%Code last modified on : 2022/12/8/Thursday
+%Code last modified on : 2022/12/19/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -42,7 +42,7 @@ function options = setOdeSolverOpts(params,iStates,nS,~)
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'setOdeSolverOpts.m';    
+    funcId = 'setOdeSolverOpts.m';    
     
     %Unpack params              
     funcEve   = params.funcEve{nS};
@@ -67,19 +67,19 @@ function options = setOdeSolverOpts(params,iStates,nS,~)
     %function handle is not an empty cell,
     if needEvent == 1
                                           
-%         %Determine the side of the event function
-%         eveSide = getEventSide(params,nS);
-%         
-%         %Test to see if the event function will even work before solving 
-%         %the ODEs
-%         if testEventFunc(params,iStates,funcEve,eveSide) == 0
-%             
-%             %Display the error message
-%             msg = 'The event will not work with the current initial state';
-%             msg = append(funcId,': ',msg);
-%             error(msg);              
-%             
-%         end    
+        %Determine the side of the event function
+        eveSide = getEventSide(params,nS);
+        
+        %Test to see if the event function will even work before solving 
+        %the ODEs
+        if testEventFunc(params,iStates,funcEve,eveSide) == 0
+            
+            %Display the error message
+            msg = 'The event will not work with the current initial state';
+            msg = append(funcId,': ',msg);
+            warning(msg);              
+            
+        end    
         
         %Enable the option for an event function
         event = odeset('Events', @(t,states) funcEve(params,t,states));  
