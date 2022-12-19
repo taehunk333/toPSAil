@@ -68,7 +68,7 @@ function options = setOdeSolverOpts(params,iStates,nS,~)
     if needEvent == 1
                                           
         %Determine the side of the event function
-        eveSide = getEventSide(params,nS);
+        eveSide = getEventSide(params,nS);                
         
         %Test to see if the event function will even work before solving 
         %the ODEs

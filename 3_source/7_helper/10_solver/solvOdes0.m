@@ -138,7 +138,17 @@ function [sol0,tDom0,preInt] = solvOdes0(params,tDom,iStates,nS)
         %-----------------------------------------------------------------%
         %If the pressure needs to build up
         if raTaSign < 0
-                       
+            
+            %-------------------------------------------------------------%
+            %Update the data structure
+            
+            %Update the data structure with integration specific 
+            %information for the given step
+            params = grabParams4Step(params,nS);
+            %-------------------------------------------------------------%
+            
+            
+            
             %-------------------------------------------------------------%
             %Update relevant information and define a new function handle
             %for the right-hand side
@@ -169,8 +179,8 @@ function [sol0,tDom0,preInt] = solvOdes0(params,tDom,iStates,nS)
                       calcVolFlows4UnitsFlowCtrlDT0AccRaTa(params, ...
                                                            units,nS);
                 
-            end
-                  
+            end                              
+            
             %Define the right-hand side function
             funcRhs = @(t,x) defineRhsFunc(t,x,params);  
             %-------------------------------------------------------------%
