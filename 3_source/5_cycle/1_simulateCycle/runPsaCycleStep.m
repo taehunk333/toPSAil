@@ -62,14 +62,7 @@ function [stTime,stStates,flags] ...
     numIntSolv = params.numIntSolv ;
     funcEve    = params.funcEve{nS};
     bool       = params.bool       ;
-    numZero    = params.numZero    ;
-    
-    %Update the data structure with integration specific information for
-    %the given step
-    params = grabParams4Step(params,nS);              
-   
-    %Define the right hand side function
-    funcRhs = @(t,x) defineRhsFunc(t,x,params);  
+    numZero    = params.numZero    ;          
     
     %Initialize the original integration; it must be done, to begin with
     orgInt = 1;
@@ -151,10 +144,15 @@ function [stTime,stStates,flags] ...
     if orgInt == 1
     
         %-----------------------------------------------------------------%
-        %Define the options for the ODE solver to solver the system of ODEs
+        %Define the right-hand side function to be integrated, along with
+        %options for the ODE solver to solver the system of ODEs        
+        
+        %Update the data structure with integration specific information 
+        %for the given step
+        params = grabParams4Step(params,nS);                     
 
-        %Get the ode solver option from setOdeSolverOpts.m
-        options = setOdeSolverOpts(params,iStates,nS,nCy);
+        %Define the right hand side function
+        funcRhs = @(t,x) defineRhsFunc(t,x,params);                        
         %-----------------------------------------------------------------%
 
 
@@ -165,11 +163,17 @@ function [stTime,stStates,flags] ...
         %If we were to extend the solution
         if preInt == 1
             
+            %Get the ode solver option from setOdeSolverOpts.m
+            options = setOdeSolverOpts(params,sol0.ye',nS,nCy);
+            
             %Perform the numerical integration for the step
             sol = odextend(sol0,funcRhs,tDom(2),[],options);            
             
         %If we are doing the original numerical integration
         else
+            
+            %Get the ode solver option from setOdeSolverOpts.m
+            options = setOdeSolverOpts(params,iStates,nS,nCy);
             
             %Perform the numerical integration for the step
             sol = solvOdes(funcRhs,tDom,iStates,options,numIntSolv);
@@ -196,7 +200,7 @@ function [stTime,stStates,flags] ...
     %the mode of integration (i.e. event vs time).
     
     %If we have the results from event driven numerical integration,
-   if isempty(funcEve) ~= 1     
+    if isempty(funcEve) ~= 1     
         
         %-----------------------------------------------------------------%
         %Make sure that the event had happened for the original numerical

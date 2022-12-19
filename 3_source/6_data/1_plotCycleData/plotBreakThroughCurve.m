@@ -55,6 +55,7 @@ function plotBreakThroughCurve(params,sol,colNum)
     nRows      = params.nRows     ;
     nLKs       = params.nLKs      ; 
     colorBnW   = params.colorBnW  ;
+    nVols      = params.nVols     ;
     %---------------------------------------------------------------------%
 
   
@@ -136,9 +137,9 @@ function plotBreakThroughCurve(params,sol,colNum)
     
     %Grab the total concentration for the adsorption column
     
-    %Grab the total concentration
+    %Grab the total concentration in the last CSTR (i.e., the product end)
     totConc = sol.(append('Step',int2str(indHpEnd))). ...
-              col.(sColNums{colNum}).gasConsTot(:,end);
+              col.(sColNums{colNum}).gasConsTot(:,nVols);
     
     %Initialize the sum of the light key concentrations
     sumLkConcs = zeros(nRows,1);
@@ -147,10 +148,10 @@ function plotBreakThroughCurve(params,sol,colNum)
     for j = 1 : nLKs
 
         %Update the currnet sum of the total gas concentration in the
-        %raffinate product tank
+        %last CSTR at the product end
         sumLkConcs = sumLkConcs ...
                    + sol.(append('Step',int2str(indHpEnd))). ...
-                     col.(sColNums{colNum}).gasCons.(sComNums{j})(:,end);
+                     col.(sColNums{colNum}).gasCons.(sComNums{j})(:,nVols);
 
     end        
           
