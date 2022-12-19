@@ -19,14 +19,14 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/10/4/Tuesday
-%Code last modified on : 2022/10/4/Tuesday
+%Code last modified on : 2022/12/18/Sunday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : getAds2PrEndEventMoleFracCum.m
 %Source     : common
 %Description: This is an event function that triggers when the cumulative
-%             mole fraction inside the n_c th CSTR inside the 1st adsorber
+%             mole fraction inside the n_c th CSTR inside the 2nd adsorber
 %             reaches a prespecified threshold value.
 %Inputs     : params       - a struct containing simulation parameters.
 %             t            - a current time point.
@@ -83,6 +83,14 @@ function [event,isterminal,direction] ...
     %the 1st adsorber
     currLkMolFrac = gasMolLk ...
                   / gasMolTot;
+                            
+    %If we have a NaN (at t = 0, we divide by zero)
+    if isnan(currLkMolFrac)
+        
+        %make sure that we are on the right side of the event function
+        currLkMolFrac = 1;
+        
+    end
     %---------------------------------------------------------------------%
 
 

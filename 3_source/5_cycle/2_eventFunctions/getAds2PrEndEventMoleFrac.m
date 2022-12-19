@@ -26,7 +26,7 @@
 %Function   : getAds2PrEndEventMoleFrac.m
 %Source     : common
 %Description: This is an event function that triggers when the mole
-%             fraction inside the n_c th CSTR inside the 1st adsorber
+%             fraction inside the n_c th CSTR inside the 2nd adsorber
 %             reaches a prespecified threshold value.
 %Inputs     : params       - a struct containing simulation parameters.
 %             t            - a current time point.

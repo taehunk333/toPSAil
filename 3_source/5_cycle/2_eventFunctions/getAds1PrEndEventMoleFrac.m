@@ -91,7 +91,7 @@ function [event,isterminal,direction] ...
 
     %Check the mole fraction threshold
     event = currLkMolFrac ...
-          - eveLkMolFrac ;
+          - eveLkMolFrac;
     %---------------------------------------------------------------------%    
     
 

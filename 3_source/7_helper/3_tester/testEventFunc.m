@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2019/2/4/Monday
-%Code last modified on : 2022/10/3/Monday
+%Code last modified on : 2022/12/18/Sunday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -35,13 +35,14 @@
 %                            side of zero the event function would start. A
 %                            positive number will define the positive side 
 %                            as the expected side of zero and vice versa 
-%                            for a negative number. 
-%                            expectedSideOfZero=1 means that you expect the
-%                            event function's threshold comparison to yield
-%                            a positive result.    
-%Outputs    : event        - a logic value of true or false. If true, 
+%                            for a negative number. For example, side = 1 
+%                            means that you expect the event function's 
+%                            threshold comparison to yield a positive 
+%                            result. When side = 0, event can happen from
+%                            either side.
+%Outputs    : event        - a logical value of true or false. If true (1), 
 %                            the event function will work with the given 
-%                            initial condition. If false, the event 
+%                            initial condition. If false (0), the event 
 %                            function will not work.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -97,13 +98,22 @@ function event = testEventFunc(params,states,func,side)
     %be positive.
     if decision < 0
         
+        %Event will not happen
         event = false;
         
     %If the ratio is greater than 0 (i.e., a positive value), the evaluated 
     %value of the event funtion has to start from the positive side
-    else 
+    elseif decision > 0
         
+        %Event will happen
         event = true ; 
+        
+    %If the ratio is equal to 0, then the evaluated value of the event
+    %function can start from any sides
+    else
+        
+        %Event will happen
+        event = true;
         
     end
     %---------------------------------------------------------------------%

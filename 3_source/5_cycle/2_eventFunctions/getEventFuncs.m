@@ -427,8 +427,10 @@ function funcEve = getEventFuncs(params)
                 %fractions
                 elseif eveTypeMolFracCum == 1
                     
-                    %Notify the user that the event is not supported
-                    noteEventNotReady(funcId);
+                    %Assign the event function
+                    funcEve{i} ...
+                        = @(params,t,states) ...
+                          getRaTaEventMoleFracCum(params,t,states);
                     
                 %If we have the pressure in the unit
                 elseif eveTypePres == 1

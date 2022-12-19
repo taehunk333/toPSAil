@@ -19,14 +19,14 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/10/4/Tuesday
-%Code last modified on : 2022/10/4/Tuesday
+%Code last modified on : 2022/12/18/Sunday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : getRaStEventMoleFracCum.m
 %Source     : common
 %Description: This is an event function that triggers when the cumulative
-%             mole fraction inside the raffinate tank reaches a 
+%             mole fraction inside the raffinate stream reaches a
 %             prespecified threshold value.
 %Inputs     : params       - a struct containing simulation parameters.
 %             t            - a current time point.
@@ -54,6 +54,7 @@ function [event,isterminal,direction] ...
     nComs        = params.nComs       ;    
     inShRaTa     = params.inShRaTa    ;
     nLKs         = params.nLKs        ;
+    nTemp        = params.nTemp       ;
     %---------------------------------------------------------------------%
     
     
@@ -62,7 +63,7 @@ function [event,isterminal,direction] ...
     %Compute the event criteria 
 
     %Shift the index to be that of the raffinate tank
-    indSh = inShRaTa+(nComs+2);
+    indSh = inShRaTa+(nComs+nTemp+nComs);
 
     %Get the indices for the light key
     indLk    = indSh+1   ;
@@ -82,6 +83,14 @@ function [event,isterminal,direction] ...
     %Compute the current light key mole fraction inside the raffinate tank
     currLkMolFrac = gasMolLk ...
                   / gasMolTot;
+              
+    %If we have a NaN (at t = 0, we divide by zero)
+    if isnan(currLkMolFrac)
+        
+        %make sure that we are on the right side of the event function
+        currLkMolFrac = 1;
+        
+    end
     %---------------------------------------------------------------------%
 
 

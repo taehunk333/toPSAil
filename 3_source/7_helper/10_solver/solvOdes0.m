@@ -42,7 +42,7 @@
 %Outputs    : sol0         - a data structure containing the solution
 %                            outputs
 %             tDom0        - the new time span for the numerical 
-%                            integration of the original set of ODES
+%                            integration of the original set of ODEs
 %             preInt       - a boolean variable that returns 1, if the 
 %                            pre-numerical integration had happened
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
