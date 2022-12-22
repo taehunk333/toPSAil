@@ -89,7 +89,7 @@ function plotColPressureComparisons(nAds)
         plot(time1,pressure1,'LineWidth',2.0,'Color',[0,0,0]);
 
         %Clear the work space
-        clearvars -except color time1 nAds;
+        clearvars -except color time1 pressure1 nAds;
         %-----------------------------------------------------------------%
     
     
@@ -121,16 +121,22 @@ function plotColPressureComparisons(nAds)
     timeMax = max([max(time1),max(time2)]);
     
     %Add entry to the legend
-    legend('controlled', ...
-           'uncontrolled', ...
+    legend('flow+event', ...
+           'pres.+time', ...
            'Location', ...
            'SouthEast');
     
     %Resize the figure
-    set(gcf,'Position',[100,25,600,250]);
+    set(gcf,'Position',[100,25,575,250]);
     
     %Set the limit on the x-axis
     xlim([0,timeMax]);
+    
+    %Determine the maximum pressure
+    presMax = round(max([max(pressure1),max(pressure2)]))+0.5;
+    
+    %Set the limit on the y-axia
+    ylim([0,presMax]);
     
     %Hold off of the figure
     hold off;    

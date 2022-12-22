@@ -137,7 +137,7 @@ function plotProductRecovery(params,sol)
     legend(sCom,'Location','NorthWest');
     
     %Resize the figure
-    set(gcf,'Position',[100,25,600,250]);
+    set(gcf,'Position',[100,25,575,250]);
     
     %Set the limit on the x-axis
     xlim([1,lastCycNo]);

@@ -143,7 +143,7 @@ function plotProductivity(params,sol)
     legend('Raffinate','Extract','Location','NorthWest');
     
     %Resize the figure
-    set(gcf,'Position',[100,25,600,250]);
+    set(gcf,'Position',[100,25,575,250]);
     
     %Set the limit on the x-axis
     xlim([1,lastCycNo]);
