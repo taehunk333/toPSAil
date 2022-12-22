@@ -116,10 +116,10 @@ function plotAdsConsHighPresFeed(params,sol,colNum)
         hold on;
 
         %Grab total pressure for jth adsorption column in ith step
-        pressure = sol.(append('Step',int2str(indHpEnd))). ...
-                   col.(append('n',int2str(colNum))).adsCons. ...
-                   (append('C',int2str(i)))(end,:) ...
-                 * aConScaleFac;
+        concentration = sol.(append('Step',int2str(indHpEnd))). ...
+                        col.(append('n',int2str(colNum))).adsCons. ...
+                        (append('C',int2str(i)))(end,:) ...
+                      * aConScaleFac;
              
         %If light key, then
         if i <= nLKs
@@ -136,7 +136,7 @@ function plotAdsConsHighPresFeed(params,sol,colNum)
         end
 
         %Plot the ith step with jth column
-        plot(height,pressure,'LineWidth',2.0,'Color',rgb);                
+        plot(height,concentration,'LineWidth',2.0,'Color',rgb);                
 
     end                 
     %---------------------------------------------------------------------%  

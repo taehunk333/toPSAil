@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/10/Wednesday
-%Code last modified on : 2022/10/19/Wednesday
+%Code last modified on : 2022/12/19/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -110,9 +110,8 @@ function plotColPresProfiles(params,sol)
             rgb = grabColor(j,colorBnW);                       
                                     
             %Grab total pressure for jth adsorption column in ith step
-            %(For the sake of computational efforts, just plot the last
-            %CSTR total pressure, assuming the axially constant pressure
-            %DAE models)
+            %(For the sake of computational efforts, just plot the average
+            %CSTR pressure)
             pressure ...
                 = sum(sol.(append('Step',int2str(i))). ...
                       col.(append('n',int2str(j))).gasConsTot,2) ...

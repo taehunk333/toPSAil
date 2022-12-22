@@ -42,7 +42,7 @@ function plotPsaSimulationResults(params,sol)
     %funcId = 'plotPsaSimulationResults';
     
     %Unpack Params
-    plot    = params.plot  ;
+    plotFig = params.plot  ;
     nCols   = params.nCols ;
     figPath = sol.path.figs;
     
@@ -65,7 +65,7 @@ function plotPsaSimulationResults(params,sol)
     %Check for the first plotting mode
     
     %If user requested the plot,     
-    if plot(1) == 1
+    if plotFig(1) == 1
                                 
         %Plot the pressure profiles for the adsorption column(s)
         plotColPresProfiles(params,sol);
@@ -95,7 +95,7 @@ function plotPsaSimulationResults(params,sol)
     %Check for the second plotting mode
     
     %If user requested the plot,     
-    if plot(2) == 1
+    if plotFig(2) == 1
         
         %Plot the pressure profiles for the raffinate product receiver tank
         plotRaTaPresProfiles(params,sol);
@@ -144,7 +144,7 @@ function plotPsaSimulationResults(params,sol)
     %Check for the third plotting mode
     
     %If user requested the plot,     
-    if plot(3) == 1
+    if plotFig(3) == 1
         
         %For each adsorption column,
         for i = 1 : nCols
@@ -181,7 +181,7 @@ function plotPsaSimulationResults(params,sol)
     %Check for the fourth plotting mode
     
     %If user requested the plot,     
-    if plot(4) == 1
+    if plotFig(4) == 1
         
         %For each adsorption column,
         for i = 1 : nCols
@@ -222,7 +222,7 @@ function plotPsaSimulationResults(params,sol)
     prevFigObj = figObj;  
     
     %If user requested the plot,     
-    if plot(5) == 1
+    if plotFig(5) == 1
         
         %For each adsorption column,
         for i = 1 : nCols
@@ -271,7 +271,7 @@ function plotPsaSimulationResults(params,sol)
     %Check for the sixth plotting mode
     
     %If user requested the plot,     
-    if plot(6) == 1
+    if plotFig(6) == 1
         
         %Plot product purity inside the raffinate product tank
         plotRaTaPurity(params,sol,1);
@@ -320,7 +320,7 @@ function plotPsaSimulationResults(params,sol)
     %Check for the seventh plotting mode
     
     %If user requested the plot,     
-    if plot(7) == 1
+    if plotFig(7) == 1
         
         %For each adsorption column,
         for i = 1 : nCols
@@ -380,7 +380,7 @@ function plotPsaSimulationResults(params,sol)
     %Check for the eighth plotting mode
     
     %If user requested the plot,     
-    if plot(8) == 1
+    if plotFig(8) == 1
         
         %Plot Product Purity Profile
         plotProductPurity(params,sol);
@@ -410,7 +410,7 @@ function plotPsaSimulationResults(params,sol)
     %Check for the ninth plotting mode
     
     %If user requested the plot,     
-    if plot(9) == 1
+    if plotFig(9) == 1
         
         %Plot Product Purity Profile
         plotProductRecovery(params,sol);
@@ -440,7 +440,7 @@ function plotPsaSimulationResults(params,sol)
     %Check for the tenth plotting mode
     
     %If user requested the plot,     
-    if plot(10) == 1
+    if plotFig(10) == 1
         
         %Plot Product Purity Profile
         plotProductivity(params,sol);
@@ -470,7 +470,7 @@ function plotPsaSimulationResults(params,sol)
     %Check for the eleventh plotting mode
     
     %If user requested the plot,     
-    if plot(11) == 1
+    if plotFig(11) == 1
         
         %Plot Product Purity Profile
         plotEnergyConsumption(params,sol);
@@ -500,7 +500,7 @@ function plotPsaSimulationResults(params,sol)
     %Check for the twelfth plotting mode
     
     %If user requested the plot,     
-    if plot(12) == 1
+    if plotFig(12) == 1
         
         %Plot Product Purity Profile
         plotCssConv(params,sol);
