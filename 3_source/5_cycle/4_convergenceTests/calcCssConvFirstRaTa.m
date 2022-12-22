@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/3/25/Thursday
-%Code last modified on : 2022/10/19/Wednesday
+%Code last modified on : 2022/12/20/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -47,7 +47,7 @@ function css = calcCssConvFirstRaTa(params,initCondCurr,initCondPrev)
     
     %Unpack params
     inShRaTa = params.inShRaTa;
-    nRaTaStT = params.nRaTaStT;
+    nRaTaStT = params.nRaTaStT;    
     %---------------------------------------------------------------------% 
     
     
@@ -62,10 +62,17 @@ function css = calcCssConvFirstRaTa(params,initCondCurr,initCondPrev)
     %Compute the difference between the cycle initial conditions
     diffInitCond = initCondCurr(indInit:indLast) ...
                  - initCondPrev(indInit:indLast);
+             
+    %Grab the length of the vector
+    lenDiff = length(diffInitCond);
     
     %Compute the l2-norm of the difference and square it. (Convergence
     %criteria from Westerberg 1992)
     css = norm(diffInitCond,2)^2;       
+    
+    %Take the average of "css" with respect to the total number of states
+    %(this is possible because our model is nondimensionalized)
+    css = css/lenDiff;   
     %---------------------------------------------------------------------%    
     
 end

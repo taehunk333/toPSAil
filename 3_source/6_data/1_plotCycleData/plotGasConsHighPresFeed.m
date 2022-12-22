@@ -119,10 +119,10 @@ function plotGasConsHighPresFeed(params,sol,colNum)
         hold on;
 
         %Grab total pressure for jth adsorption column in ith step
-        conc = sol.(append('Step',int2str(indHpEnd))). ...
-                   col.(append('n',int2str(colNum))).gasCons. ...
-                   (append('C',int2str(i)))(end,:) ...
-                 * gConScaleFac;
+        concentration = sol.(append('Step',int2str(indHpEnd))). ...
+                        col.(append('n',int2str(colNum))).gasCons. ...
+                        (append('C',int2str(i)))(end,:) ...
+                      * gConScaleFac;
         
         %If light key, then
         if i <= nLKs
@@ -139,7 +139,7 @@ function plotGasConsHighPresFeed(params,sol,colNum)
         end
              
         %Plot the ith step with jth column
-        plot(height,conc,'LineWidth',2.0,'Color',rgb);                
+        plot(height,concentration,'LineWidth',2.0,'Color',rgb);                
 
     end                 
     %---------------------------------------------------------------------%  
