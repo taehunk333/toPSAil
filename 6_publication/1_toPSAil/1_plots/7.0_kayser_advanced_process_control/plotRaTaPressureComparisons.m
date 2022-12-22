@@ -121,13 +121,13 @@ function plotRaTaPressureComparisons()
     timeMax = max([max(time1),max(time2)]);
     
     %Add entry to the legend
-    legend('controlled', ...
-           'uncontrolled', ...
+    legend('flow+event', ...
+           'pres.+time', ...
            'Location', ...
            'SouthEast');
     
     %Resize the figure
-    set(gcf,'Position',[100,25,600,250]);
+    set(gcf,'Position',[100,25,575,250]);
     
     %Set the limit on the x-axis
     xlim([0,timeMax]);

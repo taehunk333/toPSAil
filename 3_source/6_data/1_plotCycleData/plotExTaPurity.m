@@ -133,7 +133,7 @@ function plotExTaPurity(params,sol,exTaNum)
     legend('n1','Location','NorthWest');
     
     %Resize the figure
-    set(gcf,'Position',[100,25,600,250]);
+    set(gcf,'Position',[100,25,575,250]);
     
     %Turn on the zoom feature
     zoom on;

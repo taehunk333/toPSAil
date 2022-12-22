@@ -117,7 +117,7 @@ function plotRaTaPresProfiles(params,sol)
     legend('n1','Location','SouthEast');
     
     %Resize the figure
-    set(gcf,'Position',[100,25,600,250]);
+    set(gcf,'Position',[100,25,575,250]);
     
     %Hold off of the figure
     hold off;    

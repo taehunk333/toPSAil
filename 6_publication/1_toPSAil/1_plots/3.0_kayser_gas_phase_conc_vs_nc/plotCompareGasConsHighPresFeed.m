@@ -101,7 +101,7 @@ function plotCompareGasConsHighPresFeed()
         %Grab the table name
         tableName = strcat('nc',sCases{i});
 
-        %Grab the .csvfile and get the matrix
+        %Grab the .csv file and get the matrix
         matrix4Data = readtable(tableName, ...
                                 'VariableNamingRule', ...
                                 'preserve');
@@ -155,7 +155,7 @@ function plotCompareGasConsHighPresFeed()
     legend(sCom,'Location','SouthWest');
     
     %Resize the figure
-    set(gcf,'Position',[100,25,600,250]);
+    set(gcf,'Position',[100,25,575,250]);
     
     %Set the limit on the x-axis
     xlim([0,heightCol]);

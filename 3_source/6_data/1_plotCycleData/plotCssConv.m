@@ -140,7 +140,7 @@ function plotCssConv(params,sol)
     %legend(str2,'Location','SouthWest');
     
     %Resize the figure
-    set(gcf,'Position',[100,25,600,250]);    
+    set(gcf,'Position',[100,25,575,250]);    
     
     %Set integer spacing
     set(gca,'xtick',0:laststep/nSteps+1);

@@ -150,7 +150,7 @@ function plotAdsConsHighPresFeed(params,sol,colNum)
     legend(sCom,'Location','SouthWest');
     
     %Resize the figure
-    set(gcf,'Position',[100,25,600,250]);
+    set(gcf,'Position',[100,25,575,250]);
     
     %Set the limit on the x-axis
     xlim([0,heightCol]);
