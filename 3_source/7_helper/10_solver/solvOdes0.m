@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/10/22/Saturday
-%Code last modified on : 2022/10/3/Sunday
+%Code last modified on : 2022/12/22/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -65,6 +65,7 @@ function [sol0,tDom0,preInt] = solvOdes0(params,tDom,iStates,nS)
     nComs         = params.nComs         ;
     bool          = params.bool          ;
     numIntSolv    = params.numIntSolv    ;
+    eveLoc        = params.eveLoc{nS}    ;
     %---------------------------------------------------------------------%
     
     
@@ -109,6 +110,9 @@ function [sol0,tDom0,preInt] = solvOdes0(params,tDom,iStates,nS)
     
     %Check the energy balance equation
     enerBalTrue = bool(5);
+    
+    %Check to see if an event is required for the entire step
+    eveTrue = ~contains(eveLoc,'None');
     %---------------------------------------------------------------------%
     
     
@@ -153,11 +157,25 @@ function [sol0,tDom0,preInt] = solvOdes0(params,tDom,iStates,nS)
             %Update relevant information and define a new function handle
             %for the right-hand side
             
-            %Set the option for the event function
-            options ...
-                = odeset('Events', ...
-                         @(t,states) ...
-                         getRaTaEventPressureAcc(params,t,states));
+            %If we have another event, i.e., we have an event-driven mode, 
+            if eveTrue == 1
+            
+                %Set the option for the event function
+                options ...
+                    = odeset('Events', ...
+                             @(t,states) ...
+                             getRaTaEventPressureAccMult(params,t,states));
+                                            
+            %If it is a time-driven mode,
+            else
+                
+                %Set the option for the event function
+                options ...
+                    = odeset('Events', ...
+                             @(t,states) ...
+                             getRaTaEventPressureAcc(params,t,states));
+                
+            end
             
             %When noisothermal,
             if enerBalTrue == 1
@@ -196,10 +214,28 @@ function [sol0,tDom0,preInt] = solvOdes0(params,tDom,iStates,nS)
             %Print out the numerical integration stats
             noteNumIntStats(sol0,numIntSolv);
             
-            %Print additional helpful message
-            fprintf("\n*******************************************\n"); 
-            fprintf("Pre-integration for 'HP-FEE-RAF' finished.")     ; 
-            fprintf("\n*******************************************\n"); 
+            %Figure out which event triggered
+            eveTrig = sol0.ie;
+            
+            %Depending on the event, print out helpful messages
+            
+            %When the raffinate tank pressure reached a threshold,
+            if eveTrig == 1
+            
+                %Print additional helpful message
+                fprintf("\n*******************************************\n"); 
+                fprintf("The raff. tank pressure has reached.")           ; 
+                fprintf("\n*******************************************\n"); 
+                
+            %When the user-supplied event triggered,
+            elseif eveTrig == 2
+                
+                %Print additional helpful message
+                fprintf("\n*******************************************\n"); 
+                fprintf("The user-supplied event triggered first.")       ; 
+                fprintf("\n*******************************************\n");
+                
+            end
             %-------------------------------------------------------------%
             
             
@@ -252,16 +288,40 @@ function [sol0,tDom0,preInt] = solvOdes0(params,tDom,iStates,nS)
         %-----------------------------------------------------------------%
         %If the pressure needs to build up
         if exTaSign < 0
-                       
+              
+            %-------------------------------------------------------------%
+            %Update the data structure
+            
+            %Update the data structure with integration specific 
+            %information for the given step
+            params = grabParams4Step(params,nS);
+            %-------------------------------------------------------------%
+            
+            
+            
             %-------------------------------------------------------------%
             %Update relevant information and define a new function handle
             %for the right-hand side
             
-            %Set the option for the event function
-            options ...
-                = odeset('Events', ...
-                         @(t,states) ...
-                         getExTaEventPressureAcc(params,t,states));
+            %If we have another event, i.e., we have an event-driven mode, 
+            if eveTrue == 1
+            
+                %Set the option for the event function
+                options ...
+                    = odeset('Events', ...
+                             @(t,states) ...
+                             getExTaEventPressureAccMult(params,t,states));
+                                            
+            %If it is a time-driven mode,
+            else
+                
+                %Set the option for the event function
+                options ...
+                    = odeset('Events', ...
+                             @(t,states) ...
+                             getExTaEventPressureAcc(params,t,states));
+                
+            end                                    
             
             %When noisothermal,
             if enerBalTrue == 1
@@ -300,10 +360,28 @@ function [sol0,tDom0,preInt] = solvOdes0(params,tDom,iStates,nS)
             %Print out the numerical integration stats
             noteNumIntStats(sol0,numIntSolv);
             
-            %Print additional helpful message
-            fprintf("\n*******************************************\n"); 
-            fprintf("Pre-integration for 'DP-EXT-XXX' finished.")     ; 
-            fprintf("\n*******************************************\n"); 
+            %Figure out which event triggered
+            eveTrig = sol0.ie;
+            
+            %Depending on the event, print out helpful messages
+            
+            %When the raffinate tank pressure reached a threshold,
+            if eveTrig == 1
+            
+                %Print additional helpful message
+                fprintf("\n*******************************************\n"); 
+                fprintf("The extr. tank pressure has reached.")           ; 
+                fprintf("\n*******************************************\n"); 
+                
+            %When the user-supplied event triggered,
+            elseif eveTrig == 2
+                
+                %Print additional helpful message
+                fprintf("\n*******************************************\n"); 
+                fprintf("The user-supplied event triggered first.")       ; 
+                fprintf("\n*******************************************\n");
+                
+            end 
             %-------------------------------------------------------------%
             
             
