@@ -62,7 +62,7 @@ function [stTime,stStates,flags] ...
     numIntSolv = params.numIntSolv ;
     funcEve    = params.funcEve{nS};
     bool       = params.bool       ;
-    numZero    = params.numZero    ;          
+    numZero    = params.numZero    ; 
     
     %Initialize the original integration; it must be done, to begin with
     orgInt = 1;
@@ -73,7 +73,7 @@ function [stTime,stStates,flags] ...
     %---------------------------------------------------------------------%
     %Update the initial condition vector
             
-    %If we are doing a flow driven simulation
+    %If we are doing a flow driven simulation, and no event is specified
     if bool(3) == 0
         
         %-----------------------------------------------------------------%
@@ -88,10 +88,30 @@ function [stTime,stStates,flags] ...
         
         %-----------------------------------------------------------------%
         %Update the information for the original numerical integration
-        
+                        
         %If pre-integration was needed and done,
         if preInt == 1
                  
+            %-------------------------------------------------------------%                        
+            %
+            
+            %Check to see if the user-specified event has triggered: 
+            %eveTrig = 2. First, see if the field is not empty or not
+            if ~isempty(sol0.ie)
+            
+                %When the field ie is not empty, we save it as a variable
+                eveTrig = sol0.ie;
+                
+            else
+                
+               %When the field ie is empty, we save it as a zero
+               eveTrig = 0;
+                
+            end
+            %-------------------------------------------------------------%                        
+            
+            
+            
             %-------------------------------------------------------------%                        
             %Get the terminal time points
             tf  = tDom(2) ;
@@ -99,8 +119,9 @@ function [stTime,stStates,flags] ...
 
             %Consider the duration of the pre-integration. If we are pretty
             %much done with the numerical integration for the step, within 
-            %the numerical tolerance, then
-            if abs(tf-tf0) < numZero
+            %the numerical tolerance, or the second event triggered first,
+            %then
+            if abs(tf-tf0) < numZero || eveTrig == 2
                 
                 %Update the solution data structure
                 sol = sol0;
@@ -201,38 +222,7 @@ function [stTime,stStates,flags] ...
     
     %If we have the results from event driven numerical integration,
     if isempty(funcEve) ~= 1     
-        
-        %-----------------------------------------------------------------%
-        %Make sure that the event had happened for the original numerical
-        %integration
-        
-        %When the pre-integration triggered an event, i.e., there is a
-        %field named 'xe' in the solution structure sol0, 
-        if isfield(sol0,'xe') == 1 
-        
-            %The soluation structure sol for the original integration,
-            %following the pre-integration, will surely contain 'xe', 'ye',
-            %and 'ie' as it fields. Can we say that the event times from 
-            %the pre-integration and the original integration are the same?
-            %In other words, if they are the same, then no event has
-            %happened for the original integration. Note that the next
-            %event is just added to the next element as a vector.
-            if length(sol.xe) == 1
-                
-               %No event has happened for the original integration.
-               %Therefore, return empty values for the event related
-               %parameters
-               sol.xe = [];
-               sol.ye = [];
-               sol.ie = 0 ;               
-                
-            end
-  
-        end
-        %-----------------------------------------------------------------%
-        
-        
-        
+               
         %-----------------------------------------------------------------%
         %Test to see if the event function is what caused the integration 
         %to stop

@@ -58,7 +58,7 @@ function plotCssConv(params,sol)
     lastCycNo = laststep/nSteps;
     
     %Create a linearly spaces cycle number vectors
-    cycleNums = linspace(2,lastCycNo+1,lastCycNo)';
+    cycleNums = linspace(1,lastCycNo,lastCycNo)';
     
     %Create a numerical zero vector
     numZeros = ones(1,lastCycNo)*numZero;
@@ -115,7 +115,7 @@ function plotCssConv(params,sol)
     %title(strTitle);
 
     %Determine x-axis (ordinate) label
-    xlabel('Start of the n^{th} PSA Cycle');
+    xlabel('End of the n^{th} PSA Cycle');
 
     %Determine y-axis (absicissa) label
     ylabel("L2-Norm Diff. Sq.");
