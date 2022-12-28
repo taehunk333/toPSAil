@@ -121,7 +121,21 @@ function sol = runPsaCycle(params)
         iCondCurr = iStates;
 
         %Get the cyclic steady state convergence using L2-Norm
-        sol.css(nCy) = funcCss(params,iCondCurr,iCondPrev);    
+        cssCurr = funcCss(params,iCondCurr,iCondPrev);  
+        
+        %Starting from the 2nd PSA cycle
+        if nCy > 1
+        
+            %Print CSS results
+            fprintf("\n*******************************************\n"); 
+            fprintf("CSS metrics : %d (%d) \n",cssCurr,numZero)       ;
+            fprintf("CSS approach : %.2f %% \n",(numZero/cssCurr*100));
+            fprintf("*******************************************\n")  ;
+                
+        end
+        
+        %Save the CSS convergence result
+        sol.css(nCy) = cssCurr;
 
         %Update the previous initial condition using the current initial
         %condition
@@ -375,7 +389,7 @@ function sol = runPsaCycle(params)
                 if currStepNum == nSteps
                 
                     %Calculate the performance metrics and save the results
-                    sol = getPerformanceMetrics(params,sol,nS,nCy);                
+                    sol = getPerformanceMetrics(params,sol,nS,nCy);                                         
                     
                 end
                 %---------------------------------------------------------%
@@ -417,7 +431,7 @@ function sol = runPsaCycle(params)
                 %Print the simulation information                
                 fprintf("\n*******************************************\n"); 
                 fprintf("Cycle No.%d, Step No.%d is finished. \n",nCy,nS) ;
-                fprintf("*Adsorber Steps : ")                            ;
+                fprintf("*Adsorber Steps: ")                              ;
                 
                 %For each adsorption column,
                 for i = 1 : nCols

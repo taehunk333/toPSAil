@@ -64,7 +64,7 @@ function plotCssComparisons(expName,numZero)
     %title(strTitle);
 
     %Determine x-axis (ordinate) label
-    xlabel('Cycle No. [-]');
+    xlabel('At the end of the n^{th} Cycle. [-]');
 
     %Determine y-axis (absicissa) label
     ylabel('CSS Conv. [-]');
@@ -105,7 +105,7 @@ function plotCssComparisons(expName,numZero)
         cssCrit1 = matrix4Data{:,2};        
 
         %Plot the results
-        semilogy(cycNo1,cssCrit1,'-x', ...
+        semilogy(cycNo1,cssCrit1,'-o', ...
                 'LineWidth',2.0,'Color',[0.6,0.6,0.6]);
 
         %Clear the work space
@@ -136,8 +136,8 @@ function plotCssComparisons(expName,numZero)
         cssCrit2 = matrix4Data{:,2};        
 
         %Plot the results
-        semilogy(cycNo2,cssCrit2,'-o', ...
-                 'LineWidth',2.0,'Color',[0.6,0.6,0.6]);
+        semilogy(cycNo2,cssCrit2,':o', ...
+                 'LineWidth',2.0,'Color',[0,0,0]);
 
         %Clear the work space
         clearvars -except numZero expName cycNo1 cycNo2;        
@@ -167,8 +167,8 @@ function plotCssComparisons(expName,numZero)
         cssCrit3 = matrix4Data{:,2};        
         
         %Plot the results
-        semilogy(cycNo3,cssCrit3,'-x', ...
-                 'LineWidth',2.0,'Color',[0,0,0]);
+        semilogy(cycNo3,cssCrit3,'-square', ...
+                 'LineWidth',2.0,'Color',[0.6,0.6,0.6]);
         
         %Clear the work space
         clearvars -except numZero expName cycNo1 cycNo2 cycNo3;
@@ -198,7 +198,7 @@ function plotCssComparisons(expName,numZero)
         cssCrit4 = matrix4Data{:,2};        
         
         %Plot the results
-        semilogy(cycNo4,cssCrit4,'-o', ...
+        semilogy(cycNo4,cssCrit4,':square', ...
                  'LineWidth',2.0,'Color',[0,0,0]);        
         %-----------------------------------------------------------------%
               
