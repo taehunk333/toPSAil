@@ -61,7 +61,7 @@ function [event,isterminal,direction] ...
     %---------------------------------------------------------------------%
     %Compute the event criteria 
     
-    %Shift the index to be that of the last CSTR
+    %Shift the index to be that of the 1st CSTR for the 2nd adsorber
     indSh = nColStT;
 
     %Get the index for the light key
@@ -73,10 +73,10 @@ function [event,isterminal,direction] ...
     %Get the total gas concentration in the gas phase
     gasConsTot = sum(states(indLk:indEnd));
 
-    %Get the interior temperature of the n_c th CSTR
+    %Get the interior temperature of the 1st CSTR
     intTempCstr = states(indSh+2*nComs+1);
 
-    %Compute the current pressure in the n_c th CSTR
+    %Compute the current pressure in the 1st CSTR
     currCstrPressure = gasConsTot.*intTempCstr.*gasConsNormEq;
     %---------------------------------------------------------------------%
 
