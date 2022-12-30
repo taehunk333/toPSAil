@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2011/2/4/Thursday
-%Code last modified on : 2022/2/17/Thursday
+%Code last modified on : 2022/12/29/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -27,15 +27,31 @@
 %Source     : common
 %Description: this is a function that calls runPsaProcessSimulation.m so
 %             that MATLAB's profiler can be used to optimize the program.
+%Inputs     : num          - an integer for the function call number
+%Outputs    : n.a.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function programProfiler()        
+function programProfiler(varargin)        
     
     %---------------------------------------------------------------------%    
     %Define known quantities
     
     %Name the function ID
     %funcId = 'programProfiler.m';
+    
+    %If there are user-defined inputs
+    if ~isempty(varargin)
+        
+        %Let the first input be the function call number in integer
+        num = varargin{1};
+        
+    %Otherwise
+    else
+        
+        %Let the input num be an empty input
+        num = [];
+        
+    end
     %---------------------------------------------------------------------%    
     
     
@@ -60,9 +76,9 @@ function programProfiler()
     
     %---------------------------------------------------------------------%
     %Profile the code
-    
+            
     %Run the PSA process simulator
-    runPsaProcessSimulation(name);
+    runPsaProcessSimulation(name,num);        
     %---------------------------------------------------------------------%            
     
 end
