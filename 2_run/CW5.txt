@@ -1,0 +1,2641 @@
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+
+*******************************************
+Beginning a PSA cycle simulation...
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 133 
+*Number of Failed Steps         : 9 
+*Number of Function Evaluations : 394 
+*Number of Jacobian Evaluations : 9 
+*Number of LU Decompositions    : 34 
+*Number of Linear Solves        : 276 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.1 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 86 
+*Number of Failed Steps         : 5 
+*Number of Function Evaluations : 255 
+*Number of Jacobian Evaluations : 6 
+*Number of LU Decompositions    : 23 
+*Number of Linear Solves        : 176 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX DP-ATM-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 180 
+*Number of Failed Steps         : 8 
+*Number of Function Evaluations : 440 
+*Number of Jacobian Evaluations : 8 
+*Number of LU Decompositions    : 46 
+*Number of Linear Solves        : 335 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 91 
+*Number of Failed Steps         : 5 
+*Number of Function Evaluations : 250 
+*Number of Jacobian Evaluations : 6 
+*Number of LU Decompositions    : 26 
+*Number of Linear Solves        : 171 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.4 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 63 
+*Number of Failed Steps         : 3 
+*Number of Function Evaluations : 159 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 18 
+*Number of Linear Solves        : 119 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.5 is finished. 
+*Adsorber Steps: DP-ATM-XXX RP-FEE-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 317 
+*Number of Failed Steps         : 104 
+*Number of Function Evaluations : 1242 
+*Number of Jacobian Evaluations : 40 
+*Number of LU Decompositions    : 176 
+*Number of Linear Solves        : 721 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.6 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 1.266751e-02 (1.000000e-08) 
+CSS approach : 0.00% 
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 96 
+*Number of Failed Steps         : 7 
+*Number of Function Evaluations : 255 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 29 
+*Number of Linear Solves        : 189 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.1 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 62 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 140 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 16 
+*Number of Linear Solves        : 113 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX DP-ATM-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 234 
+*Number of Failed Steps         : 52 
+*Number of Function Evaluations : 830 
+*Number of Jacobian Evaluations : 25 
+*Number of LU Decompositions    : 101 
+*Number of Linear Solves        : 504 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 93 
+*Number of Failed Steps         : 7 
+*Number of Function Evaluations : 243 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 29 
+*Number of Linear Solves        : 177 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.4 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 62 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 140 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 16 
+*Number of Linear Solves        : 113 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.5 is finished. 
+*Adsorber Steps: DP-ATM-XXX RP-FEE-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 200 
+*Number of Failed Steps         : 21 
+*Number of Function Evaluations : 557 
+*Number of Jacobian Evaluations : 11 
+*Number of LU Decompositions    : 63 
+*Number of Linear Solves        : 413 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.6 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 1.309675e-04 (1.000000e-08) 
+CSS approach : 0.01% 
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 98 
+*Number of Failed Steps         : 7 
+*Number of Function Evaluations : 260 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 30 
+*Number of Linear Solves        : 194 
+*******************************************
+
+*******************************************
+Cycle No.3, Step No.1 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 62 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 141 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 16 
+*Number of Linear Solves        : 114 
+*******************************************
+
+*******************************************
+Cycle No.3, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX DP-ATM-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 185 
+*Number of Failed Steps         : 17 
+*Number of Function Evaluations : 505 
+*Number of Jacobian Evaluations : 10 
+*Number of LU Decompositions    : 55 
+*Number of Linear Solves        : 374 
+*******************************************
+
+*******************************************
+Cycle No.3, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 93 
+*Number of Failed Steps         : 6 
+*Number of Function Evaluations : 244 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 28 
+*Number of Linear Solves        : 178 
+*******************************************
+
+*******************************************
+Cycle No.3, Step No.4 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 62 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 139 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 16 
+*Number of Linear Solves        : 112 
+*******************************************
+
+*******************************************
+Cycle No.3, Step No.5 is finished. 
+*Adsorber Steps: DP-ATM-XXX RP-FEE-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 196 
+*Number of Failed Steps         : 20 
+*Number of Function Evaluations : 531 
+*Number of Jacobian Evaluations : 11 
+*Number of LU Decompositions    : 62 
+*Number of Linear Solves        : 387 
+*******************************************
+
+*******************************************
+Cycle No.3, Step No.6 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 7.184621e-06 (1.000000e-08) 
+CSS approach : 0.14% 
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 91 
+*Number of Failed Steps         : 4 
+*Number of Function Evaluations : 235 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 25 
+*Number of Linear Solves        : 169 
+*******************************************
+
+*******************************************
+Cycle No.4, Step No.1 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 63 
+*Number of Failed Steps         : 3 
+*Number of Function Evaluations : 159 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 18 
+*Number of Linear Solves        : 119 
+*******************************************
+
+*******************************************
+Cycle No.4, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX DP-ATM-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 192 
+*Number of Failed Steps         : 21 
+*Number of Function Evaluations : 548 
+*Number of Jacobian Evaluations : 12 
+*Number of LU Decompositions    : 61 
+*Number of Linear Solves        : 391 
+*******************************************
+
+*******************************************
+Cycle No.4, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 96 
+*Number of Failed Steps         : 6 
+*Number of Function Evaluations : 248 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 28 
+*Number of Linear Solves        : 182 
+*******************************************
+
+*******************************************
+Cycle No.4, Step No.4 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 63 
+*Number of Failed Steps         : 3 
+*Number of Function Evaluations : 159 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 18 
+*Number of Linear Solves        : 119 
+*******************************************
+
+*******************************************
+Cycle No.4, Step No.5 is finished. 
+*Adsorber Steps: DP-ATM-XXX RP-FEE-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 190 
+*Number of Failed Steps         : 15 
+*Number of Function Evaluations : 516 
+*Number of Jacobian Evaluations : 10 
+*Number of LU Decompositions    : 54 
+*Number of Linear Solves        : 385 
+*******************************************
+
+*******************************************
+Cycle No.4, Step No.6 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 1.621278e-06 (1.000000e-08) 
+CSS approach : 0.62% 
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 91 
+*Number of Failed Steps         : 7 
+*Number of Function Evaluations : 278 
+*Number of Jacobian Evaluations : 8 
+*Number of LU Decompositions    : 28 
+*Number of Linear Solves        : 173 
+*******************************************
+
+*******************************************
+Cycle No.5, Step No.1 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 62 
+*Number of Failed Steps         : 3 
+*Number of Function Evaluations : 157 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 18 
+*Number of Linear Solves        : 117 
+*******************************************
+
+*******************************************
+Cycle No.5, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX DP-ATM-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 186 
+*Number of Failed Steps         : 18 
+*Number of Function Evaluations : 538 
+*Number of Jacobian Evaluations : 12 
+*Number of LU Decompositions    : 57 
+*Number of Linear Solves        : 381 
+*******************************************
+
+*******************************************
+Cycle No.5, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 91 
+*Number of Failed Steps         : 4 
+*Number of Function Evaluations : 235 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 25 
+*Number of Linear Solves        : 169 
+*******************************************
+
+*******************************************
+Cycle No.5, Step No.4 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 62 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 139 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 16 
+*Number of Linear Solves        : 112 
+*******************************************
+
+*******************************************
+Cycle No.5, Step No.5 is finished. 
+*Adsorber Steps: DP-ATM-XXX RP-FEE-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 193 
+*Number of Failed Steps         : 22 
+*Number of Function Evaluations : 548 
+*Number of Jacobian Evaluations : 12 
+*Number of LU Decompositions    : 63 
+*Number of Linear Solves        : 391 
+*******************************************
+
+*******************************************
+Cycle No.5, Step No.6 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 7.541680e-07 (1.000000e-08) 
+CSS approach : 1.33% 
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 91 
+*Number of Failed Steps         : 6 
+*Number of Function Evaluations : 249 
+*Number of Jacobian Evaluations : 6 
+*Number of LU Decompositions    : 27 
+*Number of Linear Solves        : 170 
+*******************************************
+
+*******************************************
+Cycle No.6, Step No.1 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 61 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 138 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 16 
+*Number of Linear Solves        : 111 
+*******************************************
+
+*******************************************
+Cycle No.6, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX DP-ATM-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 186 
+*Number of Failed Steps         : 15 
+*Number of Function Evaluations : 484 
+*Number of Jacobian Evaluations : 9 
+*Number of LU Decompositions    : 52 
+*Number of Linear Solves        : 366 
+*******************************************
+
+*******************************************
+Cycle No.6, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 92 
+*Number of Failed Steps         : 5 
+*Number of Function Evaluations : 250 
+*Number of Jacobian Evaluations : 6 
+*Number of LU Decompositions    : 26 
+*Number of Linear Solves        : 171 
+*******************************************
+
+*******************************************
+Cycle No.6, Step No.4 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 63 
+*Number of Failed Steps         : 3 
+*Number of Function Evaluations : 159 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 18 
+*Number of Linear Solves        : 119 
+*******************************************
+
+*******************************************
+Cycle No.6, Step No.5 is finished. 
+*Adsorber Steps: DP-ATM-XXX RP-FEE-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 183 
+*Number of Failed Steps         : 15 
+*Number of Function Evaluations : 470 
+*Number of Jacobian Evaluations : 9 
+*Number of LU Decompositions    : 53 
+*Number of Linear Solves        : 352 
+*******************************************
+
+*******************************************
+Cycle No.6, Step No.6 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 3.338733e-07 (1.000000e-08) 
+CSS approach : 3.00% 
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 93 
+*Number of Failed Steps         : 6 
+*Number of Function Evaluations : 239 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 27 
+*Number of Linear Solves        : 173 
+*******************************************
+
+*******************************************
+Cycle No.7, Step No.1 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 62 
+*Number of Failed Steps         : 3 
+*Number of Function Evaluations : 158 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 18 
+*Number of Linear Solves        : 118 
+*******************************************
+
+*******************************************
+Cycle No.7, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX DP-ATM-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 190 
+*Number of Failed Steps         : 16 
+*Number of Function Evaluations : 490 
+*Number of Jacobian Evaluations : 10 
+*Number of LU Decompositions    : 55 
+*Number of Linear Solves        : 359 
+*******************************************
+
+*******************************************
+Cycle No.7, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 91 
+*Number of Failed Steps         : 6 
+*Number of Function Evaluations : 248 
+*Number of Jacobian Evaluations : 6 
+*Number of LU Decompositions    : 27 
+*Number of Linear Solves        : 169 
+*******************************************
+
+*******************************************
+Cycle No.7, Step No.4 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 62 
+*Number of Failed Steps         : 2 
+*Number of Function Evaluations : 153 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 17 
+*Number of Linear Solves        : 113 
+*******************************************
+
+*******************************************
+Cycle No.7, Step No.5 is finished. 
+*Adsorber Steps: DP-ATM-XXX RP-FEE-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 187 
+*Number of Failed Steps         : 15 
+*Number of Function Evaluations : 482 
+*Number of Jacobian Evaluations : 9 
+*Number of LU Decompositions    : 54 
+*Number of Linear Solves        : 364 
+*******************************************
+
+*******************************************
+Cycle No.7, Step No.6 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 1.450895e-07 (1.000000e-08) 
+CSS approach : 6.89% 
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 94 
+*Number of Failed Steps         : 6 
+*Number of Function Evaluations : 246 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 28 
+*Number of Linear Solves        : 180 
+*******************************************
+
+*******************************************
+Cycle No.8, Step No.1 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 63 
+*Number of Failed Steps         : 2 
+*Number of Function Evaluations : 156 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 17 
+*Number of Linear Solves        : 116 
+*******************************************
+
+*******************************************
+Cycle No.8, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX DP-ATM-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 195 
+*Number of Failed Steps         : 19 
+*Number of Function Evaluations : 524 
+*Number of Jacobian Evaluations : 11 
+*Number of LU Decompositions    : 59 
+*Number of Linear Solves        : 380 
+*******************************************
+
+*******************************************
+Cycle No.8, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 94 
+*Number of Failed Steps         : 7 
+*Number of Function Evaluations : 255 
+*Number of Jacobian Evaluations : 6 
+*Number of LU Decompositions    : 28 
+*Number of Linear Solves        : 176 
+*******************************************
+
+*******************************************
+Cycle No.8, Step No.4 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 63 
+*Number of Failed Steps         : 3 
+*Number of Function Evaluations : 158 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 18 
+*Number of Linear Solves        : 118 
+*******************************************
+
+*******************************************
+Cycle No.8, Step No.5 is finished. 
+*Adsorber Steps: DP-ATM-XXX RP-FEE-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 190 
+*Number of Failed Steps         : 17 
+*Number of Function Evaluations : 541 
+*Number of Jacobian Evaluations : 12 
+*Number of LU Decompositions    : 57 
+*Number of Linear Solves        : 384 
+*******************************************
+
+*******************************************
+Cycle No.8, Step No.6 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 6.334605e-08 (1.000000e-08) 
+CSS approach : 15.79% 
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 94 
+*Number of Failed Steps         : 6 
+*Number of Function Evaluations : 249 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 28 
+*Number of Linear Solves        : 183 
+*******************************************
+
+*******************************************
+Cycle No.9, Step No.1 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 63 
+*Number of Failed Steps         : 3 
+*Number of Function Evaluations : 159 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 18 
+*Number of Linear Solves        : 119 
+*******************************************
+
+*******************************************
+Cycle No.9, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX DP-ATM-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 195 
+*Number of Failed Steps         : 22 
+*Number of Function Evaluations : 558 
+*Number of Jacobian Evaluations : 13 
+*Number of LU Decompositions    : 62 
+*Number of Linear Solves        : 388 
+*******************************************
+
+*******************************************
+Cycle No.9, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 93 
+*Number of Failed Steps         : 6 
+*Number of Function Evaluations : 239 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 27 
+*Number of Linear Solves        : 173 
+*******************************************
+
+*******************************************
+Cycle No.9, Step No.4 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 63 
+*Number of Failed Steps         : 2 
+*Number of Function Evaluations : 154 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 17 
+*Number of Linear Solves        : 114 
+*******************************************
+
+*******************************************
+Cycle No.9, Step No.5 is finished. 
+*Adsorber Steps: DP-ATM-XXX RP-FEE-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 186 
+*Number of Failed Steps         : 15 
+*Number of Function Evaluations : 508 
+*Number of Jacobian Evaluations : 10 
+*Number of LU Decompositions    : 54 
+*Number of Linear Solves        : 377 
+*******************************************
+
+*******************************************
+Cycle No.9, Step No.6 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 2.816715e-08 (1.000000e-08) 
+CSS approach : 35.50% 
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 94 
+*Number of Failed Steps         : 7 
+*Number of Function Evaluations : 263 
+*Number of Jacobian Evaluations : 6 
+*Number of LU Decompositions    : 29 
+*Number of Linear Solves        : 184 
+*******************************************
+
+*******************************************
+Cycle No.10, Step No.1 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 62 
+*Number of Failed Steps         : 3 
+*Number of Function Evaluations : 157 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 18 
+*Number of Linear Solves        : 117 
+*******************************************
+
+*******************************************
+Cycle No.10, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX DP-ATM-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 181 
+*Number of Failed Steps         : 15 
+*Number of Function Evaluations : 501 
+*Number of Jacobian Evaluations : 10 
+*Number of LU Decompositions    : 52 
+*Number of Linear Solves        : 370 
+*******************************************
+
+*******************************************
+Cycle No.10, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 94 
+*Number of Failed Steps         : 6 
+*Number of Function Evaluations : 249 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 28 
+*Number of Linear Solves        : 183 
+*******************************************
+
+*******************************************
+Cycle No.10, Step No.4 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 62 
+*Number of Failed Steps         : 2 
+*Number of Function Evaluations : 153 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 17 
+*Number of Linear Solves        : 113 
+*******************************************
+
+*******************************************
+Cycle No.10, Step No.5 is finished. 
+*Adsorber Steps: DP-ATM-XXX RP-FEE-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 198 
+*Number of Failed Steps         : 21 
+*Number of Function Evaluations : 542 
+*Number of Jacobian Evaluations : 12 
+*Number of LU Decompositions    : 62 
+*Number of Linear Solves        : 385 
+*******************************************
+
+*******************************************
+Cycle No.10, Step No.6 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 1.716007e-08 (1.000000e-08) 
+CSS approach : 58.27% 
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 94 
+*Number of Failed Steps         : 7 
+*Number of Function Evaluations : 259 
+*Number of Jacobian Evaluations : 6 
+*Number of LU Decompositions    : 29 
+*Number of Linear Solves        : 180 
+*******************************************
+
+*******************************************
+Cycle No.11, Step No.1 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 63 
+*Number of Failed Steps         : 3 
+*Number of Function Evaluations : 159 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 18 
+*Number of Linear Solves        : 119 
+*******************************************
+
+*******************************************
+Cycle No.11, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX DP-ATM-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 195 
+*Number of Failed Steps         : 19 
+*Number of Function Evaluations : 540 
+*Number of Jacobian Evaluations : 12 
+*Number of LU Decompositions    : 59 
+*Number of Linear Solves        : 383 
+*******************************************
+
+*******************************************
+Cycle No.11, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 94 
+*Number of Failed Steps         : 7 
+*Number of Function Evaluations : 263 
+*Number of Jacobian Evaluations : 6 
+*Number of LU Decompositions    : 29 
+*Number of Linear Solves        : 184 
+*******************************************
+
+*******************************************
+Cycle No.11, Step No.4 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 62 
+*Number of Failed Steps         : 3 
+*Number of Function Evaluations : 157 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 18 
+*Number of Linear Solves        : 117 
+*******************************************
+
+*******************************************
+Cycle No.11, Step No.5 is finished. 
+*Adsorber Steps: DP-ATM-XXX RP-FEE-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 189 
+*Number of Failed Steps         : 17 
+*Number of Function Evaluations : 519 
+*Number of Jacobian Evaluations : 11 
+*Number of LU Decompositions    : 56 
+*Number of Linear Solves        : 375 
+*******************************************
+
+*******************************************
+Cycle No.11, Step No.6 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 5.393377e-09 (1.000000e-08) 
+CSS approach : 185.41% 
+*******************************************
+
+*******************************************
+CSS convergence after the 11th PSA Cycle. 
+*******************************************
+
+*******************************************
+For the cycle simulation, 
+TIC TOC : 99.3714
+CLOCK   : 99.373
+CPUTIME : 113.125
+*******************************************
+
+*******************************************
+The PSA cycle simulation has finished! 
+*******************************************
+
+*******************************************
+Begin plotting simulation results... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m',210,1)">210 </a>    plotPsaSimulationResults(fullParams,sol);    
+if system_dependent('IsDebugMode')==1, dbquit; end
+close al
+{Error using close
+Specified window does not exist.
+} 
+close all
+plotBarGraphs(clc)
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('clc')" style="font-weight:bold">clc</a>
+Too many output arguments.
+} 
+plotBarGraphs(3)
+{Error using exportgraphics
+The value of 'destination' is invalid. Cannot create output file
+'C:\Users\tkim333\Documents\GitHub\toPSAil\6_publication\1_toPSAil\1_plots\6.0_yang_axial_pressure_drop\stats.pdf'.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('plotBarGraphs', 'C:\Users\tkim333\Documents\GitHub\toPSAil\6_publication\1_toPSAil\1_plots\6.0_yang_axial_pressure_drop\plotBarGraphs.m', 229)" style="font-weight:bold">plotBarGraphs</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\6_publication\1_toPSAil\1_plots\6.0_yang_axial_pressure_drop\plotBarGraphs.m',229,0)">line 229</a>)
+    exportgraphics(gcf,fullfile(pwd,outputName), ...
+} 
+plotBarGraphs(3)
+clear all
+clc
+close all
+plotBarGraphs(3)
+help bar
+ <strong>bar</strong> Bar graph.
+    <strong>bar</strong>(X,Y) draws the columns of the M-by-N matrix Y as M groups of N
+    vertical bars.  The vector X must not have duplicate values.
+ 
+    <strong>bar</strong>(Y) uses the default value of X=1:M.  For vector inputs, <strong>bar</strong>(X,Y)
+    or <strong>bar</strong>(Y) draws LENGTH(Y) bars.  The colors are set by the colormap.
+ 
+    <strong>bar</strong>(X,Y,WIDTH) or <strong>bar</strong>(Y,WIDTH) specifies the width of the bars. Values
+    of WIDTH > 1, produce overlapped bars.  The default value is WIDTH=0.8
+ 
+    <strong>bar</strong>(...,'grouped') produces the default vertical grouped bar chart.
+ 
+    <strong>bar</strong>(...,'stacked') produces a vertical stacked bar chart.
+ 
+    <strong>bar</strong>(...,COLOR) uses the line color specified.  Specify the color as one of
+    these values: 'r', 'g', 'b', 'y', 'm', 'c', 'k', or 'w'.
+ 
+    <strong>bar</strong>(AX,...) plots into AX instead of GCA.
+ 
+    H = <strong>bar</strong>(...) returns a vector of handles to Bar objects.
+ 
+    Examples: subplot(3,1,1), bar(rand(10,5),'stacked')
+              subplot(3,1,2), bar(0:.25:1,rand(5),1)
+              subplot(3,1,3), bar(rand(2,3),.75,'grouped')
+ 
+    See also <a href="matlab:help histogram">histogram</a>, <a href="matlab:help plot">plot</a>, <a href="matlab:help barh">barh</a>, <a href="matlab:help bar3">bar3</a>, <a href="matlab:help bar3h">bar3h</a>.
+
+    <a href="matlab:doc bar">Documentation for bar</a>
+
+close all
+plotBarGraphs(3)
+help barh
+ <strong>barh</strong> Horizontal bar graph.
+    <strong>barh</strong>(X,Y) draws the columns of the M-by-N matrix Y as M groups of
+    N horizontal bars. The vector X must not have duplicate values.
+ 
+    <strong>barh</strong>(Y) uses the default value of X=1:M.  For vector inputs,
+    <strong>barh</strong>(X,Y) or <strong>barh</strong>(Y) draws LENGTH(Y) bars.  The colors are set by
+    the colormap.
+ 
+    <strong>barh</strong>(X,Y,WIDTH) or <strong>barh</strong>(Y,WIDTH) specifies the width of the
+    bars. Values of WIDTH > 1, produce overlapped bars.  The
+    default value is WIDTH=0.8.
+ 
+    <strong>barh</strong>(...,'grouped') produces the default horizontal grouped bar chart.
+    <strong>barh</strong>(...,'stacked') produces a horizontal stacked bar chart.
+    <strong>barh</strong>(...,LINESPEC) uses the line color specified (one of 'rgbymckw').
+ 
+    <strong>barh</strong>(AX,...) plots into AX instead of GCA.
+ 
+    H = <strong>barh</strong>(...) returns a vector of handles to barseries objects.
+ 
+    Use SHADING FACETED to put edges on the bars.  Use SHADING FLAT to
+    turn them off.
+ 
+    Examples: subplot(3,1,1), barh(rand(10,5),'stacked')
+              subplot(3,1,2), barh(0:.25:1,rand(5),1)
+              subplot(3,1,3), barh(rand(2,3),.75,'grouped')
+ 
+    See also <a href="matlab:help plot">plot</a>, <a href="matlab:help bar">bar</a>, <a href="matlab:help bar3">bar3</a>, <a href="matlab:help bar3h">bar3h</a>, <a href="matlab:help histogram">histogram</a>.
+
+    <a href="matlab:doc barh">Documentation for barh</a>
+
+plotBarGraphs(3)
+plotBarGraphs(3)
+close all
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+
+*******************************************
+Beginning a PSA cycle simulation...
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 133 
+*Number of Failed Steps         : 9 
+*Number of Function Evaluations : 394 
+*Number of Jacobian Evaluations : 9 
+*Number of LU Decompositions    : 34 
+*Number of Linear Solves        : 276 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.1 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 86 
+*Number of Failed Steps         : 5 
+*Number of Function Evaluations : 255 
+*Number of Jacobian Evaluations : 6 
+*Number of LU Decompositions    : 23 
+*Number of Linear Solves        : 176 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX DP-ATM-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 180 
+*Number of Failed Steps         : 8 
+*Number of Function Evaluations : 440 
+*Number of Jacobian Evaluations : 8 
+*Number of LU Decompositions    : 46 
+*Number of Linear Solves        : 335 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 91 
+*Number of Failed Steps         : 5 
+*Number of Function Evaluations : 250 
+*Number of Jacobian Evaluations : 6 
+*Number of LU Decompositions    : 26 
+*Number of Linear Solves        : 171 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.4 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 63 
+*Number of Failed Steps         : 3 
+*Number of Function Evaluations : 159 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 18 
+*Number of Linear Solves        : 119 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.5 is finished. 
+*Adsorber Steps: DP-ATM-XXX RP-FEE-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 317 
+*Number of Failed Steps         : 104 
+*Number of Function Evaluations : 1242 
+*Number of Jacobian Evaluations : 40 
+*Number of LU Decompositions    : 176 
+*Number of Linear Solves        : 721 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.6 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 1.266751e-02 (1.000000e-08) 
+CSS approach : 0.00% 
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 96 
+*Number of Failed Steps         : 7 
+*Number of Function Evaluations : 255 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 29 
+*Number of Linear Solves        : 189 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.1 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 62 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 140 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 16 
+*Number of Linear Solves        : 113 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX DP-ATM-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 234 
+*Number of Failed Steps         : 52 
+*Number of Function Evaluations : 830 
+*Number of Jacobian Evaluations : 25 
+*Number of LU Decompositions    : 101 
+*Number of Linear Solves        : 504 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 93 
+*Number of Failed Steps         : 7 
+*Number of Function Evaluations : 243 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 29 
+*Number of Linear Solves        : 177 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.4 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 62 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 140 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 16 
+*Number of Linear Solves        : 113 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.5 is finished. 
+*Adsorber Steps: DP-ATM-XXX RP-FEE-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 200 
+*Number of Failed Steps         : 21 
+*Number of Function Evaluations : 557 
+*Number of Jacobian Evaluations : 11 
+*Number of LU Decompositions    : 63 
+*Number of Linear Solves        : 413 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.6 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 1.309675e-04 (1.000000e-08) 
+CSS approach : 0.01% 
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 98 
+*Number of Failed Steps         : 7 
+*Number of Function Evaluations : 260 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 30 
+*Number of Linear Solves        : 194 
+*******************************************
+
+*******************************************
+Cycle No.3, Step No.1 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 62 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 141 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 16 
+*Number of Linear Solves        : 114 
+*******************************************
+
+*******************************************
+Cycle No.3, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX DP-ATM-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 185 
+*Number of Failed Steps         : 17 
+*Number of Function Evaluations : 505 
+*Number of Jacobian Evaluations : 10 
+*Number of LU Decompositions    : 55 
+*Number of Linear Solves        : 374 
+*******************************************
+
+*******************************************
+Cycle No.3, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 93 
+*Number of Failed Steps         : 6 
+*Number of Function Evaluations : 244 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 28 
+*Number of Linear Solves        : 178 
+*******************************************
+
+*******************************************
+Cycle No.3, Step No.4 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 62 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 139 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 16 
+*Number of Linear Solves        : 112 
+*******************************************
+
+*******************************************
+Cycle No.3, Step No.5 is finished. 
+*Adsorber Steps: DP-ATM-XXX RP-FEE-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 196 
+*Number of Failed Steps         : 20 
+*Number of Function Evaluations : 531 
+*Number of Jacobian Evaluations : 11 
+*Number of LU Decompositions    : 62 
+*Number of Linear Solves        : 387 
+*******************************************
+
+*******************************************
+Cycle No.3, Step No.6 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 7.184621e-06 (1.000000e-08) 
+CSS approach : 0.14% 
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 91 
+*Number of Failed Steps         : 4 
+*Number of Function Evaluations : 235 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 25 
+*Number of Linear Solves        : 169 
+*******************************************
+
+*******************************************
+Cycle No.4, Step No.1 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 63 
+*Number of Failed Steps         : 3 
+*Number of Function Evaluations : 159 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 18 
+*Number of Linear Solves        : 119 
+*******************************************
+
+*******************************************
+Cycle No.4, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX DP-ATM-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 192 
+*Number of Failed Steps         : 21 
+*Number of Function Evaluations : 548 
+*Number of Jacobian Evaluations : 12 
+*Number of LU Decompositions    : 61 
+*Number of Linear Solves        : 391 
+*******************************************
+
+*******************************************
+Cycle No.4, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 96 
+*Number of Failed Steps         : 6 
+*Number of Function Evaluations : 248 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 28 
+*Number of Linear Solves        : 182 
+*******************************************
+
+*******************************************
+Cycle No.4, Step No.4 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 63 
+*Number of Failed Steps         : 3 
+*Number of Function Evaluations : 159 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 18 
+*Number of Linear Solves        : 119 
+*******************************************
+
+*******************************************
+Cycle No.4, Step No.5 is finished. 
+*Adsorber Steps: DP-ATM-XXX RP-FEE-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 190 
+*Number of Failed Steps         : 15 
+*Number of Function Evaluations : 516 
+*Number of Jacobian Evaluations : 10 
+*Number of LU Decompositions    : 54 
+*Number of Linear Solves        : 385 
+*******************************************
+
+*******************************************
+Cycle No.4, Step No.6 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 1.621278e-06 (1.000000e-08) 
+CSS approach : 0.62% 
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 91 
+*Number of Failed Steps         : 7 
+*Number of Function Evaluations : 278 
+*Number of Jacobian Evaluations : 8 
+*Number of LU Decompositions    : 28 
+*Number of Linear Solves        : 173 
+*******************************************
+
+*******************************************
+Cycle No.5, Step No.1 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 62 
+*Number of Failed Steps         : 3 
+*Number of Function Evaluations : 157 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 18 
+*Number of Linear Solves        : 117 
+*******************************************
+
+*******************************************
+Cycle No.5, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX DP-ATM-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 186 
+*Number of Failed Steps         : 18 
+*Number of Function Evaluations : 538 
+*Number of Jacobian Evaluations : 12 
+*Number of LU Decompositions    : 57 
+*Number of Linear Solves        : 381 
+*******************************************
+
+*******************************************
+Cycle No.5, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 91 
+*Number of Failed Steps         : 4 
+*Number of Function Evaluations : 235 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 25 
+*Number of Linear Solves        : 169 
+*******************************************
+
+*******************************************
+Cycle No.5, Step No.4 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 62 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 139 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 16 
+*Number of Linear Solves        : 112 
+*******************************************
+
+*******************************************
+Cycle No.5, Step No.5 is finished. 
+*Adsorber Steps: DP-ATM-XXX RP-FEE-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 193 
+*Number of Failed Steps         : 22 
+*Number of Function Evaluations : 548 
+*Number of Jacobian Evaluations : 12 
+*Number of LU Decompositions    : 63 
+*Number of Linear Solves        : 391 
+*******************************************
+
+*******************************************
+Cycle No.5, Step No.6 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 7.541680e-07 (1.000000e-08) 
+CSS approach : 1.33% 
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 91 
+*Number of Failed Steps         : 6 
+*Number of Function Evaluations : 249 
+*Number of Jacobian Evaluations : 6 
+*Number of LU Decompositions    : 27 
+*Number of Linear Solves        : 170 
+*******************************************
+
+*******************************************
+Cycle No.6, Step No.1 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 61 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 138 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 16 
+*Number of Linear Solves        : 111 
+*******************************************
+
+*******************************************
+Cycle No.6, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX DP-ATM-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 186 
+*Number of Failed Steps         : 15 
+*Number of Function Evaluations : 484 
+*Number of Jacobian Evaluations : 9 
+*Number of LU Decompositions    : 52 
+*Number of Linear Solves        : 366 
+*******************************************
+
+*******************************************
+Cycle No.6, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 92 
+*Number of Failed Steps         : 5 
+*Number of Function Evaluations : 250 
+*Number of Jacobian Evaluations : 6 
+*Number of LU Decompositions    : 26 
+*Number of Linear Solves        : 171 
+*******************************************
+
+*******************************************
+Cycle No.6, Step No.4 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 63 
+*Number of Failed Steps         : 3 
+*Number of Function Evaluations : 159 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 18 
+*Number of Linear Solves        : 119 
+*******************************************
+
+*******************************************
+Cycle No.6, Step No.5 is finished. 
+*Adsorber Steps: DP-ATM-XXX RP-FEE-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 183 
+*Number of Failed Steps         : 15 
+*Number of Function Evaluations : 470 
+*Number of Jacobian Evaluations : 9 
+*Number of LU Decompositions    : 53 
+*Number of Linear Solves        : 352 
+*******************************************
+
+*******************************************
+Cycle No.6, Step No.6 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 3.338733e-07 (1.000000e-08) 
+CSS approach : 3.00% 
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 93 
+*Number of Failed Steps         : 6 
+*Number of Function Evaluations : 239 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 27 
+*Number of Linear Solves        : 173 
+*******************************************
+
+*******************************************
+Cycle No.7, Step No.1 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 62 
+*Number of Failed Steps         : 3 
+*Number of Function Evaluations : 158 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 18 
+*Number of Linear Solves        : 118 
+*******************************************
+
+*******************************************
+Cycle No.7, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX DP-ATM-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 190 
+*Number of Failed Steps         : 16 
+*Number of Function Evaluations : 490 
+*Number of Jacobian Evaluations : 10 
+*Number of LU Decompositions    : 55 
+*Number of Linear Solves        : 359 
+*******************************************
+
+*******************************************
+Cycle No.7, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 91 
+*Number of Failed Steps         : 6 
+*Number of Function Evaluations : 248 
+*Number of Jacobian Evaluations : 6 
+*Number of LU Decompositions    : 27 
+*Number of Linear Solves        : 169 
+*******************************************
+
+*******************************************
+Cycle No.7, Step No.4 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 62 
+*Number of Failed Steps         : 2 
+*Number of Function Evaluations : 153 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 17 
+*Number of Linear Solves        : 113 
+*******************************************
+
+*******************************************
+Cycle No.7, Step No.5 is finished. 
+*Adsorber Steps: DP-ATM-XXX RP-FEE-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 187 
+*Number of Failed Steps         : 15 
+*Number of Function Evaluations : 482 
+*Number of Jacobian Evaluations : 9 
+*Number of LU Decompositions    : 54 
+*Number of Linear Solves        : 364 
+*******************************************
+
+*******************************************
+Cycle No.7, Step No.6 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 1.450895e-07 (1.000000e-08) 
+CSS approach : 6.89% 
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 94 
+*Number of Failed Steps         : 6 
+*Number of Function Evaluations : 246 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 28 
+*Number of Linear Solves        : 180 
+*******************************************
+
+*******************************************
+Cycle No.8, Step No.1 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 63 
+*Number of Failed Steps         : 2 
+*Number of Function Evaluations : 156 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 17 
+*Number of Linear Solves        : 116 
+*******************************************
+
+*******************************************
+Cycle No.8, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX DP-ATM-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 195 
+*Number of Failed Steps         : 19 
+*Number of Function Evaluations : 524 
+*Number of Jacobian Evaluations : 11 
+*Number of LU Decompositions    : 59 
+*Number of Linear Solves        : 380 
+*******************************************
+
+*******************************************
+Cycle No.8, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 94 
+*Number of Failed Steps         : 7 
+*Number of Function Evaluations : 255 
+*Number of Jacobian Evaluations : 6 
+*Number of LU Decompositions    : 28 
+*Number of Linear Solves        : 176 
+*******************************************
+
+*******************************************
+Cycle No.8, Step No.4 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 63 
+*Number of Failed Steps         : 3 
+*Number of Function Evaluations : 158 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 18 
+*Number of Linear Solves        : 118 
+*******************************************
+
+*******************************************
+Cycle No.8, Step No.5 is finished. 
+*Adsorber Steps: DP-ATM-XXX RP-FEE-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 190 
+*Number of Failed Steps         : 17 
+*Number of Function Evaluations : 541 
+*Number of Jacobian Evaluations : 12 
+*Number of LU Decompositions    : 57 
+*Number of Linear Solves        : 384 
+*******************************************
+
+*******************************************
+Cycle No.8, Step No.6 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 6.334605e-08 (1.000000e-08) 
+CSS approach : 15.79% 
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 94 
+*Number of Failed Steps         : 6 
+*Number of Function Evaluations : 249 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 28 
+*Number of Linear Solves        : 183 
+*******************************************
+
+*******************************************
+Cycle No.9, Step No.1 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 63 
+*Number of Failed Steps         : 3 
+*Number of Function Evaluations : 159 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 18 
+*Number of Linear Solves        : 119 
+*******************************************
+
+*******************************************
+Cycle No.9, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX DP-ATM-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 195 
+*Number of Failed Steps         : 22 
+*Number of Function Evaluations : 558 
+*Number of Jacobian Evaluations : 13 
+*Number of LU Decompositions    : 62 
+*Number of Linear Solves        : 388 
+*******************************************
+
+*******************************************
+Cycle No.9, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 93 
+*Number of Failed Steps         : 6 
+*Number of Function Evaluations : 239 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 27 
+*Number of Linear Solves        : 173 
+*******************************************
+
+*******************************************
+Cycle No.9, Step No.4 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 63 
+*Number of Failed Steps         : 2 
+*Number of Function Evaluations : 154 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 17 
+*Number of Linear Solves        : 114 
+*******************************************
+
+*******************************************
+Cycle No.9, Step No.5 is finished. 
+*Adsorber Steps: DP-ATM-XXX RP-FEE-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 186 
+*Number of Failed Steps         : 15 
+*Number of Function Evaluations : 508 
+*Number of Jacobian Evaluations : 10 
+*Number of LU Decompositions    : 54 
+*Number of Linear Solves        : 377 
+*******************************************
+
+*******************************************
+Cycle No.9, Step No.6 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 2.816715e-08 (1.000000e-08) 
+CSS approach : 35.50% 
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 94 
+*Number of Failed Steps         : 7 
+*Number of Function Evaluations : 263 
+*Number of Jacobian Evaluations : 6 
+*Number of LU Decompositions    : 29 
+*Number of Linear Solves        : 184 
+*******************************************
+
+*******************************************
+Cycle No.10, Step No.1 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 62 
+*Number of Failed Steps         : 3 
+*Number of Function Evaluations : 157 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 18 
+*Number of Linear Solves        : 117 
+*******************************************
+
+*******************************************
+Cycle No.10, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX DP-ATM-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 181 
+*Number of Failed Steps         : 15 
+*Number of Function Evaluations : 501 
+*Number of Jacobian Evaluations : 10 
+*Number of LU Decompositions    : 52 
+*Number of Linear Solves        : 370 
+*******************************************
+
+*******************************************
+Cycle No.10, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 94 
+*Number of Failed Steps         : 6 
+*Number of Function Evaluations : 249 
+*Number of Jacobian Evaluations : 5 
+*Number of LU Decompositions    : 28 
+*Number of Linear Solves        : 183 
+*******************************************
+
+*******************************************
+Cycle No.10, Step No.4 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 62 
+*Number of Failed Steps         : 2 
+*Number of Function Evaluations : 153 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 17 
+*Number of Linear Solves        : 113 
+*******************************************
+
+*******************************************
+Cycle No.10, Step No.5 is finished. 
+*Adsorber Steps: DP-ATM-XXX RP-FEE-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 198 
+*Number of Failed Steps         : 21 
+*Number of Function Evaluations : 542 
+*Number of Jacobian Evaluations : 12 
+*Number of LU Decompositions    : 62 
+*Number of Linear Solves        : 385 
+*******************************************
+
+*******************************************
+Cycle No.10, Step No.6 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 1.716007e-08 (1.000000e-08) 
+CSS approach : 58.27% 
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 94 
+*Number of Failed Steps         : 7 
+*Number of Function Evaluations : 259 
+*Number of Jacobian Evaluations : 6 
+*Number of LU Decompositions    : 29 
+*Number of Linear Solves        : 180 
+*******************************************
+
+*******************************************
+Cycle No.11, Step No.1 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 63 
+*Number of Failed Steps         : 3 
+*Number of Function Evaluations : 159 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 18 
+*Number of Linear Solves        : 119 
+*******************************************
+
+*******************************************
+Cycle No.11, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX DP-ATM-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 195 
+*Number of Failed Steps         : 19 
+*Number of Function Evaluations : 540 
+*Number of Jacobian Evaluations : 12 
+*Number of LU Decompositions    : 59 
+*Number of Linear Solves        : 383 
+*******************************************
+
+*******************************************
+Cycle No.11, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 94 
+*Number of Failed Steps         : 7 
+*Number of Function Evaluations : 263 
+*Number of Jacobian Evaluations : 6 
+*Number of LU Decompositions    : 29 
+*Number of Linear Solves        : 184 
+*******************************************
+
+*******************************************
+Cycle No.11, Step No.4 is finished. 
+*Adsorber Steps: EQ-XXX-APR EQ-XXX-APR 
+*Step duration: 40.0(40) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 62 
+*Number of Failed Steps         : 3 
+*Number of Function Evaluations : 157 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 18 
+*Number of Linear Solves        : 117 
+*******************************************
+
+*******************************************
+Cycle No.11, Step No.5 is finished. 
+*Adsorber Steps: DP-ATM-XXX RP-FEE-XXX 
+*Step duration: 30.0(30) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 189 
+*Number of Failed Steps         : 17 
+*Number of Function Evaluations : 519 
+*Number of Jacobian Evaluations : 11 
+*Number of LU Decompositions    : 56 
+*Number of Linear Solves        : 375 
+*******************************************
+
+*******************************************
+Cycle No.11, Step No.6 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 180.0(180) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 5.393377e-09 (1.000000e-08) 
+CSS approach : 185.41% 
+*******************************************
+
+*******************************************
+CSS convergence after the 11th PSA Cycle. 
+*******************************************
+
+*******************************************
+For the cycle simulation, 
+TIC TOC : 102.812
+CLOCK   : 102.817
+CPUTIME : 133.234
+*******************************************
+
+*******************************************
+The PSA cycle simulation has finished! 
+*******************************************
+
+*******************************************
+Begin plotting simulation results... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m',210,1)">210 </a>    plotPsaSimulationResults(fullParams,sol);    
