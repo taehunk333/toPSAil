@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2019/2/4/Monday
-%Code last modified on : 2022/5/18/Wednesday
+%Code last modified on : 2022/12/29/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -29,17 +29,27 @@
 %             are called to simulate a pressure swing adsorption (PSA)
 %             process, plot the simulation results, and save the results as
 %             .csv files in the designated folder.
-%Inputs     : params       - a struct containing simulation parameters.
+%Inputs     : folderName   - a string variable containing the folder name.
+%             num          - an additional input for the function call
+%                            number.
 %Outputs    : n.a.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function runPsaProcessSimulation(folderName)
+function runPsaProcessSimulation(folderName,varargin)
     
     %---------------------------------------------------------------------%
     %Define known quantities
     
     %Name the function ID
-    funcId = 'runPsaProcessSimulation.m';        
+    funcId = 'runPsaProcessSimulation.m';   
+    
+    %When we have more than one input, and the input is not empty
+    if nargin > 1 && ~isempty(varargin{1})
+        
+        %Then, we have a function call
+        num = varargin{1};
+        
+    end
     %---------------------------------------------------------------------%
 
     
@@ -56,15 +66,18 @@ function runPsaProcessSimulation(folderName)
     
     
     
-%     %---------------------------------------------------------------------%
-%     %Print out the license related information
-%     
+    %---------------------------------------------------------------------%
+    %Preset the Command Window
+    
 %     %Read the remark file
 %     S = fileread('remarks.txt');
-%     
+    
 %     %Display the strings
 %     disp(S);    
-%     %---------------------------------------------------------------------%
+
+    %Turn on the diary
+    diary on
+    %---------------------------------------------------------------------%
     
     
     
@@ -214,11 +227,20 @@ function runPsaProcessSimulation(folderName)
     
     %Save simulation outputs into excel files
     savePsaSimulationResults(fullParams,sol,sol.path.data);
-        
+                
     %Insert a conclusion for the command window output
     fprintf("\n*******************************************\n");
     fprintf('Check the example folder! \n')                   ; 
     fprintf("*******************************************\n")  ;
+    
+    %Get the diary name
+    nameDiary = strcat('CW',int2str(num),'.txt');
+    
+    %Save the Command Window ouputs
+    diary(nameDiary);
+    
+    %Turn off the diary
+    diary off
     %---------------------------------------------------------------------%                
     
    

@@ -184,8 +184,11 @@ function [stTime,stStates,flags] ...
         %If we were to extend the solution
         if preInt == 1
             
+            %Get the second initial state
+            initState2nd = sol0.y(:,end)';
+            
             %Get the ode solver option from setOdeSolverOpts.m
-            options = setOdeSolverOpts(params,sol0.ye',nS,nCy);
+            options = setOdeSolverOpts(params,initState2nd,nS,nCy);
             
             %Perform the numerical integration for the step
             sol = odextend(sol0,funcRhs,tDom(2),[],options);            

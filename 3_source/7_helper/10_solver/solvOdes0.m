@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/10/22/Saturday
-%Code last modified on : 2022/12/22/Thursday
+%Code last modified on : 2022/12/29/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -261,6 +261,15 @@ function [sol0,tDom0,preInt] = solvOdes0(params,tDom,iStates,nS)
                 %Update the time domain
                 tDom0 = [0,sol0.xe];
             
+            end
+            
+            %If we have another event, i.e., we have an event-driven mode, 
+            if eveTrue == 1
+                
+                %Reset the solution structure for the next event-driven
+                %simulation for the original numerical integration
+                sol0.ie = [];
+                
             end
             %-------------------------------------------------------------%
             

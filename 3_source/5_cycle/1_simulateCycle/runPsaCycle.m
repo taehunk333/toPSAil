@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/18/Monday
-%Code last modified on : 2022/8/16/Tuesday
+%Code last modified on : 2022/12/28/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -129,7 +129,7 @@ function sol = runPsaCycle(params)
             %Print CSS results
             fprintf("\n*******************************************\n"); 
             fprintf("CSS metrics : %d (%d) \n",cssCurr,numZero)       ;
-            fprintf("CSS approach : %.2f %% \n",(numZero/cssCurr*100));
+            fprintf("CSS approach : %.2f%% \n",(numZero/cssCurr*100)) ;
             fprintf("*******************************************\n")  ;
                 
         end
@@ -535,6 +535,12 @@ function sol = runPsaCycle(params)
     %If the last step was not at a CSS,
     else
     
+        %Print CSS results
+        fprintf("\n*******************************************\n"); 
+        fprintf("CSS metrics : %d (%d) \n",cssCurr,numZero)       ;
+        fprintf("CSS approach : %.2f%% \n",(numZero/cssCurr*100)) ;
+        fprintf("*******************************************\n")  ;
+        
         %Print the simulation information
         fprintf("\n*******************************************\n");
         fprintf("Simulated %d PSA cycles. \n",nCy)                ;
