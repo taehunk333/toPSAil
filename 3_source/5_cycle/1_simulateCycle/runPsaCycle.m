@@ -474,7 +474,7 @@ function sol = runPsaCycle(params)
                 elseif flags.event == 1                                        
                     
                     %Print the information
-                    fprintf("\n*Step duration  %.1f(%d) seconds",eTi,eTi0);
+                    fprintf("\n*Step duration: %.1f(%d) seconds",eTi,eTi0);
                     fprintf("\n*An event happened in %s",eveLocStep)      ;
                     
                 end                

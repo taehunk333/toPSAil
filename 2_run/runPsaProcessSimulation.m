@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2019/2/4/Monday
-%Code last modified on : 2022/12/29/Thursday
+%Code last modified on : 2022/12/31/Saturday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -43,11 +43,20 @@ function runPsaProcessSimulation(folderName,varargin)
     %Name the function ID
     funcId = 'runPsaProcessSimulation.m';   
     
+    %Check for the input to see if it is empty
+    additionalInputsEmpty = isempty(varargin{1});
+    
     %When we have more than one input, and the input is not empty
-    if nargin > 1 && ~isempty(varargin{1})
+    if nargin > 1 && ~additionalInputsEmpty
         
         %Then, we have a function call
         num = varargin{1};
+        
+    %When the vector including the additional inputs is empty
+    elseif additionalInputsEmpty
+        
+        %Then, we don't need to number the function call
+        num = [];
         
     end
     %---------------------------------------------------------------------%
@@ -58,7 +67,7 @@ function runPsaProcessSimulation(folderName,varargin)
     %Clear the work space and any open windows
     
     %Clear up the command window
-    clc;
+    clc;        
     
     %Close all the open figures
     close all;        
@@ -73,7 +82,13 @@ function runPsaProcessSimulation(folderName,varargin)
 %     S = fileread('remarks.txt');
     
 %     %Display the strings
-%     disp(S);    
+%     disp(S);   
+
+    %Get the diary name
+    nameDiary = strcat('CW',int2str(num),'.txt');
+    
+    %Save the Command Window ouputs
+    diary(nameDiary);
 
     %Turn on the diary
     diary on
@@ -231,13 +246,7 @@ function runPsaProcessSimulation(folderName,varargin)
     %Insert a conclusion for the command window output
     fprintf("\n*******************************************\n");
     fprintf('Check the example folder! \n')                   ; 
-    fprintf("*******************************************\n")  ;
-    
-    %Get the diary name
-    nameDiary = strcat('CW',int2str(num),'.txt');
-    
-    %Save the Command Window ouputs
-    diary(nameDiary);
+    fprintf("*******************************************\n")  ;        
     
     %Turn off the diary
     diary off

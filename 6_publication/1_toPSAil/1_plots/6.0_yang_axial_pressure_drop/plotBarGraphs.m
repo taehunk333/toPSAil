@@ -62,10 +62,10 @@ function plotBarGraphs(numExamples)
     %title(strTitle);
 
     %Determine x-axis (ordinate) label
-    xlabel('Steps in a PSA cycle');
+    xlabel('Steps in a PSA cycle [-]');
 
     %Determine y-axis (absicissa) label
-    ylabel('Attempted Steps');
+    ylabel('Solver steps [-]');
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');
