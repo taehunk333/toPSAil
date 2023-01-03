@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/12/18/Sunday
-%Code last modified on : 2022/12/18/Sunday
+%Code last modified on : 2023/1/3/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -27,7 +27,8 @@
 %Source     : common
 %Description: This is an event function that triggers when the cumulative
 %             mole fraction flown out to the product reservoir from the 
-%             raffinate tank reaches a prespecified threshold value.
+%             raffinate tank when it reaches a prespecified threshold 
+%             value.
 %Inputs     : params       - a struct containing simulation parameters.
 %             t            - a current time point.
 %             states       - a current state vector at the current time 

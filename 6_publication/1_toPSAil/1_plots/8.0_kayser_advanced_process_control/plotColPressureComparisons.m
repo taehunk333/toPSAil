@@ -25,10 +25,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : plotColPressureComparisons.m
 %Source     : common
-%Description: plots the pressure for the selected adsorber tank for 
-%             different simulations (i.e., event+flow driven, time+pressure
-%             driven with HP step 105 seconds, 150 seconds, and 200
-%             seconds)
+%Description: plots the pressure for the selected adsorber for different 
+%             simulations (i.e., event+flow driven, time+pressure driven 
+%             with HP step 105 seconds, 150 seconds, and 200 seconds)
 %Inputs     : nAds         - the current adsorber number
 %Outputs    : the plots for the adsorber pressure for the selected adsorber
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -86,7 +85,7 @@ function plotColPressureComparisons(nAds)
         [time1, pressure1] = grabColPresProfilesComp(params,sol,nAds);
 
         %Plot the results
-        plot(time1,pressure1,'LineWidth',2.0,'Color',[0,0,0]);
+        plot(time1,pressure1,'-','LineWidth',2.0,'Color',[0,0,0]);                
 
         %Clear the work space
         clearvars -except color time1 pressure1 nAds;
@@ -107,7 +106,7 @@ function plotColPressureComparisons(nAds)
         [time2, pressure2] = grabColPresProfilesComp(params,sol,nAds);
 
         %Plot the results
-        plot(time2,pressure2,'-.','LineWidth',2.0,'Color',[0.6,0.6,0.6]);        
+        plot(time2,pressure2,':','LineWidth',2.0,'Color',[0.6,0.6,0.6]);        
         %-----------------------------------------------------------------%        
               
     %---------------------------------------------------------------------%  
@@ -136,7 +135,7 @@ function plotColPressureComparisons(nAds)
     presMax = round(max([max(pressure1),max(pressure2)]))+0.5;
     
     %Set the limit on the y-axia
-    ylim([0,presMax]);
+    ylim([0,presMax]);        
     
     %Hold off of the figure
     hold off;    

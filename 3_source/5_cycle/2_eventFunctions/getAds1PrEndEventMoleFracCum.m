@@ -98,20 +98,9 @@ function [event,isterminal,direction] ...
     %---------------------------------------------------------------------%
     %Evaluate the event
 
-    %If we have a net positive flow,
-    if gasMolTot > 0
-    
-        %Check the mole fraction threshold
-        event = currLkMolFrac ...
-              - eveLkMolFrac ;
-       
-    %If we have a zero or net negative flow, then
-    else
-        
-        %Set the event to be a nonzero value
-        event = 1;
-        
-    end
+    %Check the mole fraction threshold
+    event = currLkMolFrac ...
+          - eveLkMolFrac ;
     %---------------------------------------------------------------------%    
     
 

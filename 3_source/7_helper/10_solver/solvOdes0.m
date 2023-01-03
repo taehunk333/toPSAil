@@ -111,8 +111,8 @@ function [sol0,tDom0,preInt] = solvOdes0(params,tDom,iStates,nS)
     %Check the energy balance equation
     enerBalTrue = bool(5);
     
-    %Check to see if an event is required for the entire step
-    eveTrue = ~contains(eveLoc,'None');
+    %Check to see if an additional event is required for the entire step
+    secEveTrue = ~contains(eveLoc,'None');
     %---------------------------------------------------------------------%
     
     
@@ -158,7 +158,7 @@ function [sol0,tDom0,preInt] = solvOdes0(params,tDom,iStates,nS)
             %for the right-hand side
             
             %If we have another event, i.e., we have an event-driven mode, 
-            if eveTrue == 1
+            if secEveTrue == 1
             
                 %Set the option for the event function
                 options ...
@@ -214,13 +214,41 @@ function [sol0,tDom0,preInt] = solvOdes0(params,tDom,iStates,nS)
             %Print out the numerical integration stats
             noteNumIntStats(sol0,numIntSolv);
             
-            %Figure out which event triggered
-            eveTrig = sol0.ie;
+            %Check to see if an event triggered
+            eventTrue = isfield(sol0,'xe');
+            
+            %When an event triggered, 
+            if eventTrue
+            
+                %Figure out which event triggered
+                eveTrig = sol0.ie;
+                
+                %Update the time domain
+                tDom0 = [0,sol0.xe];
+               
+            %If no event has triggered,
+            else
+                
+                %Let us note that no event has triggered
+                eveTrig = 0;
+                
+                %Set the time domain equal to the original time span
+                tDom0 = tDom;
+                
+            end
             
             %Depending on the event, print out helpful messages
             
+            %When no event has triggered
+            if eveTrig == 0
+                
+                %Print additional helpful message
+                fprintf("\n*******************************************\n"); 
+                fprintf("The raff. tank pressure has not reached.")       ; 
+                fprintf("\n*******************************************\n");
+            
             %When the raffinate tank pressure reached a threshold,
-            if eveTrig == 1
+            elseif eveTrig == 1
             
                 %Print additional helpful message
                 fprintf("\n*******************************************\n"); 
@@ -243,34 +271,9 @@ function [sol0,tDom0,preInt] = solvOdes0(params,tDom,iStates,nS)
             %-------------------------------------------------------------%
             %Update the solution information
             
-            %We've done the pre-integration
+            %We've done the pre-integration, regardless of an event
+            %triggering or not
             preInt = 1;
-            
-            %Grab the event time
-            xe0 = sol0.xe;
-            
-            %If the event time is empty
-            if isempty(xe0)
-                
-                %Set the time domain equal to the original time span
-                tDom0 = tDom;
-            
-            %Otherwise, event has happened
-            else
-                
-                %Update the time domain
-                tDom0 = [0,sol0.xe];
-            
-            end
-            
-            %If we have another event, i.e., we have an event-driven mode, 
-            if eveTrue == 1
-                
-                %Reset the solution structure for the next event-driven
-                %simulation for the original numerical integration
-                sol0.ie = [];
-                
-            end
             %-------------------------------------------------------------%
             
         %Otherwise,
@@ -313,7 +316,7 @@ function [sol0,tDom0,preInt] = solvOdes0(params,tDom,iStates,nS)
             %for the right-hand side
             
             %If we have another event, i.e., we have an event-driven mode, 
-            if eveTrue == 1
+            if secEveTrue == 1
             
                 %Set the option for the event function
                 options ...
@@ -369,13 +372,41 @@ function [sol0,tDom0,preInt] = solvOdes0(params,tDom,iStates,nS)
             %Print out the numerical integration stats
             noteNumIntStats(sol0,numIntSolv);
             
-            %Figure out which event triggered
-            eveTrig = sol0.ie;
+            %Check to see if an event triggered
+            eventTrue = isfield(sol0,'xe');
+            
+            %When an event triggered, 
+            if eventTrue
+            
+                %Figure out which event triggered
+                eveTrig = sol0.ie;
+                
+                %Update the time domain
+                tDom0 = [0,sol0.xe];               
+               
+            %If no event has triggered,
+            else
+                
+                %Let us note that no event has triggered
+                eveTrig = 0;
+                
+                %Set the time domain equal to the original time span
+                tDom0 = tDom;
+                
+            end
             
             %Depending on the event, print out helpful messages
+                        
+            %When no event has triggered
+            if eveTrig == 0
+                
+                %Print additional helpful message
+                fprintf("\n*******************************************\n"); 
+                fprintf("The extr. tank pressure has not reached.")       ; 
+                fprintf("\n*******************************************\n");
             
             %When the raffinate tank pressure reached a threshold,
-            if eveTrig == 1
+            elseif eveTrig == 1
             
                 %Print additional helpful message
                 fprintf("\n*******************************************\n"); 
@@ -399,24 +430,7 @@ function [sol0,tDom0,preInt] = solvOdes0(params,tDom,iStates,nS)
             %Update the solution information
             
             %We've done the pre-integration
-            preInt = 1;
-            
-            %Grab the event time
-            xe0 = sol0.xe;
-            
-            %If the event time is empty
-            if isempty(xe0)
-                
-                %Set the time domain equal to the original time span
-                tDom0 = tDom;
-            
-            %Otherwise, event has happened
-            else
-                
-                %Update the time domain
-                tDom0 = [0,sol0.xe];
-            
-            end                        
+            preInt = 1;                        
             %-------------------------------------------------------------%
             
         %Otherwise,
