@@ -18,16 +18,16 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2022/10/4/Tuesday
-%Code last modified on : 2022/12/18/Sunday
+%Code created on       : 2022/12/18/Sunday
+%Code last modified on : 2023/1/3/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : getAds1PrEndEventMoleFracCum.m
+%Function   : getExTaEventMoleFracCum.m
 %Source     : common
-%Description: This is an event function that triggers when the cumulative 
-%             mole fraction inside the n_c th CSTR inside the 1st adsorber
-%             reaches a prespecified threshold value.
+%Description: This is an event function that triggers when the cumulative
+%             mole fraction flown out to the product reservoir from the 
+%             extract tank when it reaches a prespecified threshold value.
 %Inputs     : params       - a struct containing simulation parameters.
 %             t            - a current time point.
 %             states       - a current state vector at the current time 
@@ -41,19 +41,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function [event,isterminal,direction] ...
-    = getAds1PrEndEventMoleFracCum(params,~,states)
+    = getExTaEventMoleFracCum(params,~,states)
 
     %---------------------------------------------------------------------%
     %Define known quantities
     
     %Define function ID
-    %funcId = 'getAds1PrEndEventMoleFracCum.m';
+    %funcId = 'getExTaEventMoleFracCum.m';
     
     %Unpack params
-    eveLkMolFrac = params.eveLkMolFrac;
-    nComs        = params.nComs       ;
-    nColSt       = params.nColSt      ;   
+    eveLkMolFrac = params.eveLkMolFrac;    
+    nComs        = params.nComs       ;    
+    inShExTa     = params.inShExTa    ;
     nLKs         = params.nLKs        ;
+    nTemp        = params.nTemp       ;
     %---------------------------------------------------------------------%
     
     
@@ -61,34 +62,31 @@ function [event,isterminal,direction] ...
     %---------------------------------------------------------------------%
     %Compute the event criteria 
 
-    %Shift the index to be that of the last CSTR
-    indSh = nColSt+nComs;
+    %Shift the index to be that of the raffinate tank
+    indSh = inShExTa+(nComs+nTemp);
 
     %Get the indices for the light key
     indLk    = indSh+1   ;
     indLkEnd = indSh+nLKs;
-    
+
     %Get the index for the last component
     indEnd = indSh+nComs;
 
-    %Get the total cumulative amount of the light keys at the product end,
-    %flown up to time t
-    gasMolLk = sum(states(indLk:indLkEnd));
+    %Get the dimensionless light key concentration in the gas phase
+    gasConsLk = sum(states(indLk:indLkEnd));
 
-    %Get the total cumulative amount of the all keys at the product end, 
-    %flown up to time t
-    gasMolTot = sum(states(indLk:indEnd));
+    %Get the total gas concentration in the gas phase
+    gasConsTot = sum(states(indLk:indEnd));
 
-    %Compute the current light key mole fraction inside the n_c th CSTR in
-    %the 1st adsorber
-    currLkMolFrac = gasMolLk ...
-                  / gasMolTot;
+    %Compute the current light key mole fraction inside the raffinate tank
+    currHkMolFrac = (1-gasConsLk) ...
+                  / gasConsTot;
               
     %If we have a NaN (at t = 0, we divide by zero)
-    if isnan(currLkMolFrac)
+    if isnan(currHkMolFrac)
         
         %make sure that we are on the right side of the event function
-        currLkMolFrac = 1;
+        currHkMolFrac = 1;
         
     end
     %---------------------------------------------------------------------%
@@ -99,8 +97,8 @@ function [event,isterminal,direction] ...
     %Evaluate the event
 
     %Check the mole fraction threshold
-    event = currLkMolFrac ...
-          - eveLkMolFrac ;
+    event = currHkMolFrac ...
+          - (1-eveLkMolFrac);
     %---------------------------------------------------------------------%    
     
 

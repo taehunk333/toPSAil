@@ -93,19 +93,19 @@ function [stTime,stStates,flags] ...
         if preInt == 1
                  
             %-------------------------------------------------------------%                        
-            %
+            %Check for the event status
             
             %Check to see if the user-specified event has triggered: 
             %eveTrig = 2. First, see if the field is not empty or not
             if ~isempty(sol0.ie)
             
-                %When the field ie is not empty, we save it as a variable
+                %When the field ie is not empty, we save it as an integer
                 eveTrig = sol0.ie;
                 
             else
                 
-               %When the field ie is empty, we save it as a zero
-               eveTrig = 0;
+                %When the field ie is empty, we save it as a zero
+                eveTrig = 0;
                 
             end
             %-------------------------------------------------------------%                        
@@ -129,7 +129,14 @@ function [stTime,stStates,flags] ...
                 %We've effectively finished simulating the step, so no need 
                 %to do the original integration
                 orgInt = 0;
-
+              
+            %Otherwise, reset for the next (original) numerical integration
+            else
+                                
+                %Reset the solution structure for the next event-driven
+                %simulation for the original numerical integration.
+                sol0.ie = [];
+                
             end
             %-------------------------------------------------------------%
                                             

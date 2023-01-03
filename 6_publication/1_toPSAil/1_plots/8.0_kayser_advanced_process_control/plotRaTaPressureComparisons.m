@@ -86,7 +86,7 @@ function plotRaTaPressureComparisons()
         [time1, pressure1] = grabRaTaPresProfilesComp(params,sol);
 
         %Plot the results
-        plot(time1,pressure1,'LineWidth',2.0,'Color',[0,0,0]);
+        plot(time1,pressure1,'-','LineWidth',2.0,'Color',[0,0,0]);
 
         %Clear the work space
         clearvars -except color time1;
@@ -107,7 +107,7 @@ function plotRaTaPressureComparisons()
         [time2, pressure2] = grabRaTaPresProfilesComp(params,sol);
 
         %Plot the results
-        plot(time2,pressure2,'-.','LineWidth',2.0,'Color',[0.6,0.6,0.6]);        
+        plot(time2,pressure2,':','LineWidth',2.0,'Color',[0.6,0.6,0.6]);        
         %-----------------------------------------------------------------%        
               
     %---------------------------------------------------------------------%  
