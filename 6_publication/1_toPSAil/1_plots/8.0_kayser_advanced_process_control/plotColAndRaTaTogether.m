@@ -167,7 +167,7 @@ function plotColAndRaTaTogether(nAds)
         nexttile
         
         %Set the title
-        title('1: RP-XXX-RAF');
+        title('1: RP-XXX-RAF (5 seconds)');
     
         %Determine x-axis (ordinate) label
         xlabel('Time [seconds]');
@@ -222,7 +222,7 @@ function plotColAndRaTaTogether(nAds)
         nexttile
         
         %Set the title
-        title('2: HP-FEE-RAF');
+        title('2: HP-FEE-RAF (105 seconds)');
 
         %Determine x-axis (ordinate) label
         xlabel('Time [seconds]');
@@ -277,7 +277,7 @@ function plotColAndRaTaTogether(nAds)
         nexttile
         
         %Set the title
-        title('3: DP-ATM-XXX');
+        title('3: DP-ATM-XXX (35 seconds)');
 
         %Determine x-axis (ordinate) label
         xlabel('Time [seconds]');
@@ -332,7 +332,7 @@ function plotColAndRaTaTogether(nAds)
         nexttile
         
         %Set the title
-        title('4: LP-ATM-RAF');
+        title('4: LP-ATM-RAF (65 seconds)');
     
         %Determine x-axis (ordinate) label
         xlabel('Time [seconds]');
@@ -410,9 +410,7 @@ function plotColAndRaTaTogether(nAds)
     hold off;    
     
     %Get the legend
-    
-    
-    
+    %TBD
     
     %Adjust margin
     a = annotation('rectangle',[0.0 0.0 1 1],'Color','w');
