@@ -228,7 +228,7 @@ function [stTime,stStates,flags] ...
     
     %---------------------------------------------------------------------%
     %Obtain the solutions based on the integration results and the type of
-    %the mode of integration (i.e. event vs time).
+    %the mode of integration (i.e., event vs time).
     
     %If we have the results from event driven numerical integration,
     if isempty(funcEve) ~= 1     
@@ -250,17 +250,25 @@ function [stTime,stStates,flags] ...
             %-------------------------------------------------------------%                
             %Interpolate to obtain a desired number of solutions within a 
             %newly defined subdomain of the dimensionless time
-
+            
+            %Get the number of time points
+            numTiPtsStep = length(sol.x);
+            
+            %Get the indices for the assorted time steps
+            timeIndices = round(linspace(1,numTiPtsStep,nTiPts));
+            
             %Determine the range of the solution time points as a subset of
             %the domain of the time points used for the numerical 
             %integration. Since no event is used, an upperbound would be 
             %the final time. Also, we want nTimePts number of time points 
             %from the solution.
-            stTime = linspace(0,tDom(2),nTiPts);
+%             stTime = linspace(0,tDom(2),nTiPts);
+            stTime = sol.x(timeIndices);
 
             %Use deval to evaluate the solution of a differential equation 
             %problem.
-            stStates = transpose(deval(sol,stTime));                       
+%             stStates = transpose(deval(sol,stTime));       
+            stStates = transpose(sol.y(:,timeIndices));
             %-------------------------------------------------------------%
             
         else
@@ -278,16 +286,24 @@ function [stTime,stStates,flags] ...
             %Interpolate to obtain a desired number of solutions within a 
             %newly defined subdomain of the dimensionless time
 
+            %Get the number of time points
+            numTiPtsStep = length(sol.x);
+            
+            %Get the indices for the assorted time steps
+            timeIndices = round(linspace(1,numTiPtsStep,nTiPts));
+            
             %Determine the range of the solution time points as a subset of
             %the domain of the time points used for the numerical 
             %integration. Since the event is used, an upperbound would be 
             %the event time. Also, we want nTimePts number of time points 
             %from the solution.
-            stTime = linspace(0,sol.xe(end),nTiPts);
+%             stTime = linspace(0,sol.xe(end),nTiPts);
+            stTime = sol.x(timeIndices);
 
             %Use deval to evaluate the solution of a differential equation 
             %problem.
-            stStates = transpose(deval(sol,stTime));                       
+%             stStates = transpose(deval(sol,stTime));     
+            stStates = transpose(sol.y(:,timeIndices));
             %-------------------------------------------------------------%
             
         end
@@ -309,15 +325,23 @@ function [stTime,stStates,flags] ...
         %Interpolate to obtain a desired number of solutions within a newly
         %defined subdomain of the dimensionless time
         
+        %Get the number of time points
+        numTiPtsStep = length(sol.x);
+
+        %Get the indices for the assorted time steps
+        timeIndices = round(linspace(1,numTiPtsStep,nTiPts));
+        
         %Determine the range of the solution time points as a subset of the
         %domain of the time points used for the numerical integration.
         %Since no event is used, an upperbound would be the final time.
         %Also, we want nTimePts number of time points from the solution.
-        stTime = linspace(0,tDom(2),nTiPts);
+%         stTime = linspace(0,tDom(2),nTiPts);
+        stTime = sol.x(timeIndices);
         
         %Use deval to evaluate the solution of a differential equation 
         %problem.
-        stStates = transpose(deval(sol,stTime));                       
+%         stStates = transpose(deval(sol,stTime));    
+        stStates = transpose(sol.y(:,timeIndices));
         %-----------------------------------------------------------------% 
         
     end        
