@@ -23,21 +23,21 @@
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : plotColAndRaTaTogether.m
+%Function   : plotColAndRaTaSeparateWholeCycle.m
 %Source     : common
 %Description: plots the pressure for the selected adsorber and the
-%             raffinate product tank, altogether.
+%             raffinate product tank, separately for the entire PSA cycle.
 %Inputs     : nAds         - the current adsorber number
 %Outputs    : the plots for the adsorber pressure for the selected adsorber
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function plotColAndRaTaTogether(nAds)
+function plotColAndRaTaSeparateWholeCycle(nAds)
 
     %---------------------------------------------------------------------%
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'plotColAndRaTaTogether';    
+    %funcId = 'plotColAndRaTaSeparateWholeCycle';    
     
     
     %Define knowns
@@ -62,10 +62,10 @@ function plotColAndRaTaTogether(nAds)
     fig = figure;
 
     %Create a tile
-    t = tiledlayout(2,2);
+    t = tiledlayout(2,1);
                
     %Resize the figure
-    set(gcf,'Position',[100,25,1150,500]);
+    set(gcf,'Position',[100,25,575,500]);
     %---------------------------------------------------------------------%
     
     
@@ -157,16 +157,8 @@ function plotColAndRaTaTogether(nAds)
                          max(raTaPressure1),max(raTaPressure2)])) ...
                          +0.5;
     
-    %Set the limit on the y-axis
+    %Set the limit on the y-axia
     ylim([0,presMax]);     
-    
-    %Shift the adsorber time
-    colTime1 = colTime1 - 630 - 2.432;
-    colTime2 = colTime2 - 630        ;
-        
-    %Shift the raffiante product tank time
-    raTaTime1 = raTaTime1 - 630 - 2.432;
-    raTaTime2 = raTaTime2 - 630        ;
 
         %-----------------------------------------------------------------%
         %Plot the subfigure(1,1)    
@@ -175,41 +167,39 @@ function plotColAndRaTaTogether(nAds)
         nexttile
         
         %Set the title
-        title('1: RP-XXX-RAF (5 seconds)');
+        title('Adsorber');
     
         %Determine x-axis (ordinate) label
         xlabel('Time [seconds]');
+
+        %Determine y-axis (absicissa) label
+        ylabel('Pressure [bar]'); 
+        
+        %Shift the time
+        colTime1 = colTime1 - 630 - 2.432;
+        colTime2 = colTime2 - 630        ;
         
         %Hold on to the figure
-        hold on;
+        hold on;                
         
-        %Add the plots on the left
-        yyaxis left
+        %Add the plots
         plot(colTime1,colPressure1,'-', ...
              'LineWidth',2.0,'Color',[0,0,0]);
         hold on
         plot(colTime2,colPressure2,':', ...
-             'LineWidth',2.0,'Color',[0.6,0.6,0.6]);
-         
-        %Add the plots on the right
-        yyaxis right        
-        hold on
-        plot(raTaTime1,raTaPressure1,'-','LineWidth',2.0, ...
-             'Color',redColor);
-        hold on
-        plot(raTaTime2,raTaPressure2,':r','LineWidth',2.0);
-        
-        %Determine the colors of the axes
-        ax = gca;
-        ax.YAxis(1).Color = 'k'                   ; %Black
-        ax.YAxis(2).Color = redColor; %Red
+             'LineWidth',2.0,'Color',[0.6,0.6,0.6]);         
         
         %Make sure that the plot is surrounded by a box
         box on;
 
         %Set the x limits
-%         xlim([630,635])
-        xlim([0,5])
+        xlim([0,210])
+        
+        %Add the legend
+        legend('flow+event','pres.+time','Location','NorthEast');
+        
+        %Set the y limits
+        ylim([0,3.5])
 
         %Set the style of the axis font as LaTeX type
         set(gca,'TickLabelInterpreter','latex');
@@ -217,57 +207,7 @@ function plotColAndRaTaTogether(nAds)
         %-----------------------------------------------------------------%
         
         
-        
-        %-----------------------------------------------------------------%
-        %Plot the subfigure(1,2)
-        
-        %Get the next tile
-        nexttile
-        
-        %Set the title
-        title('2: HP-FEE-RAF (105 seconds)');
-
-        %Determine x-axis (ordinate) label
-        xlabel('Time [seconds]');
-        
-        %Hold on to the figure
-        hold on;
-        
-        %Add the plots on the left
-        yyaxis left
-        plot(colTime1,colPressure1,'-', ...
-             'LineWidth',2.0,'Color',[0,0,0]);
-        hold on
-        plot(colTime2,colPressure2,':', ...
-             'LineWidth',2.0,'Color',[0.6,0.6,0.6]);
-        
-        %Add the plots on the right
-        yyaxis right
-        hold on
-        plot(raTaTime1,raTaPressure1,'-','LineWidth',2.0, ...
-             'Color',redColor);
-        hold on
-        plot(raTaTime2,raTaPressure2,':r','LineWidth',2.0);
-    
-        %Determine the colors of the axes
-        ax = gca;
-        ax.YAxis(1).Color = 'k'                   ; %Black
-        ax.YAxis(2).Color = redColor; %Red
-        
-        %Make sure that the plot is surrounded by a box
-        box on;
-
-        %Set the x limits
-%         xlim([635,740])
-        xlim([5,110])
-        
-        %Set the style of the axis font as LaTeX type
-        set(gca,'TickLabelInterpreter','latex');
-        set(gca,'FontSize',14)                 ;  
-        %-----------------------------------------------------------------%
                 
-        
-        
         %-----------------------------------------------------------------%
         %Plot the subfigure(2,1)
         
@@ -275,125 +215,48 @@ function plotColAndRaTaTogether(nAds)
         nexttile
         
         %Set the title
-        title('3: DP-ATM-XXX (35 seconds)');
+        title('Raffinate Product Tank');
 
         %Determine x-axis (ordinate) label
         xlabel('Time [seconds]');
 
+        %Determine y-axis (absicissa) label
+        ylabel('Pressure [bar]');  
+        
+        %Shift the time
+        raTaTime1 = raTaTime1 - 630 - 2.432;
+        raTaTime2 = raTaTime2 - 630        ;
+        
         %Hold on to the figure
         hold on;
         
-        %Add the plots on the left
-        yyaxis left
-        plot(colTime1,colPressure1,'-', ...
+        %Add the plots        
+        plot(raTaTime1,raTaPressure1,'-', ...
              'LineWidth',2.0,'Color',[0,0,0]);
         hold on
-        plot(colTime2,colPressure2,':', ...
-             'LineWidth',2.0,'Color',[0.6,0.6,0.6]);
-        
-        %Add the plots on the right
-        yyaxis right
-        hold on
-        plot(raTaTime1,raTaPressure1,'-','LineWidth',2.0, ...
-             'Color',redColor);
-        hold on
-        plot(raTaTime2,raTaPressure2,':r','LineWidth',2.0); 
+        plot(raTaTime2,raTaPressure2,':', ...
+             'LineWidth',2.0,'Color',[0.6,0.6,0.6]); 
 
-        %Determine the colors of the axes
-        ax = gca;
-        ax.YAxis(1).Color = 'k'                   ; %Black
-        ax.YAxis(2).Color = redColor; %Red
-        
         %Make sure that the plot is surrounded by a box
         box on;
         
         %Set the x limits
-%         xlim([740,775])
-        xlim([110,145])
+        xlim([0,210])
+        
+        %Add the legend
+        legend('flow+event','pres.+time','Location','SouthEast');
 
         %Set the style of the axis font as LaTeX type
         set(gca,'TickLabelInterpreter','latex');
         set(gca,'FontSize',14)                 ;  
-        %-----------------------------------------------------------------%
-        
-        
-        
-        %-----------------------------------------------------------------%
-        %Plot the subfigure(2,2)
-        
-        %Get the next tile
-        nexttile
-        
-        %Set the title
-        title('4: LP-ATM-RAF (65 seconds)');
-    
-        %Determine x-axis (ordinate) label
-        xlabel('Time [seconds]');
-        
-        %Hold on to the figure
-        hold on;
-        
-        %Add the plots on the left
-        yyaxis left
-        plot(colTime1,colPressure1,'-', ...
-             'LineWidth',2.0,'Color',[0,0,0]);
-        hold on
-        plot(colTime2,colPressure2,':', ...
-             'LineWidth',2.0,'Color',[0.6,0.6,0.6]);
-        
-        %Add the plots on the right  
-        yyaxis right
-        hold on
-        plot(raTaTime1,raTaPressure1,'-','LineWidth',2.0, ...
-             'Color',redColor);
-        hold on
-        plot(raTaTime2,raTaPressure2,':r','LineWidth',2.0);
-
-        %Determine the colors of the axes
-        ax = gca;
-        ax.YAxis(1).Color = 'k'                   ; %Black
-        ax.YAxis(2).Color = redColor; %Red
-        
-        %Make sure that the plot is surrounded by a box
-        box on;
-        
-        %Set the x limits
-%         xlim([775,840])
-        xlim([145,210])
-
-        %Set the style of the axis font as LaTeX type
-        set(gca,'TickLabelInterpreter','latex');
-        set(gca,'FontSize',14)                 ;              
-        %-----------------------------------------------------------------%
-    
-    %Get the handles
-    ax          = axes(fig);
-    han         = gca      ;
-    han.Visible = 'off'    ;
-
-    %Left label
-    yyaxis(ax, 'left')                           ;
-    ylabel('Pressure [bar]')                     ;
-    han.YLabel.Visible  = 'on'                   ;
-    han.YLabel.Color    = 'k'                    ;
-    han.YLabel.Position = han.YLabel.Position ...
-                        + [-0.025, 0, 0]         ;
-    
-    %Right label
-    yyaxis(ax, 'right')                          ;
-    ylabel('Pressure [bar]')                     ;
-    han.YLabel.Visible  = 'on'                   ;
-    han.YLabel.Color    = redColor               ;
-    han.YLabel.Position = han.YLabel.Position ...
-                        + [0.025, 0, 0]          ;
+        %-----------------------------------------------------------------%               
     
     %Hold on to the figure
     
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');
     set(gca,'FontSize',14)                 ;
-    
-    
+        
     %Hold off of the figure
     hold off;    
     
@@ -404,7 +267,7 @@ function plotColAndRaTaTogether(nAds)
     a = annotation('rectangle',[0.0 0.0 1 1],'Color','w');
     
     %Save the figure as .eps
-    exportgraphics(gcf,fullfile(pwd,'compPres.pdf'), ...
+    exportgraphics(gcf,fullfile(pwd,'compPresUpAndDown.pdf'), ...
                    'ContentType','vector');
     
     %Delete the annotation
