@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/10/22/Saturday
-%Code last modified on : 2022/12/29/Thursday
+%Code last modified on : 2023/01/13/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -463,7 +463,21 @@ function [sol0,tDom0,preInt] = solvOdes0(params,tDom,iStates,nS)
         %Set the new time domain
         tDom0 = tDom;
         %-----------------------------------------------------------------%        
+    
+    %If no pre-integrationwas done, 
+    else
+        
+        %-----------------------------------------------------------------%
+        %Set the solution structure as an empty vector
+        sol0 = [];
 
+        %No need for us to do the pre-integration
+        preInt = 0;
+
+        %Set the new time domain
+        tDom0 = tDom;
+        %-----------------------------------------------------------------%
+        
     end
     %---------------------------------------------------------------------%
     

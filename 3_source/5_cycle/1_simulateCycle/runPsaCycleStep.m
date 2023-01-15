@@ -123,8 +123,8 @@ function [stTime,stStates,flags] ...
             %then
             if abs(tf-tf0) < numZero || eveTrig == 2
                 
-                %Update the solution data structure
-                sol = sol0;
+%                 %Update the solution data structure
+%                 sol = sol0;
                 
                 %We've effectively finished simulating the step, so no need 
                 %to do the original integration
@@ -220,7 +220,26 @@ function [stTime,stStates,flags] ...
         %Print out the numerical integration results
         noteNumIntStats(sol,numIntSolv);        
         %-----------------------------------------------------------------% 
-                
+    
+    %If we do not need to do the original integration
+    else
+        
+        %-----------------------------------------------------------------%
+        %Update the solution structure
+        
+        %Set the pre-integration to the original integration
+        sol = sol0;
+        %-----------------------------------------------------------------%
+
+
+
+        %-----------------------------------------------------------------%
+        %Print numerical integration summary
+        
+        %Print out the numerical integration results
+        noteNumIntStats(sol,numIntSolv);        
+        %-----------------------------------------------------------------% 
+        
     end
     %---------------------------------------------------------------------%
       

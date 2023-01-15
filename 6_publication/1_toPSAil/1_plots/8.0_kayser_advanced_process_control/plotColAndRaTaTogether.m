@@ -157,8 +157,16 @@ function plotColAndRaTaTogether(nAds)
                          max(raTaPressure1),max(raTaPressure2)])) ...
                          +0.5;
     
-    %Set the limit on the y-axia
+    %Set the limit on the y-axis
     ylim([0,presMax]);     
+    
+    %Shift the adsorber time
+    colTime1 = colTime1 - 630 - 2.432;
+    colTime2 = colTime2 - 630        ;
+        
+    %Shift the raffiante product tank time
+    raTaTime1 = raTaTime1 - 630 - 2.432;
+    raTaTime2 = raTaTime2 - 630        ;
 
         %-----------------------------------------------------------------%
         %Plot the subfigure(1,1)    
@@ -171,9 +179,6 @@ function plotColAndRaTaTogether(nAds)
     
         %Determine x-axis (ordinate) label
         xlabel('Time [seconds]');
-
-        %Determine y-axis (absicissa) label
-%         ylabel('Pressure [bar]'); 
         
         %Hold on to the figure
         hold on;
@@ -194,9 +199,6 @@ function plotColAndRaTaTogether(nAds)
         hold on
         plot(raTaTime2,raTaPressure2,':r','LineWidth',2.0);
         
-        %Determine y-axis (absicissa) label
-%         ylabel('Pressure [bar]');
-        
         %Determine the colors of the axes
         ax = gca;
         ax.YAxis(1).Color = 'k'                   ; %Black
@@ -206,7 +208,8 @@ function plotColAndRaTaTogether(nAds)
         box on;
 
         %Set the x limits
-        xlim([630,635])
+%         xlim([630,635])
+        xlim([0,5])
 
         %Set the style of the axis font as LaTeX type
         set(gca,'TickLabelInterpreter','latex');
@@ -226,9 +229,6 @@ function plotColAndRaTaTogether(nAds)
 
         %Determine x-axis (ordinate) label
         xlabel('Time [seconds]');
-
-        %Determine y-axis (absicissa) label
-%         ylabel('Pressure [bar]'); 
         
         %Hold on to the figure
         hold on;
@@ -248,9 +248,6 @@ function plotColAndRaTaTogether(nAds)
              'Color',redColor);
         hold on
         plot(raTaTime2,raTaPressure2,':r','LineWidth',2.0);
-        
-        %Determine y-axis (absicissa) label
-%         ylabel('Pressure [bar]');
     
         %Determine the colors of the axes
         ax = gca;
@@ -261,8 +258,9 @@ function plotColAndRaTaTogether(nAds)
         box on;
 
         %Set the x limits
-        xlim([635,740])
-
+%         xlim([635,740])
+        xlim([5,110])
+        
         %Set the style of the axis font as LaTeX type
         set(gca,'TickLabelInterpreter','latex');
         set(gca,'FontSize',14)                 ;  
@@ -282,9 +280,6 @@ function plotColAndRaTaTogether(nAds)
         %Determine x-axis (ordinate) label
         xlabel('Time [seconds]');
 
-        %Determine y-axis (absicissa) label
-%         ylabel('Pressure [bar]');  
-        
         %Hold on to the figure
         hold on;
         
@@ -303,9 +298,6 @@ function plotColAndRaTaTogether(nAds)
              'Color',redColor);
         hold on
         plot(raTaTime2,raTaPressure2,':r','LineWidth',2.0); 
-        
-        %Determine y-axis (absicissa) label
-%         ylabel('Pressure [bar]');
 
         %Determine the colors of the axes
         ax = gca;
@@ -316,7 +308,8 @@ function plotColAndRaTaTogether(nAds)
         box on;
         
         %Set the x limits
-        xlim([740,775])
+%         xlim([740,775])
+        xlim([110,145])
 
         %Set the style of the axis font as LaTeX type
         set(gca,'TickLabelInterpreter','latex');
@@ -336,9 +329,6 @@ function plotColAndRaTaTogether(nAds)
     
         %Determine x-axis (ordinate) label
         xlabel('Time [seconds]');
-
-        %Determine y-axis (absicissa) label
-%         ylabel('Pressure [bar]'); 
         
         %Hold on to the figure
         hold on;
@@ -358,9 +348,6 @@ function plotColAndRaTaTogether(nAds)
              'Color',redColor);
         hold on
         plot(raTaTime2,raTaPressure2,':r','LineWidth',2.0);
-        
-        %Determine y-axis (absicissa) label
-%         ylabel('Pressure [bar]');
 
         %Determine the colors of the axes
         ax = gca;
@@ -371,7 +358,8 @@ function plotColAndRaTaTogether(nAds)
         box on;
         
         %Set the x limits
-        xlim([775,840])
+%         xlim([775,840])
+        xlim([145,210])
 
         %Set the style of the axis font as LaTeX type
         set(gca,'TickLabelInterpreter','latex');
