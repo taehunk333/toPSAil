@@ -120581,3 +120581,1239 @@ Begin plotting simulation results...
 *******************************************
 <a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m',225,1)">225 </a>    plotPsaSimulationResults(fullParams,sol);    
 if system_dependent('IsDebugMode')==1, dbquit; end
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+
+*******************************************
+Beginning a PSA cycle simulation...
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m',194,1)">194 </a>                [stTimePts,stStates,flags] ...
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 50 
+*Number of Failed Steps         : 2 
+*Number of Function Evaluations : 1738 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 14 
+*Number of Linear Solves        : 95 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.1 is finished. 
+*Adsorber Steps: RP-XXX-RAF 
+*Step duration: 4.0(4) seconds
+*The step was a time driven step
+*******************************************
+open solvOdes0
+sol.Step1.raTa.n1.volFlRat(end,:)
+
+ans =
+
+   -0.1402         0
+
+sol.Step1.raTa.n1.volFlRat
+
+ans =
+
+  -91.7290         0
+  -91.5149         0
+  -90.7826         0
+  -89.9109         0
+  -89.2096         0
+  -88.6247         0
+  -87.7444         0
+  -86.9655         0
+  -86.2000         0
+  -84.5560         0
+  -82.9428         0
+  -77.8166         0
+  -73.0028         0
+  -64.5584         0
+  -57.0803         0
+  -49.4542         0
+  -41.9816         0
+  -31.5479         0
+  -17.1084         0
+   -9.9980         0
+   -5.1393         0
+   -2.6349         0
+   -0.9342         0
+   -0.3258         0
+   -0.1402         0
+
+sol.Step1.raTa.n1.volFlRat
+
+ans =
+
+  -91.7290         0
+  -91.5149         0
+  -90.7826         0
+  -89.9109         0
+  -89.2096         0
+  -88.6247         0
+  -87.7444         0
+  -86.9655         0
+  -86.2000         0
+  -84.5560         0
+  -82.9428         0
+  -77.8166         0
+  -73.0028         0
+  -64.5584         0
+  -57.0803         0
+  -49.4542         0
+  -41.9816         0
+  -31.5479         0
+  -17.1084         0
+   -9.9980         0
+   -5.1393         0
+   -2.6349         0
+   -0.9342         0
+   -0.3258         0
+   -0.1402         0
+
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+
+*******************************************
+Beginning a PSA cycle simulation...
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m',194,1)">194 </a>                [stTimePts,stStates,flags] ...
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 50 
+*Number of Failed Steps         : 2 
+*Number of Function Evaluations : 3250 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 14 
+*Number of Linear Solves        : 99 
+*******************************************
+
+*******************************************
+The raff. tank pressure has not reached.
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 50 
+*Number of Failed Steps         : 2 
+*Number of Function Evaluations : 3250 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 14 
+*Number of Linear Solves        : 99 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.1 is finished. 
+*Adsorber Steps: RP-XXX-RAF HP-FEE-RAF 
+*Step duration: 4.0(4) seconds
+*The step was a time driven step
+*******************************************
+sol.Step1.raTa.n1.volFlRat
+
+ans =
+
+  -91.7290    1.0000         0
+  -91.5149    1.0000         0
+  -90.7826    1.0000         0
+  -89.9109    1.0001         0
+  -89.2096    1.0002         0
+  -88.6247    1.0002         0
+  -87.7445    1.0004         0
+  -86.9656    1.0005         0
+  -86.2002    1.0007         0
+  -84.5510    1.0010         0
+  -82.9328    1.0013         0
+  -77.7892    1.0023         0
+  -72.9602    1.0033         0
+  -64.5202    1.0049         0
+  -57.0463    1.0064         0
+  -49.4332    1.0078         0
+  -41.9787    1.0093         0
+  -31.6209    1.0113         0
+  -17.2650    1.0140         0
+  -10.1098    1.0153         0
+   -5.1973    1.0161         0
+   -2.6698    1.0165         0
+   -0.9553    1.0166    0.0613
+   -0.3450    1.0165    0.6716
+   -0.1612    1.0164    0.8552
+
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+
+*******************************************
+Beginning a PSA cycle simulation...
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m',194,1)">194 </a>                [stTimePts,stStates,flags] ...
+if system_dependent('IsDebugMode')==1, dbcont; end
+raTaPres-pRatRa
+
+ans =
+
+  -1.1102e-16
+
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 50 
+*Number of Failed Steps         : 2 
+*Number of Function Evaluations : 3250 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 14 
+*Number of Linear Solves        : 99 
+*******************************************
+
+*******************************************
+The raff. tank pressure has not reached.
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 50 
+*Number of Failed Steps         : 2 
+*Number of Function Evaluations : 3250 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 14 
+*Number of Linear Solves        : 99 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.1 is finished. 
+*Adsorber Steps: RP-XXX-RAF HP-FEE-RAF 
+*Step duration: 4.0(4) seconds
+*The step was a time driven step
+*******************************************
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+
+*******************************************
+Beginning a PSA cycle simulation...
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m',194,1)">194 </a>                [stTimePts,stStates,flags] ...
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 50 
+*Number of Failed Steps         : 2 
+*Number of Function Evaluations : 3250 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 14 
+*Number of Linear Solves        : 99 
+*******************************************
+if system_dependent('IsDebugMode')==1, dbstep out; end
+
+*******************************************
+The raff. tank pressure has not reached.
+*******************************************
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 50 
+*Number of Failed Steps         : 2 
+*Number of Function Evaluations : 3250 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 14 
+*Number of Linear Solves        : 99 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.1 is finished. 
+*Adsorber Steps: RP-XXX-RAF HP-FEE-RAF 
+*Step duration: 4.0(4) seconds
+*The step was a time driven step
+*******************************************
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+
+*******************************************
+Beginning a PSA cycle simulation...
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m',194,1)">194 </a>                [stTimePts,stStates,flags] ...
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 50 
+*Number of Failed Steps         : 2 
+*Number of Function Evaluations : 3250 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 14 
+*Number of Linear Solves        : 99 
+*******************************************
+
+*******************************************
+The raff. tank pressure has not reached.
+*******************************************
+if system_dependent('IsDebugMode')==1, dbstep out; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 50 
+*Number of Failed Steps         : 2 
+*Number of Function Evaluations : 3250 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 14 
+*Number of Linear Solves        : 99 
+*******************************************
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+
+*******************************************
+Beginning a PSA cycle simulation...
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m',194,1)">194 </a>                [stTimePts,stStates,flags] ...
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep out; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 50 
+*Number of Failed Steps         : 2 
+*Number of Function Evaluations : 3250 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 14 
+*Number of Linear Solves        : 99 
+*******************************************
+
+*******************************************
+The raff. tank pressure has not reached.
+*******************************************
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 50 
+*Number of Failed Steps         : 2 
+*Number of Function Evaluations : 3250 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 14 
+*Number of Linear Solves        : 99 
+*******************************************
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit all; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+
+*******************************************
+Beginning a PSA cycle simulation...
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m',194,1)">194 </a>                [stTimePts,stStates,flags] ...
+if system_dependent('IsDebugMode')==1, dbcont; end
+numZero       = params.numZero       ;
+if system_dependent('IsDebugMode')==1, dbquit all; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+
+*******************************************
+Beginning a PSA cycle simulation...
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m',194,1)">194 </a>                [stTimePts,stStates,flags] ...
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 70 
+*Number of Failed Steps         : 8 
+*Number of Function Evaluations : 4216 
+*Number of Jacobian Evaluations : 4 
+*Number of LU Decompositions    : 23 
+*Number of Linear Solves        : 131 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.1 is finished. 
+*Adsorber Steps: RP-XXX-RAF HP-FEE-RAF 
+*Step duration: 4.0(4) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 54 
+*Number of Failed Steps         : 2 
+*Number of Function Evaluations : 3255 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 14 
+*Number of Linear Solves        : 98 
+*******************************************
+
+*******************************************
+The user-supplied event triggered first.
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX HP-FEE-RAF 
+*Step duration: 0.9(1) seconds
+*An event happened in Adsorber_1_Prod_End
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 97 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 2379 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 21 
+*Number of Linear Solves        : 158 
+*******************************************
+
+*******************************************
+The user-supplied event triggered first.
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF DP-ATM-XXX 
+*Step duration: 34.6(35) seconds
+*An event happened in Adsorber_2_Prod_End
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 134 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 2473 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 22 
+*Number of Linear Solves        : 256 
+*******************************************
+
+*******************************************
+The raff. tank pressure has reached.
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 152 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 3609 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 27 
+*Number of Linear Solves        : 283 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.4 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 65.0(65) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 90 
+*Number of Failed Steps         : 8 
+*Number of Function Evaluations : 4255 
+*Number of Jacobian Evaluations : 4 
+*Number of LU Decompositions    : 28 
+*Number of Linear Solves        : 170 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.5 is finished. 
+*Adsorber Steps: HP-FEE-RAF RP-XXX-RAF 
+*Step duration: 4.0(4) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 34 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 2275 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 9 
+*Number of Linear Solves        : 52 
+*******************************************
+
+*******************************************
+The user-supplied event triggered first.
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.6 is finished. 
+*Adsorber Steps: HP-FEE-RAF RP-FEE-XXX 
+*Step duration: 0.9(1) seconds
+*An event happened in Adsorber_2_Prod_End
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 92 
+*Number of Failed Steps         : 5 
+*Number of Function Evaluations : 2384 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 24 
+*Number of Linear Solves        : 163 
+*******************************************
+
+*******************************************
+The user-supplied event triggered first.
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.7 is finished. 
+*Adsorber Steps: DP-ATM-XXX HP-FEE-RAF 
+*Step duration: 34.1(35) seconds
+*An event happened in Adsorber_1_Prod_End
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 120 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 1315 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 19 
+*Number of Linear Solves        : 206 
+*******************************************
+
+*******************************************
+The raff. tank pressure has reached.
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 137 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 2447 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 25 
+*Number of Linear Solves        : 229 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.8 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 65.0(65) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 1.309128e-02 (1.000000e-08) 
+CSS approach : 0.00% 
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 88 
+*Number of Failed Steps         : 7 
+*Number of Function Evaluations : 4253 
+*Number of Jacobian Evaluations : 4 
+*Number of LU Decompositions    : 27 
+*Number of Linear Solves        : 168 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.1 is finished. 
+*Adsorber Steps: RP-XXX-RAF HP-FEE-RAF 
+*Step duration: 4.0(4) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 35 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 2279 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 9 
+*Number of Linear Solves        : 56 
+*******************************************
+
+*******************************************
+The user-supplied event triggered first.
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX HP-FEE-RAF 
+*Step duration: 0.9(1) seconds
+*An event happened in Adsorber_1_Prod_End
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 93 
+*Number of Failed Steps         : 5 
+*Number of Function Evaluations : 2387 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 25 
+*Number of Linear Solves        : 166 
+*******************************************
+
+*******************************************
+The user-supplied event triggered first.
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF DP-ATM-XXX 
+*Step duration: 34.2(35) seconds
+*An event happened in Adsorber_2_Prod_End
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 122 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 1323 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 21 
+*Number of Linear Solves        : 214 
+*******************************************
+
+*******************************************
+The raff. tank pressure has reached.
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 138 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 2453 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 26 
+*Number of Linear Solves        : 235 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.4 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 65.0(65) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 90 
+*Number of Failed Steps         : 7 
+*Number of Function Evaluations : 4253 
+*Number of Jacobian Evaluations : 4 
+*Number of LU Decompositions    : 27 
+*Number of Linear Solves        : 168 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.5 is finished. 
+*Adsorber Steps: HP-FEE-RAF RP-XXX-RAF 
+*Step duration: 4.0(4) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 35 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 2279 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 9 
+*Number of Linear Solves        : 56 
+*******************************************
+
+*******************************************
+The user-supplied event triggered first.
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.6 is finished. 
+*Adsorber Steps: HP-FEE-RAF RP-FEE-XXX 
+*Step duration: 0.9(1) seconds
+*An event happened in Adsorber_2_Prod_End
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 93 
+*Number of Failed Steps         : 5 
+*Number of Function Evaluations : 2387 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 25 
+*Number of Linear Solves        : 166 
+*******************************************
+
+*******************************************
+The user-supplied event triggered first.
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.7 is finished. 
+*Adsorber Steps: DP-ATM-XXX HP-FEE-RAF 
+*Step duration: 34.2(35) seconds
+*An event happened in Adsorber_1_Prod_End
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 122 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 1314 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 19 
+*Number of Linear Solves        : 205 
+*******************************************
+
+*******************************************
+The raff. tank pressure has reached.
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 138 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 2444 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 24 
+*Number of Linear Solves        : 226 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.8 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 65.0(65) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 1.167847e-05 (1.000000e-08) 
+CSS approach : 0.09% 
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 88 
+*Number of Failed Steps         : 8 
+*Number of Function Evaluations : 4256 
+*Number of Jacobian Evaluations : 4 
+*Number of LU Decompositions    : 28 
+*Number of Linear Solves        : 171 
+*******************************************
+
+*******************************************
+Cycle No.3, Step No.1 is finished. 
+*Adsorber Steps: RP-XXX-RAF HP-FEE-RAF 
+*Step duration: 4.0(4) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 35 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 2279 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 9 
+*Number of Linear Solves        : 56 
+*******************************************
+
+*******************************************
+The user-supplied event triggered first.
+*******************************************
+
+*******************************************
+Cycle No.3, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX HP-FEE-RAF 
+*Step duration: 0.9(1) seconds
+*An event happened in Adsorber_1_Prod_End
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 93 
+*Number of Failed Steps         : 5 
+*Number of Function Evaluations : 2387 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 25 
+*Number of Linear Solves        : 166 
+*******************************************
+
+*******************************************
+The user-supplied event triggered first.
+*******************************************
+
+*******************************************
+Cycle No.3, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF DP-ATM-XXX 
+*Step duration: 34.2(35) seconds
+*An event happened in Adsorber_2_Prod_End
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 122 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 1314 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 21 
+*Number of Linear Solves        : 205 
+*******************************************
+
+*******************************************
+The raff. tank pressure has reached.
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 138 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 2444 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 26 
+*Number of Linear Solves        : 226 
+*******************************************
+
+*******************************************
+Cycle No.3, Step No.4 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 65.0(65) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 88 
+*Number of Failed Steps         : 8 
+*Number of Function Evaluations : 4256 
+*Number of Jacobian Evaluations : 4 
+*Number of LU Decompositions    : 28 
+*Number of Linear Solves        : 171 
+*******************************************
+
+*******************************************
+Cycle No.3, Step No.5 is finished. 
+*Adsorber Steps: HP-FEE-RAF RP-XXX-RAF 
+*Step duration: 4.0(4) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 35 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 2279 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 9 
+*Number of Linear Solves        : 56 
+*******************************************
+
+*******************************************
+The user-supplied event triggered first.
+*******************************************
+
+*******************************************
+Cycle No.3, Step No.6 is finished. 
+*Adsorber Steps: HP-FEE-RAF RP-FEE-XXX 
+*Step duration: 0.9(1) seconds
+*An event happened in Adsorber_2_Prod_End
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 93 
+*Number of Failed Steps         : 5 
+*Number of Function Evaluations : 2387 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 25 
+*Number of Linear Solves        : 166 
+*******************************************
+
+*******************************************
+The user-supplied event triggered first.
+*******************************************
+
+*******************************************
+Cycle No.3, Step No.7 is finished. 
+*Adsorber Steps: DP-ATM-XXX HP-FEE-RAF 
+*Step duration: 34.2(35) seconds
+*An event happened in Adsorber_1_Prod_End
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 122 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 1314 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 20 
+*Number of Linear Solves        : 205 
+*******************************************
+
+*******************************************
+The raff. tank pressure has reached.
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 138 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 2444 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 25 
+*Number of Linear Solves        : 226 
+*******************************************
+
+*******************************************
+Cycle No.3, Step No.8 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 65.0(65) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 7.991993e-08 (1.000000e-08) 
+CSS approach : 12.51% 
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 91 
+*Number of Failed Steps         : 8 
+*Number of Function Evaluations : 4258 
+*Number of Jacobian Evaluations : 4 
+*Number of LU Decompositions    : 28 
+*Number of Linear Solves        : 173 
+*******************************************
+
+*******************************************
+Cycle No.4, Step No.1 is finished. 
+*Adsorber Steps: RP-XXX-RAF HP-FEE-RAF 
+*Step duration: 4.0(4) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 35 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 2279 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 9 
+*Number of Linear Solves        : 56 
+*******************************************
+
+*******************************************
+The user-supplied event triggered first.
+*******************************************
+
+*******************************************
+Cycle No.4, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX HP-FEE-RAF 
+*Step duration: 0.9(1) seconds
+*An event happened in Adsorber_1_Prod_End
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 93 
+*Number of Failed Steps         : 5 
+*Number of Function Evaluations : 2387 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 25 
+*Number of Linear Solves        : 166 
+*******************************************
+
+*******************************************
+The user-supplied event triggered first.
+*******************************************
+
+*******************************************
+Cycle No.4, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF DP-ATM-XXX 
+*Step duration: 34.2(35) seconds
+*An event happened in Adsorber_2_Prod_End
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 122 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 1314 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 20 
+*Number of Linear Solves        : 205 
+*******************************************
+
+*******************************************
+The raff. tank pressure has reached.
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 138 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 2444 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 25 
+*Number of Linear Solves        : 226 
+*******************************************
+
+*******************************************
+Cycle No.4, Step No.4 is finished. 
+*Adsorber Steps: HP-FEE-RAF LP-ATM-RAF 
+*Step duration: 65.0(65) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 87 
+*Number of Failed Steps         : 7 
+*Number of Function Evaluations : 4251 
+*Number of Jacobian Evaluations : 4 
+*Number of LU Decompositions    : 26 
+*Number of Linear Solves        : 166 
+*******************************************
+
+*******************************************
+Cycle No.4, Step No.5 is finished. 
+*Adsorber Steps: HP-FEE-RAF RP-XXX-RAF 
+*Step duration: 4.0(4) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 35 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 2279 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 9 
+*Number of Linear Solves        : 56 
+*******************************************
+
+*******************************************
+The user-supplied event triggered first.
+*******************************************
+
+*******************************************
+Cycle No.4, Step No.6 is finished. 
+*Adsorber Steps: HP-FEE-RAF RP-FEE-XXX 
+*Step duration: 0.9(1) seconds
+*An event happened in Adsorber_2_Prod_End
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 93 
+*Number of Failed Steps         : 5 
+*Number of Function Evaluations : 2387 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 25 
+*Number of Linear Solves        : 166 
+*******************************************
+
+*******************************************
+The user-supplied event triggered first.
+*******************************************
+
+*******************************************
+Cycle No.4, Step No.7 is finished. 
+*Adsorber Steps: DP-ATM-XXX HP-FEE-RAF 
+*Step duration: 34.2(35) seconds
+*An event happened in Adsorber_1_Prod_End
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 122 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 1314 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 20 
+*Number of Linear Solves        : 205 
+*******************************************
+
+*******************************************
+The raff. tank pressure has reached.
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 138 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 2444 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 25 
+*Number of Linear Solves        : 226 
+*******************************************
+
+*******************************************
+Cycle No.4, Step No.8 is finished. 
+*Adsorber Steps: LP-ATM-RAF HP-FEE-RAF 
+*Step duration: 65.0(65) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 2.063661e-10 (1.000000e-08) 
+CSS approach : 4845.76% 
+*******************************************
+
+*******************************************
+CSS convergence after the 4th PSA Cycle. 
+*******************************************
+
+*******************************************
+For the cycle simulation, 
+TIC TOC : 202.019
+CLOCK   : 202.016
+CPUTIME : 331.859
+*******************************************
+
+*******************************************
+The PSA cycle simulation has finished! 
+*******************************************
+
+*******************************************
+Begin plotting simulation results... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m',225,1)">225 </a>    plotPsaSimulationResults(fullParams,sol);    
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+The plotting has finished! 
+*******************************************
+
+*******************************************
+Saving simulation results... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m',244,1)">244 </a>    savePsaSimulationResults(fullParams,sol,sol.path.data);

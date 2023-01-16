@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/10/22/Saturday
-%Code last modified on : 2023/01/13/Thursday
+%Code last modified on : 2023/01/16/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -66,6 +66,7 @@ function [sol0,tDom0,preInt] = solvOdes0(params,tDom,iStates,nS)
     bool          = params.bool          ;
     numIntSolv    = params.numIntSolv    ;
     eveLoc        = params.eveLoc{nS}    ;
+    numZero       = params.numZero       ;
     %---------------------------------------------------------------------%
     
     
@@ -102,11 +103,41 @@ function [sol0,tDom0,preInt] = solvOdes0(params,tDom,iStates,nS)
     
     %Check the sign for the current pressure in the raffinate tank. If the
     %sign is negative, then we need to pressurize the tank.
-    raTaSign = sign(raTaPres-pRatRa);
+    raTaSign = raTaPres-pRatRa;
+    
+    %When the sign is numerically zero,
+    if abs(raTaSign) < numZero
+        
+        %Let the pre-integration to happen
+        raTaSign = 0;
+        
+    %When the sign is numerically nonzero,        
+    else
+        
+        %Let the sign be determined, based on the numerical value of the
+        %pressure difference
+        raTaSign = sign(raTaSign);
+        
+    end
     
     %Check the sign for the current pressure in the extract tank. If the
     %sign is negative, then we need to pressurize the tank.
-    exTaSign = sign(exTaPres-pRatEx);
+    exTaSign = exTaPres-pRatEx;
+    
+    %When the sign is numerically zero,
+    if abs(exTaSign) < numZero
+        
+        %Let the pre-integration to happen
+        exTaSign = 0;
+        
+    %When the sign is numerically nonzero,        
+    else
+        
+        %Let the sign be determined, based on the numerical value of the
+        %pressure difference
+        exTaSign = sign(exTaSign);
+        
+    end
     
     %Check the energy balance equation
     enerBalTrue = bool(5);
