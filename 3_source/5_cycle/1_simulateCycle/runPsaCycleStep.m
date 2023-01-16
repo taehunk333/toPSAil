@@ -230,15 +230,6 @@ function [stTime,stStates,flags] ...
         %Set the pre-integration to the original integration
         sol = sol0;
         %-----------------------------------------------------------------%
-
-
-
-        %-----------------------------------------------------------------%
-        %Print numerical integration summary
-        
-        %Print out the numerical integration results
-        noteNumIntStats(sol,numIntSolv);        
-        %-----------------------------------------------------------------% 
         
     end
     %---------------------------------------------------------------------%
