@@ -121817,3 +121817,45 @@ The plotting has finished!
 Saving simulation results... 
 *******************************************
 <a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m',244,1)">244 </a>    savePsaSimulationResults(fullParams,sol,sol.path.data);
+if system_dependent('IsDebugMode')==1, dbquit; end
+close all
+uiopen('C:\Users\tkim333\Documents\GitHub\toPSAil\6_publication\1_toPSAil\1_plots\9.0_css_comparisons\plotCssComparisons.m',1)
+plotCssComparisons
+{Not enough input arguments.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('plotCssComparisons', 'C:\Users\tkim333\Documents\GitHub\toPSAil\6_publication\1_toPSAil\1_plots\9.0_css_comparisons\plotCssComparisons.m', 94)" style="font-weight:bold">plotCssComparisons</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\6_publication\1_toPSAil\1_plots\9.0_css_comparisons\plotCssComparisons.m',94,0)">line 94</a>)
+        tableName = strcat(expName,'_pressure_time');
+} 
+uiopen('C:\Users\tkim333\Documents\GitHub\toPSAil\6_publication\1_toPSAil\1_plots\9.0_css_comparisons\plotCssComparisons.m',1)
+plotCssComparisonsFlowOnly(1e-8)
+{Unrecognized function or variable 'expName'.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('plotCssComparisonsFlowOnly', 'C:\Users\tkim333\Documents\GitHub\toPSAil\6_publication\1_toPSAil\1_plots\9.0_css_comparisons\plotCssComparisonsFlowOnly.m', 119)" style="font-weight:bold">plotCssComparisonsFlowOnly</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\6_publication\1_toPSAil\1_plots\9.0_css_comparisons\plotCssComparisonsFlowOnly.m',119,0)">line 119</a>)
+        tableName = strcat(expName,'kayser_flow_event');
+} 
+opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\6_publication\1_toPSAil\1_plots\9.0_css_comparisons\plotCssComparisonsFlowOnly.m',119,0)
+plotCssComparisonsFlowOnly(1e-8)
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\6_publication\1_toPSAil\1_plots\9.0_css_comparisons\plotCssComparisonsFlowOnly.m',261,1)">261 </a>    a = annotation('rectangle',[0.0 0.0 1 1],'Color','w');
+if system_dependent('IsDebugMode')==1, dbquit; end
+close all
+plotCssComparisonsFlowOnly(1e-8)
+{Unrecognized function or variable 'Plot'.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('plotCssComparisonsFlowOnly', 'C:\Users\tkim333\Documents\GitHub\toPSAil\6_publication\1_toPSAil\1_plots\9.0_css_comparisons\plotCssComparisonsFlowOnly.m', 132)" style="font-weight:bold">plotCssComparisonsFlowOnly</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\6_publication\1_toPSAil\1_plots\9.0_css_comparisons\plotCssComparisonsFlowOnly.m',132,0)">line 132</a>)
+        Plot the results
+} 
+opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\6_publication\1_toPSAil\1_plots\9.0_css_comparisons\plotCssComparisonsFlowOnly.m',132,0)
+close all
+plotCssComparisonsFlowOnly(1e-8)
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\6_publication\1_toPSAil\1_plots\9.0_css_comparisons\plotCssComparisonsFlowOnly.m',261,1)">261 </a>    a = annotation('rectangle',[0.0 0.0 1 1],'Color','w');
+if system_dependent('IsDebugMode')==1, dbquit; end
+close all
+plotCssComparisonsFlowOnly(1e-8)
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\6_publication\1_toPSAil\1_plots\9.0_css_comparisons\plotCssComparisonsFlowOnly.m',261,1)">261 </a>    a = annotation('rectangle',[0.0 0.0 1 1],'Color','w');
+%Adjust margin
+    a = annotation('rectangle',[0.0 0.0 1 1],'Color','w');
+    
+    %File name
+    outputName = strcat(expName,'CssFlow','.pdf');
+{Unrecognized function or variable 'expName'.
+} 

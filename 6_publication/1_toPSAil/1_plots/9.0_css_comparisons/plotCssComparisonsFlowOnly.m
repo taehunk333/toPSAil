@@ -18,35 +18,29 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2022/12/21/Wednesday
-%Code last modified on : 2022/12/19/Wednesday
+%Code created on       : 2023/01/16/Wednesday
+%Code last modified on : 2023/01/16/Wednesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : plotCssComparisons.m
+%Function   : plotCssComparisonsFlowOnly.m
 %Source     : common
 %Description: plots the CSS convergence criteria vs. PSA cycle number for 
-%             the different simulation modes for a given experimental
-%             system. The simulation modes are:
-%             (1) pressure-driven + time-driven (i.e., uncontrolled)
-%             (2) pressure-driven + event-driven
-%             (3) flow-driven + time-driven
-%             (4) flow-driven + event-driven (i.e., controlled)
-%Inputs     : expName      - a string variable denoting the name of the
-%                            experiment that was simulated
+%             the flow driven simulation modes for Kayser's and Yang's
+%             experiments.
 %             numZero      - a scalar denoting the absolute tolerance for
 %                            attaining the css 
 %Outputs    : the plot for comparing the CSS convergence criteria vs. PSA
 %             cycle number
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function plotCssComparisons(expName,numZero)
+function plotCssComparisonsFlowOnly(numZero)
 
     %---------------------------------------------------------------------%
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'plotCssComparisons';
+    %funcId = 'plotCssComparisonsFlowOnly';
     %---------------------------------------------------------------------%
 
   
@@ -91,7 +85,7 @@ function plotCssComparisons(expName,numZero)
         hold on;
         
         %Grab the table name
-        tableName = strcat(expName,'_pressure_time');
+        tableName = strcat('kayser_flow_time');
 
         %Grab the .csv file and get the matrix
         matrix4Data = readtable(tableName, ...
@@ -122,7 +116,7 @@ function plotCssComparisons(expName,numZero)
         hold on;
         
         %Grab the table name
-        tableName = strcat(expName,'_pressure_event');
+        tableName = strcat('kayser_flow_event');
 
         %Grab the .csv file and get the matrix
         matrix4Data = readtable(tableName, ...
@@ -136,8 +130,8 @@ function plotCssComparisons(expName,numZero)
         cssCrit2 = matrix4Data{:,2};        
 
         %Plot the results
-%         semilogy(cycNo2,cssCrit2,':o', ...
-%                  'LineWidth',2.0,'Color',[0,0,0]);
+        semilogy(cycNo2,cssCrit2,':o', ...
+                 'LineWidth',2.0,'Color',[0,0,0]);
 
         %Clear the work space
         clearvars -except numZero expName cycNo1 cycNo2;        
@@ -153,7 +147,7 @@ function plotCssComparisons(expName,numZero)
         hold on;
         
         %Grab the table name
-        tableName = strcat(expName,'_flow_time');
+        tableName = strcat('yang_flow_time');
 
         %Grab the .csv file and get the matrix
         matrix4Data = readtable(tableName, ...
@@ -184,7 +178,7 @@ function plotCssComparisons(expName,numZero)
         hold on;
         
         %Grab the table name
-        tableName = strcat(expName,'_flow_event');
+        tableName = strcat('yang_flow_event');
 
         %Grab the .csv file and get the matrix
         matrix4Data = readtable(tableName, ...
@@ -244,9 +238,10 @@ function plotCssComparisons(expName,numZero)
 %            'Location', ...
 %            'NorthEast');
     
-    legend('pres.+time', ...           
-           'flow+time', ...
-           'flow+event', ...
+    legend('[K] flow+time', ...           
+           '[K] flow+event', ...
+           '[Y] flow+time', ...
+           '[Y] flow+event', ...
            'Location', ...
            'NorthEast');
 
