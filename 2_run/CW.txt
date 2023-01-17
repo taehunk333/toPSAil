@@ -121859,3 +121859,16 @@ plotCssComparisonsFlowOnly(1e-8)
     outputName = strcat(expName,'CssFlow','.pdf');
 {Unrecognized function or variable 'expName'.
 } 
+%Adjust margin
+    a = annotation('rectangle',[0.0 0.0 1 1],'Color','w');
+    
+    %File name
+    outputName = strcat('CssFlow','.pdf');
+    
+    %Save the figure as .eps
+    exportgraphics(gcf,fullfile(pwd,outputName), ...
+                   'ContentType','vector');
+    
+    %Delete the annotation
+    delete(a);
+if system_dependent('IsDebugMode')==1, dbquit; end
