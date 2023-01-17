@@ -261,7 +261,7 @@ function plotCssComparisonsFlowOnly(numZero)
     a = annotation('rectangle',[0.0 0.0 1 1],'Color','w');
     
     %File name
-    outputName = strcat(expName,'Css','.pdf');
+    outputName = strcat('CssFlow','.pdf');
     
     %Save the figure as .eps
     exportgraphics(gcf,fullfile(pwd,outputName), ...
