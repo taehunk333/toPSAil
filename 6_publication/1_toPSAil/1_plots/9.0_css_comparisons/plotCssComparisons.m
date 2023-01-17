@@ -26,7 +26,7 @@
 %Function   : plotCssComparisons.m
 %Source     : common
 %Description: plots the CSS convergence criteria vs. PSA cycle number for 
-%             the differen simulation modes for a given experimental
+%             the different simulation modes for a given experimental
 %             system. The simulation modes are:
 %             (1) pressure-driven + time-driven (i.e., uncontrolled)
 %             (2) pressure-driven + event-driven
