@@ -11,6 +11,7 @@
 
 # References
 
+> Please refer to the following references for more detail on the deveolpment of $\textsf{toPSAil}$.
 
 ## Published Manuscripts
 * T.-H. Kim and J. K. Scott, Dynamic Modeling and Simulation of Pressures Swing Adsorption Processes Using $\textsf{toPSAil}$, *Computers and Chemical Engineering*, submitted Jan., 2023.
