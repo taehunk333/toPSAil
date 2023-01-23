@@ -1,4 +1,4 @@
-# $\textsf{toPSAil}$
+# $\textsf{toPSAil}$ [tάpseil]
 
 $\textsf{Totally Open Pressure Swing Adsorption Intensification Laboratory (toPSAil)}$ is an open-source pressure swing adsorption (PSA) process simulator, written in $\textsf{MATLAB}^{\textregistered}$.
 
