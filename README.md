@@ -18,7 +18,7 @@
 * T.-H. Kim, Computational Methods for Intensifying the Design and Operation of Pressure Swing Adsorption Processes, *Doctoral Dissertation*, The Geoergia Institute of Technology, Feb. 2023.
 
 ## Oral Presentations
-* T.-H. Kim and J. K. Scott. $\textsf{Totally Open Pressure Swing Adsorption Intensification Laboratory (toPSAil)}$, *American Institute of Chemical Engineers (AIChE) 2021 Annual Meeting}*, Boston, MA.
+* T.-H. Kim and J. K. Scott. $\textsf{Totally Open Pressure Swing Adsorption Intensification Laboratory (toPSAil)}$, *American Institute of Chemical Engineers (AIChE) 2021 Annual Meeting*, Boston, MA.
 
 # Licensing Information
 
