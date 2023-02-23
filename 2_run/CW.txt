@@ -121872,3 +121872,72 @@ plotCssComparisonsFlowOnly(1e-8)
     %Delete the annotation
     delete(a);
 if system_dependent('IsDebugMode')==1, dbquit; end
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m',148,1)">148 </a>    if params.nSteps == 1
+open calcIsothermExtLangFreu.m
+open calcIsothermExtLang.m
+open getAdsAffConstant
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Beginning a PSA cycle simulation...
+*******************************************
+{Operation terminated by user during <a href="matlab:matlab.internal.language.introspective.errorDocCallback('getRaWaCuMolBal', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\4_rhs\2_rightHandSideFunctions\getRaWaCuMolBal.m', 76)" style="font-weight:bold">getRaWaCuMolBal</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\4_rhs\2_rightHandSideFunctions\getRaWaCuMolBal.m',76,0)">line 76</a>)
+
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('defineRhsFunc', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\4_rhs\2_rightHandSideFunctions\defineRhsFunc.m', 143)" style="font-weight:bold">defineRhsFunc</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\4_rhs\2_rightHandSideFunctions\defineRhsFunc.m',143,0)">line 143</a>)
+        units = getRaWaCuMolBal(params,units,nS);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('runPsaCycleStep>@(t,x)defineRhsFunc(t,x,params)', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycleStep.m', 183)" style="font-weight:bold">runPsaCycleStep>@(t,x)defineRhsFunc(t,x,params)</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycleStep.m',183,0)">line 183</a>)
+        funcRhs = @(t,x) defineRhsFunc(t,x,params);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('odenumjac', 'C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\funfun\private\odenumjac.m', 131)" style="font-weight:bold">odenumjac</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\funfun\private\odenumjac.m',131,0)">line 131</a>)
+      Fdel(:,j) = feval(F,Fargs{1:diffvar-1},ydel(:,j),Fargs{diffvar+1:end});
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('ode15s', 'C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\funfun\ode15s.m', 348)" style="font-weight:bold">ode15s</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\funfun\ode15s.m',348,0)">line 348</a>)
+    [dfdy,Joptions.fac,nF] = odenumjac(odeFcn, {t,y,odeArgs{:}}, f0, Joptions);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('solvOdes', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\10_solver\solvOdes.m', 84)" style="font-weight:bold">solvOdes</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\10_solver\solvOdes.m',84,0)">line 84</a>)
+        sol = ode15s(funcRhs,tDom,iStates',options);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('runPsaCycleStep', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycleStep.m', 210)" style="font-weight:bold">runPsaCycleStep</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycleStep.m',210,0)">line 210</a>)
+            sol = solvOdes(funcRhs,tDom,iStates,options,numIntSolv);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('runPsaCycle', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m', 195)" style="font-weight:bold">runPsaCycle</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m',195,0)">line 195</a>)
+                    = runPsaCycleStep(params,iStates,tDom,nS,nCy);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('runPsaProcessSimulation', 'C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m', 168)" style="font-weight:bold">runPsaProcessSimulation</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m',168,0)">line 168</a>)
+    sol = runPsaCycle(params);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('programProfiler', 'C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\programProfiler.m', 81)" style="font-weight:bold">programProfiler</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\programProfiler.m',81,0)">line 81</a>)
+    runPsaProcessSimulation(name,num);
+} 
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m',148,1)">148 </a>    if params.nSteps == 1
+params.tempRefIso
+
+ans =
+
+  318.1500
+
+params.tempRefNorm
+
+ans =
+
+    1.0671
+

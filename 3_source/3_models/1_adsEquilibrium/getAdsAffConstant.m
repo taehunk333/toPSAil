@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/29/Friday
-%Code last modified on : 2022/11/6/Sunday
+%Code last modified on : 2023/2/23/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -105,7 +105,7 @@ function bCNew = getAdsAffConstant(params,states,nRows,nAds)
         bCNew(:,nVols*(i-1)+1:nVols*i) ...
             = dimLessBC(i) ...
            .* exp(-dimLessIsoStHtRef(i) ...
-           .* (1-tempRefNorm./temps.cstr));
+           .* (1/tempRefNorm-1./temps.cstr));
                 
     end            
     %---------------------------------------------------------------------%            

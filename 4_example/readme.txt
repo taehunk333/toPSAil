@@ -419,3 +419,33 @@
 %				5. Pressurization with feed
 %				6. High pressure feed
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Multiple Adsorber Simulation II
+%
+% Purpose:
+%	- To predict performance metrics of MOFs exhibiting hysteresis
+% Reference: 
+%	- Lukas W. Bingel, Taehun Kim, Krista S. Walton, Joseph K. 
+%	  Scott
+% Case Studies:
+% 	[O] case_study_5.0: 
+%	  	- 1-adsorber
+%		- Isothermal
+% 		- Flow-driven
+%		- Time-driven
+%	  	- MOF (Lukas 1)
+%		- Dual-Site Langmuir-Freundlich 
+%		- LDF kinetics
+%	        - 4 step PSA cycle
+%			- Adsorber 1
+%				1. Repressurization 
+%				   (product end)
+%				2. High pressure feed
+%				3. Depressurization 
+%				   (feed end)
+%				4. Low pressure purge	
+%				   (counter-current or - direction)		
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
