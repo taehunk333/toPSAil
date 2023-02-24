@@ -121941,3 +121941,556 @@ ans =
 
     1.0671
 
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('noteModelNotReady', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\7_notifier\noteModelNotReady.m', 58)" style="font-weight:bold">noteModelNotReady</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\7_notifier\noteModelNotReady.m',58,0)">line 58</a>)
+noteModelNotReady.m: The user-selected model is currently not available. Please select an alternate model for the
+variable "modSp1".
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('getSubModels', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSubModels.m', 117)" style="font-weight:bold">getSubModels</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSubModels.m',117,0)">line 117</a>)
+        noteModelNotReady(modNo1);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('getSimParams', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m', 198)" style="font-weight:bold">getSimParams</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',198,0)">line 198</a>)
+    [models,subModels] = getSubModels(params);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('runPsaProcessSimulation', 'C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m', 139)" style="font-weight:bold">runPsaProcessSimulation</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m',139,0)">line 139</a>)
+    [params,fullParams] = getSimParams(exampleFolder);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('programProfiler', 'C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\programProfiler.m', 81)" style="font-weight:bold">programProfiler</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\programProfiler.m',81,0)">line 81</a>)
+    runPsaProcessSimulation(name,num);
+} 
+programProfiler
+if system_dependent('IsDebugMode')==1, dbstep in; end
+opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m',139,0)
+if system_dependent('IsDebugMode')==1, dbcont; end
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m',139,1)">139 </a>    [params,fullParams] = getSimParams(exampleFolder);  
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+a = cell2mat(params.qSatSiteOneC)
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('cat')" style="font-weight:bold">cat</a>
+Dimensions of arrays being concatenated are not consistent.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('cell2mat', 'C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\datatypes\cell2mat.m', 83)" style="font-weight:bold">cell2mat</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\datatypes\cell2mat.m',83,0)">line 83</a>)
+            m{n} = cat(1,c{:,n});
+} 
+a = cell2mat(params.qSatSiteOneC{1,:})
+{Brace indexing is not supported for variables of this type.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('cell2mat', 'C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\datatypes\cell2mat.m', 42)" style="font-weight:bold">cell2mat</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\datatypes\cell2mat.m',42,0)">line 42</a>)
+cellclass = class(c{1});
+} 
+a = cell2mat(params.qSatSiteOneC(1,:))
+
+a =
+
+    '2.42595 0.90201'
+
+a = cell2mat(str2mat(params.qSatSiteOneC(1,:)))
+{Brace indexing is not supported for variables of this type.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('cell2mat', 'C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\datatypes\cell2mat.m', 42)" style="font-weight:bold">cell2mat</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\datatypes\cell2mat.m',42,0)">line 42</a>)
+cellclass = class(c{1});
+} 
+str2num(params.qSatSiteOneC
+ str2num(params.qSatSiteOneC
+                            ↑
+{Error: Invalid expression. When calling a function or indexing a variable, use parentheses. Otherwise, check for
+mismatched delimiters.
+} 
+str2num(params.qSatSiteOneC)
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('str2num', 'C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\strfun\str2num.m', 35)" style="font-weight:bold">str2num</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\strfun\str2num.m',35,0)">line 35</a>)
+Input must be a character vector or string scalar.
+} 
+str2num(params.qSatSiteOneC(1,:))
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('str2num', 'C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\strfun\str2num.m', 35)" style="font-weight:bold">str2num</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\strfun\str2num.m',35,0)">line 35</a>)
+Input must be a character vector or string scalar.
+} 
+params.qSatSiteOneC
+
+ans =
+
+  2×1 <a href="matlab:helpPopup cell" style="font-weight:bold">cell</a> array
+
+    {'2.42595 0.90201'  }
+    {'0.794825 0.981952'}
+
+ans{1}
+
+ans =
+
+    '2.42595 0.90201'
+
+str2num(params.qSatSiteOneC{1})
+
+ans =
+
+    2.4259    0.9020
+
+str2num(params.qSatSiteOneC{:})
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('str2num')" style="font-weight:bold">str2num</a>
+Too many input arguments.
+} 
+str2num(params.qSatSiteOneC{1})
+
+ans =
+
+    2.4259    0.9020
+
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+uiopen('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\3_models\1_adsEquilibrium\calcIsothermDecDuSiLangFreu.m',1)
+uiopen('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\3_models\1_adsEquilibrium\calcIsothermExtDuSiLangFreu.m',1)
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+if system_dependent('IsDebugMode')==1, dbcont; end
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m',139,1)">139 </a>    [params,fullParams] = getSimParams(exampleFolder);  
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('noteModelNotReady', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\7_notifier\noteModelNotReady.m', 58)" style="font-weight:bold">noteModelNotReady</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\7_notifier\noteModelNotReady.m',58,0)">line 58</a>)
+noteModelNotReady.m: The user-selected model is currently not available. Please select an alternate model for the
+variable "modSp1".
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('getSubModels', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSubModels.m', 117)" style="font-weight:bold">getSubModels</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSubModels.m',117,0)">line 117</a>)
+        noteModelNotReady(modNo1);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('getSimParams', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m', 198)" style="font-weight:bold">getSimParams</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',198,0)">line 198</a>)
+    [models,subModels] = getSubModels(params);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('runPsaProcessSimulation', 'C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m', 139)" style="font-weight:bold">runPsaProcessSimulation</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m',139,0)">line 139</a>)
+    [params,fullParams] = getSimParams(exampleFolder);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('programProfiler', 'C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\programProfiler.m', 81)" style="font-weight:bold">programProfiler</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\programProfiler.m',81,0)">line 81</a>)
+    runPsaProcessSimulation(name,num);
+} 
+opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSubModels.m',117,0)
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',203,1)">203 </a>    params.funcIso = models{1};
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',203,1)">203 </a>    params.funcIso = models{1};
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',136,1)">136 </a>                structCell{k} ...
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep out; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep out; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep out; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep out; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep out; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep out; end
+if system_dependent('IsDebugMode')==1, dbstep out; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getExcelParams.m',106,1)">106 </a>    fns = fieldnames(params);
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+cellfun(@str2double,fns)
+
+ans =
+
+   NaN
+   NaN
+   NaN
+   NaN
+   NaN
+     1
+     2
+     1
+     2
+     1
+     2
+     1
+     2
+     1
+     2
+     1
+     2
+     1
+     2
+
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',136,1)">136 </a>                structCell{k} ...
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+str2num(params.qSatSiteOneC1)
+
+ans =
+
+    2.4259    0.9020
+
+str2double(params.qSatSiteOneC1)
+
+ans =
+
+   NaN
+
+str2double('a')
+
+ans =
+
+   NaN
+
+str2double('1')
+
+ans =
+
+     1
+
+str2num(params.qSatSiteOneC1)
+
+ans =
+
+    2.4259    0.9020
+
+str2num('11')
+
+ans =
+
+    11
+
+str2num('a')
+
+ans =
+
+     []
+
+if system_dependent('IsDebugMode')==1, dbstep out; end
+structureIsotherm = structCell{k};
+if system_dependent('IsDebugMode')==1, dbstep; end
+structureIsotherm = structCell{k};
+help iscell
+ <strong>iscell</strong> True for cell array.
+    <strong>iscell</strong>(C) returns logical 1 (true) if C is a cell array
+    and logical 0 (false) otherwise.
+ 
+    See also <a href="matlab:help cell">cell</a>, <a href="matlab:help paren">paren</a>, <a href="matlab:help isstruct">isstruct</a>, <a href="matlab:help isnumeric">isnumeric</a>, <a href="matlab:help isobject">isobject</a>, <a href="matlab:help islogical">islogical</a>.
+
+    <a href="matlab:doc iscell">Documentation for iscell</a>
+
+iscell(structureIsotherm.qSatSiteOneC)
+
+ans =
+
+  <a href="matlab:helpPopup logical" style="font-weight:bold">logical</a>
+
+   1
+
+%Get the name of the fields
+                    fieldNamesInStruct = fieldnames(structureIsotherm)
+
+fieldNamesInStruct =
+
+  12×1 <a href="matlab:helpPopup cell" style="font-weight:bold">cell</a> array
+
+    {'qSatSiteOneC'}
+    {'qSatSiteTwoC'}
+    {'bSiteOneC'   }
+    {'bSiteTwoC'   }
+    {'nSiteOneC'   }
+    {'nSiteTwoC'   }
+    {'ldfMtc'      }
+    {'diamPellet'  }
+    {'maTrRes'     }
+    {'pellDens'    }
+    {'bulkDens'    }
+    {'tempRefIso'  }
+
+numel(fieldNamesInStruct)
+
+ans =
+
+    12
+
+structureIsotherm.(numEleStruct(1))
+{Unrecognized function or variable 'numEleStruct'.
+} 
+structureIsotherm.(fieldNamesInStruct(1))
+{Argument to dynamic structure reference must evaluate to a valid field name.
+} 
+structureIsotherm.(fieldNamesInStruct{1})
+
+ans =
+
+  2×1 <a href="matlab:helpPopup cell" style="font-weight:bold">cell</a> array
+
+    {'2.42595 0.90201'  }
+    {'0.794825 0.981952'}
+
+iscell(ans)
+
+ans =
+
+  <a href="matlab:helpPopup logical" style="font-weight:bold">logical</a>
+
+   1
+
+str2num(params.qSatSiteOneC1)
+{Unable to resolve the name params.qSatSiteOneC1.
+} 
+str2num(strIsotherm.qSatSiteOneC1)
+{Unable to resolve the name strIsotherm.qSatSiteOneC1.
+} 
+%Unpack the structure
+                    strIsotherm = structCell{k};
+                    
+                    %Get the name of the fields
+                    fieldNamesInStruct = fieldnames(strIsotherm);
+                    
+                    %Get the number of elements
+                    numEleStruct = numel(fieldNamesInStruct);
+str2num(strIsotherm.qSatSiteOneC1)
+{Reference to non-existent field 'qSatSiteOneC1'.
+} 
+str2num(strIsotherm.qSatSiteOneC)
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('str2num', 'C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\strfun\str2num.m', 35)" style="font-weight:bold">str2num</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\strfun\str2num.m',35,0)">line 35</a>)
+Input must be a character vector or string scalar.
+} 
+str2num(strIsotherm.qSatSiteOne)
+{Reference to non-existent field 'qSatSiteOne'.
+} 
+str2num(strIsotherm.qSatSiteOneC{1})
+
+ans =
+
+    2.4259    0.9020
+
+str2num(strIsotherm.qSatSiteOneC{2})
+
+ans =
+
+    0.7948    0.9820
+
+[str2num(strIsotherm.qSatSiteOneC{1}); str2num(strIsotherm.qSatSiteOneC{2})]
+
+ans =
+
+    2.4259    0.9020
+    0.7948    0.9820
+
+type(ans)
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('type')" style="font-weight:bold">type</a>
+Arguments must be character vectors or strings
+} 
+[str2num(strIsotherm.qSatSiteOneC{1}); str2num(strIsotherm.qSatSiteOneC{2})]
+
+ans =
+
+    2.4259    0.9020
+    0.7948    0.9820
+
+numel(strIsotherm.qSatSiteOneC)
+
+ans =
+
+     2
+
+[[1,2,3] ; [4,5,6]]
+
+ans =
+
+     1     2     3
+     4     5     6
+
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',145,1)">145 </a>                if k == 6
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+numarrSave(m) = str2num(currField{m});
+{Unable to perform assignment because the left and right sides have a different number of elements.
+} 
+numarrSave(m,:) = str2num(currField{m});
+{Unable to perform assignment because the size of the left side is 1-by-1 and the size of the right side is 1-by-2.
+} 
+str2num(currField{m})
+
+ans =
+
+    2.4259    0.9020
+
+numHys = length(str2num(currField{1}));
+numarrSave = zeros(numElField,numHys);
+numarrSave(m) = str2num(currField{m});
+{Unable to perform assignment because the left and right sides have a different number of elements.
+} 
+str2num(currField{m})
+
+ans =
+
+    2.4259    0.9020
+
+numarrSave(m,:) = str2num(currField{m});
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',136,1)">136 </a>                structCell{k} ...
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',139,1)">139 </a>                structCell{k} ...
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',270,1)">270 </a>    params.funcIso = models{1};
