@@ -122494,3 +122494,199 @@ programProfiler
 The simulator started the initialization... 
 *******************************************
 <a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',270,1)">270 </a>    params.funcIso = models{1};
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',270,1)">270 </a>    params.funcIso = models{1};
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',337,1)">337 </a>    params = getAdsEquilParams(params);
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getAdsEquilParams.m',277,1)">277 </a>        bSiteOneC    = params.bSiteOneC   ;
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getAdsEquilParams.m',278,1)">278 </a>        bSiteTwoC    = params.bSiteTwoC   ;
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getAdsEquilParams.m',279,1)">279 </a>        nSiteOneC    = params.nSiteOneC   ;
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getAdsEquilParams.m',280,1)">280 </a>        nSiteTwoC    = params.nSiteTwoC   ;
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getAdsEquilParams.m',281,1)">281 </a>        gasCons      = parama.gasCons     ;
+<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\datatools\datatoolsservices\matlab\+internal\+matlab\+datatoolsservices\WorkspaceListener.p',61,1)">61  </a>                    @(evt) internal.matlab.datatoolsservices.WorkspaceListener.workspaceUpdatedCorrectContext(evt, false, ...
+End of function WorkspaceListener>@(evt)internal.matlab.datatoolsservices.WorkspaceListener.workspaceUpdatedCorrectContext(evt,false,internal.matlab.datatoolsservices.WorkspaceEventType.WORKSPACE_CHANGED).
+{Unable to resolve the name parama.gasCons.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('getAdsEquilParams', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getAdsEquilParams.m', 281)" style="font-weight:bold">getAdsEquilParams</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getAdsEquilParams.m',281,0)">line 281</a>)
+        gasCons      = parama.gasCons     ;
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('getSimParams', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m', 337)" style="font-weight:bold">getSimParams</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',337,0)">line 337</a>)
+    params = getAdsEquilParams(params);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('runPsaProcessSimulation', 'C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m', 139)" style="font-weight:bold">runPsaProcessSimulation</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m',139,0)">line 139</a>)
+    [params,fullParams] = getSimParams(exampleFolder);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('programProfiler', 'C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\programProfiler.m', 81)" style="font-weight:bold">programProfiler</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\programProfiler.m',81,0)">line 81</a>)
+    runPsaProcessSimulation(name,num);
+} 
+opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m',139,0)
+opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getAdsEquilParams.m',281,0)
+opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getAdsEquilParams.m',281,0)
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',337,1)">337 </a>    params = getAdsEquilParams(params);
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getAdsEquilParams.m',286,1)">286 </a>        aConScaleFac = 1;
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',337,1)">337 </a>    params = getAdsEquilParams(params);
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getAdsEquilParams.m',286,1)">286 </a>        aConScaleFac = 1;
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getAdsEquilParams.m',291,1)">291 </a>        dimLessbSiteOneC    = bSiteOneC*(gasCons*tempAmbi*gasConT);
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getAdsEquilParams.m',292,1)">292 </a>        dimLessbSiteTwoC    = bSiteTwoC*(gasCons*tempAmbi*gasConT);
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getAdsEquilParams.m',295,1)">295 </a>        params.dimLessqSatSiteOneC = dimLessqSatSiteOneC;
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getAdsEquilParams.m',296,1)">296 </a>        params.dimLessqSatSiteTwoC = dimLessqSatSiteTwoC;
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getAdsEquilParams.m',297,1)">297 </a>        params.dimLessbSiteOneC    = dimLessbSiteOneC   ;
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getAdsEquilParams.m',298,1)">298 </a>        params.dimLessbSiteTwoC    = dimLessbSiteTwoC   ;
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getAdsEquilParams.m',299,1)">299 </a>        params.dimLessnSiteOneC    = nSiteOneC          ;
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getAdsEquilParams.m',300,1)">300 </a>        params.dimLessnSiteTwoC    = nSiteTwoC          ;            
+if system_dependent('IsDebugMode')==1, dbstep out; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',349,1)">349 </a>    params = getTotalAdsConc(params);           
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+%Unpack params
+    nStates      = params.nStates            ;
+    nColStT      = params.nColStT            ;
+    nComs        = params.nComs              ;
+    sComNums     = params.sComNums           ; 
+    nVols        = params.nVols              ;
+    bool         = params.bool               ;
+    nRows        = params.nRows              ;    
+    numZero      = params.numZero            ;
+    qSatSiteOneC = params.dimLessqSatSiteOneC;
+    qSatSiteTwoC = params.dimLessqSatSiteTwoC;
+    bSiteOneC    = params.dimLessbSiteOneC   ;
+    bSiteTwoC    = params.dimLessbSiteTwoC   ;
+    nSiteOneC    = params.nSiteOneC          ;
+    nSiteTwoC    = params.nSiteTwoC          ; 
+if system_dependent('IsDebugMode')==1, dbquit; end
+open calcIsothermExtLang.m
+open getAdsAffConstant
+open calcIsothermExtLang.m
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',349,1)">349 </a>    params = getTotalAdsConc(params);           
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\2_initialization\4_equilibriumTheoryCalcs\getTotalAdsConc.m',87,1)">87  </a>        params.dimLessbSiteTwoC    = params.dimLessbSiteTwoC   (:,1);
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\2_initialization\4_equilibriumTheoryCalcs\getTotalAdsConc.m',88,1)">88  </a>        params.dimLessnSiteOneC    = params.nSiteOneC          (:,1);
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\2_initialization\4_equilibriumTheoryCalcs\getTotalAdsConc.m',89,1)">89  </a>        params.dimLessnSiteTwoC    = params.nSiteTwoC          (:,1); 
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\2_initialization\4_equilibriumTheoryCalcs\getTotalAdsConc.m',91,1)">91  </a>    end        
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',349,1)">349 </a>    params = getTotalAdsConc(params);           
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep out; end
+if system_dependent('IsDebugMode')==1, dbstep out; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep out; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbquit all; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',353,1)">353 </a>    params = getAdsEquilParams(params,1);

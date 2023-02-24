@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/1/24/Monday
-%Code last modified on : 2022/11/8/Tuesday
+%Code last modified on : 2023/2/24/Friday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -135,7 +135,23 @@ function params = getAdsEquilParams(params,varargin)
             
             %Save the result
             params.dimLessKOneC = dimLessKOneC;
-            params.dimLessKTwoC = dimLessKTwoC;            
+            params.dimLessKTwoC = dimLessKTwoC;   
+            
+        %Decoupled or extended dual-site Langmuir-Freundlich isotherm
+        elseif whichIsotherm == 5 || whichIsotherm == 6
+        
+            %Unpack additional params
+            qSatSiteOneC = params.qSatSiteOneC;
+            qSatSiteTwoC = params.qSatSiteTwoC;            
+            adsConT      = params.adsConT     ;
+            
+            %Calculate dimensionless parameters (final)
+            dimLessqSatSiteOneC = qSatSiteOneC./adsConT; 
+            dimLessqSatSiteTwoC = qSatSiteTwoC./adsConT; 
+                        
+            %Save the result
+            params.dimLessqSatSiteOneC = dimLessqSatSiteOneC;
+            params.dimLessqSatSiteTwoC = dimLessqSatSiteTwoC;
             
         end
         %-----------------------------------------------------------------% 
@@ -261,7 +277,38 @@ function params = getAdsEquilParams(params,varargin)
         params.dimLessKFouC = dimLessKFouC; %Final
         params.dimLessKFivC = dimLessKFivC; %Final
         params.dimLessKSixC = dimLessKSixC; %Final
-                        
+                     
+    %Decoupled or extended dual-site Langmuir-Freundlich isotherm
+    elseif whichIsotherm == 5 || whichIsotherm == 6
+            
+        %Unpack additional params
+        qSatSiteOneC = params.qSatSiteOneC;
+        qSatSiteTwoC = params.qSatSiteTwoC;
+        bSiteOneC    = params.bSiteOneC   ;
+        bSiteTwoC    = params.bSiteTwoC   ;
+        nSiteOneC    = params.nSiteOneC   ;
+        nSiteTwoC    = params.nSiteTwoC   ;
+        gasCons      = params.gasCons     ;
+        tempAmbi     = params.tempAmbi    ;
+        gasConT      = params.gasConT     ;
+        
+        %Set the temporary constant
+        aConScaleFac = 1;
+        
+        %Calculate dimensionless parameters (temporary)
+        dimLessqSatSiteOneC = qSatSiteOneC/aConScaleFac           ;
+        dimLessqSatSiteTwoC = qSatSiteTwoC/aConScaleFac           ;
+        dimLessbSiteOneC    = bSiteOneC*(gasCons*tempAmbi*gasConT);
+        dimLessbSiteTwoC    = bSiteTwoC*(gasCons*tempAmbi*gasConT);
+        
+        %Save the result
+        params.dimLessqSatSiteOneC = dimLessqSatSiteOneC;
+        params.dimLessqSatSiteTwoC = dimLessqSatSiteTwoC;
+        params.dimLessbSiteOneC    = dimLessbSiteOneC   ;
+        params.dimLessbSiteTwoC    = dimLessbSiteTwoC   ;
+        params.dimLessnSiteOneC    = nSiteOneC          ;
+        params.dimLessnSiteTwoC    = nSiteTwoC          ;            
+        
     end
     %---------------------------------------------------------------------%
     

@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/3/Sunday
-%Code last modified on : 2022/11/6/Sunday
+%Code last modified on : 2023/2/24/Friday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -49,6 +49,7 @@ function params = getTotalAdsConc(params)
     nComs    = params.nComs   ;
     funcIso  = params.funcIso ;    
     gasConT  = params.gasConT ;
+    bool     = params.bool    ;
     %---------------------------------------------------------------------%    
     
     
@@ -75,6 +76,19 @@ function params = getTotalAdsConc(params)
     
     %Define the number of time points
     params.nRows = 1;
+    
+    %If we have a hysteresis
+    if bool(12) == 1
+        
+        %Let us consider the adsorption curve for the hysteresis
+        params.dimLessqSatSiteOneC = params.dimLessqSatSiteOneC(:,1);
+        params.dimLessqSatSiteTwoC = params.dimLessqSatSiteTwoC(:,1);
+        params.dimLessbSiteOneC    = params.dimLessbSiteOneC(:,1)   ;
+        params.dimLessbSiteTwoC    = params.dimLessbSiteTwoC(:,1)   ;
+        params.nSiteOneC           = params.nSiteOneC(:,1)          ;
+        params.nSiteTwoC           = params.nSiteTwoC(:,1)          ;  
+        
+    end        
 
     %Compute the adsorbed phase composition for all species as per the
     %chosen isotherm function; Note that adsorbed phase concentrations will
