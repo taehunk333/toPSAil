@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2019/2/4/Monday
-%Code last modified on : 2022/10/27/Thursday
+%Code last modified on : 2023/2/24/Friday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -126,6 +126,9 @@ function [params,fullParams] = getSimParams(exampleFolder)
             %For each excel file
             for j = 1 : numExFilesFolder(i)
                 
+                %---------------------------------------------------------%
+                %Import the data
+                
                 %Update the counter
                 k = k + 1;                                
                 
@@ -137,6 +140,70 @@ function [params,fullParams] = getSimParams(exampleFolder)
                     = getExcelParams(exampleFolder, ...
                                        subFolderName{i}, ...
                                        exFileNames{j});
+                %---------------------------------------------------------%
+                
+                
+                
+                %---------------------------------------------------------%
+                %Post-process the data for the isotherm parameters, in case
+                %more parameters were specified due to the hysteresis
+                                   
+                %After obtaining isotherm parameters, make sure that any
+                %strings are converted to numeric arrays, which is possible
+                %when the user specified adsorption isotherm parameters to
+                %account for the hysteresis
+                if k == 6
+                    
+                    %Unpack the structure
+                    strIsotherm = structCell{k};
+                    
+                    %Get the name of the fields
+                    fieldNamesInStruct = fieldnames(strIsotherm);
+                    
+                    %Get the number of elements
+                    numElStruct = numel(fieldNamesInStruct);
+                    
+                    %For each element in the structure                    
+                    for l = 1 : numElStruct
+                        
+                        %Grab the field
+                        currField = strIsotherm.(fieldNamesInStruct{l});
+                        
+                        %If the current field is a cell
+                        if iscell(currField)
+                            
+                            %Get the number of elements in the cell
+                            numElField = numel(currField);
+                            
+                            %Get the number of hysteresis data from the
+                            %first row
+                            numHys = length(str2num(currField{1}));
+                            
+                            %Initialize the numeric array
+                            numArrSave = zeros(numElField,numHys);
+                            
+                            %For each row, 
+                            for m = 1 : numElField
+                            
+                                %Convert to a numeric array
+                                numArrSave(m,:) = str2num(currField{m});
+                            
+                            end
+                            
+                            %Update the field in the structure
+                            strIsotherm.(fieldNamesInStruct{l}) ...
+                                = numArrSave;
+                            
+                        end
+                        
+                    end                                                             
+                    
+                    %Update the structure in the cell array of the
+                    %structure
+                    structCell{k} = strIsotherm;
+                    
+                end
+                %---------------------------------------------------------%
 
             end
 

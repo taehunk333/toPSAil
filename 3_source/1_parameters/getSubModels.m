@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/2/Saturday
-%Code last modified on : 2022/11/6/Sunday
+%Code last modified on : 2023/2/24/Friday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -108,21 +108,17 @@ function [models,subModels] = getSubModels(params)
         models{modNo1} = @(params,states,nAds) ...
                          calcIsothermExtLangFreu(params,states,nAds);
     
-    %TBD    
+    %"Decoupled" dual-site Langmuir-Freundlich isotherm    
     elseif modSp(modNo1) == 5
         
-        %models{modNo1} = 0;
-        
-        %Model under development
-        noteModelNotReady(modNo1);
+        models{modNo1} = @(params,states,nAds) ...
+                         calcIsothermDecDuSiLangFreu(params,states,nAds);
     
-    %TBD
+    %"Extended" dual-site Langmuir-Freundlich isotherm 
     elseif modSp(modNo1) == 6
         
-        %models{modNo1} = 0;
-        
-        %Model under development
-        noteModelNotReady(modNo1);
+        models{modNo1} = @(params,states,nAds) ...
+                         calcIsothermExtDuSiLangFreu(params,states,nAds);
     
     %TBD
     elseif modSp(modNo1) == 7
