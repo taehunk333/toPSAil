@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2020/12/14/Monday
-%Code last modified on : 2022/11/6/Sunday
+%Code last modified on : 2023/3/6/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -63,6 +63,26 @@ function newStates = calcIsothermExtLang(params,states,nAds)
     bool         = params.bool        ;
     nRows        = params.nRows       ;    
     dimLessQsatC = params.dimLessQsatC;
+    %---------------------------------------------------------------------%
+    
+    
+    
+    %---------------------------------------------------------------------%    
+    %Determine the index for the number of adsorbers nAdsInd
+        
+    %When we have a single CSTR,
+    if nAds == 0
+
+        %Make sure that nAds = 1 so that the indexing will work out
+        nAdsInd = 1;
+
+    %Otherwise, let the index equal to itself                
+    else
+
+        %Make sure that nAds = 1 so that the indexing will work out
+        nAdsInd = nAds;
+
+    end  
     %---------------------------------------------------------------------%
     
     
@@ -124,14 +144,6 @@ function newStates = calcIsothermExtLang(params,states,nAds)
         %Calaulate the matrix containing the state dependent dimensionless
         %Henry's constant
         dimLessHenry = (dimLessBC).*(dimLessQsatC);
-        
-        %Check to see if we have a single CSTR
-        if nAds == 0
-
-            %Make sure that nAds = 1 so that the indexing will work out
-            nAds = 1;
-
-        end
 
         %Initialize the denominator
         denominator = ones(nRows,nVols);
@@ -159,11 +171,11 @@ function newStates = calcIsothermExtLang(params,states,nAds)
                    .* colGasCons.(sComNums{i});
 
             %Get the beginning index
-            n0 = nColStT*(nAds-1) ...
+            n0 = nColStT*(nAdsInd-1) ...
                + nComs+i;
             
             %Get the final index
-            nf = nColStT*(nAds-1) ...
+            nf = nColStT*(nAdsInd-1) ...
                + nStates*(nVols-1)+nComs+i;
                
             %For adosrbed concentrations, update with equilibrium 
@@ -184,14 +196,6 @@ function newStates = calcIsothermExtLang(params,states,nAds)
             
         %Calcualte the dimensionless bC and qSatC
         dimLessBC    = bC*gasCons*teScaleFac*gConScaleFac;            
-
-        %Check to see if we have a single CSTR
-        if nAds == 0
-
-            %Make sure that nAds = 1 so that the indexing will work out
-            nAds = 1;
-
-        end
 
         %Initialize the denominator
         denominator = ones(nRows,nVols);
@@ -218,11 +222,11 @@ function newStates = calcIsothermExtLang(params,states,nAds)
                    .* colGasCons.(sComNums{i});
 
             %Get the beginning index
-            n0 = nColStT*(nAds-1) ...
+            n0 = nColStT*(nAdsInd-1) ...
                + nComs+i;
             
             %Get the final index
-            nf = nColStT*(nAds-1) ...
+            nf = nColStT*(nAdsInd-1) ...
                + nStates*(nVols-1)+nComs+i;
                
             %For adosrbed concentrations, update with equilibrium 

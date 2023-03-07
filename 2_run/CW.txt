@@ -122690,3 +122690,1785 @@ programProfiler
 The simulator started the initialization... 
 *******************************************
 <a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',353,1)">353 </a>    params = getAdsEquilParams(params,1);
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep out; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep out; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+open getTotalGasConc.m
+open getTotalAdsConc.m
+params.modSp
+
+ans =
+
+     5
+     1
+     1
+     1
+     0
+     0
+     0
+
+params.modSp(1)
+
+ans =
+
+     5
+
+uiopen('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\6_grabber\grabHysteresis.m',1)
+if 0 
+
+elseif 1
+
+ print('fsd')
+end
+{Error using validateHandleToPrint
+No figure to print.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('validate', 'C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\graphics\printing\private\validate.m', 17)" style="font-weight:bold">validate</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\graphics\printing\private\validate.m',17,0)">line 17</a>)
+pj = validateHandleToPrint(pj);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('print', 'C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\graphics\printing\print.m', 67)" style="font-weight:bold">print</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\graphics\printing\print.m',67,0)">line 67</a>)
+pj = validate( pj );
+} 
+if 0
+elseif 1
+fprintf('fsd')
+end
+fsdelseif 1
+ elseif 1
+ ↑
+{Error: Illegal use of reserved keyword "elseif".
+} 
+
+if 0 
+
+elseif 1
+fprintf('fsd \n\n')
+end
+fsd 
+
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\2_initialization\4_equilibriumTheoryCalcs\calcEqTheoryHighPres.m',117,1)">117 </a>    params = grabHysteresis(params,1); % 1 means adsorption
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\2_initialization\4_equilibriumTheoryCalcs\calcEqTheoryHighPres.m',117,1)">117 </a>    params = grabHysteresis(params,1); % 1 means adsorption
+<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\general\onCleanup.m',52,1)">52  </a>            narginchk(1, 1);
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep out; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\2_initialization\4_equilibriumTheoryCalcs\calcEqTheoryHighPres.m',117,1)">117 </a>    params = grabHysteresis(params,1); % 1 means adsorption
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep out; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',414,1)">414 </a>    params = getDimLessParams(params);                           
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',477,1)">477 </a>    params = getFlowSheetValves(params);                     
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+open removeParams
+if system_dependent('IsDebugMode')==1, dbstep out; end
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Beginning a PSA cycle simulation...
+*******************************************
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+open grabParams4Step
+params.sStepColCurr
+{Reference to non-existent field 'sStepColCurr'.
+} 
+params.sStepCol
+
+ans =
+
+  1×5 <a href="matlab:helpPopup cell" style="font-weight:bold">cell</a> array
+
+    {'RP-XXX-RAF'}    {'RP-FEE-XXX'}    {'HP-FEE-RAF'}    {'DP-ATM-XXX'}    {'LP-ATM-RAF'}
+
+params.nCols
+
+ans =
+
+     1
+
+sStepColCurr = sStepCol{nS};
+{Undefined variable sStepCol.
+} 
+bool     = params.bool    ;
+    sStepCol = params.sStepCol;
+    nCols    = params.nCols   ;
+sStepColCurr = sStepCol{nS};
+sStepColCurr = sStepCol{nS}
+
+sStepColCurr =
+
+    'RP-XXX-RAF'
+
+contains(sStepColCurr{i},'RP')
+{Brace indexing is not supported for variables of this type.
+} 
+contains(sStepColCurr{1},'RP')
+{Brace indexing is not supported for variables of this type.
+} 
+contains(sStepColCurr{i},'RP')
+{Brace indexing is not supported for variables of this type.
+} 
+contains(sStepColCurr,'RP')
+
+ans =
+
+  <a href="matlab:helpPopup logical" style="font-weight:bold">logical</a>
+
+   1
+
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+{Index exceeds the number of array elements (11).
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('grabHysteresis', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\6_grabber\grabHysteresis.m', 59)" style="font-weight:bold">grabHysteresis</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\6_grabber\grabHysteresis.m',59,0)">line 59</a>)
+    if bool(12) == 1
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('getTotalAdsConc', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\2_initialization\4_equilibriumTheoryCalcs\getTotalAdsConc.m', 82)" style="font-weight:bold">getTotalAdsConc</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\2_initialization\4_equilibriumTheoryCalcs\getTotalAdsConc.m',82,0)">line 82</a>)
+    params = grabHysteresis(params,1); % 1 means adsorption
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('getSimParams', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m', 349)" style="font-weight:bold">getSimParams</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',349,0)">line 349</a>)
+    params = getTotalAdsConc(params);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('runPsaProcessSimulation', 'C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m', 139)" style="font-weight:bold">runPsaProcessSimulation</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m',139,0)">line 139</a>)
+    [params,fullParams] = getSimParams(exampleFolder);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('programProfiler', 'C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\programProfiler.m', 81)" style="font-weight:bold">programProfiler</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\programProfiler.m',81,0)">line 81</a>)
+    runPsaProcessSimulation(name,num);
+} 
+opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\6_grabber\grabHysteresis.m',59,0)
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\6_grabber\grabHysteresis.m',59,1)">59  </a>    if bool(12) == 1
+bool(12)
+{Index exceeds the number of array elements (11).
+} 
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+
+*******************************************
+Beginning a PSA cycle simulation...
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m',194,1)">194 </a>                [stTimePts,stStates,flags] ...
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\6_grabber\grabParams4Step.m',88,1)">88  </a>    if bool(12) == 1
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+
+*******************************************
+Beginning a PSA cycle simulation...
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m',194,1)">194 </a>                [stTimePts,stStates,flags] ...
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\6_grabber\grabParams4Step.m',97,1)">97  </a>            isAdsorbing = contains(sStepColCurr,'HP') || ... %Feed
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep out; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycleStep.m',204,1)">204 </a>        else
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycleStep.m',207,1)">207 </a>            options = setOdeSolverOpts(params,iStates,nS,nCy);
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycleStep.m',210,1)">210 </a>            sol = solvOdes(funcRhs,tDom,iStates,options,numIntSolv);
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycleStep.m',212,1)">212 </a>        end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 57 
+*Number of Failed Steps         : 3 
+*Number of Function Evaluations : 1744 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 17 
+*Number of Linear Solves        : 101 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m',195,1)">195 </a>                    = runPsaCycleStep(params,iStates,tDom,nS,nCy);         
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Cycle No.1, Step No.1 is finished. 
+*Adsorber Steps: RP-XXX-RAF 
+*Step duration: 4.0(4) seconds
+*The step was a time driven step
+*******************************************
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 60 
+*Number of Failed Steps         : 5 
+*Number of Function Evaluations : 2235 
+*Number of Jacobian Evaluations : 4 
+*Number of LU Decompositions    : 19 
+*Number of Linear Solves        : 118 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX 
+*Step duration: 1.0(1) seconds
+*The step was a time driven step
+*******************************************
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+{Operation terminated by user during <a href="matlab:matlab.internal.language.introspective.errorDocCallback('getExWaCuMolBal', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\4_rhs\2_rightHandSideFunctions\getExWaCuMolBal.m', 67)" style="font-weight:bold">getExWaCuMolBal</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\4_rhs\2_rightHandSideFunctions\getExWaCuMolBal.m',67,0)">line 67</a>)
+
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('defineRhsFunc', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\4_rhs\2_rightHandSideFunctions\defineRhsFunc.m', 161)" style="font-weight:bold">defineRhsFunc</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\4_rhs\2_rightHandSideFunctions\defineRhsFunc.m',161,0)">line 161</a>)
+        units = getExWaCuMolBal(params,units,nS);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('solvOdes0>@(t,x)defineRhsFunc(t,x,params)', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\10_solver\solvOdes0.m', 234)" style="font-weight:bold">solvOdes0>@(t,x)defineRhsFunc(t,x,params)</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\10_solver\solvOdes0.m',234,0)">line 234</a>)
+            funcRhs = @(t,x) defineRhsFunc(t,x,params);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('odenumjac', 'C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\funfun\private\odenumjac.m', 131)" style="font-weight:bold">odenumjac</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\funfun\private\odenumjac.m',131,0)">line 131</a>)
+      Fdel(:,j) = feval(F,Fargs{1:diffvar-1},ydel(:,j),Fargs{diffvar+1:end});
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('ode15s', 'C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\funfun\ode15s.m', 640)" style="font-weight:bold">ode15s</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\funfun\ode15s.m',640,0)">line 640</a>)
+              [dfdy,Joptions.fac,nF] = odenumjac(odeFcn, {t,y,odeArgs{:}}, f0, Joptions);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('solvOdes', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\10_solver\solvOdes.m', 84)" style="font-weight:bold">solvOdes</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\10_solver\solvOdes.m',84,0)">line 84</a>)
+        sol = ode15s(funcRhs,tDom,iStates',options);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('solvOdes0', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\10_solver\solvOdes0.m', 243)" style="font-weight:bold">solvOdes0</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\10_solver\solvOdes0.m',243,0)">line 243</a>)
+            sol0 = solvOdes(funcRhs,tDom,iStates,options,numIntSolv);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('runPsaCycleStep', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycleStep.m', 84)" style="font-weight:bold">runPsaCycleStep</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycleStep.m',84,0)">line 84</a>)
+        [sol0,tDom0,preInt] = solvOdes0(params,tDom,iStates,nS);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('runPsaCycle', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m', 195)" style="font-weight:bold">runPsaCycle</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m',195,0)">line 195</a>)
+                    = runPsaCycleStep(params,iStates,tDom,nS,nCy);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('runPsaProcessSimulation', 'C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m', 168)" style="font-weight:bold">runPsaProcessSimulation</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m',168,0)">line 168</a>)
+    sol = runPsaCycle(params);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('programProfiler', 'C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\programProfiler.m', 81)" style="font-weight:bold">programProfiler</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\programProfiler.m',81,0)">line 81</a>)
+    runPsaProcessSimulation(name,num);
+} 
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+
+*******************************************
+Beginning a PSA cycle simulation...
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m',194,1)">194 </a>                [stTimePts,stStates,flags] ...
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\6_grabber\grabParams4Step.m',128,1)">128 </a>            params = grabHysteresis(params,hys);
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 57 
+*Number of Failed Steps         : 3 
+*Number of Function Evaluations : 1744 
+*Number of Jacobian Evaluations : 3 
+*Number of LU Decompositions    : 17 
+*Number of Linear Solves        : 101 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.1 is finished. 
+*Adsorber Steps: RP-XXX-RAF 
+*Step duration: 4.0(4) seconds
+*The step was a time driven step
+*******************************************
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 60 
+*Number of Failed Steps         : 5 
+*Number of Function Evaluations : 2235 
+*Number of Jacobian Evaluations : 4 
+*Number of LU Decompositions    : 19 
+*Number of Linear Solves        : 118 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX 
+*Step duration: 1.0(1) seconds
+*The step was a time driven step
+*******************************************
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\3_models\1_adsEquilibrium\calcIsothermDecDuSiLangFreu.m',198,1)">198 </a>end
+open defineRhsFunc.m
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+
+*******************************************
+Beginning a PSA cycle simulation...
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m',194,1)">194 </a>                [stTimePts,stStates,flags] ...
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\6_grabber\grabParams4Step.m',128,1)">128 </a>            params = grabHysteresis(params,hys);
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 44 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 651 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 11 
+*Number of Linear Solves        : 69 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.1 is finished. 
+*Adsorber Steps: RP-XXX-RAF 
+*Step duration: 4.0(4) seconds
+*The step was a time driven step
+*******************************************
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 44 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 653 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 12 
+*Number of Linear Solves        : 74 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX 
+*Step duration: 1.0(1) seconds
+*The step was a time driven step
+*******************************************
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\4_rhs\2_rightHandSideFunctions\defineRhsFunc.m',197,1)">197 </a>end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\4_rhs\2_rightHandSideFunctions\defineRhsFunc.m',197,1)">197 </a>end
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+
+*******************************************
+Beginning a PSA cycle simulation...
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m',194,1)">194 </a>                [stTimePts,stStates,flags] ...
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\6_grabber\grabParams4Step.m',128,1)">128 </a>            params = grabHysteresis(params,hys);
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 44 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 651 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 11 
+*Number of Linear Solves        : 69 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.1 is finished. 
+*Adsorber Steps: RP-XXX-RAF 
+*Step duration: 4.0(4) seconds
+*The step was a time driven step
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m',194,1)">194 </a>                [stTimePts,stStates,flags] ...
+sol.Step1.col.n1.gasConsTot
+
+ans =
+
+  Columns 1 through 11
+
+    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765
+    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781
+    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814
+    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861
+    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884
+    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036
+    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162
+    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463
+    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650
+    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826
+    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916
+    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079
+    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331
+    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656
+    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155
+    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744
+    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992
+    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828
+    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306
+    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610
+    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778
+    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853
+    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882
+    0.9905    0.9905    0.9905    0.9905    0.9905    0.9904    0.9905    0.9905    0.9905    0.9905    0.9905
+    0.9911    0.9911    0.9912    0.9912    0.9911    0.9910    0.9910    0.9910    0.9910    0.9911    0.9911
+
+  Columns 12 through 22
+
+    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765
+    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781
+    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814
+    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861
+    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884
+    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036
+    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162
+    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463
+    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650
+    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826
+    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916
+    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079
+    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331
+    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656
+    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155
+    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744
+    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992
+    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828
+    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306
+    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610
+    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778
+    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853
+    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882
+    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905
+    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911
+
+  Columns 23 through 33
+
+    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765
+    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781
+    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814
+    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861
+    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884
+    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036
+    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162
+    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463
+    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650
+    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826
+    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916
+    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079
+    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331
+    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656
+    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155
+    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744
+    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992
+    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828
+    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306
+    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610
+    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778
+    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853
+    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882
+    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905
+    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911    0.9910    0.9910    0.9910    0.9910    0.9910
+
+  Columns 34 through 44
+
+    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765
+    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781
+    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814
+    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861
+    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884
+    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036
+    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162
+    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463
+    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650
+    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826
+    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916
+    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079
+    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331
+    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656
+    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155
+    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744
+    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992
+    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828
+    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306
+    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610
+    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778
+    0.9853    0.9854    0.9854    0.9854    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853
+    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882
+    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905
+    0.9910    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911
+
+  Columns 45 through 55
+
+    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765
+    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781
+    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814
+    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861
+    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884
+    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036
+    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162
+    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463
+    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650
+    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826
+    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916
+    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079
+    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331
+    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656
+    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155
+    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744
+    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992
+    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828
+    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306
+    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610
+    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778
+    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853    0.9853
+    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882
+    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905
+    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911
+
+  Columns 56 through 66
+
+    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765
+    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781
+    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814
+    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861
+    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884
+    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036
+    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162
+    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463
+    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650
+    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826
+    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916
+    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079
+    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331
+    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656
+    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155
+    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744
+    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992
+    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828
+    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306
+    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610
+    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778
+    0.9853    0.9854    0.9854    0.9853    0.9853    0.9854    0.9853    0.9853    0.9853    0.9853    0.9853
+    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882
+    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905
+    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911    0.9910
+
+  Columns 67 through 75
+
+    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765    0.4765
+    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781    0.4781
+    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814    0.4814
+    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861    0.4861
+    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884    0.4884
+    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036    0.5036
+    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162    0.5162
+    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463    0.5463
+    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650    0.5650
+    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826    0.5826
+    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916    0.5916
+    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079    0.6079
+    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331    0.6331
+    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656    0.6656
+    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155    0.7155
+    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744    0.7744
+    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992    0.7992
+    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828    0.8828
+    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306    0.9306
+    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610    0.9610
+    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778    0.9778
+    0.9853    0.9854    0.9854    0.9854    0.9853    0.9853    0.9854    0.9853    0.9853
+    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882    0.9882
+    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905    0.9905
+    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911    0.9911
+
+plot(sol.Step1.col.n1.gasConsTot)
+plot(sol.Step1.col.n1.gasConsTot')
+plot(sol.Step1.col.n1.volFlRat')
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 44 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 653 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 12 
+*Number of Linear Solves        : 74 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX 
+*Step duration: 1.0(1) seconds
+*The step was a time driven step
+*******************************************
+plot(sol.Step2.col.n1.volFlRat')
+if system_dependent('IsDebugMode')==1, dbquit; end
+getSimParams
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+{Not enough input arguments.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('getSimParams', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m', 140)" style="font-weight:bold">getSimParams</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',140,0)">line 140</a>)
+                    = getExcelParams(exampleFolder, ...
+} 
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+
+*******************************************
+Beginning a PSA cycle simulation...
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m',194,1)">194 </a>                [stTimePts,stStates,flags] ...
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\6_grabber\grabParams4Step.m',128,1)">128 </a>            params = grabHysteresis(params,hys);
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 44 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 651 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 11 
+*Number of Linear Solves        : 69 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.1 is finished. 
+*Adsorber Steps: RP-XXX-RAF 
+*Step duration: 4.0(4) seconds
+*The step was a time driven step
+*******************************************
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 44 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 653 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 12 
+*Number of Linear Solves        : 74 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX 
+*Step duration: 1.0(1) seconds
+*The step was a time driven step
+*******************************************
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 114 
+*Number of Failed Steps         : 5 
+*Number of Function Evaluations : 3312 
+*Number of Jacobian Evaluations : 6 
+*Number of LU Decompositions    : 25 
+*Number of Linear Solves        : 235 
+*******************************************
+
+*******************************************
+The raff. tank pressure has reached.
+*******************************************
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 424 
+*Number of Failed Steps         : 31 
+*Number of Function Evaluations : 16746 
+*Number of Jacobian Evaluations : 32 
+*Number of LU Decompositions    : 80 
+*Number of Linear Solves        : 996 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF 
+*Step duration: 50.0(50) seconds
+*The step was a time driven step
+*******************************************
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+{Index in position 2 exceeds array bounds (must not exceed 1).
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('grabHysteresis', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\6_grabber\grabHysteresis.m', 79)" style="font-weight:bold">grabHysteresis</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\6_grabber\grabHysteresis.m',79,0)">line 79</a>)
+            params.dimLessbSiteOneC    = params.dimLessbSiteOneC(:,hys)   ;
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('grabParams4Step', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\6_grabber\grabParams4Step.m', 128)" style="font-weight:bold">grabParams4Step</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\6_grabber\grabParams4Step.m',128,0)">line 128</a>)
+            params = grabHysteresis(params,hys);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('runPsaCycleStep', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycleStep.m', 180)" style="font-weight:bold">runPsaCycleStep</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycleStep.m',180,0)">line 180</a>)
+        params = grabParams4Step(params,nS);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('runPsaCycle', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m', 195)" style="font-weight:bold">runPsaCycle</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m',195,0)">line 195</a>)
+                    = runPsaCycleStep(params,iStates,tDom,nS,nCy);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('runPsaProcessSimulation', 'C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m', 168)" style="font-weight:bold">runPsaProcessSimulation</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m',168,0)">line 168</a>)
+    sol = runPsaCycle(params);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('programProfiler', 'C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\programProfiler.m', 81)" style="font-weight:bold">programProfiler</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\programProfiler.m',81,0)">line 81</a>)
+    runPsaProcessSimulation(name,num);
+} 
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+
+*******************************************
+Beginning a PSA cycle simulation...
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m',194,1)">194 </a>                [stTimePts,stStates,flags] ...
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\6_grabber\grabParams4Step.m',128,1)">128 </a>            params = grabHysteresis(params,hys);
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 44 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 651 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 11 
+*Number of Linear Solves        : 69 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.1 is finished. 
+*Adsorber Steps: RP-XXX-RAF 
+*Step duration: 4.0(4) seconds
+*The step was a time driven step
+*******************************************
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 44 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 653 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 12 
+*Number of Linear Solves        : 74 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX 
+*Step duration: 1.0(1) seconds
+*The step was a time driven step
+*******************************************
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 114 
+*Number of Failed Steps         : 5 
+*Number of Function Evaluations : 3312 
+*Number of Jacobian Evaluations : 6 
+*Number of LU Decompositions    : 25 
+*Number of Linear Solves        : 235 
+*******************************************
+
+*******************************************
+The raff. tank pressure has reached.
+*******************************************
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 424 
+*Number of Failed Steps         : 31 
+*Number of Function Evaluations : 16746 
+*Number of Jacobian Evaluations : 32 
+*Number of LU Decompositions    : 80 
+*Number of Linear Solves        : 996 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF 
+*Step duration: 50.0(50) seconds
+*The step was a time driven step
+*******************************************
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep out; end
+<a href="matlab: opentoline('C:\Program Files\MATLAB\R2020bInstall\toolbox\matlab\general\onCleanup.m',52,1)">52  </a>            narginchk(1, 1);
+if system_dependent('IsDebugMode')==1, dbstep out; end
+{Index in position 2 exceeds array bounds (must not exceed 1).
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('grabHysteresis', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\6_grabber\grabHysteresis.m', 79)" style="font-weight:bold">grabHysteresis</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\6_grabber\grabHysteresis.m',79,0)">line 79</a>)
+            params.dimLessbSiteOneC    = params.dimLessbSiteOneC(:,hys)   ;
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('grabParams4Step', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\6_grabber\grabParams4Step.m', 128)" style="font-weight:bold">grabParams4Step</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\6_grabber\grabParams4Step.m',128,0)">line 128</a>)
+            params = grabHysteresis(params,hys);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('runPsaCycleStep', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycleStep.m', 180)" style="font-weight:bold">runPsaCycleStep</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycleStep.m',180,0)">line 180</a>)
+        params = grabParams4Step(params,nS);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('runPsaCycle', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m', 195)" style="font-weight:bold">runPsaCycle</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m',195,0)">line 195</a>)
+                    = runPsaCycleStep(params,iStates,tDom,nS,nCy);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('runPsaProcessSimulation', 'C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m', 168)" style="font-weight:bold">runPsaProcessSimulation</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m',168,0)">line 168</a>)
+    sol = runPsaCycle(params);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('programProfiler', 'C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\programProfiler.m', 81)" style="font-weight:bold">programProfiler</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\programProfiler.m',81,0)">line 81</a>)
+    runPsaProcessSimulation(name,num);
+} 
+opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\7_helper\6_grabber\grabHysteresis.m',79,0)
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+
+*******************************************
+Beginning a PSA cycle simulation...
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m',194,1)">194 </a>                [stTimePts,stStates,flags] ...
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 44 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 651 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 11 
+*Number of Linear Solves        : 69 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.1 is finished. 
+*Adsorber Steps: RP-XXX-RAF 
+*Step duration: 4.0(4) seconds
+*The step was a time driven step
+*******************************************
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 44 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 653 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 12 
+*Number of Linear Solves        : 74 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX 
+*Step duration: 1.0(1) seconds
+*The step was a time driven step
+*******************************************
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 114 
+*Number of Failed Steps         : 5 
+*Number of Function Evaluations : 3312 
+*Number of Jacobian Evaluations : 6 
+*Number of LU Decompositions    : 25 
+*Number of Linear Solves        : 235 
+*******************************************
+
+*******************************************
+The raff. tank pressure has reached.
+*******************************************
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 424 
+*Number of Failed Steps         : 31 
+*Number of Function Evaluations : 16746 
+*Number of Jacobian Evaluations : 32 
+*Number of LU Decompositions    : 80 
+*Number of Linear Solves        : 996 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF 
+*Step duration: 50.0(50) seconds
+*The step was a time driven step
+*******************************************
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+
+*******************************************
+Beginning a PSA cycle simulation...
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m',194,1)">194 </a>                [stTimePts,stStates,flags] ...
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 44 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 651 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 11 
+*Number of Linear Solves        : 69 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.1 is finished. 
+*Adsorber Steps: RP-XXX-RAF 
+*Step duration: 4.0(4) seconds
+*The step was a time driven step
+*******************************************
+plot(sol.Step1.col.n1.gasConsTot')
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 44 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 653 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 12 
+*Number of Linear Solves        : 74 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX 
+*Step duration: 1.0(1) seconds
+*The step was a time driven step
+*******************************************
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 114 
+*Number of Failed Steps         : 5 
+*Number of Function Evaluations : 3312 
+*Number of Jacobian Evaluations : 6 
+*Number of LU Decompositions    : 25 
+*Number of Linear Solves        : 235 
+*******************************************
+
+*******************************************
+The raff. tank pressure has reached.
+*******************************************
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+
+*******************************************
+Beginning a PSA cycle simulation...
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\5_cycle\1_simulateCycle\runPsaCycle.m',194,1)">194 </a>                [stTimePts,stStates,flags] ...
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',241,1)">241 </a>    params = getStatesParams(params);
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',354,1)">354 </a>    params = getTotalAdsConc(params);           
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+open grabHysteresis
+iszero
+{Unrecognized function or variable 'iszero'.
+} 
+help iszero
+
+iszero not found.
+
+Use the Help browser search field to <a href="matlab:docsearch iszero">search the documentation</a>, or
+type "<a href="matlab:help help">help help</a>" for help command options, such as help for methods.
+
+all([0 0 0 ])
+
+ans =
+
+  <a href="matlab:helpPopup logical" style="font-weight:bold">logical</a>
+
+   0
+
+any([0 0 0 ])
+
+ans =
+
+  <a href="matlab:helpPopup logical" style="font-weight:bold">logical</a>
+
+   0
+
+help any
+ <strong>any</strong>    True if any element of a vector is a nonzero number or is
+    logical 1 (TRUE).  <strong>any</strong> ignores entries that are NaN (Not a Number).
+ 
+    For vectors, <strong>any</strong>(V) returns logical 1 (TRUE) if any of the 
+    elements of the vector is a nonzero number or is logical 1 (TRUE).
+    Otherwise it returns logical 0 (FALSE).  For matrices, <strong>any</strong>(X) 
+    operates on the columns of X, returning a row vector of logical 1's 
+    and 0's.  For multi-dimensional arrays, <strong>any</strong>(X) operates on the 
+    first non-singleton dimension.
+ 
+    <strong>any</strong>(X,'all') returns logical 1 (TRUE) if any of the elements of an 
+    array X are nonzero. Otherwise, it returns logical 0 (FALSE).  
+ 
+    <strong>any</strong>(X,DIM) operates down the dimension DIM of an array X.  For example, 
+    <strong>any</strong>(X,1) operates down the first dimension (the rows) of X.
+ 
+    <strong>any</strong>(X,VECDIM) operates on the dimensions specified in the vector 
+    VECDIM of an array X. For example, <strong>any</strong>(X,[1 2]) operates on the 
+    elements contained in the first and second dimensions of X.
+ 
+    See also <a href="matlab:help all">all</a>, <a href="matlab:help nnz">nnz</a>.
+
+    <a href="matlab:doc any">Documentation for any</a>
+    <a href="matlab:matlab.internal.language.introspective.overloads.displayOverloads('any')">Other functions named any</a>
+
+any(0)
+
+ans =
+
+  <a href="matlab:helpPopup logical" style="font-weight:bold">logical</a>
+
+   0
+
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',241,1)">241 </a>    params = getStatesParams(params);
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',241,1)">241 </a>    params = getStatesParams(params);
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+{Array indices must be positive integers or logical values.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('calcIsothermDecDuSiLangFreu', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\3_models\1_adsEquilibrium\calcIsothermDecDuSiLangFreu.m', 85)" style="font-weight:bold">calcIsothermDecDuSiLangFreu</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\3_models\1_adsEquilibrium\calcIsothermDecDuSiLangFreu.m',85,0)">line 85</a>)
+        hysCurve = hys(nAds);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('getSubModels>@(params,states,nAds)calcIsothermDecDuSiLangFreu(params,states,nAds)', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSubModels.m', 115)" style="font-weight:bold">getSubModels>@(params,states,nAds)calcIsothermDecDuSiLangFreu(params,states,nAds)</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSubModels.m',115,0)">line 115</a>)
+                         calcIsothermDecDuSiLangFreu(params,states,nAds);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('getTotalAdsConc', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\2_initialization\4_equilibriumTheoryCalcs\getTotalAdsConc.m', 87)" style="font-weight:bold">getTotalAdsConc</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\2_initialization\4_equilibriumTheoryCalcs\getTotalAdsConc.m',87,0)">line 87</a>)
+    newStates = funcIso(params,cstrStates,0);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('getSimParams', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m', 354)" style="font-weight:bold">getSimParams</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',354,0)">line 354</a>)
+    params = getTotalAdsConc(params);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('runPsaProcessSimulation', 'C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m', 139)" style="font-weight:bold">runPsaProcessSimulation</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m',139,0)">line 139</a>)
+    [params,fullParams] = getSimParams(exampleFolder);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('programProfiler', 'C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\programProfiler.m', 81)" style="font-weight:bold">programProfiler</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\programProfiler.m',81,0)">line 81</a>)
+    runPsaProcessSimulation(name,num);
+} 
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\3_models\1_adsEquilibrium\calcIsothermDecDuSiLangFreu.m',85,1)">85  </a>        hysCurve = hys(nAds);
+1(1)
+ 1(1)
+  ↑
+{Error: Invalid expression. When calling a function or indexing a variable, use parentheses. Otherwise, check for
+mismatched delimiters.
+} 
+if system_dependent('IsDebugMode')==1, dbcont; end
+{Array indices must be positive integers or logical values.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('calcIsothermDecDuSiLangFreu', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\3_models\1_adsEquilibrium\calcIsothermDecDuSiLangFreu.m', 85)" style="font-weight:bold">calcIsothermDecDuSiLangFreu</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\3_models\1_adsEquilibrium\calcIsothermDecDuSiLangFreu.m',85,0)">line 85</a>)
+        hysCurve = hys(nAds);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('getSubModels>@(params,states,nAds)calcIsothermDecDuSiLangFreu(params,states,nAds)', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSubModels.m', 115)" style="font-weight:bold">getSubModels>@(params,states,nAds)calcIsothermDecDuSiLangFreu(params,states,nAds)</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSubModels.m',115,0)">line 115</a>)
+                         calcIsothermDecDuSiLangFreu(params,states,nAds);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('getTotalAdsConc', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\2_initialization\4_equilibriumTheoryCalcs\getTotalAdsConc.m', 87)" style="font-weight:bold">getTotalAdsConc</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\2_initialization\4_equilibriumTheoryCalcs\getTotalAdsConc.m',87,0)">line 87</a>)
+    newStates = funcIso(params,cstrStates,0);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('getSimParams', 'C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m', 354)" style="font-weight:bold">getSimParams</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',354,0)">line 354</a>)
+    params = getTotalAdsConc(params);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('runPsaProcessSimulation', 'C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m', 139)" style="font-weight:bold">runPsaProcessSimulation</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m',139,0)">line 139</a>)
+    [params,fullParams] = getSimParams(exampleFolder);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('programProfiler', 'C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\programProfiler.m', 81)" style="font-weight:bold">programProfiler</a> (<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\programProfiler.m',81,0)">line 81</a>)
+    runPsaProcessSimulation(name,num);
+} 
+opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSimParams.m',354,0)
+opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\1_parameters\getSubModels.m',115,0)
+opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\3_models\1_adsEquilibrium\calcIsothermDecDuSiLangFreu.m',85,0)
+opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\2_initialization\4_equilibriumTheoryCalcs\getTotalAdsConc.m',87,0)
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\2_initialization\4_equilibriumTheoryCalcs\getTotalAdsConc.m',82,1)">82  </a>    params = grabHysteresis(params,1); % 1 means adsorption
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep out; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+open calcIsothermExtLang.m
+open calcIsothermExtLang.m
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\2_initialization\4_equilibriumTheoryCalcs\getTotalAdsConc.m',90,1)">90  </a>    newStates = funcIso(params,cstrStates,0);
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbquit all; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\2_initialization\4_equilibriumTheoryCalcs\getTotalAdsConc.m',90,1)">90  </a>    newStates = funcIso(params,cstrStates,0);
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbquit all; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\2_initialization\4_equilibriumTheoryCalcs\getTotalAdsConc.m',90,1)">90  </a>    newStates = funcIso(params,cstrStates,0);
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+a = 1
+
+a =
+
+     1
+
+a(1)
+
+ans =
+
+     1
+
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep out; end
+if system_dependent('IsDebugMode')==1, dbstep out; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+programProfiler
+
+*******************************************
+The simulator started the initialization... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\3_source\2_initialization\4_equilibriumTheoryCalcs\getTotalAdsConc.m',90,1)">90  </a>    newStates = funcIso(params,cstrStates,0);
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+The simulator has successfully initialized!
+*******************************************
+
+*******************************************
+Beginning a PSA cycle simulation...
+*******************************************
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 44 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 651 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 11 
+*Number of Linear Solves        : 69 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.1 is finished. 
+*Adsorber Steps: RP-XXX-RAF 
+*Step duration: 4.0(4) seconds
+*The step was a time driven step
+*******************************************
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 44 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 653 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 12 
+*Number of Linear Solves        : 74 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX 
+*Step duration: 1.0(1) seconds
+*The step was a time driven step
+*******************************************
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 120 
+*Number of Failed Steps         : 6 
+*Number of Function Evaluations : 3803 
+*Number of Jacobian Evaluations : 7 
+*Number of LU Decompositions    : 28 
+*Number of Linear Solves        : 246 
+*******************************************
+
+*******************************************
+The raff. tank pressure has reached.
+*******************************************
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 427 
+*Number of Failed Steps         : 32 
+*Number of Function Evaluations : 17700 
+*Number of Jacobian Evaluations : 34 
+*Number of LU Decompositions    : 81 
+*Number of Linear Solves        : 990 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF 
+*Step duration: 50.0(50) seconds
+*The step was a time driven step
+*******************************************
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 57 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 1257 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 15 
+*Number of Linear Solves        : 94 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.4 is finished. 
+*Adsorber Steps: DP-ATM-XXX 
+*Step duration: 15.0(15) seconds
+*The step was a time driven step
+*******************************************
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 46 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 1226 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 13 
+*Number of Linear Solves        : 69 
+*******************************************
+
+*******************************************
+Cycle No.1, Step No.5 is finished. 
+*Adsorber Steps: LP-ATM-RAF 
+*Step duration: 25.0(25) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 2.088102e-01 (1.000000e-08) 
+CSS approach : 0.00% 
+*******************************************
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 64 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 1270 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 16 
+*Number of Linear Solves        : 107 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.1 is finished. 
+*Adsorber Steps: RP-XXX-RAF 
+*Step duration: 4.0(4) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 17 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 601 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 5 
+*Number of Linear Solves        : 22 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX 
+*Step duration: 1.0(1) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 32 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 622 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 8 
+*Number of Linear Solves        : 43 
+*******************************************
+
+*******************************************
+The raff. tank pressure has reached.
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 75 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 1268 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 19 
+*Number of Linear Solves        : 112 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF 
+*Step duration: 50.0(50) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 61 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 1262 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 14 
+*Number of Linear Solves        : 99 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.4 is finished. 
+*Adsorber Steps: DP-ATM-XXX 
+*Step duration: 15.0(15) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 46 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 644 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 11 
+*Number of Linear Solves        : 65 
+*******************************************
+
+*******************************************
+Cycle No.2, Step No.5 is finished. 
+*Adsorber Steps: LP-ATM-RAF 
+*Step duration: 25.0(25) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 1.934833e-05 (1.000000e-08) 
+CSS approach : 0.05% 
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 64 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 1269 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 16 
+*Number of Linear Solves        : 106 
+*******************************************
+
+*******************************************
+Cycle No.3, Step No.1 is finished. 
+*Adsorber Steps: RP-XXX-RAF 
+*Step duration: 4.0(4) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 17 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 601 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 5 
+*Number of Linear Solves        : 22 
+*******************************************
+
+*******************************************
+Cycle No.3, Step No.2 is finished. 
+*Adsorber Steps: RP-FEE-XXX 
+*Step duration: 1.0(1) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 30 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 617 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 8 
+*Number of Linear Solves        : 38 
+*******************************************
+
+*******************************************
+The raff. tank pressure has reached.
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 69 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 1247 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 19 
+*Number of Linear Solves        : 91 
+*******************************************
+
+*******************************************
+Cycle No.3, Step No.3 is finished. 
+*Adsorber Steps: HP-FEE-RAF 
+*Step duration: 50.0(50) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 61 
+*Number of Failed Steps         : 1 
+*Number of Function Evaluations : 1262 
+*Number of Jacobian Evaluations : 2 
+*Number of LU Decompositions    : 14 
+*Number of Linear Solves        : 99 
+*******************************************
+
+*******************************************
+Cycle No.3, Step No.4 is finished. 
+*Adsorber Steps: DP-ATM-XXX 
+*Step duration: 15.0(15) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+Numerical Integration Summary. 
+*Solver                         : ode15s 
+*Number of Successful Steps     : 46 
+*Number of Failed Steps         : 0 
+*Number of Function Evaluations : 644 
+*Number of Jacobian Evaluations : 1 
+*Number of LU Decompositions    : 11 
+*Number of Linear Solves        : 65 
+*******************************************
+
+*******************************************
+Cycle No.3, Step No.5 is finished. 
+*Adsorber Steps: LP-ATM-RAF 
+*Step duration: 25.0(25) seconds
+*The step was a time driven step
+*******************************************
+
+*******************************************
+CSS metrics : 1.934833e-05 (1.000000e-08) 
+CSS approach : 0.05% 
+*******************************************
+
+*******************************************
+Simulated 3 PSA cycles. 
+*******************************************
+
+*******************************************
+For the cycle simulation, 
+TIC TOC : 174.495
+CLOCK   : 174.494
+CPUTIME : 178.063
+*******************************************
+
+*******************************************
+The PSA cycle simulation has finished! 
+*******************************************
+
+*******************************************
+Begin plotting simulation results... 
+*******************************************
+
+*******************************************
+The plotting has finished! 
+*******************************************
+
+*******************************************
+Saving simulation results... 
+*******************************************
+<a href="matlab: opentoline('C:\Users\tkim333\Documents\GitHub\toPSAil\2_run\runPsaProcessSimulation.m',244,1)">244 </a>    savePsaSimulationResults(fullParams,sol,sol.path.data);

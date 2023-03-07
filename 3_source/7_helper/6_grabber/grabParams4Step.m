@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/10/3/Monday
-%Code last modified on : 2022/10/22/Saturday
+%Code last modified on : 2023/3/6/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -47,6 +47,9 @@ function params = grabParams4Step(params,nS)
     %funcId = 'grabParams4Step.m';
     
     %Unpack params
+    bool     = params.bool    ;
+    sStepCol = params.sStepCol;
+    nCols    = params.nCols   ;
     %---------------------------------------------------------------------%
     
     
@@ -55,7 +58,7 @@ function params = grabParams4Step(params,nS)
     %Add additional new parameters for the step
     
     %Define the number of time points
-    params.nRows = 1  ;
+    params.nRows = 1;
     
     %Define the current step 
     params.nS = nS;        
@@ -74,6 +77,63 @@ function params = grabParams4Step(params,nS)
     
     %Grab the current event value for the interior temperature
     params.eveTempNorm = params.eveTempNorm(nS);        
+    %---------------------------------------------------------------------%  
+    
+    
+    
+    %---------------------------------------------------------------------%  
+    %Handle hysteresis in adsorption isotherm        
+    
+    %Initialize the hysteresis information vector for the step; by default
+    %there is no hysteresis
+    hys = zeros(nCols,1);
+    
+    %If there is a hysteresis
+    if bool(12) == 1            
+        
+        %For each adsorber
+        for i = 1 : nCols
+        
+            %Get the current step name for the 
+            sStepColCurr = sStepCol{i,nS};
+
+            %Check to see if we are adsorbing           
+            isAdsorbing = contains(sStepColCurr,'HP') || ... %Feed
+                          contains(sStepColCurr,'HR') || ... %Rinse
+                          contains(sStepColCurr,'RP');       %Repres.
+
+%             %Check to see if we are desorbing           
+%             isDesorbing = contains(sStepColCurr,'LP') || ... %Feed
+%                           contains(sStepColCurr,'HR') || ... %Rinse
+%                           contains(sStepColCurr,'DP');       %Repres.
+                      
+            %If we are on the adsorption curve
+            if isAdsorbing == 1
+
+                %Let us select the isotherm parameters for adsorption
+                hys(i) = 1;
+
+            %If we are on the desorption curve
+            elseif isAdsorbing == 0
+
+                %Let us select the isotherm parameters for desorpaion
+                hys(i) = 2;
+
+            %Otherwise
+            else
+
+                %By default, we are adsorbing
+                hys(i) = 1;
+
+            end        
+                        
+        end
+        
+    end
+    
+    %Grab the set of isotherm parameters relevant for the selected curve 
+    %for the hysteresis
+    params = grabHysteresis(params,hys);
     %---------------------------------------------------------------------%  
     
 end

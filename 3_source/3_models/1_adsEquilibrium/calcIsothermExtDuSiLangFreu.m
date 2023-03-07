@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2023/2/24/Friday
-%Code last modified on : 2023/2/24/Friday
+%Code last modified on : 2023/3/6/Friday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -52,7 +52,7 @@ function newStates = calcIsothermExtDuSiLangFreu(params,states,nAds)
     %Define known quantities
     
     %Name the function ID
-    funcId = 'calcIsothermExtDuSiLangFreu.m';
+    %funcId = 'calcIsothermExtDuSiLangFreu.m';
     
     %Unpack params
     nStates      = params.nStates            ;
@@ -68,6 +68,52 @@ function newStates = calcIsothermExtDuSiLangFreu(params,states,nAds)
     bSiteTwoC    = params.dimLessbSiteTwoC   ;
     nSiteOneC    = params.nSiteOneC          ;
     nSiteTwoC    = params.nSiteTwoC          ;     
+    %---------------------------------------------------------------------%
+    
+    
+    
+    %---------------------------------------------------------------------%    
+    %Determine the index for the number of adsorbers nAdsInd
+        
+    %When we have a single CSTR,
+    if nAds == 0
+
+        %Make sure that nAds = 1 so that the indexing will work out
+        nAdsInd = 1;
+
+    %Otherwise, let the index equal to itself                
+    else
+
+        %Make sure that nAds = 1 so that the indexing will work out
+        nAdsInd = nAds;
+
+    end  
+    %---------------------------------------------------------------------%
+    
+    
+    
+    %---------------------------------------------------------------------%
+    %Check for hysteresis
+    
+    %If we have a hystersis
+    if bool(12) == 1
+        
+        %Unpack additional params
+        hys = params.hys;
+        
+        %Determine the curve (adsorption vs. desorption) for the current
+        %adsorber
+        hysCurve = hys(nAdsInd);
+        
+        %Grab the right set of adsorption isotherm parameters
+        qSatSiteOneC = qSatSiteOneC(:,hysCurve);
+        qSatSiteTwoC = qSatSiteTwoC(:,hysCurve);
+        bSiteOneC    = bSiteOneC   (:,hysCurve);
+        bSiteTwoC    = bSiteTwoC   (:,hysCurve);
+        nSiteOneC    = nSiteOneC   (:,hysCurve);
+        nSiteTwoC    = nSiteTwoC   (:,hysCurve);        
+        
+    end
     %---------------------------------------------------------------------%
     
     
@@ -146,14 +192,6 @@ function newStates = calcIsothermExtDuSiLangFreu(params,states,nAds)
     %For isothermal operation,
     elseif isNonIsothermal == 0            
 
-        %Check to see if we have a single CSTR
-        if nAds == 0
-
-            %Make sure that nAds = 1 so that the indexing will work out
-            nAds = 1;
-
-        end
-
         %Initialize the denominators for the dual-site Langmuir-Freundlich
         %isotherm
         denominator1 = ones(nRows,nVols);
@@ -192,11 +230,11 @@ function newStates = calcIsothermExtDuSiLangFreu(params,states,nAds)
                      .^ (nSiteTwoC(i));     
                                   
             %Get the beginning index
-            n0 = nColStT*(nAds-1) ...
+            n0 = nColStT*(nAdsInd-1) ...
                + nComs+i;
             
             %Get the final index
-            nf = nColStT*(nAds-1) ...
+            nf = nColStT*(nAdsInd-1) ...
                + nStates*(nVols-1)+nComs+i;
                
             %For adosrbed concentrations, update with equilibrium 

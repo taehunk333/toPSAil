@@ -245,6 +245,11 @@ function [params,fullParams] = getSimParams(exampleFolder)
     
     %Get parameters associated with string names
     params = getStringParams(params);
+    
+    
+    %ENABLE WHEN RUNNING PREVIOUS SIMULATIONS (NEED TO UPDATE THE EXCEL
+    %SPREADSHEETS)
+    %params.bool(12) = 0;
     %---------------------------------------------------------------------%
     
     
