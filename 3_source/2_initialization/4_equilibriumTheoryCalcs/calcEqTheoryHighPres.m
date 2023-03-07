@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2020/1/28/Tuesday
-%Code last modified on : 2022/10/27/Thursday
+%Code last modified on : 2023/2/24/Friday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -76,6 +76,14 @@ function [maxMolPr,maxMolFe,maxMolAdsC] = calcEqTheoryHighPres(params)
     nComs        = params.nComs       ;
     sComNums     = params.sComNums    ;
     funcEos      = params.funcEos     ;
+    nCols        = params.nCols       ;
+    
+    %Initialize the hysteresis information
+    hys    = zeros(nCols,1);
+    hys(1) = 1             ; %consider adsorption in the first adsorber
+    
+    %Update ths isotherm parameters, if there is any hysteresis
+    params = grabHysteresis(params,hys); % 1 means adsorption
     
     %Make local params specifications
     
@@ -112,7 +120,7 @@ function [maxMolPr,maxMolFe,maxMolAdsC] = calcEqTheoryHighPres(params)
 
     %Define the number of time points
     params.nRows = 1;
-        
+               
     %Invoke adsorption isotherm relationship to compute adsorbed phase in
     %equilibrium with product gas composition
     statesHpPrGas = funcIso(params,statesHpPrGas,0);

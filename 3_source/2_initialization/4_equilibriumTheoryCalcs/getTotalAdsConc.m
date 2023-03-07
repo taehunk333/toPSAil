@@ -49,7 +49,7 @@ function params = getTotalAdsConc(params)
     nComs    = params.nComs   ;
     funcIso  = params.funcIso ;    
     gasConT  = params.gasConT ;
-    bool     = params.bool    ;
+    nCols    = params.nCols   ;
     %---------------------------------------------------------------------%    
     
     
@@ -77,18 +77,12 @@ function params = getTotalAdsConc(params)
     %Define the number of time points
     params.nRows = 1;
     
-    %If we have a hysteresis
-    if bool(12) == 1
-        
-        %Let us consider the adsorption curve for the hysteresis
-        params.dimLessqSatSiteOneC = params.dimLessqSatSiteOneC(:,1);
-        params.dimLessqSatSiteTwoC = params.dimLessqSatSiteTwoC(:,1);
-        params.dimLessbSiteOneC    = params.dimLessbSiteOneC(:,1)   ;
-        params.dimLessbSiteTwoC    = params.dimLessbSiteTwoC(:,1)   ;
-        params.nSiteOneC           = params.nSiteOneC(:,1)          ;
-        params.nSiteTwoC           = params.nSiteTwoC(:,1)          ;  
-        
-    end        
+    %Initialize the hysteresis information
+    hys    = zeros(nCols,1);
+    hys(1) = 1             ; %consider adsorption in the first adsorber
+    
+    %Update ths isotherm parameters, if there is any hysteresis
+    params = grabHysteresis(params,hys); 
 
     %Compute the adsorbed phase composition for all species as per the
     %chosen isotherm function; Note that adsorbed phase concentrations will

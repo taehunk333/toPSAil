@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/11/6/Sunday
-%Code last modified on : 2022/11/8/Tuesday
+%Code last modified on : 2023/3/6/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -68,6 +68,26 @@ function newStates = calcIsothermExtLangFreu(params,states,nAds)
     dimLessKFouC = params.dimLessKFouC; 
     dimLessKFivC = params.dimLessKFivC; 
     dimLessKSixC = params.dimLessKSixC; 
+    %---------------------------------------------------------------------%
+    
+    
+    
+    %---------------------------------------------------------------------%    
+    %Determine the index for the number of adsorbers nAdsInd
+        
+    %When we have a single CSTR,
+    if nAds == 0
+
+        %Make sure that nAds = 1 so that the indexing will work out
+        nAdsInd = 1;
+
+    %Otherwise, let the index equal to itself                
+    else
+
+        %Make sure that nAds = 1 so that the indexing will work out
+        nAdsInd = nAds;
+
+    end  
     %---------------------------------------------------------------------%
     
     
@@ -193,14 +213,6 @@ function newStates = calcIsothermExtLangFreu(params,states,nAds)
     
     %---------------------------------------------------------------------%
     %Calculate adsorption equilibrium (Explicit)
-    
-    %Check to see if we have a single CSTR
-    if nAds == 0
-
-        %Make sure that nAds = 1 so that the indexing will work out
-        nAds = 1;
-
-    end
 
     %Initialize the denominator
     denominator = ones(nRows,nVols);
@@ -305,11 +317,11 @@ function newStates = calcIsothermExtLangFreu(params,states,nAds)
         %Store the results
         
         %Get the beginning index
-        nSt0 = nColStT*(nAds-1) ...
+        nSt0 = nColStT*(nAdsInd-1) ...
              + nComs+i;
 
         %Get the final index
-        nStf = nColStT*(nAds-1) ...
+        nStf = nColStT*(nAdsInd-1) ...
              + nStates*(nVols-1)+nComs+i;
 
         %For adosrbed concentrations, update with equilibrium 

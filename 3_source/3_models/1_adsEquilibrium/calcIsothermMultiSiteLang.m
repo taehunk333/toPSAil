@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2020/10/26/Wednesday
-%Code last modified on : 2022/12/8/Thursday
+%Code last modified on : 2023/3/6/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -66,6 +66,26 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
     dimLessKC    = params.dimLessKC   ;
     dimLessQsatC = params.dimLessQsatC;
     numZero      = params.numZero     ;
+    %---------------------------------------------------------------------%
+    
+    
+    
+    %---------------------------------------------------------------------%    
+    %Determine the index for the number of adsorbers nAdsInd
+        
+    %When we have a single CSTR,
+    if nAds == 0
+
+        %Make sure that nAds = 1 so that the indexing will work out
+        nAdsInd = 1;
+
+    %Otherwise, let the index equal to itself                
+    else
+
+        %Make sure that nAds = 1 so that the indexing will work out
+        nAdsInd = nAds;
+
+    end  
     %---------------------------------------------------------------------%
     
     
@@ -241,23 +261,15 @@ function newStates = calcIsothermMultiSiteLang(params,states,nAds)
 
         end
 
-        %For the single CSTR case, 
-        if nAds == 0
-
-            %update nAds to be 1, temporarily
-            nAds = 1;
-
-        end
-
         %Save the solutions to the struct       
         for j = 1 : nComs
 
             %Get the beginning index
-            n0 = nColStT*(nAds-1) ...
+            n0 = nColStT*(nAdsInd-1) ...
                + nComs+j;
 
             %Get the final index
-            nf = nColStT*(nAds-1) ...
+            nf = nColStT*(nAdsInd-1) ...
                + nStates*(nVols-1)+nComs+j;
 
             %For the adsorbed concentrations, update with equilibrium 
