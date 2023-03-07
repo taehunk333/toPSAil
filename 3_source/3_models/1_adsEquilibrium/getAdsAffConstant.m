@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/29/Friday
-%Code last modified on : 2023/2/23/Thursday
+%Code last modified on : 2023/3/6/Monday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -40,12 +40,14 @@
 %                            state matrix is a vector, nRows = 1.
 %             nAds         - the adsober number where we will evaluate the
 %                            adsorption equilibrium
+%             dimLessBC    - dimensionless value of adsorption affinity
+%                            constants
 %Outputs    : bCNew        - a vector or matrix of affinity constants 
 %                            for all species updated with a current 
 %                            temperature of the system.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function bCNew = getAdsAffConstant(params,states,nRows,nAds)
+function bCNew = getAdsAffConstant(params,states,nRows,nAds,dimLessBC)
     
     %---------------------------------------------------------------------%
     %Define known quantities
@@ -57,8 +59,7 @@ function bCNew = getAdsAffConstant(params,states,nRows,nAds)
     nVols             = params.nVols            ;
     tempRefNorm       = params.tempRefNorm      ;
     nComs             = params.nComs            ;                                                    
-    dimLessIsoStHtRef = params.dimLessIsoStHtRef;
-    dimLessBC         = params.dimLessBC        ;
+    dimLessIsoStHtRef = params.dimLessIsoStHtRef;    
     %---------------------------------------------------------------------%
     
        

@@ -179,73 +179,74 @@ function newStates = calcIsothermExtDuSiLangFreu(params,states,nAds)
     %If non-isothermal operation,
     if isNonIsothermal == 1
 
-        %Print out error
-        error('nonisothermal not supported yet')  
-            
-        %%% TBD %%%
-        %%% TBD %%%
-        %%% TBD %%%
-        %%% TBD %%%
-        %%% TBD %%%
-        %%% TBD %%%
+        %Get the affinity parameter matrix at a specified CSTR temperature 
+        %for all CSTRs
+        bSiteOneC = getAdsAffConstant(params,states,nRows,nAds,bSiteOneC); 
+        bSiteTwoC = getAdsAffConstant(params,states,nRows,nAds,bSiteTwoC);         
                         
     %For isothermal operation,
     elseif isNonIsothermal == 0            
 
-        %Initialize the denominators for the dual-site Langmuir-Freundlich
-        %isotherm
-        denominator1 = ones(nRows,nVols);
-        denominator2 = ones(nRows,nVols);
+        %Return time-invariant vectors
+        bSiteOneC = repelem(bSiteOneC,nVols)';
+        bSiteTwoC = repelem(bSiteTwoC,nVols)';
 
-        %Update the species dependent term in the denominator of the
-        %Extended Langmuir expression
-        for i = 1 : nComs
+    end    
+    
+    %Initialize the denominators for the dual-site Langmuir-Freundlich
+    %isotherm
+    denominator1 = ones(nRows,nVols);
+    denominator2 = ones(nRows,nVols);
 
-            %Update the denominator vector for the first site
-            denominator1 = denominator1 ...
-                         + (bSiteOneC(i) ...
-                        .* colTemps.cstr ...
-                        .* colGasCons.(sComNums{i})).^(nSiteOneC(i));
-                   
-            %Update the denominator vector for the second site
-            denominator2 = denominator2 ...
-                         + (bSiteTwoC(i) ...
-                        .* colTemps.cstr ...
-                        .* colGasCons.(sComNums{i})).^(nSiteTwoC(i));
+    %Update the species dependent term in the denominator of the Extended 
+    %Langmuir expression
+    for i = 1 : nComs
+        
+        %Update the denominator vector for the first site
+        denominator1 = denominator1 ...
+                     + (bSiteOneC(nVols*(i-1)+1:nVols*i) ...
+                    .* colTemps.cstr ...
+                    .* colGasCons.(sComNums{i})).^(nSiteOneC(i));
 
-        end
+        %Update the denominator vector for the second site
+        denominator2 = denominator2 ...
+                     + (bSiteTwoC(nVols*(i-1)+1:nVols*i) ...
+                    .* colTemps.cstr ...
+                    .* colGasCons.(sComNums{i})).^(nSiteTwoC(i));
 
-        %Evaluate the explicit isotherm and update the corresponding value 
-        %to the output solution
-        for i = 1 : nComs
-            
-            %Calculate the adsoption equilibrium loadings for the sites
-            loading1  = qSatSiteOneC(i)*(bSiteOneC(i) ...
-                     .* colTemps.cstr ...
-                     .* colGasCons.(sComNums{i})) ...
-                     .^ (nSiteOneC(i));
-            loading2  = qSatSiteTwoC(i)*(bSiteTwoC(i) ...
-                     .* colTemps.cstr ...
-                     .* colGasCons.(sComNums{i})) ...
-                     .^ (nSiteTwoC(i));     
-                                  
-            %Get the beginning index
-            n0 = nColStT*(nAdsInd-1) ...
-               + nComs+i;
-            
-            %Get the final index
-            nf = nColStT*(nAdsInd-1) ...
-               + nStates*(nVols-1)+nComs+i;
-               
-            %For adosrbed concentrations, update with equilibrium 
-            %concentrations with the current gas phase compositions
-            newStates(:,n0:nStates:nf) ...
-                = (loading1./denominator1) ... 
-                + (loading2./denominator2);
-                      
-        end    
+    end
 
-    end      
+    %Evaluate the explicit isotherm and update the corresponding value to 
+    %the output solution
+    for i = 1 : nComs
+
+        %Calculate the adsoption equilibrium loadings for the sites
+        loading1  = qSatSiteOneC(i) ...
+                  * (bSiteOneC(nVols*(i-1)+1:nVols*i) ...
+                 .* colTemps.cstr ...
+                 .* colGasCons.(sComNums{i})) ...
+                 .^ (nSiteOneC(i));
+        loading2  = qSatSiteTwoC(i) ...
+                  * (bSiteTwoC(nVols*(i-1)+1:nVols*i) ...
+                 .* colTemps.cstr ...
+                 .* colGasCons.(sComNums{i})) ...
+                 .^ (nSiteTwoC(i));     
+
+        %Get the beginning index
+        n0 = nColStT*(nAdsInd-1) ...
+           + nComs+i;
+
+        %Get the final index
+        nf = nColStT*(nAdsInd-1) ...
+           + nStates*(nVols-1)+nComs+i;
+
+        %For adosrbed concentrations, update with equilibrium 
+        %concentrations with the current gas phase compositions
+        newStates(:,n0:nStates:nf) ...
+            = (loading1./denominator1) ... 
+            + (loading2./denominator2);
+
+    end    
     %---------------------------------------------------------------------%
     
 end
