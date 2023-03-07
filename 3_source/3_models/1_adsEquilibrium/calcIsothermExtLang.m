@@ -62,7 +62,7 @@ function newStates = calcIsothermExtLang(params,states,nAds)
     nVols        = params.nVols       ;
     bool         = params.bool        ;
     nRows        = params.nRows       ;    
-    dimLessQsatC = params.dimLessQsatC;
+    dimLessQsatC = params.dimLessQsatC;    
     %---------------------------------------------------------------------%
     
     
@@ -133,10 +133,13 @@ function newStates = calcIsothermExtLang(params,states,nAds)
 
     %If non-isothermal operation,
     if isNonIsothermal == 1
+        
+        %Unpack additional params
+        dimLessBC = params.dimLessBC;
 
         %Get the affinity parameter matrix at a specified CSTR temperature 
         %for all CSTRs
-        dimLessBC = getAdsAffConstant(params,states,nRows,nAds); 
+        dimLessBC = getAdsAffConstant(params,states,nRows,nAds,dimLessBC); 
         
         %Replicate the elements of qSatC
         dimLessQsatC = repelem(dimLessQsatC,nVols)';
@@ -154,7 +157,7 @@ function newStates = calcIsothermExtLang(params,states,nAds)
 
             %Update the denominator vector
             denominator = denominator ...
-                        + dimLessBC ...
+                        + dimLessBC(nVols*(i-1)+1:nVols*i) ...
                        .* colTemps.cstr ...
                        .* colGasCons.(sComNums{i});
 
