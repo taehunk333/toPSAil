@@ -139,7 +139,7 @@ function adsConcComp(wsVarName1,wsVarName2)
         end
 
         %Plot the ith step with jth column
-        plot(height,pressure,'LineWidth',2.0,'Color',rgb);                
+        plot(height,pressure,':','LineWidth',2.0,'Color',rgb);                
 
     end                 
     %---------------------------------------------------------------------%  
@@ -227,9 +227,9 @@ function adsConcComp(wsVarName1,wsVarName2)
             rgb = [0 0 0];
             
         end
-
+    
         %Plot the ith step with jth column
-        plot(height,pressure,'--','LineWidth',2.0,'Color',rgb);                
+        plot(height,pressure,'*','LineWidth',2.0,'Color',rgb);                
 
     end                 
     %---------------------------------------------------------------------%
