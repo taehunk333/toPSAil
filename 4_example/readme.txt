@@ -13,7 +13,7 @@
 % 		- [X] indicates that the simulation is not able to run
 %	- File Name
 %		- "_e" at the end of the file name denotes an event
-% 		  -driven simulation of the same simualtion without
+% 		  -driven simulation of the same simulation without
 %		  "_e" at the end of the file name
 %		- "case_study_x.y" denotes a simulation for the xth 
 % 		  system, with the yth simulation configuration. The 
@@ -439,13 +439,72 @@
 %	  	- MOF (Lukas 1)
 %		- Dual-Site Langmuir-Freundlich 
 %		- LDF kinetics
-%	        - 4 step PSA cycle
+%	        - 5 step PSA cycle
 %			- Adsorber 1
-%				1. Repressurization 
+%				1. Re-pressurization 
 %				   (product end)
-%				2. High pressure feed
-%				3. Depressurization 
+%				2. Depressurization
 %				   (feed end)
-%				4. Low pressure purge	
+%				3. High pressure feed
+%				4. Depressurization 
+%				   (feed end)
+%				5. Low pressure purge	
+%				   (counter-current or - direction)
+%	[O] case_study_5.1: 
+%	  	- 1-adsorber
+%		- Nonisothermal
+% 		- Flow-driven
+%		- Time-driven
+%	  	- MOF (Lukas 1)
+%		- Dual-Site Langmuir-Freundlich 
+%		- LDF kinetics
+%	        - 5 step PSA cycle
+%			- Adsorber 1
+%				1. Re-pressurization 
+%				   (product end)
+%				2. Depressurization
+%				   (feed end)
+%				3. High pressure feed
+%				4. Depressurization 
+%				   (feed end)
+%				5. Low pressure purge	
+%				   (counter-current or - direction)
+%	[O] case_study_5.2: 
+%	  	- 1-adsorber
+%		- Isothermal
+% 		- Pressure-driven (Ergun Equation)
+%		- Time-driven
+%	  	- MOF (Lukas 1)
+%		- Dual-Site Langmuir-Freundlich 
+%		- LDF kinetics
+%	        - 5 step PSA cycle
+%			- Adsorber 1
+%				1. Re-pressurization 
+%				   (product end)
+%				2. Depressurization
+%				   (feed end)
+%				3. High pressure feed
+%				4. Depressurization 
+%				   (feed end)
+%				5. Low pressure purge	
+%				   (counter-current or - direction)
+%	[O] case_study_5.3: 
+%	  	- 1-adsorber
+%		- Nonisothermal
+% 		- Pressure-driven (Ergun Equation)
+%		- Time-driven
+%	  	- MOF (Lukas 1)
+%		- Dual-Site Langmuir-Freundlich 
+%		- LDF kinetics
+%	        - 5 step PSA cycle
+%			- Adsorber 1
+%				1. Re-pressurization 
+%				   (product end)
+%				2. Depressurization
+%				   (feed end)
+%				3. High pressure feed
+%				4. Depressurization 
+%				   (feed end)
+%				5. Low pressure purge	
 %				   (counter-current or - direction)		
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
