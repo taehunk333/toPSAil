@@ -61,6 +61,9 @@ function volFlowFeed = calcVolFlowFeed(params)
     tempColNorm = params.tempColNorm;
     tempFeTa    = params.tempFeTa   ;
     gasConT     = params.gasConT    ;
+    tempStan    = params.tempStan   ;
+    presStan    = params.presStan   ;
+    tempCol     = params.tempCol    ;
     
     %Define scale factors for using valve equation in a dimensional form.
     %The unit is in cc-bar/kmol.
@@ -171,11 +174,13 @@ function volFlowFeed = calcVolFlowFeed(params)
     
         %Calculate moles in the void at upstream pressure (i.e. the initial
         %product tank pressure)
-        voidMolUp = funcEos(params,presRaTa,testVol,tempAmbi,0);
+        [~,~,~,voidMolUp] ...
+            = funcEos(params,presRaTa,testVol,tempAmbi,0);
 
         %Calculate moles in the void at downstream pressure (i.e. the high
         %pressure in the void space of an adsorption column)
-        voidMolDo = funcEos(params,presColHigh,testVol,tempAmbi,0); 
+        [~,~,~,voidMolDo] ...
+            = funcEos(params,presColHigh,testVol,tempAmbi,0); 
         
         %Check for the difference in the total moles
         diffTotMol = (voidMolUp-voidMolDo);
@@ -219,8 +224,9 @@ function volFlowFeed = calcVolFlowFeed(params)
                       
     %Calculate the volumetric flow rate at the stream exiting the valve,
     %given in cm^3/sec.
-    volFlowFeed = molFlowRat ...
-               ./ gasConT;                                       
+    volFlowFeed = (molFlowRat/gasConT) ...
+                * (tempCol/presColHigh) ...
+                * (presStan/tempStan);                                       
     %---------------------------------------------------------------------%              
     
 end
