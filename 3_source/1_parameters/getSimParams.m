@@ -366,7 +366,7 @@ function [params,fullParams] = getSimParams(exampleFolder)
     
     %Get a feed volumetric flow rate to an adsorption column at a high
     %pressure
-    params.volFlowFeed = calcVolFlowNorm(params);
+    params.volFlowFeed = calcVolFlowFeed(params);
     %---------------------------------------------------------------------%
     
         
