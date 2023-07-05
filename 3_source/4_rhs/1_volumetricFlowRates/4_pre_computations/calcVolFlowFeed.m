@@ -19,16 +19,16 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/3/Sunday
-%Code last modified on : 2022/11/1/Tuesday
+%Code last modified on : 2023/7/4/Tuesday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : calcVolFlowNorm.m
+%Function   : calcVolFlowFeed.m
 %Source     : common
 %Description: a function that calculates a constant volumetric flow rate at
 %             the feed end of an adsorption column at a high pressure.
 %Inputs     : params       - a struct containing simulation parameters.
-%Outputs    : volFlowNorm  - a constant volumetric flow rate for 
+%Outputs    : volFlowFeed  - a constant volumetric flow rate [cc/sec] for 
 %                            normalizing the volumetric flow rates. For the 
 %                            case when we sepcify a valve constant at the 
 %                            feed end, we compute the feed volumetric flow 
@@ -38,13 +38,13 @@
 %                            rate for the high pressure feed. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function volFlowNorm = calcVolFlowNorm(params)
+function volFlowFeed = calcVolFlowFeed(params)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
     
     %Name the function ID
-    funcId = 'calcVolFlowNorm.m';
+    funcId = 'calcVolFlowFeed.m';
     
     %Unpack Params
     sStepCol    = params.sStepCol   ;   
@@ -62,8 +62,9 @@ function volFlowNorm = calcVolFlowNorm(params)
     tempFeTa    = params.tempFeTa   ;
     gasConT     = params.gasConT    ;
     
-    %Define scale factors for using valve equation in a dimensional form
-    valScaleFac = (1000*gasCons*tempAmbi);    
+    %Define scale factors for using valve equation in a dimensional form.
+    %The unit is in cc-bar/kmol.
+    valScaleFac = (1000*gasConT*gasCons*tempAmbi);    
     
     %Define a test volume for computing a total concentration
     testVol = 1;
@@ -122,7 +123,8 @@ function volFlowNorm = calcVolFlowNorm(params)
     if hasCvFeedEnd
     
         %Calculate the dimensionless valve constant; note that the feed 
-        %valve for the first column is always valve 1
+        %valve for the first column is always valve 1. The unit is given by
+        %kmol/bar-sec * cc-bar/kmol = cc/sec.
         valConHp = valFeedCol(1,findHp) ...
                  * valScaleFac;
     
@@ -130,7 +132,8 @@ function volFlowNorm = calcVolFlowNorm(params)
     elseif hasCvProdEnd
         
         %Calculate the dimensionless valve constant; note that the feed 
-        %valve for the first column is always valve 1
+        %valve for the first column is always valve 1. The unit is given by
+        %kmol/bar-sec * cc-bar/kmol = cc/sec.
         valConHp = valProdCol(1,findHp) ...
                  * valScaleFac;
     
@@ -206,16 +209,18 @@ function volFlowNorm = calcVolFlowNorm(params)
     
     %Calculate feed-end or product-end molar flow rate; the valve constant
     %used here is the dimensionless valve constant times the volFlowNorm,
-    %which is yet to be determined.
+    %which is yet to be determined. The unit of the molar flow rate is in
+    %mol/sec.
     molFlowRat = funcVal(valConHp, ...
                          (gasConsTotDo), ...
                          (gasConsTotUp), ...
                          (tempFeTa/tempAmbi), ...
                          tempColNorm);                       
                       
-    %Calculate the volumetric flow rate at the stream exiting the valve
-    volFlowNorm = molFlowRat ...
-               ./ (gasConsTotDo);                                       
+    %Calculate the volumetric flow rate at the stream exiting the valve,
+    %given in cm^3/sec.
+    volFlowFeed = molFlowRat ...
+               ./ gasConT;                                       
     %---------------------------------------------------------------------%              
     
 end
