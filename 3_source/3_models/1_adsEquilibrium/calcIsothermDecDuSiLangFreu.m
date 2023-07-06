@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2023/2/24/Friday
-%Code last modified on : 2023/3/6/Monday
+%Code last modified on : 2023/7/6/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -66,7 +66,8 @@ function newStates = calcIsothermDecDuSiLangFreu(params,states,nAds)
     bSiteOneC    = params.dimLessbSiteOneC   ;
     bSiteTwoC    = params.dimLessbSiteTwoC   ;
     nSiteOneC    = params.nSiteOneC          ;
-    nSiteTwoC    = params.nSiteTwoC          ;     
+    nSiteTwoC    = params.nSiteTwoC          ; 
+    nRows        = params.nRows              ;
     %---------------------------------------------------------------------%
     
     

@@ -4,7 +4,7 @@
 %
 % Release Version : 1.0
 %
-% Last Revised on : 12/8/2022
+% Last Revised on : 7/6/2023
 % Last Revised by : Taehun Kim
 %
 % Notes:
@@ -36,7 +36,7 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Multiple Adsorber Simulation I
+% Multiple Adsorber Simulation
 %
 % Purpose: 
 %	- to validate toPSAil's simulation capabilities against	the 
@@ -152,7 +152,7 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Single Adsorber Simulation I
+% Single Adsorber Simulation
 %
 % Purpose:
 %	- To simulate a single adsorber PSA cycle
@@ -221,7 +221,7 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Single Adsorber Simulation II
+% Single Adsorber Simulation
 %
 % Purpose:
 %	- To simulate a PSA cycle including nonisothermal operation 
@@ -292,7 +292,7 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Multiple Adsorber Simulation II
+% Multiple Adsorber Simulation
 %
 % Purpose:
 %	- To demonstrate a complex PSA cycle, including a pressure 
@@ -423,7 +423,7 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Multiple Adsorber Simulation II
+% Single Adsorber Simulation
 %
 % Purpose:
 %	- To predict performance metrics of MOFs exhibiting hysteresis
@@ -494,6 +494,82 @@
 % 		- Pressure-driven (Ergun Equation)
 %		- Time-driven
 %	  	- MOF (Lukas 1)
+%		- Dual-Site Langmuir-Freundlich 
+%		- LDF kinetics
+%	        - 5 step PSA cycle
+%			- Adsorber 1
+%				1. Re-pressurization 
+%				   (product end)
+%				2. Depressurization
+%				   (feed end)
+%				3. High pressure feed
+%				4. Depressurization 
+%				   (feed end)
+%				5. Low pressure purge	
+%				   (counter-current or - direction)
+% 	[O] case_study_5.0.b: 
+%	  	- 1-adsorber
+%		- Isothermal
+% 		- Flow-driven
+%		- Time-driven
+%	  	- *****MOF (baseline)*****
+%		- Dual-Site Langmuir-Freundlich 
+%		- LDF kinetics
+%	        - 5 step PSA cycle
+%			- Adsorber 1
+%				1. Re-pressurization 
+%				   (product end)
+%				2. Depressurization
+%				   (feed end)
+%				3. High pressure feed
+%				4. Depressurization 
+%				   (feed end)
+%				5. Low pressure purge	
+%				   (counter-current or - direction)
+%	[O] case_study_5.1.b: 
+%	  	- 1-adsorber
+%		- Nonisothermal
+% 		- Flow-driven
+%		- Time-driven
+%	  	- *****MOF (baseline)*****
+%		- Dual-Site Langmuir-Freundlich 
+%		- LDF kinetics
+%	        - 5 step PSA cycle
+%			- Adsorber 1
+%				1. Re-pressurization 
+%				   (product end)
+%				2. Depressurization
+%				   (feed end)
+%				3. High pressure feed
+%				4. Depressurization 
+%				   (feed end)
+%				5. Low pressure purge	
+%				   (counter-current or - direction)
+%	[O] case_study_5.2.b: 
+%	  	- 1-adsorber
+%		- Isothermal
+% 		- Pressure-driven (Ergun Equation)
+%		- Time-driven
+%	  	- *****MOF (baseline)*****
+%		- Dual-Site Langmuir-Freundlich 
+%		- LDF kinetics
+%	        - 5 step PSA cycle
+%			- Adsorber 1
+%				1. Re-pressurization 
+%				   (product end)
+%				2. Depressurization
+%				   (feed end)
+%				3. High pressure feed
+%				4. Depressurization 
+%				   (feed end)
+%				5. Low pressure purge	
+%				   (counter-current or - direction)
+%	[O] case_study_5.3.b: 
+%	  	- 1-adsorber
+%		- Nonisothermal
+% 		- Pressure-driven (Ergun Equation)
+%		- Time-driven
+%	  	- *****MOF (baseline)*****
 %		- Dual-Site Langmuir-Freundlich 
 %		- LDF kinetics
 %	        - 5 step PSA cycle
