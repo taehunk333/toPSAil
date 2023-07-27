@@ -427,6 +427,8 @@
 %
 % Purpose:
 %	- To predict performance metrics of MOFs exhibiting hysteresis
+%.  	  for purifying methane from a binary mixture of methane and 
+%	  carbon dioxide.
 % Reference: 
 %	- Lukas W. Bingel, Taehun Kim, Krista S. Walton, Joseph K. 
 %	  Scott
@@ -437,13 +439,13 @@
 % 		- Flow-driven
 %		- Time-driven
 %	  	- MOF (Lukas 1)
-%		- Dual-Site Langmuir-Freundlich 
+%		- Dual-Site Langmuir-Freundlich (decoupled)
 %		- LDF kinetics
 %	        - 5 step PSA cycle
 %			- Adsorber 1
 %				1. Re-pressurization 
 %				   (product end)
-%				2. Depressurization
+%				2. Re-pressurization
 %				   (feed end)
 %				3. High pressure feed
 %				4. Depressurization 
@@ -456,13 +458,13 @@
 % 		- Flow-driven
 %		- Time-driven
 %	  	- MOF (Lukas 1)
-%		- Dual-Site Langmuir-Freundlich 
+%		- Dual-Site Langmuir-Freundlich (decoupled)
 %		- LDF kinetics
 %	        - 5 step PSA cycle
 %			- Adsorber 1
 %				1. Re-pressurization 
 %				   (product end)
-%				2. Depressurization
+%				2. Re-pressurization
 %				   (feed end)
 %				3. High pressure feed
 %				4. Depressurization 
@@ -475,13 +477,13 @@
 % 		- Pressure-driven (Ergun Equation)
 %		- Time-driven
 %	  	- MOF (Lukas 1)
-%		- Dual-Site Langmuir-Freundlich 
+%		- Dual-Site Langmuir-Freundlich (decoupled)
 %		- LDF kinetics
 %	        - 5 step PSA cycle
 %			- Adsorber 1
 %				1. Re-pressurization 
 %				   (product end)
-%				2. Depressurization
+%				2. Re-pressurization
 %				   (feed end)
 %				3. High pressure feed
 %				4. Depressurization 
@@ -494,13 +496,13 @@
 % 		- Pressure-driven (Ergun Equation)
 %		- Time-driven
 %	  	- MOF (Lukas 1)
-%		- Dual-Site Langmuir-Freundlich 
+%		- Dual-Site Langmuir-Freundlich (decoupled)
 %		- LDF kinetics
 %	        - 5 step PSA cycle
 %			- Adsorber 1
 %				1. Re-pressurization 
 %				   (product end)
-%				2. Depressurization
+%				2. Re-pressurization
 %				   (feed end)
 %				3. High pressure feed
 %				4. Depressurization 
@@ -513,13 +515,13 @@
 % 		- Flow-driven
 %		- Time-driven
 %	  	- *****MOF (baseline)*****
-%		- Dual-Site Langmuir-Freundlich 
+%		- Dual-Site Langmuir-Freundlich (decoupled)
 %		- LDF kinetics
 %	        - 5 step PSA cycle
 %			- Adsorber 1
 %				1. Re-pressurization 
 %				   (product end)
-%				2. Depressurization
+%				2. Re-pressurization
 %				   (feed end)
 %				3. High pressure feed
 %				4. Depressurization 
@@ -532,13 +534,13 @@
 % 		- Flow-driven
 %		- Time-driven
 %	  	- *****MOF (baseline)*****
-%		- Dual-Site Langmuir-Freundlich 
+%		- Dual-Site Langmuir-Freundlich (decoupled)
 %		- LDF kinetics
 %	        - 5 step PSA cycle
 %			- Adsorber 1
 %				1. Re-pressurization 
 %				   (product end)
-%				2. Depressurization
+%				2. Re-pressurization
 %				   (feed end)
 %				3. High pressure feed
 %				4. Depressurization 
@@ -551,13 +553,13 @@
 % 		- Pressure-driven (Ergun Equation)
 %		- Time-driven
 %	  	- *****MOF (baseline)*****
-%		- Dual-Site Langmuir-Freundlich 
+%		- Dual-Site Langmuir-Freundlich (decoupled)
 %		- LDF kinetics
 %	        - 5 step PSA cycle
 %			- Adsorber 1
 %				1. Re-pressurization 
 %				   (product end)
-%				2. Depressurization
+%				2. Re-pressurization
 %				   (feed end)
 %				3. High pressure feed
 %				4. Depressurization 
@@ -570,13 +572,13 @@
 % 		- Pressure-driven (Ergun Equation)
 %		- Time-driven
 %	  	- *****MOF (baseline)*****
-%		- Dual-Site Langmuir-Freundlich 
+%		- Dual-Site Langmuir-Freundlich (decoupled)
 %		- LDF kinetics
 %	        - 5 step PSA cycle
 %			- Adsorber 1
 %				1. Re-pressurization 
 %				   (product end)
-%				2. Depressurization
+%				2. Re-pressurization
 %				   (feed end)
 %				3. High pressure feed
 %				4. Depressurization 

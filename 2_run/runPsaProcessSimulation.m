@@ -6,7 +6,7 @@
 %Center for Process Modeling (CPM)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Contributor(s) :
-%Department of Chemical and Biomolecular Engineering,
+%Department of Chemical and Biomolecular Engineering,. 
 %Georgia Institute of Technology,
 %311 Ferst Drive NW, Atlanta, GA 30332-0100.
 %Scott Research Group
