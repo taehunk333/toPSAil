@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/23/Tuesday
-%Code last modified on : 2022/11/28/Monday
+%Code last modified on : 2023/7/27/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -83,9 +83,8 @@ function plotEnergyConsumption(params,sol)
         %Get the vector for the color
         rgb = grabColor(1,colorBnW);
         
-        %Scale the units from kJ to kWh: 3,600kJ = 1kWh
-        energyData = energyEff(1:lastCycNo,i) ...
-                   / 3600;
+        %Define energy data.
+        energyData = energyEff(1:lastCycNo,i);
         
         %Plot the data
         plot(cycleNums,energyData,'-x','LineWidth',2.0,'Color',rgb);    
