@@ -75,10 +75,10 @@ function plotAdsConsHighPresFeed(params,sol,colNum)
     %title(strTitle);
 
     %Determine x-axis (ordinate) label
-    xlabel('Height [cm]');
+    xlabel('Height (cm)');
 
     %Determine y-axis (absicissa) label
-    ylabel('Conc. [mol/kg]');
+    ylabel('Conc. (mol/kg)');
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');

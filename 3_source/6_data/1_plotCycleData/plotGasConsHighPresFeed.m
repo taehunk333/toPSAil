@@ -76,10 +76,10 @@ function plotGasConsHighPresFeed(params,sol,colNum)
     %title(strTitle);
 
     %Determine x-axis (ordinate) label
-    xlabel('Height [cm]');
+    xlabel('Height (cm)');
 
     %Determine y-axis (absicissa) label
-    ylabel('Conc. [mol/cc]');
+    ylabel('Conc. (mol/cc)');
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');

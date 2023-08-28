@@ -125,14 +125,14 @@ function plotProductPurity(params,sol)
     xlabel('Cycle Number');
 
     %Determine y-axis (absicissa) label
-    ylabel('Prod. Purity [%]');
+    ylabel('Prod. Purity (%)');
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');
     set(gca,'FontSize',14)                 ;    
     
     %Add entry to the legend
-    legend({'Raffinate','Extract'},'Location','NorthWest');
+    %legend({'Raffinate','Extract'},'Location','NorthWest');
     
     %Resize the figure
     set(gcf,'Position',[100,25,575,250]);

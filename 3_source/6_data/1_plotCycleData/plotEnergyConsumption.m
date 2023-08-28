@@ -113,14 +113,14 @@ function plotEnergyConsumption(params,sol)
     xlabel('Cycle Number');
 
     %Determine y-axis (absicissa) label
-    ylabel('E. Req. [kWh_{e}/mol]');
+    ylabel('E. Req. (kWh_{e}/mol)');
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');
     set(gca,'FontSize',14)                 ;  
     
     %Add entry to the legend
-    legend('Raffinate','Extract','Location','NorthWest');
+    %legend('Raffinate','Extract','Location','NorthWest');
     
     %Resize the figure
     set(gcf,'Position',[100,25,575,250]);
