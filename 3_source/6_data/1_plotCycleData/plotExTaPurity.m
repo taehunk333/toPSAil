@@ -71,10 +71,10 @@ function plotExTaPurity(params,sol,exTaNum)
     %title(strTitle);
 
     %Determine x-axis (ordinate) label
-    xlabel('Time [seconds]');
+    xlabel('Time (seconds)');
 
     %Determine y-axis (absicissa) label
-    ylabel('HK mole fraction');
+    ylabel('HK mole fraction (-)');
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');

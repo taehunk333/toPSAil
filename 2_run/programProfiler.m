@@ -13,7 +13,7 @@
 %https://www.jkscottresearchgroup.com/
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Project title :
-%Dynamic Modeling and Simulation of Pressure Swing Adsroption (PSA)
+%Dynamic Modeling and Simulation of Pressure Swing Adsorption (PSA)
 %Process Systems
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim

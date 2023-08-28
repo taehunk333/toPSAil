@@ -70,10 +70,10 @@ function plotRaTaPurity(params,sol,raTaNum)
     %title(strTitle);
 
     %Determine x-axis (ordinate) label
-    xlabel('Time [seconds]');
+    xlabel('Time (seconds)');
 
     %Determine y-axis (absicissa) label
-    ylabel('LK mole fraction');
+    ylabel('LK mole fraction (-)');
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');

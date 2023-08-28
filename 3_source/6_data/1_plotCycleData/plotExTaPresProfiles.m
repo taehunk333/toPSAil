@@ -63,10 +63,10 @@ function plotExTaPresProfiles(params,sol)
     %title('Extract Product Tank Pressure Profile');
 
     %Determine x-axis (ordinate) label
-    xlabel('Time [seconds]');
+    xlabel('Time (seconds)');
 
     %Determine y-axis (absicissa) label
-    ylabel('Pressure [bar]');
+    ylabel('Pressure (bar)');
 
     %Set the style of the axis font as LaTeX type
     set(gca,'TickLabelInterpreter','latex');
