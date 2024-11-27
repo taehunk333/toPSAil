@@ -52,6 +52,7 @@ function termStates = convert2TermStates(params,states)
     inShExTa = params.inShExTa;
     inShComp = params.inShComp;
     inShVac  = params.inShVac ;
+    nFeTas   = params.nFeTas  ;
     %---------------------------------------------------------------------%
     
     
@@ -77,15 +78,18 @@ function termStates = convert2TermStates(params,states)
     end
     
     %For the feed tank
+    for i = 1 : nFeTas    
         
     %Get the beginning index
-    n0 = inShFeTa+nFeTaStT-nComs+1;
+        n0 = inShFeTa+i*nFeTaStT-nComs+1;
 
     %Get the final index
-    nf = inShFeTa+nFeTaStT;
+        nf = inShFeTa+i*nFeTaStT;
 
     %Knockout the cumulative volumetric flow rates
     termStates(:,n0:nf) = zeros(1,nComs);
+
+    end
     
     %For the raffinate product tank
     

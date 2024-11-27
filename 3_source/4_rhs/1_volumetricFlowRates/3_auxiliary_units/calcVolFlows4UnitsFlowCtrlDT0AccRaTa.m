@@ -53,6 +53,8 @@ function units = calcVolFlows4UnitsFlowCtrlDT0AccRaTa(params,units,nS)
     
     %Unpack params   
     nCols = params.nCols;  
+    nFeTas= params.nFeTas;
+    sFeTaNums = params.sFeTaNums;
     %---------------------------------------------------------------------%       
     
     
@@ -87,14 +89,15 @@ function units = calcVolFlows4UnitsFlowCtrlDT0AccRaTa(params,units,nS)
     %---------------------------------------------------------------------%
     %Calculate the remaining boundary conditions for the feed tank unit
         
+    for i = 1:nFeTas
     %The entering valve to the feed tank is always controlled to 
     %maintain a constant pressure inside the feed tank. Therefore, we can 
     %control the volumetric flow rate so that a constant pressure is 
     %maintained inside the feed tank
     vFlFeTa(:,(nCols+1)) = max(0,sum(vFlFeTa(:,1:nCols),2));    
     %---------------------------------------------------------------------%       
-    
-    
+    units.feTa.(sFeTaNums{i}).volFlRat = vFlFeTa; 
+    end
     
     %---------------------------------------------------------------------%
     %Calculate the remaining boundary conditions for the raffinate product
@@ -134,7 +137,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT0AccRaTa(params,units,nS)
     units.exWa.n1.volFlRat = vFlExWa;
     
     %Save the volumetric flow rates to a struct
-    units.feTa.n1.volFlRat = vFlFeTa;         
+    % units.feTa.n1.volFlRat = vFlFeTa;         
     %---------------------------------------------------------------------%
 
 end

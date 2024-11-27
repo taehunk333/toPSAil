@@ -56,6 +56,9 @@ function units = makeCol2Interact(params,units,nS)
     valRaTa2AdsFeEnd = params.valRaTa2AdsFeEnd;
     valExTa2AdsPrEnd = params.valExTa2AdsPrEnd; 
     valFeTa2AdsFeEnd = params.valFeTa2AdsFeEnd;
+    nFeTas           = params.nFeTas          ;
+    sFeTaNums        = params.sFeTaNums       ;
+    feTaSeq          = params.feTaSeq         ;
        
     %Unpack units
     col  = units.col ;
@@ -76,6 +79,11 @@ function units = makeCol2Interact(params,units,nS)
         %-----------------------------------------------------------------%
         %For each species
         for j = 1 : nComs
+
+            %-------------------------------------------------------------%
+            %For each feed tanks,
+            % for k = 1 : nFeTas
+            k = feTaSeq(nS);
 
             %-------------------------------------------------------------%
             %Define product-end interactions
@@ -160,16 +168,17 @@ function units = makeCol2Interact(params,units,nS)
                 %---------------------------------------------------------%
 
             %If the upstream is the feed tank 
-            elseif valFeTa2AdsPrEnd(i,nS) == 1    
+    
+            elseif k ~= 0 && valFeTa2AdsPrEnd(i,nS,k) == 1    
     
                 %---------------------------------------------------------%
                 %Get the total concentration of the feed tank
                 gasConTotPrEnd ...
-                    = feTa.n1.gasConsTot;
+                    = feTa.(sFeTaNums{k}).gasConsTot;
 
                 %Get the jth species concentration inside the feed tank
                 gasConSpePrEnd ... 
-                    = feTa.n1.gasCons. ...
+                    = feTa.(sFeTaNums{k}).gasCons. ...
                       (sComNums{j});
 
                 %Get the current total concentration of the Nth CSTR in 
@@ -191,7 +200,7 @@ function units = makeCol2Interact(params,units,nS)
 
                 %Get the upstream temperature from the feed tank
                 col.(sColNums{i}).prEnd.temps ...
-                    = feTa.n1.temps.cstr;
+                    = feTa.(sFeTaNums{k}).temps.cstr;
                 %---------------------------------------------------------%
 
             %Otherwise, the flow is from or to the raffinate product tank. 
@@ -322,17 +331,17 @@ function units = makeCol2Interact(params,units,nS)
 
             %If there is an interaction between the feed tank and the
             %adsorption volumn feed-end,
-            elseif valFeTa2AdsFeEnd(i,nS) == 1
+            elseif k ~= 0 && valFeTa2AdsFeEnd(i,nS,k) == 1
     
                 %---------------------------------------------------------%
                 %Get the total concentration of the first feed tank
                 gasConTotFeEnd ...
-                    = feTa.n1.gasConsTot;
+                    = feTa.(sFeTaNums{k}).gasConsTot;
 
                 %Get the jth species concentration inside the first 
                 %feed tank
                 gasConSpeFeEnd ...
-                    = feTa.n1.gasCons. ...
+                    = feTa.(sFeTaNums{k}).gasCons. ...
                       (sComNums{j});
 
                 %Get the current total concentration of the 1st CSTR in
@@ -354,7 +363,7 @@ function units = makeCol2Interact(params,units,nS)
 
                 %Get the temperature from the feed tank
                 col.(sColNums{i}).feEnd.temps ...
-                    = feTa.n1.temps.cstr;
+                    = feTa.(sFeTaNums{k}).temps.cstr;
                 %---------------------------------------------------------%
                     
             %Otherwise, there is an interaction between the extract product

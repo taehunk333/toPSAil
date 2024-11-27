@@ -73,7 +73,7 @@ function feMol = getFeedMolCycle(params,sol,~,nCy)
     
     
     %---------------------------------------------------------------------%
-    %Keep track of cumulative moles coming out of the product tank in a
+    %Keep track of cumulative moles coming out of the feed tank in a
     %given PSA cycle
     
     %For each step in a given PSA cycle,

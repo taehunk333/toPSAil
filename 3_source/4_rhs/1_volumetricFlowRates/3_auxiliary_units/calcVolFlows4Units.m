@@ -70,6 +70,8 @@ function vFlUnits = calcVolFlows4Units(params,units,nS)
     valAdsPrEnd2RaWa = params.valAdsPrEnd2RaWa;
     valAdsFeEnd2ExWa = params.valAdsFeEnd2ExWa;
     valAdsFeEnd2ExTa = params.valAdsFeEnd2ExTa;
+    sFeTaNums        = params.sFeTaNums       ;
+    nFeTas           = params.nFeTas          ;
     
     %Unpack units
     col  = units.col ;
@@ -108,7 +110,7 @@ function vFlUnits = calcVolFlows4Units(params,units,nS)
     %extract)
        
     %Get the total concentration of the tanks at time t    
-    feTaTotCon = feTa.n1.gasConsTot;
+    % feTaTotCon = feTa.n1.gasConsTot;
     raTaTotCon = raTa.n1.gasConsTot;
     exTaTotCon = exTa.n1.gasConsTot;    
 
@@ -130,10 +132,13 @@ function vFlUnits = calcVolFlows4Units(params,units,nS)
         %volumetric flow rates are evaluated at the tank total 
         %concentration and the flow directions should be defined for the 
         %feed tank.
+        for j = 1 : nFeTas
         
+            feTaTotCon = feTa.(sFeTaNums{j}).gasConsTot;
+
         %The feed tank is interacting with the ith adsorber at the 
         %feed-end. 
-        if valFeTa2AdsFeEnd(i,nS) == 1          
+            if valFeTa2AdsFeEnd(i,nS,j) == 1          
                 
             %Determine the scale factor for the volumetric flow rate
             vFlScaleFac = col.(sColNums{i}).gasConsTot(:,1) ...
@@ -146,7 +151,7 @@ function vFlUnits = calcVolFlows4Units(params,units,nS)
         
         %The feed tank is interacting with the ith adsorber at the 
         %product-end.
-        elseif valFeTa2AdsPrEnd(i,nS) == 1       
+            elseif valFeTa2AdsPrEnd(i,nS,j) == 1       
                 
             %Determine the scale factor for the volumetric flow rate
             vFlScaleFac = col.(sColNums{i}).gasConsTot(:,nVols) ...
@@ -159,11 +164,14 @@ function vFlUnits = calcVolFlows4Units(params,units,nS)
                         .* vFlScaleFac; 
         
         %The feed tank does not interact with the ith adsorption column
-        else
+            else
             
             %Nothing to do
             
+            end
+
         end
+        
         %-----------------------------------------------------------------%
         
         
