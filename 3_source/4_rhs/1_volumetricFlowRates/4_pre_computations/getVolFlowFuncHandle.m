@@ -169,6 +169,20 @@ function [prodEnd,feedEnd,flags] ...
                                                  raTa,exTa,nS,nCo);
                 feedEnd = [];
 
+            %Low pressure feed to extract tank purge
+            elseif strcmp(stepNameCurr,'LP-EXT-FEE')
+                                  
+                %Define the function handles                
+                prodEnd = @(params,col,feTa,raTa,exTa,nS,nCo) ...
+                            calcVolFlowFeTa2ValFiv(params,col,feTa, ...
+                                                   raTa,exTa,nS,nCo);
+                feedEnd = @(params,col,feTa,raTa,exTa,nS,nCo) ...
+                            calcVolFlowValSix2ExWa(params,col,feTa, ...
+                                                   raTa,exTa,nS,nCo); 
+
+                %Indicate that the step is a constant pressure step
+                flags.whichEnd = 1;
+
             end
 
         %When we are dealing with varying pressure DAE model
@@ -288,7 +302,7 @@ function [prodEnd,feedEnd,flags] ...
                             calcVolFlowEqualProdEnd(params,col,feTa, ...
                                                     raTa,exTa,nS,nCo);
                 feedEnd = @(params,col,feTa,raTa,exTa,nS,nCo) 0;  
-                
+
             end
 
         end
@@ -410,6 +424,19 @@ function [prodEnd,feedEnd,flags] ...
                 feedEnd = @(params,col,feTa,raTa,exTa,nS,nCo) ...
                           calcVolFlowRaTa2ValTwo(params,col,feTa, ...
                                                  raTa,exTa,nS,nCo);   
+
+            elseif strcmp(stepNameCurr,'LP-EXT-FEE')
+                                  
+                %Define the function handles                
+                prodEnd = @(params,col,feTa,raTa,exTa,nS,nCo) ...
+                            calcVolFlowFeTa2ValFiv(params,col,feTa, ...
+                                                   raTa,exTa,nS,nCo);
+                feedEnd = @(params,col,feTa,raTa,exTa,nS,nCo) ...
+                            calcVolFlowValSix2ExWa(params,col,feTa, ...
+                                                   raTa,exTa,nS,nCo); 
+
+                %Indicate that the step is a constant pressure step
+                flags.whichEnd = 1;
 
             end
 
