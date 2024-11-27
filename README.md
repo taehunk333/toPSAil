@@ -8,7 +8,7 @@
 # Getting Started
 
 
-Please use the code in the `main` branch of this repository. The develop branch is continuously being developed, and full functionality of the code is not guaranteed.
+Please use the code in the `main` branch of this repository. The `develop` branch is continuously being developed, and full functionality of the code is not guaranteed.
 
 
 # References
