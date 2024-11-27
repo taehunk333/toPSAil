@@ -69,6 +69,7 @@ function sol = runPsaCycle(params)
     funcCss    = params.funcCss   ;
     eveLoc     = params.eveLoc    ;
     tiScaleFac = params.tiScaleFac;
+    nFeTas     = params.nFeTas    ;
     
     %Calculate needed quantities
     stepTimes = convert2DimTime(timeSpan,params);
@@ -190,6 +191,11 @@ function sol = runPsaCycle(params)
                 %function
                 params.nRows = 1;
                 
+                % if nS == 5
+                %     params.colTempNorm = 383.15/298.15;
+                % end
+                
+                
                 %Run runPsaCycleStep.m
                 [stTimePts,stStates,flags] ...
                     = runPsaCycleStep(params,iStates,tDom,nS,nCy);         
@@ -262,10 +268,14 @@ function sol = runPsaCycle(params)
                 %boundaries
                 
                 %Add cumulative moles at the feed-end
-                feTa.n1.cumMol.feed ...
+                for i = 1 : nFeTas
+                    
+                    feTa.(append('n',int2str(i))).cumMol.feed ...
                     = stStates(:, ...
-                               inShFeTa+nFeTaStT-nComs+1: ...
-                               inShFeTa+nFeTaStT);                                       
+                               inShFeTa+i*nFeTaStT-nComs+1: ...
+                               inShFeTa+i*nFeTaStT);                                       
+                                
+                end
                                 
                 %Add cumulative moles entering or leaving the raffinate 
                 %product tank boundaries                    
