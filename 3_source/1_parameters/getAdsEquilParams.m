@@ -152,7 +152,26 @@ function params = getAdsEquilParams(params,varargin)
             %Save the result
             params.dimLessqSatSiteOneC = dimLessqSatSiteOneC;
             params.dimLessqSatSiteTwoC = dimLessqSatSiteTwoC;
+
+        %Toth isotherm
+        elseif whichIsotherm == 7
+
+            %Unpack additional params
+            satdConc    = params.nS0C ;
+            adsAffCon   = params.b0C    ;
+            totIsoExp   = params.t0C;
+            adsConT     = params.adsConT  ;
+
+            %Calculate dimensionless parameters
+            dimLessSatdConc     = satdConc./adsConT ;
+            dimLessAdsAffCon    = adsAffCon./adsConT;
+            dimLessTotIsoExp    = totIsoExp./adsConT;
             
+            %Save the results
+            params.dimLessSatdConc  = dimLessSatdConc   ;
+            params.dimLessAdsAffCon = dimLessAdsAffCon  ;
+            params.dimLessTotIsoExp = dimLessTotIsoExp  ;
+
         end
         %-----------------------------------------------------------------% 
         
@@ -207,7 +226,7 @@ function params = getAdsEquilParams(params,varargin)
         %Unpack additional params
         qSatC    = params.qSatC   ;
         bC       = params.bC      ;
-        gasCons  = parama.gasCons ;
+        gasCons  = params.gasCons ;
         tempAmbi = params.tempAmbi;
         gasConT  = params.gasConT ;
         
@@ -309,6 +328,40 @@ function params = getAdsEquilParams(params,varargin)
         params.dimLessnSiteOneC    = nSiteOneC          ;
         params.dimLessnSiteTwoC    = nSiteTwoC          ;            
         
+    %Toth isotherm
+    elseif whichIsotherm == 7
+        
+        %Unpack additional params
+        satdConc0C      = params.nS0C      ;
+        ChiC            = params.ChiC            ;
+        adsAffCon0C     = params.b0C     ;
+        totIsoExp0C     = params.t0C     ;
+        totIsoExpAlphaC = params.alphaC ;
+        tempRefIso      = params.tempRefIso      ;
+        gasConT         = params.gasConT         ;
+        tempAmbi        = params.tempAmbi        ;
+        gasCons         = params.gasCons         ;
+        
+        %Set the temporary constant
+        aConScaleFac = 1;
+        
+        %Calculate dimensionless parameters (temporary)
+        dimLessSatdConc0C    = satdConc0C/aConScaleFac   ;
+        dimLessChiC          = ChiC                      ;
+        dimLessAdsAffCon0C   = adsAffCon0C               ;
+        scaleFacKThr         = gasCons*tempAmbi*gasConT  ;
+        dimLessTotIsoExp0C   = totIsoExp0C               ;
+        dimLessTotIsoExpAlphaC  = totIsoExpAlphaC        ;
+        dimLessTempRefIso    = tempRefIso/tempAmbi       ;
+                
+        %Save the result
+        params.dimLessSatdConc0         = dimLessSatdConc0C      ; %Temporary
+        params.dimLessChi               = dimLessChiC            ; %Final
+        params.dimLessAdsAffCon0        = dimLessAdsAffCon0C     ; %Temporary
+        params.scaleFacKThr             = scaleFacKThr          ; %Final
+        params.dimLessTotIsoExp0        = dimLessTotIsoExp0C     ; %Temporary
+        params.dimLessTotIsoExpAlpha    = dimLessTotIsoExpAlphaC ; %Final
+        params.dimLessTempRefIso        = dimLessTempRefIso     ; %Final        
     end
     %---------------------------------------------------------------------%
     
