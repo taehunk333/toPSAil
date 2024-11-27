@@ -23,7 +23,7 @@
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : calcIsothermExtLang.m
+%Function   : calcIsothermToth.m
 %Source     : common
 %Description: takes in a state solution (either matrix or vector) and 
 %             returns the corresponding adsorbed phase concentration in 
@@ -46,7 +46,8 @@
 %                            gas phase concentrations.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function newStates = calcIsothermExtLangFreu(params,states,nAds)
+function newStates = calcIsothermToth(params,states,nAds)
+% calcIsothermExtLangFreu(params,states,nAds)
   
     %---------------------------------------------------------------------%
     %Define known quantities
@@ -61,13 +62,16 @@ function newStates = calcIsothermExtLangFreu(params,states,nAds)
     sComNums     = params.sComNums    ; 
     nVols        = params.nVols       ;
     nRows        = params.nRows       ;    
-    dimLessKOneC = params.dimLessKOneC;
-    dimLessKTwoC = params.dimLessKTwoC; 
-    dimLessKThrC = params.dimLessKThrC; 
-    scaleFacKThr = params.scaleFacKThr;
-    dimLessKFouC = params.dimLessKFouC; 
-    dimLessKFivC = params.dimLessKFivC; 
-    dimLessKSixC = params.dimLessKSixC; 
+    dimLessSatdConc0    = params.dimLessSatdConc0       ;
+    dimLessChi          = params.dimLessChi             ; 
+    dimLessAdsAffCon0   = params.dimLessAdsAffCon0      ; 
+    scaleFacKThr        = params.scaleFacKThr           ;
+    dimLessTotIsoExp0   = params.dimLessTotIsoExp0      ; 
+    dimLessTotIsoExpAlpha = params.dimLessTotIsoExpAlpha;
+    dimLessTempRefIso   = params.dimLessTempRefIso      ;
+    % dimLessIsoStHtRef   = params.dimLessIsoStHtRef      ;
+    dimLessIsoStHtRef = [0;0;24.2039;19.7665];
+    
     %---------------------------------------------------------------------%
     
     
@@ -99,7 +103,14 @@ function newStates = calcIsothermExtLangFreu(params,states,nAds)
     if nAds == 0
     
         %Grab dimensionless gas phases concentrations as fields in a struct
-        colGasCons = convert2ColGasConc(params,states); 
+        colGasCons = convert2ColGasConc(params,states);
+
+        % isPositiveC1 = colGasCons.C1 >= 0;
+        % isPositiveC2 = colGasCons.C2 >= 0;
+        % if isempty(find(isPositiveC1==0,1)) == 0 || isempty(find(isPositiveC2==0,1)) == 0
+        %     msg = "Negative gas phase concentration found";
+        %     warning(msg)
+        % end
         
         %Grab dimensionless temperatures as fidlds in a struct
         colTemps = convert2ColTemps(params,states);
@@ -113,6 +124,13 @@ function newStates = calcIsothermExtLangFreu(params,states,nAds)
         %Grab dimensionless gas phases concentrations as fields in a struct
         colGasCons = convert2ColGasConc(params,states,nAds);  
         
+        % isPositiveC1 = colGasCons.C1 >= 0;
+        % isPositiveC2 = colGasCons.C2 >= 0;
+        % if isempty(find(isPositiveC1==0,1)) == 0 || isempty(find(isPositiveC2==0,1)) == 0
+        %     msg = "Negative gas phase concentration found";
+        %     warning(msg)
+        % end
+
         %Grab dimensionless temperatures as fidlds in a struct
         colTemps = convert2ColTemps(params,states,nAds);
 
@@ -137,7 +155,7 @@ function newStates = calcIsothermExtLangFreu(params,states,nAds)
     
     %Initialize a numerical array for the temperature dependent adsorption
     %site number constant
-    dimLessAdsSiteNo = zeros(nRows,nVols*nComs);
+    dimLessTotIsoExp = zeros(nRows,nVols*nComs);
     %---------------------------------------------------------------------%
     
 
@@ -176,8 +194,8 @@ function newStates = calcIsothermExtLangFreu(params,states,nAds)
         %Compute the dimensionless saturation constants for the ith species
         %and save it inside the solution matrix
         dimLessSatdConc(:,n0:nf) ...
-            = dimLessKOneC(i) ...
-            + dimLessKTwoC(i)*tempCstrs;    
+            = dimLessSatdConc0(i) ...
+            + exp(dimLessChi(i)*(dimLessTempRefIso./tempCstrs - 1));
         %-----------------------------------------------------------------%
         
                                         
@@ -186,10 +204,11 @@ function newStates = calcIsothermExtLangFreu(params,states,nAds)
         %Obtain the temperature dependent dimensionless adsorption site
         %number constant for the ith species
         
-        %Compute the dimensionless adsorption site number constant for the 
+        %Compute the dimensionless Toth isotherm exponent for the 
         %ith species
-        dimLessAdsSiteNo(:,n0:nf) ...
-            = (dimLessKFivC(i)+dimLessKSixC(i)./tempCstrs).^(-1);
+        dimLessTotIsoExp(:,n0:nf) ...
+            = (dimLessTotIsoExp0(i)...
+            + dimLessTotIsoExpAlpha(i).*(1 - dimLessTempRefIso./tempCstrs));
         %-----------------------------------------------------------------%
         
         
@@ -201,9 +220,10 @@ function newStates = calcIsothermExtLangFreu(params,states,nAds)
         %Compute the dimensionless adsorption affinity constant for the ith
         %species
         dimLessAdsAffCon(:,n0:nf) ...
-            = dimLessKThrC(i) ...
-           .* scaleFacKThr.^(dimLessAdsSiteNo(:,n0:nf)) ...
-           .* exp(dimLessKFouC(i)./tempCstrs);
+            = dimLessAdsAffCon0(i) ...
+           .* exp(dimLessIsoStHtRef(i) - (dimLessTempRefIso./tempCstrs - 1));
+           % .* scaleFacKThr.^(dimLessTotIsoExp(:,n0:nf)) ...
+           % .* exp(dimLessKFouC(i)./tempCstrs);
         %-----------------------------------------------------------------%
     
     end
@@ -246,7 +266,7 @@ function newStates = calcIsothermExtLangFreu(params,states,nAds)
         
         %Obtain the dimensionless adsorption site number constant for the
         %ith species
-        dimLessAdsSiteNoSpec = dimLessAdsSiteNo(:,n0:nf);        
+        dimLessTotIsoExpSpec = dimLessTotIsoExp(:,n0:nf);        
         %-----------------------------------------------------------------%
                 
         
@@ -256,12 +276,15 @@ function newStates = calcIsothermExtLangFreu(params,states,nAds)
         %isotherm model
 
         %Update the denominator vector
-        denominator = denominator ...
-                    + dimLessAdsAffConSpec ...
-                   .* (colGasConsSpec.*tempCstrs) ...
-                   .^ (dimLessAdsSiteNoSpec);
+        denominator = (denominator ...
+                    + sign(dimLessAdsAffConSpec.* colGasConsSpec.*tempCstrs) ...
+                   .* (abs(dimLessAdsAffConSpec.* colGasConsSpec.*tempCstrs))...
+                   .^ dimLessTotIsoExpSpec)...
+                   .^ 1./dimLessTotIsoExpSpec;
         %-----------------------------------------------------------------%
-
+        % if isreal(denominator) == 0
+            % message("Complex number");
+        % end
     end
 
     %Evaluate the explicit isotherm (i.e., Extened Langmuir-Freundlich
@@ -296,7 +319,7 @@ function newStates = calcIsothermExtLangFreu(params,states,nAds)
         
         %Obtain the dimensionless adsorption site number constant for the
         %ith species
-        dimLessAdsSiteNoSpec = dimLessAdsSiteNo(:,n0:nf);        
+        % dimLessTotIsoExpSpec = dimLessTotIsoExp(:,n0:nf);        
         %-----------------------------------------------------------------%
 
         
@@ -308,7 +331,7 @@ function newStates = calcIsothermExtLangFreu(params,states,nAds)
         loading = dimLessSatdConcSpec ...
                .* dimLessAdsAffConSpec ...
                .* (colGasConsSpec.*tempCstrs) ...
-               .^ (dimLessAdsSiteNoSpec);        
+               ; % .^ (dimLessTotIsoExpSpec);    
         %-----------------------------------------------------------------%
         
         
@@ -330,7 +353,7 @@ function newStates = calcIsothermExtLangFreu(params,states,nAds)
             = loading ...
            ./ denominator;
         %-----------------------------------------------------------------%
-        
+
     end          
     %---------------------------------------------------------------------%
     

@@ -45,6 +45,7 @@ function params = getFeHtCapRatio(params)
     htCapCpC = params.htCapCpC;
     htCapCvC = params.htCapCvC;
     gasCons  = params.gasCons ;
+    nFeTas   = params.nFeTas  ;
     %---------------------------------------------------------------------% 
     
     

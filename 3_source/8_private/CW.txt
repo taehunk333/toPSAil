@@ -1,0 +1,9 @@
+{'getSimParams' is not found in the current folder or on the MATLAB path, but exists in:
+    C:\Users\vkalman\Documents\MATLAB\toPSAil_mod\toPSAil_TU\3_source\1_parameters
+
+<a href = "matlab:internal.matlab.desktop.commandwindow.executeCommandForUser('cd ''C:\Users\vkalman\Documents\MATLAB\toPSAil_mod\toPSAil_TU\3_source\1_parameters''')">Change the MATLAB current folder</a> or <a href = "matlab:internal.matlab.desktop.commandwindow.executeCommandForUser('addpath ''C:\Users\vkalman\Documents\MATLAB\toPSAil_mod\toPSAil_TU\3_source\1_parameters''')">add its folder to the MATLAB path</a>.
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('runPsaProcessSimulation', 'C:\Users\vkalman\Documents\MATLAB\toPSAil\2_run\runPsaProcessSimulation.m', 139)" style="font-weight:bold">runPsaProcessSimulation</a> (<a href="matlab: opentoline('C:\Users\vkalman\Documents\MATLAB\toPSAil\2_run\runPsaProcessSimulation.m',139,0)">line 139</a>)
+    [params,fullParams] = getSimParams(exampleFolder);  } 
+internal.matlab.desktop.commandwindow.executeCommandForUser('cd ''C:\Users\vkalman\Documents\MATLAB\toPSAil_mod\toPSAil_TU\3_source\1_parameters''')
+cd 'C:\Users\vkalman\Documents\MATLAB\toPSAil_mod\toPSAil_TU\3_source\1_parameters'
+runPsaProcessSimulation("case_study_1.0.e",[])

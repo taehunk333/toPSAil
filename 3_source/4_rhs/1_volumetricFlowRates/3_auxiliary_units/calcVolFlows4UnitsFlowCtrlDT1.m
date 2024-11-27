@@ -62,7 +62,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
     tempFeedNorm     = params.tempFeedNorm    ;
     htCapCpNorm      = params.htCapCpNorm     ;
     pRatFe           = params.pRatFe          ;
-    yFeC             = params.yFeC            ;
+    yFeC             = [params.yFeC,params.yFeTwoC]            ;
     gasConsNormFeTa  = params.gasConsNormFeTa ;
     gasConsNormRaTa  = params.gasConsNormRaTa ;
     gasConsNormExTa  = params.gasConsNormExTa ; 
@@ -71,6 +71,8 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
     valAdsFeEnd2ExTa = params.valAdsFeEnd2ExTa;
     valAdsPrEnd2RaTa = params.valAdsPrEnd2RaTa;
     bool             = params.bool            ;
+    nFeTas           = params.nFeTas          ;
+    sFeTaNums        = params.sFeTaNums       ;
     
     %Unpack units
     col  = units.col ;
@@ -110,19 +112,21 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
     
     %---------------------------------------------------------------------%
     %Calculate the remaining boundary conditions for the feed tank unit
+
+    for i = 1 : nFeTas
     
         %-----------------------------------------------------------------%
         %Unpack feed tank states variables
         
         %Unpack feTa tank overall heat capacity
-        feTaHtCO = feTa.n1.htCO;
+        feTaHtCO = feTa.(sFeTaNums{i}).htCO;
     
         %Unpack the temperature variables for the feed tank
-        feTaTempCstr = feTa.n1.temps.cstr;
-        feTaTempWall = feTa.n1.temps.wall;
+        feTaTempCstr = feTa.(sFeTaNums{i}).temps.cstr;
+        feTaTempWall = feTa.(sFeTaNums{i}).temps.wall;
     
         %Unpack the feed tank total concentration
-        feTaConTot = feTa.n1.gasConsTot;        
+        feTaConTot = feTa.(sFeTaNums{i}).gasConsTot;        
         %-----------------------------------------------------------------%
 
 
@@ -149,7 +153,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
                  * (feTaTempWall./feTaTempCstr-1);
     
         %Calculate the molar energy term (vectorized)
-        molarEnergyCurr = feedConTot*sum(htCapCpNorm.*yFeC);
+        molarEnergyCurr = feedConTot*sum(htCapCpNorm.*yFeC(:,i));
         
         %Calculate the time dependent coefficient for the feed stream
         phiPlusFeed = (1+phiCommon).*(feedConTot./feTaConTot) ...
@@ -168,6 +172,11 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
         vFlFeTa(:,nCols+1) = max(0,-(1./phiPlusFeed) ...
                           .*(vFlFeedSum+feTaBeta));
         %-----------------------------------------------------------------%
+
+        %Save the volumetric flow rates to a struct
+        units.feTa.(sFeTaNums{i}).volFlRat = vFlFeTa;
+    
+    end
 
     %---------------------------------------------------------------------%       
     
@@ -404,7 +413,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
     units.exWa.n1.volFlRat = vFlExWa;
     
     %Save the volumetric flow rates to a struct
-    units.feTa.n1.volFlRat = vFlFeTa;         
+    % units.feTa.n1.volFlRat = vFlFeTa;         
     %---------------------------------------------------------------------%
 
 end
