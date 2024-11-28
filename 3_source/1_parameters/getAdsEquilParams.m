@@ -19,8 +19,8 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/1/24/Monday
-%Code last modified on : 2023/2/24/Friday
-%Code last modified by : Taehun Kim
+%Code last modified on : 2024/11/27/Wednesday
+%Code last modified by : Viktor Kalman
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : getAdsEquilParams.m
@@ -157,12 +157,12 @@ function params = getAdsEquilParams(params,varargin)
         elseif whichIsotherm == 7
 
             %Unpack additional params
-            satdConc    = params.nS0C ;
+            satdConc    = params.nS0C   ;
             adsAffCon   = params.b0C    ;
-            totIsoExp   = params.t0C;
-            adsConT     = params.adsConT  ;
+            totIsoExp   = params.t0C    ;
+            adsConT     = params.adsConT;
 
-            %Calculate dimensionless parameters
+            %Calculate dimensionless parameters (final)
             dimLessSatdConc     = satdConc./adsConT ;
             dimLessAdsAffCon    = adsAffCon./adsConT;
             dimLessTotIsoExp    = totIsoExp./adsConT;
@@ -332,36 +332,30 @@ function params = getAdsEquilParams(params,varargin)
     elseif whichIsotherm == 7
         
         %Unpack additional params
-        satdConc0C      = params.nS0C      ;
-        ChiC            = params.ChiC            ;
-        adsAffCon0C     = params.b0C     ;
-        totIsoExp0C     = params.t0C     ;
-        totIsoExpAlphaC = params.alphaC ;
-        tempRefIso      = params.tempRefIso      ;
-        gasConT         = params.gasConT         ;
-        tempAmbi        = params.tempAmbi        ;
-        gasCons         = params.gasCons         ;
+        satdConc    = params.nS0C   ;
+        adsAffCon   = params.b0C    ;
+        totIsoExp   = params.t0C    ;
+        totChi      = params.ChiC   ;
+        totAlpha    = params.alphaC ;
+
         
         %Set the temporary constant
         aConScaleFac = 1;
         
         %Calculate dimensionless parameters (temporary)
-        dimLessSatdConc0C    = satdConc0C/aConScaleFac   ;
-        dimLessChiC          = ChiC                      ;
-        dimLessAdsAffCon0C   = adsAffCon0C               ;
-        scaleFacKThr         = gasCons*tempAmbi*gasConT  ;
-        dimLessTotIsoExp0C   = totIsoExp0C               ;
-        dimLessTotIsoExpAlphaC  = totIsoExpAlphaC        ;
-        dimLessTempRefIso    = tempRefIso/tempAmbi       ;
+        dimLessSatdConc  = satdConc/aConScaleFac  ;
+        dimLessAdsAffCon = adsAffCon/aConScaleFac ;
+        dimLessTotIsoExp = totIsoExp/aConScaleFac ;
+        dimLessChi       = totChi                 ;
+        dimLessAlpha     = totAlpha               ;
                 
         %Save the result
-        params.dimLessSatdConc0         = dimLessSatdConc0C      ; %Temporary
-        params.dimLessChi               = dimLessChiC            ; %Final
-        params.dimLessAdsAffCon0        = dimLessAdsAffCon0C     ; %Temporary
-        params.scaleFacKThr             = scaleFacKThr          ; %Final
-        params.dimLessTotIsoExp0        = dimLessTotIsoExp0C     ; %Temporary
-        params.dimLessTotIsoExpAlpha    = dimLessTotIsoExpAlphaC ; %Final
-        params.dimLessTempRefIso        = dimLessTempRefIso     ; %Final        
+        params.dimLessSatdConc  = dimLessSatdConc  ;
+        params.dimLessAdsAffCon = dimLessAdsAffCon ;
+        params.dimLessTotIsoExp = dimLessTotIsoExp ;
+        params.dimLessChi       = dimLessChi       ;
+        params.dimLessAlpha     = dimLessAlpha     ;
+        
     end
     %---------------------------------------------------------------------%
     

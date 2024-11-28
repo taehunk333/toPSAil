@@ -53,7 +53,7 @@ function newStates = calcIsothermToth(params,states,nAds)
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'calcIsothermExtLangFreu.m';
+    %funcId = 'calcIsothermToth.m';
     
     %Unpack params
     nStates      = params.nStates     ;
@@ -104,13 +104,6 @@ function newStates = calcIsothermToth(params,states,nAds)
     
         %Grab dimensionless gas phases concentrations as fields in a struct
         colGasCons = convert2ColGasConc(params,states);
-
-        % isPositiveC1 = colGasCons.C1 >= 0;
-        % isPositiveC2 = colGasCons.C2 >= 0;
-        % if isempty(find(isPositiveC1==0,1)) == 0 || isempty(find(isPositiveC2==0,1)) == 0
-        %     msg = "Negative gas phase concentration found";
-        %     warning(msg)
-        % end
         
         %Grab dimensionless temperatures as fidlds in a struct
         colTemps = convert2ColTemps(params,states);
@@ -124,14 +117,8 @@ function newStates = calcIsothermToth(params,states,nAds)
         %Grab dimensionless gas phases concentrations as fields in a struct
         colGasCons = convert2ColGasConc(params,states,nAds);  
         
-        % isPositiveC1 = colGasCons.C1 >= 0;
-        % isPositiveC2 = colGasCons.C2 >= 0;
-        % if isempty(find(isPositiveC1==0,1)) == 0 || isempty(find(isPositiveC2==0,1)) == 0
-        %     msg = "Negative gas phase concentration found";
-        %     warning(msg)
-        % end
 
-        %Grab dimensionless temperatures as fidlds in a struct
+        %Grab dimensionless temperatures as fields in a struct
         colTemps = convert2ColTemps(params,states,nAds);
 
     end
