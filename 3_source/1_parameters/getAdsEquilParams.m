@@ -347,14 +347,14 @@ function params = getAdsEquilParams(params,varargin)
         dimLessAdsAffCon = adsAffCon/aConScaleFac ;
         dimLessTotIsoExp = totIsoExp/aConScaleFac ;
         dimLessChi       = totChi                 ;
-        dimLessAlpha     = totAlpha               ;
+        dimLessTotAlpha  = totAlpha               ;
                 
         %Save the result
         params.dimLessSatdConc  = dimLessSatdConc  ;
         params.dimLessAdsAffCon = dimLessAdsAffCon ;
         params.dimLessTotIsoExp = dimLessTotIsoExp ;
         params.dimLessChi       = dimLessChi       ;
-        params.dimLessAlpha     = dimLessAlpha     ;
+        params.dimLessTotAlpha  = dimLessTotAlpha  ;
         
     end
     %---------------------------------------------------------------------%

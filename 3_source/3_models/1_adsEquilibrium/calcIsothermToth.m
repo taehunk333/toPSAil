@@ -62,15 +62,14 @@ function newStates = calcIsothermToth(params,states,nAds)
     sComNums     = params.sComNums    ; 
     nVols        = params.nVols       ;
     nRows        = params.nRows       ;    
-    dimLessSatdConc0    = params.dimLessSatdConc0       ;
-    dimLessChi          = params.dimLessChi             ; 
-    dimLessAdsAffCon0   = params.dimLessAdsAffCon0      ; 
-    scaleFacKThr        = params.scaleFacKThr           ;
-    dimLessTotIsoExp0   = params.dimLessTotIsoExp0      ; 
-    dimLessTotIsoExpAlpha = params.dimLessTotIsoExpAlpha;
-    dimLessTempRefIso   = params.dimLessTempRefIso      ;
-    % dimLessIsoStHtRef   = params.dimLessIsoStHtRef      ;
-    dimLessIsoStHtRef = [0;0;24.2039;19.7665];
+    dimLessSatdConc0    = params.dimLessSatdConc    ;
+    dimLessAdsAffCon0   = params.dimLessAdsAffCon   ; 
+    dimLessTotIsoExp0   = params.dimLessTotIsoExp   ; 
+    dimLessChi          = params.dimLessChi         ; 
+    dimLessTotAlpha     = params.dimLessTotAlpha    ;
+    % dimLessTempRefIso   = params.dimLessTempRefIso  ;
+    tempRefNorm         = params.tempRefNorm        ;
+    % scaleFacKThr        = params.scaleFacKThr       ;
     
     %---------------------------------------------------------------------%
     
@@ -182,7 +181,7 @@ function newStates = calcIsothermToth(params,states,nAds)
         %and save it inside the solution matrix
         dimLessSatdConc(:,n0:nf) ...
             = dimLessSatdConc0(i) ...
-            + exp(dimLessChi(i)*(dimLessTempRefIso./tempCstrs - 1));
+            + exp(dimLessChi(i)*(tempRefNorm./tempCstrs - 1));
         %-----------------------------------------------------------------%
         
                                         
@@ -195,7 +194,7 @@ function newStates = calcIsothermToth(params,states,nAds)
         %ith species
         dimLessTotIsoExp(:,n0:nf) ...
             = (dimLessTotIsoExp0(i)...
-            + dimLessTotIsoExpAlpha(i).*(1 - dimLessTempRefIso./tempCstrs));
+            + dimLessTotAlpha(i).*(1 - tempRefNorm./tempCstrs));
         %-----------------------------------------------------------------%
         
         
@@ -203,14 +202,16 @@ function newStates = calcIsothermToth(params,states,nAds)
         %-----------------------------------------------------------------%
         %Obtain the temperature dependent dimensionless adsorption affinity
         %constant for the ith species
+        if params.bool(5) == 0
+            dimLessAdsAffCon(:,n0:nf) = dimLessAdsAffCon0(i);
         
         %Compute the dimensionless adsorption affinity constant for the ith
         %species
-        dimLessAdsAffCon(:,n0:nf) ...
-            = dimLessAdsAffCon0(i) ...
-           .* exp(dimLessIsoStHtRef(i) - (dimLessTempRefIso./tempCstrs - 1));
-           % .* scaleFacKThr.^(dimLessTotIsoExp(:,n0:nf)) ...
-           % .* exp(dimLessKFouC(i)./tempCstrs);
+        elseif params.bool(5) == 1
+            dimLessAdsAffCon(:,n0:nf) ...
+                = dimLessAdsAffCon0(i) ...
+                .* exp(dimLessIsoStHtRef(i) - (tempRefNorm./tempCstrs - 1));
+        end
         %-----------------------------------------------------------------%
     
     end
