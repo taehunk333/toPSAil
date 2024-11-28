@@ -45,7 +45,7 @@ function units = getFeTaCuMolBal(params,units)
     %Unpack params    
     nComs         = params.nComs        ;      
     pRatFe        = params.pRatFe       ;
-    yFeC          = [params.yFeC,params.yFeTwoC]         ;
+    yFeC          = [params.yFeC];%,params.yFeTwoC]         ;
     sComs         = params.sComNums     ;
     gasConsNormEq = params.gasConsNormEq;
     tempFeedNorm  = params.tempFeedNorm ;

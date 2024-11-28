@@ -19,7 +19,7 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/11/6/Sunday
-%Code last modified on : 2024/11/27/Wednesday
+%Code last modified on : 2024/11/28/Thursday
 %Code last modified by : Viktor Kalman
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -67,9 +67,7 @@ function newStates = calcIsothermToth(params,states,nAds)
     dimLessTotIsoExp0   = params.dimLessTotIsoExp   ; 
     dimLessChi          = params.dimLessChi         ; 
     dimLessTotAlpha     = params.dimLessTotAlpha    ;
-    % dimLessTempRefIso   = params.dimLessTempRefIso  ;
     tempRefNorm         = params.tempRefNorm        ;
-    % scaleFacKThr        = params.scaleFacKThr       ;
     
     %---------------------------------------------------------------------%
     
@@ -201,16 +199,18 @@ function newStates = calcIsothermToth(params,states,nAds)
         
         %-----------------------------------------------------------------%
         %Obtain the temperature dependent dimensionless adsorption affinity
-        %constant for the ith species
+        %constant for the ith species in ISOTHERMAL case
         if params.bool(5) == 0
             dimLessAdsAffCon(:,n0:nf) = dimLessAdsAffCon0(i);
         
         %Compute the dimensionless adsorption affinity constant for the ith
-        %species
+        %species for NONISOTHERMAL case
         elseif params.bool(5) == 1
+            dimLessIsoStHtRef = params.dimLessIsoStHtRef;
+
             dimLessAdsAffCon(:,n0:nf) ...
                 = dimLessAdsAffCon0(i) ...
-                .* exp(dimLessIsoStHtRef(i) - (tempRefNorm./tempCstrs - 1));
+                .* exp(-dimLessIsoStHtRef(i) - (tempRefNorm./tempCstrs - 1));
         end
         %-----------------------------------------------------------------%
     
@@ -222,12 +222,12 @@ function newStates = calcIsothermToth(params,states,nAds)
     %---------------------------------------------------------------------%
     %Calculate adsorption equilibrium (Explicit)
 
-    %Initialize the denominator
-    denominator = ones(nRows,nVols);
-
     %Update the species dependent term in the denominator of the
     %Extended Langmuir expression
     for i = 1 : nComs
+        
+        %Initialize the denominator
+        denominator = ones(nRows,nVols);
         
         %-----------------------------------------------------------------%
         %Obtain the indices
@@ -246,22 +246,23 @@ function newStates = calcIsothermToth(params,states,nAds)
         %species
         
         %Obtain the current gas phase species concentration
-        colGasConsSpec = colGasCons.(sComNums{i});                    
+        colGasConsSpec = colGasCons.(sComNums{i});
+
+        %Obtain the dimensionless saturation constant for the ith species
+        dimLessSatdConcSpec = dimLessSatdConc(:,n0:nf);
         
         %Obtain the dimensionless adsorption affinity constant for the ith
         %species
         dimLessAdsAffConSpec = dimLessAdsAffCon(:,n0:nf);
         
-        %Obtain the dimensionless adsorption site number constant for the
-        %ith species
+        %Obtain the dimensionless Toth isotherm exponent for the ith species
         dimLessTotIsoExpSpec = dimLessTotIsoExp(:,n0:nf);        
         %-----------------------------------------------------------------%
                 
         
         
         %-----------------------------------------------------------------%
-        %Compute the denominator term for the extended Langmuir-Freundlich
-        %isotherm model
+        %Compute the denominator term for the Toth isotherm model
 
         %Update the denominator vector
         denominator = (denominator ...
@@ -270,46 +271,7 @@ function newStates = calcIsothermToth(params,states,nAds)
                    .^ dimLessTotIsoExpSpec)...
                    .^ 1./dimLessTotIsoExpSpec;
         %-----------------------------------------------------------------%
-        % if isreal(denominator) == 0
-            % message("Complex number");
-        % end
-    end
-
-    %Evaluate the explicit isotherm (i.e., Extened Langmuir-Freundlich
-    %isotherm) and update the corresponding value to the output solution
-    for i = 1 : nComs
         
-        %-----------------------------------------------------------------%
-        %Obtain the indices
-        
-        %Obtain the beginning index
-        n0 = nVols*(i-1)+1;
-        
-        %Obtain the ending index
-        nf = nVols*i;
-        %-----------------------------------------------------------------%
-        
-        
-        
-        %-----------------------------------------------------------------%
-        %Unpack the adsorber states and the isotherm parameters for the ith
-        %species
-        
-        %Obtain the current gas phase species concentration
-        colGasConsSpec = colGasCons.(sComNums{i});     
-        
-        %Obtain the dimensionless saturation constant for the ith species
-        dimLessSatdConcSpec = dimLessSatdConc(:,n0:nf);
-        
-        %Obtain the dimensionless adsorption affinity constant for the ith
-        %species
-        dimLessAdsAffConSpec = dimLessAdsAffCon(:,n0:nf);
-        
-        %Obtain the dimensionless adsorption site number constant for the
-        %ith species
-        % dimLessTotIsoExpSpec = dimLessTotIsoExp(:,n0:nf);        
-        %-----------------------------------------------------------------%
-
         
         
         %-----------------------------------------------------------------%
@@ -318,8 +280,7 @@ function newStates = calcIsothermToth(params,states,nAds)
         %Calculate the adsoption equilibrium loading for the ith species
         loading = dimLessSatdConcSpec ...
                .* dimLessAdsAffConSpec ...
-               .* (colGasConsSpec.*tempCstrs) ...
-               ; % .^ (dimLessTotIsoExpSpec);    
+               .* (colGasConsSpec.*tempCstrs);
         %-----------------------------------------------------------------%
         
         

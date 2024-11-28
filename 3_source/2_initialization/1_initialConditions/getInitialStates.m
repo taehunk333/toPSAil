@@ -46,7 +46,7 @@ function iCond = getInitialStates(params)
     %Unpack Params
     funcIso     = params.funcIso    ;    
     yFeC        = params.yFeC       ;
-    yFeTwoC     = params.yFeTwoC    ;
+    % yFeTwoC     = params.yFeTwoC    ;
     yRaC        = params.yRaC       ;
     yExC        = params.yExC       ;
     nComs       = params.nComs      ;

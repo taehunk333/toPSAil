@@ -46,7 +46,7 @@ function units = getFeTaMoleBal(params,units,nS)
     %Unpack params    
     nComs         = params.nComs        ;
     nCols         = params.nCols        ;
-    yFeC          = [params.yFeC,params.yFeTwoC]        ;
+    yFeC          = [params.yFeC];%,params.yFeTwoC]        ;
     feTaVolNorm   = params.feTaVolNorm  ;
     pRatFe        = params.pRatFe       ;   
     sComNums      = params.sComNums     ;    
