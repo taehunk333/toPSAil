@@ -19,8 +19,8 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/4/10/Monday
-%Code last modified on : 2022/12/1/Monday
-%Code last modified by : Taehun Kim
+%Code last modified on : 2024/11/28/Thursday
+%Code last modified by : Viktor Kalman
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : getFeTaMoleBal.m
@@ -46,7 +46,7 @@ function units = getFeTaMoleBal(params,units,nS)
     %Unpack params    
     nComs         = params.nComs        ;
     nCols         = params.nCols        ;
-    yFeC          = [params.yFeC];%,params.yFeTwoC]        ;
+    yFeC          = params.yFeC         ;
     feTaVolNorm   = params.feTaVolNorm  ;
     pRatFe        = params.pRatFe       ;   
     sComNums      = params.sComNums     ;    
@@ -55,6 +55,10 @@ function units = getFeTaMoleBal(params,units,nS)
     valFeEndEq    = params.valFeEndEq   ;
     nFeTas        = params.nFeTas       ;
     sFeTaNums     = params.sFeTaNums    ;
+    bool          = params.bool         ;
+    if bool(13) == 1
+        yFeC = [params.yFeC,params.yFeTwoC];
+    end
     
     %Unpack units
     feTa = units.feTa;
@@ -67,88 +71,88 @@ function units = getFeTaMoleBal(params,units,nS)
     %feed tank
     for i = 1 : nFeTas
     
-    %Initialize the total mole balance term
-    moleBalTot = 0;
-      
-    %For each species,
-    for j = 1 : nComs
-        
-        %-----------------------------------------------------------------%    
-        %Initialize solution arrays
-        
-        %Initialize the convective flow after the feed valve (i.e., valve 
-        %2) 
-        convOutToAds = 0;        
-        %-----------------------------------------------------------------%   
-
-
-        
-        %-----------------------------------------------------------------%    
-        %Account for all flows into/out of feed tank from all columns                        
-
-        %For each columns,
-        for k = 1 : nCols
-
-            %-------------------------------------------------------------%    
-            %Calculate the molar flow rates from the feed tank, heading to
-            %the adsorbers.
-
-            %Molar flow coming out from the feed tank, heading to the kth
-            %adsorber.
-            convOutToAds = convOutToAds ...
-                        .* valFeEndEq(k,nS) ...
-                             + feTa.(sFeTaNums{i}).volFlRat(:,k) ...
-                            .* feTa.(sFeTaNums{i}).gasCons.(sComNums{j});                                    
-            %-------------------------------------------------------------%    
-
+        %Initialize the total mole balance term
+        moleBalTot = 0;
+          
+        %For each species,
+        for j = 1 : nComs
+            
+            %-----------------------------------------------------------------%    
+            %Initialize solution arrays
+            
+            %Initialize the convective flow after the feed valve (i.e., valve 
+            %2) 
+            convOutToAds = 0;        
+            %-----------------------------------------------------------------%   
+    
+    
+            
+            %-----------------------------------------------------------------%    
+            %Account for all flows into/out of feed tank from all columns                        
+    
+            %For each columns,
+            for k = 1 : nCols
+    
+                %-------------------------------------------------------------%    
+                %Calculate the molar flow rates from the feed tank, heading to
+                %the adsorbers.
+    
+                %Molar flow coming out from the feed tank, heading to the kth
+                %adsorber.
+                convOutToAds = convOutToAds ...
+                            .* valFeEndEq(k,nS) ...
+                                 + feTa.(sFeTaNums{i}).volFlRat(:,k) ...
+                                .* feTa.(sFeTaNums{i}).gasCons.(sComNums{j});                                    
+                %-------------------------------------------------------------%    
+    
+            end
+    
+            %Convective flow into the ith feed tank from the feed reservoir. We
+            %have c_{feed}/c_{high} = P_{feed}/P_{high} * T_{high}/T_{Feed}.
+                convfromFeRes = feTa.(sFeTaNums{i}).volFlRat(:,end) ...
+                          * pRatFe/(gasConsNormEq*tempFeedNorm) ...
+                              * yFeC(j,i);
+            %-----------------------------------------------------------------%    
+    
+    
+    
+            %-----------------------------------------------------------------%    
+            %Perform the species mole balance
+            
+            %Evaluate the jth species mole balance
+            moleBalSpec = (1/feTaVolNorm) ...
+                       .* (convfromFeRes-convOutToAds);  
+            %-----------------------------------------------------------------%
+            
+            
+            
+            %-----------------------------------------------------------------%    
+            %Save the j results (acconting for all columns)
+    
+            %Do the mole balance on the ith tank for species j
+                feTa.(sFeTaNums{i}).moleBal.(sComNums{j}) = moleBalSpec;    
+            
+            %Do the total mole balance
+            moleBalTot = moleBalTot ...
+                       + moleBalSpec;
+            %-----------------------------------------------------------------%                
+    
         end
-
-        %Convective flow into the ith feed tank from the feed reservoir. We
-        %have c_{feed}/c_{high} = P_{feed}/P_{high} * T_{high}/T_{Feed}.
-            convfromFeRes = feTa.(sFeTaNums{i}).volFlRat(:,end) ...
-                      * pRatFe/(gasConsNormEq*tempFeedNorm) ...
-                          * yFeC(j,i);
-        %-----------------------------------------------------------------%    
-
-
-
-        %-----------------------------------------------------------------%    
-        %Perform the species mole balance
         
-        %Evaluate the jth species mole balance
-        moleBalSpec = (1/feTaVolNorm) ...
-                   .* (convfromFeRes-convOutToAds);  
-        %-----------------------------------------------------------------%
-        
-        
-        
-        %-----------------------------------------------------------------%    
-        %Save the j results (acconting for all columns)
-
-        %Do the mole balance on the ith tank for species j
-            feTa.(sFeTaNums{i}).moleBal.(sComNums{j}) = moleBalSpec;    
-        
-        %Do the total mole balance
-        moleBalTot = moleBalTot ...
-                   + moleBalSpec;
-        %-----------------------------------------------------------------%                
-
-    end
-    
-    %Save the overall mole balance for the raffinate tank
+        %Save the overall mole balance for the raffinate tank
         feTa.(sFeTaNums{i}).moleBalTot = moleBalTot;
+        %---------------------------------------------------------------------%
+        
+        
+        
+        %---------------------------------------------------------------------%                          
+        %Return the updated structure for the units
+        
+        %Pack units
+        units.feTa = feTa;
     %---------------------------------------------------------------------%
     
-    
-    
-    %---------------------------------------------------------------------%                          
-    %Return the updated structure for the units
-    
-    %Pack units
-    units.feTa = feTa;
-    %---------------------------------------------------------------------%
-    
-end
+    end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %End function

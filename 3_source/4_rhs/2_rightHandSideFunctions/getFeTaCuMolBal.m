@@ -19,8 +19,8 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/2/16/Tuesday
-%Code last modified on : 2022/8/27/Saturday
-%Code last modified by : Taehun Kim
+%Code last modified on : 2024/11/28/Thursday
+%Code last modified by : Viktor Kalman
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : getFeTaCuMolBal.m
@@ -45,12 +45,16 @@ function units = getFeTaCuMolBal(params,units)
     %Unpack params    
     nComs         = params.nComs        ;      
     pRatFe        = params.pRatFe       ;
-    yFeC          = [params.yFeC];%,params.yFeTwoC]         ;
+    yFeC          = params.yFeC         ;
     sComs         = params.sComNums     ;
     gasConsNormEq = params.gasConsNormEq;
     tempFeedNorm  = params.tempFeedNorm ;
     nFeTas        = params.nFeTas       ;
     sFeTaNums     = params.sFeTaNums    ;
+    bool          = params.bool         ;
+    if bool(13) == 1
+        yFeC = [params.yFeC,params.yFeTwoC];
+    end
     
     %Unpack units
     feTa = units.feTa;
