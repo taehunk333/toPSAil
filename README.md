@@ -12,7 +12,7 @@ Please use the code in the `main` branch of this repository. The `develop` branc
 
 ## YouTube Tutorials
 
-Please visit [https://github.com/taehunk333/toPSAil/invitations](https://www.youtube.com/@toPSAil-dev) for the latest tutorials on how to use $\textsf{toPSAil}$.
+Please visit [the Official YouTube Channel for toPSAil](https://www.youtube.com/@toPSAil-dev) for the latest tutorials on how to use $\textsf{toPSAil}$.
 
 # References
 
