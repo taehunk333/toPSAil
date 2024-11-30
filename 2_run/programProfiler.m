@@ -60,7 +60,7 @@ function programProfiler(varargin)
     %Profile the main function
     
     %Examples
-    name = strcat("case_study_5.0.b");
+    name = strcat("TVSA");
     %---------------------------------------------------------------------%
         
     
