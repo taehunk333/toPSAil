@@ -120,14 +120,13 @@ function [models,subModels] = getSubModels(params)
         models{modNo1} = @(params,states,nAds) ...
                          calcIsothermExtDuSiLangFreu(params,states,nAds);
     
-    %Toth isotherm
+    %TBD
     elseif modSp(modNo1) == 7
         
-        models{modNo1} = @(params,states,nAds) ...
-                         calcIsothermToth(params,states,nAds);
+        %models{modNo1} = 0;
         
         %Model under development
-        % noteModelNotReady(modNo1);
+        noteModelNotReady(modNo1);
     
     %TBD
     elseif modSp(modNo1) == 8

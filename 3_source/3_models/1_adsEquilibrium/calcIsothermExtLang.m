@@ -19,8 +19,8 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2020/12/14/Monday
-%Code last modified on : 2023/8/25/Friday
-%Code last modified by : Viktor Kalman
+%Code last modified on : 2023/3/6/Monday
+%Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : calcIsothermExtLang.m
@@ -196,10 +196,9 @@ function newStates = calcIsothermExtLang(params,states,nAds)
         gConScaleFac = params.gConScaleFac;
         bC           = params.bC          ; 
         dimLessQsatC = params.dimLessQsatC;
-        gasCons      = params.gasCons;
             
         %Calcualte the dimensionless bC and qSatC
-        dimLessBC    = bC.*gasCons*teScaleFac*gConScaleFac;            
+        dimLessBC    = bC*gasCons*teScaleFac*gConScaleFac;            
 
         %Initialize the denominator
         denominator = ones(nRows,nVols);

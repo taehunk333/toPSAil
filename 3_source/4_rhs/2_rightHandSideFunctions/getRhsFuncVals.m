@@ -61,8 +61,6 @@ function  rhsVals = getRhsFuncVals(params,units)
     sComs    = params.sComNums;
     inShComp = params.inShComp;
     inShVac  = params.inShVac ;
-    nFeTas   = params.nFeTas  ;
-    sFeTas   = params.sFeTaNums;
     
     %Unpack units
     col  = units.col ;
@@ -150,31 +148,27 @@ function  rhsVals = getRhsFuncVals(params,units)
     %---------------------------------------------------------------------%                            
     %Add all evaluated right hand side values associated with the feed tank
     
-    for i = 1:nFeTas
-
     %For each species
     for j = 1 : nComs
 
         %Grab the gas phase mole balances            
-            rhsVals(inShFeTa+(i-1)*nFeTaStT+j) ...
-                = feTa.(sFeTas{i}).moleBal.(sComs{j});
+        rhsVals(inShFeTa+j) ...
+            = feTa.n1.moleBal.(sComs{j});
 
         %Grab the cumulative mole balance for a species leaving the feed 
         %tank
-            rhsVals(inShFeTa+i*nFeTaStT-nComs+j) ...
-                = feTa.(sFeTas{i}).cumMolBal.feed.(sComs{j});
+        rhsVals(inShFeTa+nFeTaStT-nComs+j) ...
+            = feTa.n1.cumMolBal.feed.(sComs{j});
 
     end
  
     %For each temperatures
 
     %Grab the energy balances for the CSTRs
-        rhsVals(inShFeTa+(i-1)*nFeTaStT+nComs+1) = feTa.(sFeTas{i}).cstrEnBal;
+    rhsVals(inShFeTa+nComs+1) = feTa.n1.cstrEnBal;
 
     %Grab the energy balances for the CSTR walls
-        rhsVals(inShFeTa+(i-1)*nFeTaStT+nComs+2) = feTa.(sFeTas{i}).wallEnBal;
-
-    end
+    rhsVals(inShFeTa+nComs+2) = feTa.n1.wallEnBal;
     %---------------------------------------------------------------------% 
     
     

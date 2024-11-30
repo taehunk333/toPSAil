@@ -50,8 +50,6 @@ function feTa = makeFeedTank(params,states)
     sComNums = params.sComNums;
     nR       = params.nRows   ;
     bool     = params.bool    ;
-    sFeTas   = params.sFeTaNums ;
-    nFeTas   = params.nFeTas    ;
     %---------------------------------------------------------------------%           
     
  
@@ -61,13 +59,12 @@ function feTa = makeFeedTank(params,states)
     %associated with each feed tanks    
     
     %Save the state variables associated with the feed tank(s)
-    for i = 1 : nFeTas
 
     %Fetch the gas phase concentrations as a struct
-        feTa.(sFeTas{i}).gasCons = convert2FeTaGasConc(params,states,i);  
+    feTa.n1.gasCons = convert2FeTaGasConc(params,states,1);  
 
     %Fetch the temperatures as a struct
-        feTa.(sFeTas{i}).temps = convert2FeTaTemps(params,states,i);
+    feTa.n1.temps = convert2FeTaTemps(params,states,1);
     %---------------------------------------------------------------------%                     
    
     
@@ -76,7 +73,7 @@ function feTa = makeFeedTank(params,states)
     %Initialize soltion arrays
 
     %A numeric array for feed tank total concentrations 
-        feTa.(sFeTas{i}).gasConsTot = zeros(nR,1);
+    feTa.n1.gasConsTot = zeros(nR,1);
     %---------------------------------------------------------------------%
     
     
@@ -88,8 +85,8 @@ function feTa = makeFeedTank(params,states)
     for j = 1 : nComs
 
         %Assign the value of the total concentrations into a struct
-            feTa.(sFeTas{i}).gasConsTot = feTa.(sFeTas{i}).gasConsTot ...
-                               + feTa.(sFeTas{i}).gasCons.(sComNums{j});
+        feTa.n1.gasConsTot = feTa.n1.gasConsTot ...
+                           + feTa.n1.gasCons.(sComNums{j});
 
     end                
     %---------------------------------------------------------------------% 
@@ -119,25 +116,22 @@ function feTa = makeFeedTank(params,states)
             htCO0 ...
                 = htCO0 ...
                 + htCapCvNorm(j) ...
-                   .* feTa.(sFeTas{i}).gasCons.(sComNums{j});
+               .* feTa.n1.gasCons.(sComNums{j});
 
         end
         
         %Save the overall heat capacity to a struct 
-            feTa.(sFeTas{i}).htCO = (gConsNormFeTa*feTaVolNorm) ...
+        feTa.n1.htCO = (gConsNormFeTa*feTaVolNorm) ...
                      * htCO0;
         
     %If isothermal,
     else
         
         %Then, assign the zeros
-            feTa.(sFeTas{i}).htCO = 0;
+        feTa.n1.htCO = 0;
         
     end
     %---------------------------------------------------------------------% 
-
-    end
-    %-------------------------------------------------------------------------%
         
 end
 

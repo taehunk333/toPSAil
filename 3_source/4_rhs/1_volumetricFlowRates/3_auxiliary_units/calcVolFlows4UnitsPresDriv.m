@@ -69,9 +69,7 @@ function units = calcVolFlows4UnitsPresDriv(params,units,nS)
     feTaVolNorm     = params.feTaVolNorm    ;
     htCapCpNorm     = params.htCapCpNorm    ;
     pRatFe          = params.pRatFe         ;
-    yFeC            = [params.yFeC,params.yFeTwoC]           ;
-    sFeTaNums       = params.sFeTaNums      ;
-    nFeTas          = params.nFeTas         ;
+    yFeC            = params.yFeC           ;
     
     %Unpack units
     raTa = units.raTa;
@@ -110,85 +108,78 @@ function units = calcVolFlows4UnitsPresDriv(params,units,nS)
     
     %---------------------------------------------------------------------%
     %Calculate the remaining boundary conditions for the feed tank unit
-
-    for i = 1 : nFeTas
         
     %When the feed tank is isothermal, 
-        if bool(5) == 0
-    
-            %The entering valve to the feed tank is always controlled to 
-            %maintain a constant pressure inside the feed tank. Therefore, we 
-            %can control the volumetric flow rate so that a constant pressure 
-            %is maintained inside the feed tank.
-            vFlFeTa(:,(nCols+1)) = sum(vFlFeTa(:,1:nCols),2); 
-    
-        %When the feed tank is non-isothermal,   
-        elseif bool(5) == 1
-       
-            %-----------------------------------------------------------------%
-            %Unpack feed tank states variables
-            
-            %Unpack additional params
-            gasConsNormFeTa = params.gasConsNormFeTa;
-            
-            %Unpack feTa tank overall heat capacity at time t
-            feTaHtCO = feTa.(sFeTaNums{i}).htCO;
-        
-            %Unpack the temperature variables for the feed tank
-            feTaTempCstr = feTa.(sFeTaNums{i}).temps.cstr;
-            feTaTempWall = feTa.(sFeTaNums{i}).temps.wall;
-        
-            %Unpack the feed tank total concentration
-            feTaConTot = feTa.(sFeTaNums{i}).gasConsTot;        
-            %-----------------------------------------------------------------%
-    
-    
-    
-            %-----------------------------------------------------------------%
-            %Obtain the time dependent terms.
-            
-            %Evaluate the feed stream tototal concentration
-            feedConTot = pRatFe*gasConsNormEq*tempFeedNorm;
-    
-            %Evaluate a common term for the time dependent coefficients
-            phiCommon = (feTaVolNorm*gasConsNormFeTa./feTaHtCO).*feTaConTot;
-    
-            %Obtain the time dependent coefficients for the ith column        
-            phiZeroFeed = -(1+phiCommon);
-        
-            %Obtain the sum of the products of the volumetric flow rates and
-            %the state dependent coefficient (vectorized)
-            vFlFeedSum = phiZeroFeed ...
-                      .* sum(vFlFeTa(:,1:nCols),2);         
-        
-            %Calculate the heat transfer correction term
-            feTaBeta = (feTaVolNorm/feTaHtCO) ...
-                     * (feTaTempWall./feTaTempCstr-1);
-        
-            %Calculate the molar energy term (vectorized)
-            molarEnergy = feedConTot*sum(htCapCpNorm.*yFeC(:,i));
-            
-            %Calculate the time dependent coefficient for the feed stream
-            phiPlusFeed = (1+phiCommon).*(feedConTot./feTaConTot) ...
-                        + (feTaVolNorm*gasConsNormFeTa./feTaHtCO) ...
-                       .* (tempFeedNorm./feTaTempCstr-1) ...
-                        * molarEnergy;
-            %-----------------------------------------------------------------%
-    
-    
-    
-            %-----------------------------------------------------------------%
-            %Save the results
-    
-            %Save the feed volumetric flow rate to maintain a constant pressure
-            %inside the feed tank
-            vFlFeTa(:,nCols+1) = -(1./phiPlusFeed).*(vFlFeedSum+feTaBeta);
-            %-----------------------------------------------------------------%
+    if bool(5) == 0
 
-        end
+        %The entering valve to the feed tank is always controlled to 
+        %maintain a constant pressure inside the feed tank. Therefore, we 
+        %can control the volumetric flow rate so that a constant pressure 
+        %is maintained inside the feed tank.
+        vFlFeTa(:,(nCols+1)) = sum(vFlFeTa(:,1:nCols),2); 
+
+    %When the feed tank is non-isothermal,   
+    elseif bool(5) == 1
+   
+        %-----------------------------------------------------------------%
+        %Unpack feed tank states variables
         
-        %Save the volumetric flow rates to a struct
-        units.feTa.(sFeTaNums{i}).volFlRat = vFlFeTa;
+        %Unpack additional params
+        gasConsNormFeTa = params.gasConsNormFeTa;
+        
+        %Unpack feTa tank overall heat capacity at time t
+        feTaHtCO = feTa.n1.htCO;
+    
+        %Unpack the temperature variables for the feed tank
+        feTaTempCstr = feTa.n1.temps.cstr;
+        feTaTempWall = feTa.n1.temps.wall;
+    
+        %Unpack the feed tank total concentration
+        feTaConTot = feTa.n1.gasConsTot;        
+        %-----------------------------------------------------------------%
+
+
+
+        %-----------------------------------------------------------------%
+        %Obtain the time dependent terms.
+        
+        %Evaluate the feed stream tototal concentration
+        feedConTot = pRatFe*gasConsNormEq*tempFeedNorm;
+
+        %Evaluate a common term for the time dependent coefficients
+        phiCommon = (feTaVolNorm*gasConsNormFeTa./feTaHtCO).*feTaConTot;
+
+        %Obtain the time dependent coefficients for the ith column        
+        phiZeroFeed = -(1+phiCommon);
+    
+        %Obtain the sum of the products of the volumetric flow rates and
+        %the state dependent coefficient (vectorized)
+        vFlFeedSum = phiZeroFeed ...
+                  .* sum(vFlFeTa(:,1:nCols),2);         
+    
+        %Calculate the heat transfer correction term
+        feTaBeta = (feTaVolNorm/feTaHtCO) ...
+                 * (feTaTempWall./feTaTempCstr-1);
+    
+        %Calculate the molar energy term (vectorized)
+        molarEnergy = feedConTot*sum(htCapCpNorm.*yFeC);
+        
+        %Calculate the time dependent coefficient for the feed stream
+        phiPlusFeed = (1+phiCommon).*(feedConTot./feTaConTot) ...
+                    + (feTaVolNorm*gasConsNormFeTa./feTaHtCO) ...
+                   .* (tempFeedNorm./feTaTempCstr-1) ...
+                    * molarEnergy;
+        %-----------------------------------------------------------------%
+
+
+
+        %-----------------------------------------------------------------%
+        %Save the results
+
+        %Save the feed volumetric flow rate to maintain a constant pressure
+        %inside the feed tank
+        vFlFeTa(:,nCols+1) = -(1./phiPlusFeed).*(vFlFeedSum+feTaBeta);
+        %-----------------------------------------------------------------%
 
     end
     %---------------------------------------------------------------------%       
@@ -290,8 +281,7 @@ function units = calcVolFlows4UnitsPresDriv(params,units,nS)
     units.exWa.n1.volFlRat = vFlExWa;
     
     %Save the volumetric flow rates to a struct
-    % units.feTa.n1.volFlRat = vFlFeTa;
-    % units.feTa.n2.volFlRat = vFlFeTa;
+    units.feTa.n1.volFlRat = vFlFeTa;         
     %---------------------------------------------------------------------%     
     
 end

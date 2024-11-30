@@ -45,12 +45,10 @@ function units = getFeTaCuMolBal(params,units)
     %Unpack params    
     nComs         = params.nComs        ;      
     pRatFe        = params.pRatFe       ;
-    yFeC          = [params.yFeC,params.yFeTwoC]         ;
+    yFeC          = params.yFeC         ;
     sComs         = params.sComNums     ;
     gasConsNormEq = params.gasConsNormEq;
     tempFeedNorm  = params.tempFeedNorm ;
-    nFeTas        = params.nFeTas       ;
-    sFeTaNums     = params.sFeTaNums    ;
     
     %Unpack units
     feTa = units.feTa;
@@ -62,8 +60,6 @@ function units = getFeTaCuMolBal(params,units)
     %Do the cumulative mole balance for each species for all species inside 
     %each feed tank
 
-    for i = 1 : nFeTas
-    
     %Calculate the total concentration of the feed
     gasConsTotFeed = pRatFe/(gasConsNormEq*tempFeedNorm);
                  
@@ -72,14 +68,14 @@ function units = getFeTaCuMolBal(params,units)
 
         %Assign the right hand side for the cumulative moles flowing into 
         %the feed tank
-            feTa.(sFeTaNums{i}).cumMolBal.feed.(sComs{j}) ...
+        feTa.n1.cumMolBal.feed.(sComs{j}) ...
             = gasConsTotFeed ...
-                * yFeC(j,i) ...
-                * feTa.(sFeTaNums{i}).volFlRat(:,end);
+            * yFeC(j) ...
+            * feTa.n1.volFlRat(:,end);
 
     end  
     %---------------------------------------------------------------------%       
-    end
+    
     
     
     %---------------------------------------------------------------------%                          

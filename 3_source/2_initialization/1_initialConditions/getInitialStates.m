@@ -46,7 +46,6 @@ function iCond = getInitialStates(params)
     %Unpack Params
     funcIso     = params.funcIso    ;    
     yFeC        = params.yFeC       ;
-    yFeTwoC     = params.yFeTwoC    ;
     yRaC        = params.yRaC       ;
     yExC        = params.yExC       ;
     nComs       = params.nComs      ;
@@ -58,7 +57,6 @@ function iCond = getInitialStates(params)
     pRatEx0     = params.presExTa ...
                 / params.presColHigh;
     nCols       = params.nCols      ;       
-    nFeTas      = params.nFeTas     ;
     iConBed     = params.inConBed   ;
     iConFeTa    = params.inConFeTa  ;
     iConRaTa    = params.inConRaTa  ;
@@ -233,14 +231,13 @@ function iCond = getInitialStates(params)
     %---------------------------------------------------------------------%  
     %For each feed tank and its initial condition, obtain the corresponing
     %feed tank states
-    for i = 1 : nFeTas
     
     %Determine the initial states for Feed Tanks
     
     %Based on the user specified input, choose the initial condition
 
     %Feed gas at a feed pressure
-        if iConFeTa(i) == 1
+    if iConFeTa == 1
 
         %Assign corresponding dimensionless states for a feed tank
         feTaStates = [pRatFe0*yFeC', ...
@@ -249,31 +246,21 @@ function iCond = getInitialStates(params)
                       zeros(1,nComs)];
 
     %Extract pressure gas at a feed pressure
-        elseif iConFeTa(i) == 2
+    elseif iConFeTa == 2
 
         %Assign corresponding dimensionless states for a feed tank
         feTaStates = [pRatFe0*yExC', ...
-                          tempFeTaNorm, ...
-                          tempFeTaNorm, ...
-                          zeros(1,nComs)];
-
-        %Feed gas from second feed stream at feed pressure
-        elseif iConFeTa(i) == 3
-
-            %Assign corresponding dimensionless states for a feed tank
-            feTaStates = [pRatFe0*yFeTwoC', ...
-                          tempFeTaNorm, ...
-                          tempFeTaNorm, ...
-                          zeros(1,nComs)];
-        end
-    
+                      tempFeTaNorm, ...
+                      tempFeTaNorm, ...
+                      zeros(1,nComs)];
+         
+    end
     
     %Update the initial condition vector with the ith feed tank entries
     %for the state variables                
 
     %Add state variables to the initial condition vector
-    iCond(inShFeTa+1+(i-1)*nFeTaStT:inShFeTa+i*nFeTaStT) = feTaStates;
-    end
+    iCond(inShFeTa+1:inShFeTa+nFeTaStT) = feTaStates;
     %---------------------------------------------------------------------%
      
     

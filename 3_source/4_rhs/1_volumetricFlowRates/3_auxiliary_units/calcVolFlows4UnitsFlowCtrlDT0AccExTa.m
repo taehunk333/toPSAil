@@ -52,9 +52,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT0AccExTa(params,units,nS)
     %funcId = 'calcVolFlows4UnitsFlowCtrlDT0AccExTa.m';
     
     %Unpack params   
-    nCols = params.nCols;
-    nFeTas= params.nFeTas;
-    sFeTaNums = params.sFeTaNums;
+    nCols = params.nCols;  
     %---------------------------------------------------------------------%       
     
     
@@ -88,16 +86,14 @@ function units = calcVolFlows4UnitsFlowCtrlDT0AccExTa(params,units,nS)
     
     %---------------------------------------------------------------------%
     %Calculate the remaining boundary conditions for the feed tank unit
-
-    for i = 1 : nFeTas
+        
     %The entering valve to the feed tank is always controlled to 
     %maintain a constant pressure inside the feed tank. Therefore, we can 
     %control the volumetric flow rate so that a constant pressure is 
     %maintained inside the feed tank
     vFlFeTa(:,(nCols+1)) = max(0,sum(vFlFeTa(:,1:nCols),2));    
     %---------------------------------------------------------------------%       
-    units.feTa.(sFeTaNums{i}).volFlRat = vFlFeTa;
-    end
+    
     
     
     %---------------------------------------------------------------------%
@@ -138,7 +134,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT0AccExTa(params,units,nS)
     units.exWa.n1.volFlRat = vFlExWa;
     
     %Save the volumetric flow rates to a struct
-    % units.feTa.n1.volFlRat = vFlFeTa;         
+    units.feTa.n1.volFlRat = vFlFeTa;         
     %---------------------------------------------------------------------%
 
 end

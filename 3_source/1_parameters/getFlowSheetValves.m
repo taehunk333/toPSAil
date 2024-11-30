@@ -45,8 +45,6 @@ function params = getFlowSheetValves(params)
     nSteps   = params.nSteps  ;  
     sStepCol = params.sStepCol;
     nCols    = params.nCols   ;
-    nFeTas   = params.nFeTas  ;
-    feTaSeq  = params.feTaSeq ;
     %---------------------------------------------------------------------%                
     
     
@@ -62,8 +60,8 @@ function params = getFlowSheetValves(params)
     %Interaction matrix for the feed tank and the adsorption columns. 0
     %indicates that there is no interaction. 1 indicates that there is an
     %interaction.
-    valFeTa2AdsFeEnd = zeros(nCols,nSteps,nFeTas); 
-    valFeTa2AdsPrEnd = zeros(nCols,nSteps,nFeTas);       
+    valFeTa2AdsFeEnd = zeros(nCols,nSteps); 
+    valFeTa2AdsPrEnd = zeros(nCols,nSteps);       
     
     %Interaction matrix for the raffinate product tank and the adsorption 
     %columns. 0 indicates that there is no interaction. 1 indicates that 
@@ -105,28 +103,19 @@ function params = getFlowSheetValves(params)
                  
     %---------------------------------------------------------------------%
     %Check for the interactions around the feed tank
-
-    for i = 1 : length(feTaSeq)
-        
-        k = feTaSeq(i);
     
-        if k ~= 0
     %Check for all the situations where the feed tank outlet is headed to
     %the feed-end of the adsorbers.
-            valFeTa2AdsFeEnd(:,i,k) = valFeTa2AdsFeEnd(:,i,k) ...
-                             + strcmp(sStepCol{i},'RP-FEE-XXX') ...
-                             + strcmp(sStepCol{i},'HP-FEE-ATM') ...
-                             + strcmp(sStepCol{i},'HP-FEE-RAF'); 
+    valFeTa2AdsFeEnd = valFeTa2AdsFeEnd ...
+                     + strcmp(sStepCol,'RP-FEE-XXX') ...
+                     + strcmp(sStepCol,'HP-FEE-ATM') ...
+                     + strcmp(sStepCol,'HP-FEE-RAF'); 
             
     %Check for all the situations where the feed tank outlet is headed to
     %the product-end of the adsorbers.
-            valFeTa2AdsPrEnd(:,i,k) = valFeTa2AdsPrEnd(:,i,k) ...
-                             + strcmp(sStepCol{i},'RP-XXX-FEE') ...
-                             + strcmp(sStepCol{i},'HP-ATM-FEE') ...
-                             + strcmp(sStepCol{i},'LP-EXT-FEE');     
-        end
-    
-    end
+    valFeTa2AdsPrEnd = valFeTa2AdsPrEnd ...
+                     + strcmp(sStepCol,'RP-XXX-FEE') ...
+                     + strcmp(sStepCol,'HP-ATM-FEE');     
     %---------------------------------------------------------------------%
    
     
@@ -168,8 +157,7 @@ function params = getFlowSheetValves(params)
                      + strcmp(sStepCol,'RP-EXT-XXX') ...
                      + strcmp(sStepCol,'HR-EXT-ATM'); 
     valAdsFeEnd2ExTa = valAdsFeEnd2ExTa ...
-                     + strcmp(sStepCol,'DP-EXT-XXX') ...
-                     + strcmp(sStepCol,'LP-EXT-FEE');
+                     + strcmp(sStepCol,'DP-EXT-XXX');
                  
     %Check for all the situations where the feed tank outlet is headed to
     %the product-end of the adsorbers
