@@ -52,6 +52,8 @@ function params = getStringParams(params)
     valFeedCol = params.valFeedCol;
     valProdCol = params.valProdCol;
     flowDirCol = params.flowDirCol;
+    nFeTas     = params.nFeTas    ;
+    feTaSeq    = params.feTaSeq   ;
     %---------------------------------------------------------------------%                                                        
     
     
@@ -70,6 +72,7 @@ function params = getStringParams(params)
     %Initialize cell arrays that stores differents
     sComNums = cell(nComs,1); %a column vector (nComs x 1)
     sColNums = cell(nCols,1); %a column vector (nComs x 1)
+    sFeTaNums = cell(nFeTas,1);
     
     %Initialie cell array for the equalization between adsorption columns
     numAdsEqPrEnd = zeros(nCols,nSteps);
@@ -86,6 +89,9 @@ function params = getStringParams(params)
     
     %Define a vector containing each columns in the system
     colSpace = linspace(1,nCols,nCols)';
+
+    %Define a vector containing each feed tanks in the system
+    feTaSpace = linspace(1,nFeTas,nFeTas)';
     
     %For each component,
     for i = 1 : nComs
@@ -101,7 +107,15 @@ function params = getStringParams(params)
         %Assign the component number name for an ith component
         sColNums{i} = append('n',int2str(colSpace(i)));
         
-    end 
+    end
+
+    %For each feed tank,
+    for i = 1 : nFeTas
+
+        %Assign the feed tank number name for an ith component
+        sFeTaNums{i} = append('n',int2str(feTaSpace(i)));
+
+    end
     %---------------------------------------------------------------------%   
     
         
@@ -119,6 +133,7 @@ function params = getStringParams(params)
     sStepCol   = split(sStepCol,' ', 2)  ; %a matrix (nCols x nSteps)
     sTypeCol   = split(sTypeCol,' ', 2)  ; %a matrix (nCols x nSteps)
     flowDirCol = split(flowDirCol,' ', 2); %a matrix (nCols x nSteps)
+    feTaSeq    = split(feTaSeq,' ',2)    ;
     
     %Convert the cell array containing the splitted strings into a
     %numerical array and store it as a row vector
@@ -126,6 +141,7 @@ function params = getStringParams(params)
     eveVal     = str2double(eveVal)    ;
     valFeedCol = str2double(valFeedCol); %a matrix (nCols x nSteps)
     valProdCol = str2double(valProdCol); %a matrix (nCols x nSteps)
+    feTaSeq    = str2double(feTaSeq)   ;
     %---------------------------------------------------------------------%                                   
         
     
@@ -183,7 +199,7 @@ function params = getStringParams(params)
                 %Grab the next index
                 indEqFlowDirPlusOne ...
                     = round(indEqFlowDirCurr+1,nSteps);
-                
+
                 %Check if the next step is repressurization or high
                 %pressure feed
                 eqNextStepRepr ...
@@ -376,6 +392,7 @@ function params = getStringParams(params)
     params.sColNums = sColNums;
     params.eveUnit  = eveUnit ;
     params.eveLoc   = eveLoc  ;
+    params.sFeTaNums = sFeTaNums;
     
     %Save the numerical array results
     params.durStep       = durStep      ;
@@ -386,6 +403,7 @@ function params = getStringParams(params)
     params.typeDaeModel  = typeDaeModel ;
     params.numAdsEqPrEnd = numAdsEqPrEnd;
     params.numAdsEqFeEnd = numAdsEqFeEnd;
+    params.feTaSeq       = feTaSeq      ;
     %---------------------------------------------------------------------%
 
 

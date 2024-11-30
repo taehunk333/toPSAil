@@ -40,7 +40,9 @@ function units = getFeTaEnerBal(params,units)
     %Check to see if we need an energy balance
     
     %Unpack minimal number of params
-    bool = params.bool;    
+    bool = params.bool;
+    nFeTas         = params.nFeTas        ;
+    sFeTaNums      = params.sFeTaNums     ;
     
     %Unpack units
     feTa = units.feTa;
@@ -50,8 +52,10 @@ function units = getFeTaEnerBal(params,units)
         
         %-----------------------------------------------------------------%
         %Don't do the energy balance on the feed tank
-        units.feTa.n1.cstrEnBal = 0;            
-        units.feTa.n1.wallEnBal = 0;  
+        for i = 1:nFeTas
+            units.feTa.(sFeTaNums{i}).cstrEnBal = 0;            
+            units.feTa.(sFeTaNums{i}).wallEnBal = 0;  
+        end
         %-----------------------------------------------------------------%
         
         
@@ -81,11 +85,13 @@ function units = getFeTaEnerBal(params,units)
     tempAmbiNorm   = params.tempAmbiNorm  ;
     gConsNormFeTa  = params.gConsNormFeTa ;
     htCapCpNorm    = params.htCapCpNorm   ;
-    yFeC           = params.yFeC          ;
+    yFeC           = [params.yFeC,params.yFeTwoC]          ;
     pRatFe         = params.pRatFe        ;
     gasConsNormEq  = params.gasConsNormEq ;
     tempFeedNorm   = params.tempFeedNorm  ;
     feTaVolNorm    = params.feTaVolNorm   ;
+    % nFeTas         = params.nFeTas        ;
+    % sFeTaNums      = params.sFeTaNums     ;
     %---------------------------------------------------------------------%              
         
     
@@ -93,19 +99,21 @@ function units = getFeTaEnerBal(params,units)
     %---------------------------------------------------------------------%    
     %Do the CSTR wall energy balance for the feed tank
     
+    for i = 1 : nFeTas
+
     %Unpack the temperature of the feed tank
-    feTaTempCstr = feTa.n1.temps.cstr;
+    feTaTempCstr = feTa.(sFeTaNums{i}).temps.cstr;
     
     %Compute the interior heat transfer rates
-    dQndt = feTa.n1.temps.wall ...
+    dQndt = feTa.(sFeTaNums{i}).temps.wall ...
           - feTaTempCstr;
 
     %Compute the exterior heat transfer rates
     dQnwdt = tempAmbiNorm ... 
-           - feTa.n1.temps.wall;    
+           - feTa.(sFeTaNums{i}).temps.wall;    
 
     %Save ith feed tank wall energy balance into the struct
-    feTa.n1.wallEnBal = extHtTrFacFeTa*dQnwdt ...
+    feTa.(sFeTaNums{i}).wallEnBal = extHtTrFacFeTa*dQnwdt ...
                       - intHtTrFacFeTa*dQndt;
     %---------------------------------------------------------------------%    
 
@@ -116,7 +124,7 @@ function units = getFeTaEnerBal(params,units)
   
     %Save the heat transfer rate to the column wall from CSTR in the 
     %right hand side of the dTn/dt
-    feTa.n1.cstrEnBal = dQndt;    
+    feTa.(sFeTaNums{i}).cstrEnBal = dQndt;    
     %---------------------------------------------------------------------%               
     
     
@@ -125,7 +133,7 @@ function units = getFeTaEnerBal(params,units)
     %Unpack additional quantaties associated with the extract product tank
     
     %Unpack the net change in the total moles inside the feed tank
-    netChangeGasConcTot = feTa.n1.moleBalTot;        
+    netChangeGasConcTot = feTa.(sFeTaNums{i}).moleBalTot;        
     %---------------------------------------------------------------------%
     
     
@@ -148,7 +156,7 @@ function units = getFeTaEnerBal(params,units)
     %overall process flow sheet
     
     %Unpack the volumetric flow rates
-    feedVolFlowRat = feTa.n1.volFlRat(:,end);
+    feedVolFlowRat = feTa.(sFeTaNums{i}).volFlRat(:,end);
          
     %Calculate the total concentration of the feed
     gasConsTotFeed = pRatFe/(gasConsNormEq*tempFeedNorm);
@@ -168,7 +176,7 @@ function units = getFeTaEnerBal(params,units)
         %Update the first term
         convFlowEnerIn = convFlowEnerIn ...
                        + htCapCpNorm(j) ...
-                       * (gasConsTotFeed*yFeC(j));    
+                       * (gasConsTotFeed*yFeC(j,i));    
         
     end            
     
@@ -190,12 +198,13 @@ function units = getFeTaEnerBal(params,units)
     
     %Evaluate the right hand side for the interior temperature for the feed
     %tank by accounting for the flow term.
-    feTa.n1.cstrEnBal = (feTa.n1.cstrEnBal ...
+    feTa.(sFeTaNums{i}).cstrEnBal = (feTa.(sFeTaNums{i}).cstrEnBal ...
                         +presDeltaEner ...
                         +convFlowEnerIn) ...
-                      / feTa.n1.htCO;
+                      / feTa.(sFeTaNums{i}).htCO;
     %---------------------------------------------------------------------%
     
+    end
     
     
     %---------------------------------------------------------------------%                          

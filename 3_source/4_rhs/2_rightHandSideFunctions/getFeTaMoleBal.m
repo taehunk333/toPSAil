@@ -46,13 +46,15 @@ function units = getFeTaMoleBal(params,units,nS)
     %Unpack params    
     nComs         = params.nComs        ;
     nCols         = params.nCols        ;
-    yFeC          = params.yFeC         ;
+    yFeC          = [params.yFeC,params.yFeTwoC]        ;
     feTaVolNorm   = params.feTaVolNorm  ;
     pRatFe        = params.pRatFe       ;   
     sComNums      = params.sComNums     ;    
     gasConsNormEq = params.gasConsNormEq;
     tempFeedNorm  = params.tempFeedNorm ;
     valFeEndEq    = params.valFeEndEq   ;
+    nFeTas        = params.nFeTas       ;
+    sFeTaNums     = params.sFeTaNums    ;
     
     %Unpack units
     feTa = units.feTa;
@@ -63,6 +65,7 @@ function units = getFeTaMoleBal(params,units,nS)
     %---------------------------------------------------------------------%    
     %Do the mole balance for each species for all species inside each 
     %feed tank
+    for i = 1 : nFeTas
     
     %Initialize the total mole balance term
     moleBalTot = 0;
@@ -94,17 +97,17 @@ function units = getFeTaMoleBal(params,units,nS)
             %adsorber.
             convOutToAds = convOutToAds ...
                         .* valFeEndEq(k,nS) ...
-                         + feTa.n1.volFlRat(:,k) ...
-                        .* feTa.n1.gasCons.(sComNums{j});                                    
+                             + feTa.(sFeTaNums{i}).volFlRat(:,k) ...
+                            .* feTa.(sFeTaNums{i}).gasCons.(sComNums{j});                                    
             %-------------------------------------------------------------%    
 
         end
 
         %Convective flow into the ith feed tank from the feed reservoir. We
         %have c_{feed}/c_{high} = P_{feed}/P_{high} * T_{high}/T_{Feed}.
-        convfromFeRes = feTa.n1.volFlRat(:,end) ...
+            convfromFeRes = feTa.(sFeTaNums{i}).volFlRat(:,end) ...
                       * pRatFe/(gasConsNormEq*tempFeedNorm) ...
-                      * yFeC(j);
+                          * yFeC(j,i);
         %-----------------------------------------------------------------%    
 
 
@@ -123,7 +126,7 @@ function units = getFeTaMoleBal(params,units,nS)
         %Save the j results (acconting for all columns)
 
         %Do the mole balance on the ith tank for species j
-        feTa.n1.moleBal.(sComNums{j}) = moleBalSpec;    
+            feTa.(sFeTaNums{i}).moleBal.(sComNums{j}) = moleBalSpec;    
         
         %Do the total mole balance
         moleBalTot = moleBalTot ...
@@ -133,7 +136,7 @@ function units = getFeTaMoleBal(params,units,nS)
     end
     
     %Save the overall mole balance for the raffinate tank
-    feTa.n1.moleBalTot = moleBalTot;
+        feTa.(sFeTaNums{i}).moleBalTot = moleBalTot;
     %---------------------------------------------------------------------%
     
     
