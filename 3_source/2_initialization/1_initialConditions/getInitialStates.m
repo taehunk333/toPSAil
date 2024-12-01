@@ -19,8 +19,8 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2019/2/4/Monday
-%Code last modified on : 2022/12/6/Tuesday
-%Code last modified by : Taehun Kim
+%Code last modified on : 2024/11/28/Thursday
+%Code last modified by : Viktor Kalman
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : getInitialStates.m
@@ -46,7 +46,7 @@ function iCond = getInitialStates(params)
     %Unpack Params
     funcIso     = params.funcIso    ;    
     yFeC        = params.yFeC       ;
-    yFeTwoC     = params.yFeTwoC    ;
+    % yFeTwoC     = params.yFeTwoC    ;
     yRaC        = params.yRaC       ;
     yExC        = params.yExC       ;
     nComs       = params.nComs      ;
@@ -259,6 +259,8 @@ function iCond = getInitialStates(params)
 
         %Feed gas from second feed stream at feed pressure
         elseif iConFeTa(i) == 3
+            %Unpack second feed stream composition
+            yFeTwoC = params.yFeTwoC;
 
             %Assign corresponding dimensionless states for a feed tank
             feTaStates = [pRatFe0*yFeTwoC', ...

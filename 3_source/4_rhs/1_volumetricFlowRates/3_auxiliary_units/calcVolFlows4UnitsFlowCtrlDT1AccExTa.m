@@ -19,8 +19,8 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/10/22/Saturday
-%Code last modified on : 2022/12/3/Saturay
-%Code last modified by : Taehun Kim
+%Code last modified on : 2024/11/28/Thursday
+%Code last modified by : Viktor Kalman
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : calcVolFlows4UnitsFlowCtrlDT1AccExTa.m
@@ -67,8 +67,12 @@ function units = calcVolFlows4UnitsFlowCtrlDT1AccExTa(params,units,nS)
     gasConsNormRaTa = params.gasConsNormRaTa; 
     sColNums        = params.sColNums       ;
     sComNums        = params.sComNums       ;
-    nFeTas          = parms.nFeTas          ;
+    nFeTas          = params.nFeTas         ;
     sFeTaNums       = params.sFeTaNums      ;
+    bool            = params.bool           ;
+    if bool(13) == 1
+        yFeC = [params.yFeC,params.yFeTwoC];
+    end
     
     %Unpack units
     col  = units.col ;

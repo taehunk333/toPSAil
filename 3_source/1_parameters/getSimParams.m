@@ -231,6 +231,12 @@ function [params,fullParams] = getSimParams(exampleFolder)
         %-----------------------------------------------------------------%
         
     %---------------------------------------------------------------------%
+    %Default setting for second feed tank (temporary) to avoid backwards
+    %compatiblity issues
+    params.bool(13) = 0;
+
+    
+    %---------------------------------------------------------------------%
     
                
     

@@ -19,8 +19,8 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/8/13/Saturday
-%Code last modified on : 2022/11/5/Saturday
-%Code last modified by : Taehun Kim
+%Code last modified on : 2024/11/28/Thursday
+%Code last modified by : Viktor Kalman
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : calcVolFlows4UnitsPresDriv.m
@@ -69,9 +69,12 @@ function units = calcVolFlows4UnitsPresDriv(params,units,nS)
     feTaVolNorm     = params.feTaVolNorm    ;
     htCapCpNorm     = params.htCapCpNorm    ;
     pRatFe          = params.pRatFe         ;
-    yFeC            = [params.yFeC,params.yFeTwoC]           ;
+    yFeC            = params.yFeC           ;
     sFeTaNums       = params.sFeTaNums      ;
     nFeTas          = params.nFeTas         ;
+    if bool(13) == 1
+        yFeC = [params.yFeC,params.yFeTwoC];
+    end
     
     %Unpack units
     raTa = units.raTa;

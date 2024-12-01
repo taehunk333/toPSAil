@@ -19,8 +19,8 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2021/1/28/Thursday
-%Code last modified on : 2022/12/1/Monday
-%Code last modified by : Taehun Kim
+%Code last modified on : 2024/11/28/Thursday
+%Code last modified by : Viktor Kalman
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : getFeTaEnerBal.m
@@ -85,13 +85,17 @@ function units = getFeTaEnerBal(params,units)
     tempAmbiNorm   = params.tempAmbiNorm  ;
     gConsNormFeTa  = params.gConsNormFeTa ;
     htCapCpNorm    = params.htCapCpNorm   ;
-    yFeC           = [params.yFeC,params.yFeTwoC]          ;
+    yFeC           = params.yFeC          ;
     pRatFe         = params.pRatFe        ;
     gasConsNormEq  = params.gasConsNormEq ;
     tempFeedNorm   = params.tempFeedNorm  ;
     feTaVolNorm    = params.feTaVolNorm   ;
-    % nFeTas         = params.nFeTas        ;
-    % sFeTaNums      = params.sFeTaNums     ;
+    nFeTas         = params.nFeTas        ;
+    sFeTaNums      = params.sFeTaNums     ;
+    bool           = params.bool          ;
+    if bool(13) == 1
+        yFeC = [params.yFeC,params.yFeTwoC];
+    end
     %---------------------------------------------------------------------%              
         
     
