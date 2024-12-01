@@ -67,8 +67,9 @@ function units = calcVolFlows4UnitsFlowCtrlDT1AccExTa(params,units,nS)
     gasConsNormRaTa = params.gasConsNormRaTa; 
     sColNums        = params.sColNums       ;
     sComNums        = params.sComNums       ;
-    nFeTas          = parms.nFeTas          ;
+    nFeTas          = params.nFeTas         ;
     sFeTaNums       = params.sFeTaNums      ;
+    bool            = params.bool           ;
     if bool(13) == 1
         yFeC = [params.yFeC,params.yFeTwoC];
     end

@@ -45,13 +45,17 @@ function params = getStatesParams(params)
     nCols   = params.nCols  ;
     nCycles = params.nCycles;
     nSteps  = params.nSteps ;
-    nTiPts  = params.nTiPts ;   
-    nFeTas  = params.nFeTas ;
+    nTiPts  = params.nTiPts ;
     
     %Set the number of auxiliary units/streams in the process flow sheet
     nPumps = 1;
     nComps = 2;
-    % nFeTas = 1;
+    if params.bool(13) == 1
+        nFeTas  = params.nFeTas ;
+    else
+        nFeTas = 1;
+        params.nFeTas = nFeTas;
+    end
     nRaTas = 1;
     nExTas = 1;
     %---------------------------------------------------------------------% 
