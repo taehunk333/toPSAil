@@ -70,6 +70,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT1AccExTa(params,units,nS)
     nFeTas          = params.nFeTas         ;
     sFeTaNums       = params.sFeTaNums      ;
     bool            = params.bool           ;
+    valAdsPrEnd2RaTa= params.valAdsPrEnd2RaTa;
     if bool(13) == 1
         yFeC = [params.yFeC,params.yFeTwoC];
     end
