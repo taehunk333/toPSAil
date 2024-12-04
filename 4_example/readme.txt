@@ -586,3 +586,31 @@
 %				5. Low pressure purge	
 %				   (counter-current or - direction)		
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Single Adsorber Simulation
+%
+% Purpose:
+%	- To implement the layered-bed modeling capabilities.
+% Reference: 
+%	- Kayser, J.C., Knaebel, K.S., 1986. Pressure Swing 
+%	  Adsorption - Experimental Study of an Equilibrium Theory. 
+%	  Chemical Engineering Science, 41, 2931–2938.
+% Case Studies:
+%	[X] case_study_6.0: 
+%	  	- 1-adsorber
+%		- Isothermal
+% 		- Flow-driven
+%		- Time-driven
+%	  	- O2-N2-Zeolite_5A with Linear isotherm.
+%		- A putative Carbon Molecular Sieve (CMS) with Linear isotherm.
+%		- LDF kinetics
+%	        - 5 step PSA cycle
+%			1. re-pressurization with raffinate product
+%			2. re-pressurization with feed
+%			3. high pressure feed
+%			4. depressurization to a subambient pressure
+%			5. low pressure purge		
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
