@@ -123,6 +123,9 @@ function [params,fullParams] = getSimParams(exampleFolder)
         %For each sub-folder,
         for i = 1 : numSubFolders
 
+            %Get the corresponding excel file names
+            exFileNames = eval(append('subFolder',int2str(i-1)));
+
             %For each excel file
             for j = 1 : numExFilesFolder(i)
                 
@@ -130,10 +133,7 @@ function [params,fullParams] = getSimParams(exampleFolder)
                 %Import the data
                 
                 %Update the counter
-                k = k + 1;                                
-                
-                %Get the corresponding excel file names
-                exFileNames = eval(append('subFolder',int2str(i-1)));
+                k = k + 1;
                 
                 %Obtain the initial set of simulation input parameters
                 structCell{k} ...

@@ -67,12 +67,6 @@ function params = getExcelParams(exFolder,nameFolder,nameExcelFile)
         %file
         locExcelFile  = append(exFolder,'/',nameFolder,'/',nameExcelFile);
 
-    %Check if we are on a Linux
-    elseif isunix
-
-        %Let the user know that the platform is not supported
-        error('Platform not supported')
-
     %Otherwise the platform is not supported
     else
 
