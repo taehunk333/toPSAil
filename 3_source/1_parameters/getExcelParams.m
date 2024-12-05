@@ -16,13 +16,6 @@
 %Dynamic Modeling and Simulation of Pressure Swing Adsroption (PSA)
 %Process Systems
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Code by               : Taehun Kim
-%Review by             : Taehun Kim
-%Code created on       : 2021/1/1/Friday
-%Code last modified on : 2022/1/21/Friday
-%Code last modified by : Taehun Kim
-%Model Release Number  : 3rd
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : getExcelParams.m
 %Source     : common
 %Description: Given a string denoting the folder location, read the excel

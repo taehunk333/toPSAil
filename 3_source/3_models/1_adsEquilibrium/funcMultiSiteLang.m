@@ -16,13 +16,6 @@
 %Dynamic Modeling and Simulation of Pressure Swing Adsroption (PSA)
 %Process Systems
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Code by               : Taehun Kim
-%Review by             : Taehun Kim
-%Code created on       : 2020/10/26/Wednesday
-%Code last modified on : 2022/10/26/Wednesday
-%Code last modified by : Taehun Kim
-%Model Release Number  : 3rd
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : funcMultiSiteLang.m
 %Source     : common
 %Description: the function computes the residual to the coupled system of

@@ -16,13 +16,6 @@
 %Dynamic Modeling and Simulation of Pressure Swing Adsroption (PSA)
 %Process Systems
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Code by               : Taehun Kim
-%Review by             : Taehun Kim
-%Code created on       : 2021/2/19/Friday
-%Code last modified on : 2021/2/19/Friday
-%Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : getFeMixCompFac.m
 %Source     : common
 %Description: based on the feed mole fraction and the compressibility

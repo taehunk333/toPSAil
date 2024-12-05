@@ -16,13 +16,6 @@
 %Dynamic Modeling and Simulation of Pressure Swing Adsroption (PSA)
 %Process Systems
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Code by               : Taehun Kim
-%Review by             : Taehun Kim
-%Code created on       : 2021/2/16/Tuesday
-%Code last modified on : 2024/11/28/Thursday
-%Code last modified by : Viktor Kalman
-%Model Release Number  : 3rd
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : getFeTaCuMolBal.m
 %Source     : common
 %Description: a function that calculates cumulative moles flown into the  

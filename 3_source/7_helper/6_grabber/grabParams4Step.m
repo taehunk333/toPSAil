@@ -16,13 +16,6 @@
 %Dynamic Modeling and Simulation of Pressure Swing Adsroption (PSA)
 %Process Systems
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Code by               : Taehun Kim
-%Review by             : Taehun Kim
-%Code created on       : 2022/10/3/Monday
-%Code last modified on : 2023/3/6/Monday
-%Code last modified by : Taehun Kim
-%Model Release Number  : 3rd
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : grabParams4Step.m
 %Source     : common
 %Description: This function takes in a structure called params, containing

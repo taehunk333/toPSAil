@@ -16,13 +16,6 @@
 %Dynamic Modeling and Simulation of Pressure Swing Adsorption (PSA)
 %Process Systems
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Code by               : Taehun Kim
-%Review by             : Taehun Kim
-%Code created on       : 2011/2/4/Thursday
-%Code last modified on : 2023/7/4/Tuesday
-%Code last modified by : Taehun Kim
-%Model Release Number  : 3rd
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : programProfiler.m
 %Source     : common
 %Description: this is a function that calls runPsaProcessSimulation.m so

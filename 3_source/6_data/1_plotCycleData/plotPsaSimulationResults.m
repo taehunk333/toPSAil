@@ -16,18 +16,11 @@
 %Dynamic Modeling and Simulation of Pressure Swing Adsroption (PSA)
 %Process Systems
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Code by               : Taehun Kim
-%Review by             : Taehun Kim
-%Code created on       : 2019/5/13/Monday
-%Code last modified on : 2022/10/20/Thursday
-%Code last modified by : Taehun Kim
-%Model Release Number  : 3rd
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : plotPsaSimulationResults.m
 %Source     : common
 %Description: takes in data from dynamic simulation of pressure swing
 %             adsorption (PSA) process of choice and returns the vizualized
-%             form of the data using MATLAB®'s data visualization tools.
+%             form of the data using MATLABï¿½'s data visualization tools.
 %Inputs     : params       - a struct containing simulation parameters
 %             sol          - a struct containing simulation outputs
 %Outputs    : the user requested plots of the simulation results

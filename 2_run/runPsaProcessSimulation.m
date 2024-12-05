@@ -16,16 +16,9 @@
 %Dynamic Modeling and Simulation of Pressure Swing Adsroption (PSA)
 %Process Systems
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Code by               : Taehun Kim
-%Review by             : Taehun Kim
-%Code created on       : 2019/2/4/Monday
-%Code last modified on : 2022/12/31/Saturday
-%Code last modified by : Taehun Kim
-%Model Release Number  : 3rd
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : runPsaProcessSimulation.m
 %Source     : run
-%Description: a MATLAB® function file in which different MATLAB® functions
+%Description: a MATLABï¿½ function file in which different MATLABï¿½ functions
 %             are called to simulate a pressure swing adsorption (PSA)
 %             process, plot the simulation results, and save the results as
 %             .csv files in the designated folder.

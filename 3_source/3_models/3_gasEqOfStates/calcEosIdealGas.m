@@ -16,13 +16,6 @@
 %Dynamic Modeling and Simulation of Pressure Swing Adsroption (PSA)
 %Process Systems
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Code by               : Taehun Kim
-%Review by             : Taehun Kim
-%Code created on       : 2019/2/3/Sunday
-%Code last modified on : 2020/12/14/Tuesday
-%Code last modified by : Taehun Kim
-%Model Release Number  : 2nd
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : calcEosIdealGas.m
 %Source     : common
 %Description: The function receives 4 (P, V, T, n) variables (one of them 

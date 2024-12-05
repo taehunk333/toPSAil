@@ -16,16 +16,9 @@
 %Dynamic Modeling and Simulation of Pressure Swing Adsroption (PSA)
 %Process Systems
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Code by               : Taehun Kim
-%Review by             : Taehun Kim
-%Code created on       : 2020/7/8/Wednesday
-%Code last modified on : 2022/1/21/Friday
-%Code last modified by : Taehun Kim
-%Model Release Number  : 3rd
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Function   : definePath2SourceFolders.m
 %Source     : run
-%Description: a MATLAB® function file that defines paths to the folders
+%Description: a MATLABï¿½ function file that defines paths to the folders
 %             containing functions needed for simulating a system defined
 %             by the information specified by the user
 %Inputs     : user         - a struct containing user specified information
@@ -65,7 +58,7 @@ function [cuFolder,soFolder,exFolder] = definePath2SourceFolders(user)
     
     
     %---------------------------------------------------------------------%    
-    %Define paths for MATLAB® functions to be used for the simulation
+    %Define paths for MATLABï¿½ functions to be used for the simulation
         
     %Define the path of the current folder
     cuFolder = fileparts(which(funcId));
