@@ -46,7 +46,7 @@ Please visit [the Official YouTube Channel for toPSAil](https://www.youtube.com/
 
 # User Community
 
-Please joing our [Google Groups Page][https://groups.google.com/g/topsail-users) to ask any questions related to the usages of toPSAil.
+Please joing our [Google Groups Page](https://groups.google.com/u/3/g/topsail-user-group) to ask any questions related to the usages of toPSAil.
 
 # Acknowledgement
 
