@@ -41,7 +41,7 @@ Please visit [the Official YouTube Channel for toPSAil](https://www.youtube.com/
 
 # Developers
 
-> * Taehun Kim
+> * Taehun Kim: tk6at@virginia.edu
 > * Viktor Kalman
 
 # Acknowledgement
