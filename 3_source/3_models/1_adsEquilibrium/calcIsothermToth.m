@@ -296,6 +296,19 @@ function newStates = calcIsothermToth(params,states,nAds)
            ./ denominator;
         %-----------------------------------------------------------------%
 
+
+
+        %-----------------------------------------------------------------%
+        %Calculate the effects due to water presence, specific to
+        %amin-based sorbents and CO2-H2O interactions
+        if any(strcmp(params.sCom,'CO2')) && any(strcmp(params.sCom,'H2O'))
+            newStates = fRH();
+            idxCo2 = find(strcmp(params.sCom,'CO2'));
+            idxH2o = find(strcmp(params.sCom,'H2O'));
+            newStates = (1 + phi*(0.6-colGasCons./0.059*0.47)) ...
+                * newStates;
+        end
+        %-----------------------------------------------------------------%
     end          
     %---------------------------------------------------------------------%
     

@@ -40,7 +40,20 @@ function params = getTempRats(params)
       
     
     
-    %---------------------------------------------------------------------%    
+    %---------------------------------------------------------------------%
+    if length(params.bool) == 14
+        if params.bool(14) == 1
+            tmpStep = params.tmpStep;
+            tmpStep = str2double(split(tmpStep,' ',2));
+            params.tmpStepNorm = tmpStep/tempAmbi;
+        end
+    end
+
+    %---------------------------------------------------------------------% 
+      
+    
+    
+    %---------------------------------------------------------------------%
     %Calculate dimensionless temperature values    
     
     %Calculate the pressure ratio. i.e., T_{amb}/T_{amb} = 1
