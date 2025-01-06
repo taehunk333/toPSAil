@@ -184,10 +184,30 @@ function sol = runPsaCycle(params)
                 %function
                 params.nRows = 1;
                 
-                % if nS == 5
-                %     params.colTempNorm = 383.15/298.15;
-                % end
+                %Check if TSA is enabled and change ambient and feed
+                %temperatures according to inputs
+                if length(params.bool) == 14
+                    if params.bool(14) == 1
+                        params.tempAmbiNorm = params.tmpStepNorm(nS);
+                        params.tempFeedNorm = params.tmpStepNorm(nS);
+                        params.tempFeTaNorm = params.tmpStepNorm(nS);
+                        iStates(inShFeTa+4) = params.tempFeTaNorm;
+                        iStates(inShFeTa+5) = params.tempFeTaNorm;
+                    end
+                end
                 
+                % if nS == 3 || nS == 5
+                %     params.tempAmbiNorm = 383.15/298.15;
+                % elseif nS == 4 || nS == 6
+                %     params.tempFeedNorm = 383.15/298.15;
+                %     params.tempFeTaNorm = 383.15/298.15;
+                %     iStates(inShFeTa+4) = params.tempFeTaNorm;
+                %     iStates(inShFeTa+5) = params.tempFeTaNorm;
+                % else
+                %     params.tempAmbiNorm = 1;
+                %     params.tempFeedNorm = 0.995;
+                %     params.tempFeTaNorm = 0.995;
+                % end
                 
                 %Run runPsaCycleStep.m
                 [stTimePts,stStates,flags] ...

@@ -165,6 +165,15 @@ function params = getAdsEquilParams(params,varargin)
             params.dimLessAdsAffCon = dimLessAdsAffCon  ;
             params.dimLessTotIsoExp = dimLessTotIsoExp  ;
 
+        %Custom isotherm
+        elseif whichIsotherm == 9
+
+            %Unpack additional params
+
+            %Calculate dimensionless parameters
+
+            %Save the resuls
+
         end
         %-----------------------------------------------------------------% 
         
