@@ -66,7 +66,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT1(params,units,nS)
     bool             = params.bool            ;
     nFeTas           = params.nFeTas          ;
     sFeTaNums        = params.sFeTaNums       ;
-    if bool(13) == 1
+    if length(bool) > 12 && bool(13) == 1
         yFeC = [params.yFeC,params.yFeTwoC];
     end
     

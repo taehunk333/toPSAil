@@ -65,7 +65,7 @@ function units = calcVolFlows4UnitsPresDriv(params,units,nS)
     yFeC            = params.yFeC           ;
     sFeTaNums       = params.sFeTaNums      ;
     nFeTas          = params.nFeTas         ;
-    if bool(13) == 1
+    if length(bool) > 12 && bool(13) == 1
         yFeC = [params.yFeC,params.yFeTwoC];
     end
     
