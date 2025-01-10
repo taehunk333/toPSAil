@@ -45,9 +45,9 @@ function params = getStringParams(params)
     valFeedCol = params.valFeedCol;
     valProdCol = params.valProdCol;
     flowDirCol = params.flowDirCol;
-    if params.bool(13) == 1
-    nFeTas     = params.nFeTas    ;
-    feTaSeq    = params.feTaSeq   ;
+    if length(params.bool) > 12 && params.bool(13) == 1
+        nFeTas     = params.nFeTas    ;
+        feTaSeq    = params.feTaSeq   ;
     else
         nFeTas = 1;
         feTaSeq = ['0 0'];

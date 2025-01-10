@@ -76,7 +76,7 @@ function units = makeCol2Interact(params,units,nS)
             %-------------------------------------------------------------%
             %For each feed tanks,
             % for k = 1 : nFeTas
-            if params.bool(13) == 1
+            if length(params.bool) > 12 && params.bool(13) == 1
                 k = feTaSeq(nS);
             else
                 k = 1;

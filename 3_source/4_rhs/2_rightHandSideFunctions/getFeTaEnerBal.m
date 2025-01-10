@@ -86,7 +86,7 @@ function units = getFeTaEnerBal(params,units)
     nFeTas         = params.nFeTas        ;
     sFeTaNums      = params.sFeTaNums     ;
     bool           = params.bool          ;
-    if bool(13) == 1
+    if length(bool) > 12 && bool(13) == 1
         yFeC = [params.yFeC,params.yFeTwoC];
     end
     %---------------------------------------------------------------------%              
