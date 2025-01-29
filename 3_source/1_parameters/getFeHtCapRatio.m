@@ -39,12 +39,19 @@ function params = getFeHtCapRatio(params)
     htCapCvC = params.htCapCvC;
     gasCons  = params.gasCons ;
     nFeTas   = params.nFeTas  ;
+    bool     = params.bool    ;
+    sCom     = params.sCom    ;
+
     %---------------------------------------------------------------------% 
     
     
     
     %---------------------------------------------------------------------%    
     %Get molar averaged mixture heat capacity ratio
+    if length(bool) > 14 && bool(15) == 1
+        htCapCpC(strcmp(sCom,'H2O')) = 34.2;
+        htCapCvC(strcmp(sCom,'H2O')) = 34.2 - gasCons/10;
+    end
     
     %Get molar averaged mixture properties
     htCapCpAvg = calcMolAvgProp(yFeC,htCapCpC);  

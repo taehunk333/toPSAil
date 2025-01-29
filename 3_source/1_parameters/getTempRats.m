@@ -41,7 +41,7 @@ function params = getTempRats(params)
     
     
     %---------------------------------------------------------------------%
-    if length(params.bool) == 14
+    if length(params.bool) >= 14
         if params.bool(14) == 1
             tmpStep = params.tmpStep;
             tmpStep = str2double(split(tmpStep,' ',2));

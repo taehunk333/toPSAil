@@ -41,7 +41,10 @@ function params = getFeMixCompFac(params)
     
     
     %---------------------------------------------------------------------%    
-    %Get molar averaged mixture compressibility factor (z)        
+    %Get molar averaged mixture compressibility factor (z)
+    if length(params.bool) > 14 && params.bool(15) == 1
+        compFacC(strcmp(params.sCom,'H2O')) = 1 ;
+    end
     
     %Get molar averaged mixture property
     params.compFacFe = calcMolAvgProp(yFeC,compFacC);    

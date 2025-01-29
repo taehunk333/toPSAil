@@ -102,6 +102,9 @@ function params = getDimLessParams(params)
                / overVoid;
 
     %Compute Damkohler Numbers for each species
+    if length(params.bool) > 14 && params.bool(15) == 1
+        ldfMtc(strcmp(params.sCom,'H2O')) = 0.01;
+    end
     damkoNo = tiScaleFac*ldfMtc; 
     %---------------------------------------------------------------------%           
 

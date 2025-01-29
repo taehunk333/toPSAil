@@ -151,19 +151,13 @@ function params = getAdsEquilParams(params,varargin)
 
             %Unpack additional params
             satdConc    = params.nS0C   ;
-            adsAffCon   = params.b0C    ;
-            totIsoExp   = params.t0C    ;
             adsConT     = params.adsConT;
 
             %Calculate dimensionless parameters (final)
             dimLessSatdConc     = satdConc./adsConT ;
-            dimLessAdsAffCon    = adsAffCon./adsConT;
-            dimLessTotIsoExp    = totIsoExp;
             
             %Save the results
             params.dimLessSatdConc  = dimLessSatdConc   ;
-            params.dimLessAdsAffCon = dimLessAdsAffCon  ;
-            params.dimLessTotIsoExp = dimLessTotIsoExp  ;
 
         %Custom isotherm
         elseif whichIsotherm == 9
@@ -334,11 +328,14 @@ function params = getAdsEquilParams(params,varargin)
     elseif whichIsotherm == 7
         
         %Unpack additional params
-        satdConc    = params.nS0C   ;
-        adsAffCon   = params.b0C    ;
-        totIsoExp   = params.t0C    ;
-        totChi      = params.ChiC   ;
-        totAlpha    = params.alphaC ;
+        satdConc     = params.nS0C   ;
+        adsAffCon    = params.b0C    ;
+        totIsoExp    = params.t0C    ;
+        totChi       = params.ChiC   ;
+        totAlpha     = params.alphaC ;
+        gasCons      = params.gasCons     ;
+        tempAmbi     = params.tempAmbi    ;
+        gasConT      = params.gasConT     ;
 
         
         %Set the temporary constant
@@ -346,8 +343,9 @@ function params = getAdsEquilParams(params,varargin)
         
         %Calculate dimensionless parameters (temporary)
         dimLessSatdConc  = satdConc/aConScaleFac  ;
-        dimLessAdsAffCon = adsAffCon/aConScaleFac ;
-        dimLessTotIsoExp = totIsoExp/aConScaleFac ;
+        %Final
+        dimLessAdsAffCon = adsAffCon*(gasCons*tempAmbi*gasConT) ;
+        dimLessTotIsoExp = totIsoExp              ;
         dimLessChi       = totChi                 ;
         dimLessTotAlpha  = totAlpha               ;
                 
