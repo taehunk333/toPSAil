@@ -397,7 +397,7 @@ function [sol0,tDom0,preInt] = solvOdes0(params,tDom,iStates,nS)
             noteNumIntStats(sol0,numIntSolv);
             
             %Check to see if an event triggered
-            eventTrue = isfield(sol0,'xe');
+            eventTrue = isfield(sol0,'xe') && ~isempty(sol0.xe);
             
             %When an event triggered, 
             if eventTrue

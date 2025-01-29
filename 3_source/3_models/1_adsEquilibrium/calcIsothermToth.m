@@ -66,6 +66,14 @@ function newStates = calcIsothermToth(params,states,nAds)
     
     
     
+    %---------------------------------------------------------------------%
+%    if any(strcmp(params.sCom,'H2O'))
+%        nComs = nComs - 1;
+%    end
+    %---------------------------------------------------------------------%
+
+
+
     %---------------------------------------------------------------------%    
     %Determine the index for the number of adsorbers nAdsInd
         
@@ -147,66 +155,77 @@ function newStates = calcIsothermToth(params,states,nAds)
         
     
     %---------------------------------------------------------------------%
+    %Calculate new states for water, s.a. saturation pressure and RH
+    %---------------------------------------------------------------------%
+
+
+
+    %---------------------------------------------------------------------%
     %Calculate the temperature dependent isotherm parameters
     
     %For each species
     for i = 1 : nComs
-        
-        %-----------------------------------------------------------------%
-        %Obtain the indices
-        
-        %Obtain the beginning index
-        n0 = nVols*(i-1)+1;
-        
-        %Obtain the ending index
-        nf = nVols*i;
-        %-----------------------------------------------------------------%
-        
- 
-        
-        %-----------------------------------------------------------------%
-        %Obtain the temperature dependent dimensionless saturation constant
-        %for the ith species
-                        
-        %Compute the dimensionless saturation constants for the ith species
-        %and save it inside the solution matrix
-        dimLessSatdConc(:,n0:nf) ...
-            = dimLessSatdConc0(i) ...
-            + exp(dimLessChi(i)*(tempRefNorm./tempCstrs - 1));
-        %-----------------------------------------------------------------%
-        
-                                        
-        
-        %-----------------------------------------------------------------%
-        %Obtain the temperature dependent dimensionless adsorption site
-        %number constant for the ith species
-        
-        %Compute the dimensionless Toth isotherm exponent for the 
-        %ith species
-        dimLessTotIsoExp(:,n0:nf) ...
-            = (dimLessTotIsoExp0(i)...
-            + dimLessTotAlpha(i).*(1 - tempRefNorm./tempCstrs));
-        %-----------------------------------------------------------------%
-        
-        
-        
-        %-----------------------------------------------------------------%
-        %Obtain the temperature dependent dimensionless adsorption affinity
-        %constant for the ith species in ISOTHERMAL case
-        if params.bool(5) == 0
-            dimLessAdsAffCon(:,n0:nf) = dimLessAdsAffCon0(i);
-        
-        %Compute the dimensionless adsorption affinity constant for the ith
-        %species for NONISOTHERMAL case
-        elseif params.bool(5) == 1
-            dimLessIsoStHtRef = params.dimLessIsoStHtRef;
 
-            dimLessAdsAffCon(:,n0:nf) ...
-                = dimLessAdsAffCon0(i) ...
-                .* exp(-dimLessIsoStHtRef(i) - (tempRefNorm./tempCstrs - 1));
-        end
-        %-----------------------------------------------------------------%
+        isWater = strcmp(params.sCom,'H2O');
+
+        if isWater(i) == 0 
+            %-----------------------------------------------------------------%
+            %Obtain the indices
+            
+            %Obtain the beginning index
+            n0 = nVols*(i-1)+1;
+            
+            %Obtain the ending index
+            nf = nVols*i;
+            %-----------------------------------------------------------------%
+            
+     
+            
+            %-----------------------------------------------------------------%
+            %Obtain the temperature dependent dimensionless saturation constant
+            %for the ith species
+                            
+            %Compute the dimensionless saturation constants for the ith species
+            %and save it inside the solution matrix
+            dimLessSatdConc(:,n0:nf) ...
+                = dimLessSatdConc0(i) ...
+                + exp(dimLessChi(i)*(tempRefNorm./tempCstrs - 1));
+            %-----------------------------------------------------------------%
+            
+                                            
+            
+            %-----------------------------------------------------------------%
+            %Obtain the temperature dependent dimensionless adsorption site
+            %number constant for the ith species
+            
+            %Compute the dimensionless Toth isotherm exponent for the 
+            %ith species
+            dimLessTotIsoExp(:,n0:nf) ...
+                = (dimLessTotIsoExp0(i)...
+                + dimLessTotAlpha(i).*(1 - tempRefNorm./tempCstrs));
+            %-----------------------------------------------------------------%
+            
+            
+            
+            %-----------------------------------------------------------------%
+            %Obtain the temperature dependent dimensionless adsorption affinity
+            %constant for the ith species in ISOTHERMAL case
+            if params.bool(5) == 0
+                dimLessAdsAffCon(:,n0:nf) = dimLessAdsAffCon0(i);
+            
+            %Compute the dimensionless adsorption affinity constant for the ith
+            %species for NONISOTHERMAL case
+            elseif params.bool(5) == 1
+                dimLessIsoStHtRef = params.dimLessIsoStHtRef;
     
+                dimLessAdsAffCon(:,n0:nf) ...
+                    = dimLessAdsAffCon0(i) ...
+                    .* exp(-dimLessIsoStHtRef(i) - (tempRefNorm./tempCstrs - 1));
+            end
+            %-----------------------------------------------------------------%
+        else
+            newStates = calcIsothermWaterGab(params,states,tempCstrs,nAds,i);
+        end
     end
     %---------------------------------------------------------------------%
     
@@ -216,99 +235,102 @@ function newStates = calcIsothermToth(params,states,nAds)
     %Calculate adsorption equilibrium (Explicit)
 
     %Update the species dependent term in the denominator of the
-    %Extended Langmuir expression
+    %Toth expression
     for i = 1 : nComs
-        
-        %Initialize the denominator
-        denominator = ones(nRows,nVols);
-        
-        %-----------------------------------------------------------------%
-        %Obtain the indices
-        
-        %Obtain the beginning index
-        n0 = nVols*(i-1)+1;
-        
-        %Obtain the ending index
-        nf = nVols*i;
-        %-----------------------------------------------------------------%
-        
-        
-        
-        %-----------------------------------------------------------------%
-        %Unpack the adsorber states and the isotherm parameters for the ith
-        %species
-        
-        %Obtain the current gas phase species concentration
-        colGasConsSpec = colGasCons.(sComNums{i});
 
-        %Obtain the dimensionless saturation constant for the ith species
-        dimLessSatdConcSpec = dimLessSatdConc(:,n0:nf);
-        
-        %Obtain the dimensionless adsorption affinity constant for the ith
-        %species
-        dimLessAdsAffConSpec = dimLessAdsAffCon(:,n0:nf);
-        
-        %Obtain the dimensionless Toth isotherm exponent for the ith species
-        dimLessTotIsoExpSpec = dimLessTotIsoExp(:,n0:nf);        
-        %-----------------------------------------------------------------%
-                
-        
-        
-        %-----------------------------------------------------------------%
-        %Compute the denominator term for the Toth isotherm model
+        isWater = strcmp(params.sCom,'H2O');
+        isCo2 = strcmp(params.sCom,'CO2');
 
-        %Update the denominator vector
-        denominator = (denominator ...
-                    + sign(dimLessAdsAffConSpec.* colGasConsSpec.*tempCstrs) ...
-                   .* (abs(dimLessAdsAffConSpec.* colGasConsSpec.*tempCstrs))...
-                   .^ dimLessTotIsoExpSpec)...
-                   .^ 1./dimLessTotIsoExpSpec;
-        %-----------------------------------------------------------------%
-        
-        
-        
-        %-----------------------------------------------------------------%
-        %Evaluate the adsoption equilibrium loading for the ith species
-        
-        %Calculate the adsoption equilibrium loading for the ith species
-        loading = dimLessSatdConcSpec ...
-               .* dimLessAdsAffConSpec ...
-               .* (colGasConsSpec.*tempCstrs);
-        %-----------------------------------------------------------------%
-        
-        
-        
-        %-----------------------------------------------------------------%
-        %Store the results
-        
-        %Get the beginning index
-        nSt0 = nColStT*(nAdsInd-1) ...
-             + nComs+i;
-
-        %Get the final index
-        nStf = nColStT*(nAdsInd-1) ...
-             + nStates*(nVols-1)+nComs+i;
-
-        %For adosrbed concentrations, update with equilibrium 
-        %concentrations with the current gas phase compositions
-        newStates(:,nSt0:nStates:nStf) ...
-            = loading ...
-           ./ denominator;
-        %-----------------------------------------------------------------%
-
-
-
-        %-----------------------------------------------------------------%
-        %Calculate the effects due to water presence, specific to
-        %amin-based sorbents and CO2-H2O interactions
-        if any(strcmp(params.sCom,'CO2')) && any(strcmp(params.sCom,'H2O'))
-            newStates = fRH();
-            idxCo2 = find(strcmp(params.sCom,'CO2'));
-            idxH2o = find(strcmp(params.sCom,'H2O'));
-            newStates = (1 + phi*(0.6-colGasCons./0.059*0.47)) ...
-                * newStates;
+        if isWater(i) == 0 
+            %Initialize the denominator
+            denominator = ones(nRows,nVols);
+            
+            %-----------------------------------------------------------------%
+            %Obtain the indices
+            
+            %Obtain the beginning index
+            n0 = nVols*(i-1)+1;
+            
+            %Obtain the ending index
+            nf = nVols*i;
+            %-----------------------------------------------------------------%
+            
+            
+            
+            %-----------------------------------------------------------------%
+            %Unpack the adsorber states and the isotherm parameters for the ith
+            %species
+            
+            %Obtain the current gas phase species concentration
+            colGasConsSpec = colGasCons.(sComNums{i});
+    
+            %Obtain the dimensionless saturation constant for the ith species
+            dimLessSatdConcSpec = dimLessSatdConc(:,n0:nf);
+            
+            %Obtain the dimensionless adsorption affinity constant for the ith
+            %species
+            dimLessAdsAffConSpec = dimLessAdsAffCon(:,n0:nf);
+            
+            %Obtain the dimensionless Toth isotherm exponent for the ith species
+            dimLessTotIsoExpSpec = dimLessTotIsoExp(:,n0:nf);        
+            %-----------------------------------------------------------------%
+                    
+            
+            
+            %-----------------------------------------------------------------%
+            %Compute the denominator term for the Toth isotherm model
+    
+            %Update the denominator vector
+            denominator = (denominator ...
+                        + sign(dimLessAdsAffConSpec.* colGasConsSpec.*tempCstrs) ...
+                       .* (abs(dimLessAdsAffConSpec.* colGasConsSpec.*tempCstrs))...
+                       .^ dimLessTotIsoExpSpec)...
+                       .^ 1./dimLessTotIsoExpSpec;
+            %-----------------------------------------------------------------%
+            
+            
+            
+            %-----------------------------------------------------------------%
+            %Evaluate the adsoption equilibrium loading for the ith species
+            
+            %Calculate the adsoption equilibrium loading for the ith species
+            loading = dimLessSatdConcSpec ...
+                   .* dimLessAdsAffConSpec ...
+                   .* (colGasConsSpec.*tempCstrs);
+            %-----------------------------------------------------------------%
+            
+            
+            
+            %-----------------------------------------------------------------%
+            %Store the results
+            
+            %Get the beginning index
+            nSt0 = nColStT*(nAdsInd-1) ...
+                 + nComs+i;
+    
+            %Get the final index
+            nStf = nColStT*(nAdsInd-1) ...
+                 + nStates*(nVols-1)+nComs+i;
+    
+            %For adosrbed concentrations, update with equilibrium 
+            %concentrations with the current gas phase compositions
+            newStates(:,nSt0:nStates:nStf) ...
+                = loading ...
+               ./ denominator;
+            
+            if isCo2(i) == 1
+                presCo2 = newStates(:,nSt0-nComs:nStates:nStf-nComs) ;
+                pFactor = 59E-3 / params.gConScaleFac ;
+                fRH = @(RH) 1 + RH.*(0.6-presCo2/pFactor*0.47) ;
+                newStates(:,nSt0:nStates:nStf) = ...
+                    fRH(params.relHum) .* newStates(:,nSt0:nStates:nStf) ;
+            else
+                %
+            end
+            %-----------------------------------------------------------------%
+        else
+            %
         end
-        %-----------------------------------------------------------------%
     end          
     %---------------------------------------------------------------------%
     
