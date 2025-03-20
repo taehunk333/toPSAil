@@ -207,7 +207,7 @@ function params = getAdsEquilParams(params,varargin)
         %Unpack additional params
         qSatC    = params.qSatC   ;
         bC       = params.bC      ;
-        gasCons  = parama.gasCons ;
+        gasCons  = params.gasCons ;
         tempAmbi = params.tempAmbi;
         gasConT  = params.gasConT ;
         
