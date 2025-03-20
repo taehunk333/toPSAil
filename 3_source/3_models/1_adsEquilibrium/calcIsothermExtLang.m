@@ -62,7 +62,8 @@ function newStates = calcIsothermExtLang(params,states,nAds)
     nVols        = params.nVols       ;
     bool         = params.bool        ;
     nRows        = params.nRows       ;    
-    dimLessQsatC = params.dimLessQsatC;    
+    dimLessQsatC = params.dimLessQsatC;   
+    gasCons      = params.gasCons     ;
     %---------------------------------------------------------------------%
     
     
