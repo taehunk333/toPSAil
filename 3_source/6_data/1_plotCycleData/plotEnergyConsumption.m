@@ -126,7 +126,9 @@ function plotEnergyConsumption(params,sol)
     set(gcf,'Position',[100,25,575,250]);
     
     %Set the limit on the x-axis
-    xlim([1,lastCycNo]);
+    if lastCycNo > 1
+        lim([1,lastCycNo]);
+    end
     
     %Set integer spacing
     set(gca,'xtick',0:laststep/nSteps);

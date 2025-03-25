@@ -125,7 +125,9 @@ function plotCssConv(params,sol)
     set(gca,'FontSize',14)                 ;  
     
     %Set the x limit
-    xlim([1,lastCycNo]);
+    if lastCycNo > 1
+        xlim([1,lastCycNo]);
+    end
     %---------------------------------------------------------------------%
     
     
