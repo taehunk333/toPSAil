@@ -216,13 +216,13 @@ function plotPsaSimulationResults(params,sol)
     
     
     %---------------------------------------------------------------------%
-    %Check for the fifth plotting mode
-    
-    %Save the previous figObj
-    prevFigObj = figObj;  
+    %Check for the fifth plotting mode 
     
     %If user requested the plot,     
     if plotFig(5) == 1
+
+        %Save the previous figObj
+        prevFigObj = figObj; 
         
         %For each adsorption column,
         for i = 1 : nCols

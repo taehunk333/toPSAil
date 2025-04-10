@@ -43,21 +43,16 @@ function runPsaProcessSimulation(folderName,varargin)
     %Name the function ID
     funcId = 'runPsaProcessSimulation.m';   
     
-    %Check for the input to see if it is empty
-    additionalInputsEmpty = isempty(varargin{1});
-    
-    %When we have more than one input, and the input is not empty
-    if nargin > 1 && ~additionalInputsEmpty
-        
-        %Then, we have a function call
-        num = varargin{1};
-        
-    %When the vector including the additional inputs is empty
-    elseif additionalInputsEmpty
-        
-        %Then, we don't need to number the function call
+    if nargin > 1
+        additionalInputsEmpty = isempty(varargin{1});
+        if ~additionalInputsEmpty
+            num = varargin{1};
+        else
+            num = [];
+        end
+    else
+        additionalInputsEmpty = true;
         num = [];
-        
     end
     %---------------------------------------------------------------------%
 
