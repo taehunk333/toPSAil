@@ -114,8 +114,8 @@ function [stTime,stStates,flags] ...
             
             %-------------------------------------------------------------%                        
             %Get the terminal time points
-            tf  = tDom(2) ;
-            tf0 = tDom0(2);                
+            tf  = tDom(end) ;
+            tf0 = tDom0(end);                
 
             %Consider the duration of the pre-integration. If we are pretty
             %much done with the numerical integration for the step, within 
