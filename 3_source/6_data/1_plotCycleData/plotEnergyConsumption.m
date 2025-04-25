@@ -127,7 +127,7 @@ function plotEnergyConsumption(params,sol)
     
     %Set the limit on the x-axis
     if lastCycNo > 1
-        lim([1,lastCycNo]);
+        xlim([1,lastCycNo]);
     end
     
     %Set integer spacing
