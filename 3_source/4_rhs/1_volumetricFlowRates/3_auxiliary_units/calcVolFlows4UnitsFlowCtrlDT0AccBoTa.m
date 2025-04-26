@@ -18,16 +18,18 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2022/8/13/Saturday
-%Code last modified on : 2022/10/22/Saturday
+%Code created on       : 2022/10/22/Saturday
+%Code last modified on : 2025/04/25/Friday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : calcVolFlows4UnitsFlowCtrlDT0.m
+%Function   : calcVolFlows4UnitsFlowCtrlDT0AccBoTa.m
 %Source     : common
 %Description: This function calculates volumetric flow rates for the rest
 %             of the process flow diagram, based on the calcualted and thus
-%             became known volumetric flow rates in the adsorbers.
+%             became known volumetric flow rates in the adsorbers. For the
+%             raffinate and extract product tanks, we let the pressure 
+%             to accumulate.
 %Inputs     : params       - a struct containing simulation parameters.
 %             units        - a nested structure containing all the units in
 %                            the process flow diagram. 
@@ -42,16 +44,16 @@
 %                            the process flow diagram. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function units = calcVolFlows4UnitsFlowCtrlDT0(params,units,nS)
+function units = calcVolFlows4UnitsFlowCtrlDT0AccBoTa(params,units,nS)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'calcVolFlows4UnitsFlowCtrlDT0.m';
+    %funcId = 'calcVolFlows4UnitsFlowCtrlDT0AccBoTa.m';
     
     %Unpack params   
-    nCols = params.nCols;
+    nCols = params.nCols;  
     %---------------------------------------------------------------------%       
     
     
@@ -99,20 +101,18 @@ function units = calcVolFlows4UnitsFlowCtrlDT0(params,units,nS)
     %Calculate the remaining boundary conditions for the raffinate product
     %tank unit
     
-    %Get the net volumetric flow rate in the raffinate product tank from 
-    %the streams associated with the columns
-    vFlRaTa(:,(nCols+1)) = max(0,sum(vFlRaTa(:,1:nCols),2));
+    %Nothing to do; we let the pressure accumulate inside the raffinate
+    %product tank.
     %---------------------------------------------------------------------%
     
     
-    
+
     %---------------------------------------------------------------------%
-    %Calculate the remaining boundary conditions for the extract product 
+    %Calculate the remaining boundary conditions for the extract product
     %tank unit
     
-    %Get the net volumetric flow rate in the extract product tank from 
-    %the streams associated with the columns
-    vFlExTa(:,(nCols+1)) = abs(min(0,sum(vFlExTa(:,1:nCols),2)));
+    %Nothing to do; we let the pressure accumulate inside the raffinate
+    %product tank.
     %---------------------------------------------------------------------%
     
     

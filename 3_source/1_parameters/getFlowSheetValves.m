@@ -157,7 +157,8 @@ function params = getFlowSheetValves(params)
                      + strcmp(sStepCol,'RP-EXT-XXX') ...
                      + strcmp(sStepCol,'HR-EXT-ATM'); 
     valAdsFeEnd2ExTa = valAdsFeEnd2ExTa ...
-                     + strcmp(sStepCol,'DP-EXT-XXX');
+                     + strcmp(sStepCol,'DP-EXT-XXX') ...
+                     + strcmp(sStepCol,'LP-EXT-RAF');
                  
     %Check for all the situations where the feed tank outlet is headed to
     %the product-end of the adsorbers

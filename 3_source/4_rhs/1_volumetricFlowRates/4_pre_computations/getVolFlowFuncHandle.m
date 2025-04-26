@@ -71,7 +71,7 @@ function [prodEnd,feedEnd,flags] ...
     
     %---------------------------------------------------------------------%
     %Based on the given simulation mode, assign proper boundary conditions.
-    %Th ename code reads as the following: "Acronym for the step" +
+    %The name code reads as the following: "Acronym for the step" +
     %"feed-end connection" + "product-end connection"
     
     %When we are working with "flow-controlled" simulation mode
@@ -128,7 +128,19 @@ function [prodEnd,feedEnd,flags] ...
                 prodEnd = @(params,col,feTa,raTa,exTa,nS,nCo) ...
                           calcVolFlowRaTa2ValFiv(params,col,feTa, ...
                                                  raTa,exTa,nS,nCo);
-                feedEnd = []; 
+                feedEnd = [];
+
+            %Low pressure purge step, from the raffinate tank to the 
+            %product-end of the adsorber, and from the feed-end of the
+            %adsorber to the extract tank
+            elseif strcmp(stepNameCurr,'LP-EXT-RAF')
+
+                %Define the function handles
+                prodEnd = @(params,col,feTa,raTa,exTa,nS,nCo) ...
+                          calcVolFlowRaTa2ValFiv(params,col,feTa, ...
+                                                 raTa,exTa,nS,nCo);
+
+                feedEnd = [];
                                 
             %Low pressure purge step, from the raffinate tank to the
             %feed-end of the adsorber, and from the product-end of the
@@ -391,9 +403,19 @@ function [prodEnd,feedEnd,flags] ...
                 feedEnd = @(params,col,feTa,raTa,exTa,nS,nCo) ...
                           calcVolFlowValSixBpr2ExWa(params,col,feTa, ...
                                                     raTa,exTa,nS,nCo); 
-%                 feedEnd = @(params,col,feTa,raTa,exTa,nS,nCo) ...
-%                           calcVolFlowValSix2ExWa(params,col,feTa, ...
-%                                                     raTa,exTa,nS,nCo); 
+
+            %Low pressure purge step, from the raffinate tank to the
+            %product-end of the adsorber, and from the feed-end of the
+            %adsorber to the extract tank
+            elseif strcmp(stepNameCurr,'LP-EXT-RAF')
+                
+                %Define the function handles                
+                prodEnd = @(params,col,feTa,raTa,exTa,nS,nCo) ...
+                          calcVolFlowRaTa2ValFiv(params,col,feTa, ...
+                                                 raTa,exTa,nS,nCo);
+                feedEnd = @(params,col,feTa,raTa,exTa,nS,nCo) ...
+                          calcVolFlowValSixBpr2ExTa(params,col,feTa, ...
+                                                    raTa,exTa,nS,nCo); 
                                 
             %Low pressure purge step, from the raffinate tank to the
             %feed-end of the adsorber, and from the product-end of the

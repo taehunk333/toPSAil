@@ -65,13 +65,13 @@ function [event,isterminal,direction] ...
     indSh = inShRaTa;
 
     %Get the index for the first component
-    indFirst = indSh+1;
+    indStart = indSh+1;
 
     %Get the index for the last component
     indEnd = indSh+nComs;
 
     %Get the total gas concentration in the gas phase
-    gasConsTot = sum(states(indFirst:indEnd));
+    gasConsTot = sum(states(indStart:indEnd));
 
     %Get the interior temperature of the raffinate tank
     intTempTank = states(indEnd+1);

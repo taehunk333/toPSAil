@@ -19,21 +19,27 @@
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
 %Code created on       : 2022/12/22/Thursday
-%Code last modified on : 2022/12/22/Thursday
+%Code last modified on : 2025/04/25/Friday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : getExTaEventPressureMult.m
+%Function   : getBoTaEventPressureAccMult.m
 %Source     : common
 %Description: This is an event function that triggers when the pressure
-%             inside the n_c th CSTR inside the extract tank reaches a 
-%             prespecified threshold value.
+%             inside the n_c th CSTR inside the raffinate tank reaches the
+%             raffinate tank nominal pressure level, or the pressure inside
+%             the extract tank resches the extract tank nominal pressure
+%             level, or the other user-specified event triggers, whichever 
+%             one comes first. In the case of high pressure feed, we can 
+%             have a breakthrough thershold specified, in addition to 
+%             raffinate product tank pressure threshold. Therefore, we need
+%             to employ multiple event criteria.
 %Inputs     : params       - a struct containing simulation parameters.
 %             t            - a current time point.
 %             states       - a current state vector at the current time 
 %                            point t.
-%Outputs    : event        - a value that defines an event to happen when
-%                            the function value becomes zero
+%Outputs    : event        - a vector that defines the events to happen 
+%                            when the event function values become zeros
 %             isTerminal   - a boolean determining if we need to stop the 
 %                            integration once the event happens
 %             direction    - a boolean for stating direction(s) to approach
@@ -41,68 +47,47 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function [event,isterminal,direction] ...
-    = getExTaEventPressureMult(params,~,states)
+    = getBoTaEventPressureAccMult(params,t,states)
 
     %---------------------------------------------------------------------%
     %Define known quantities
     
     %Define function ID
-    %funcId = 'getExTaEventPressureMult.m';
+    %funcId = 'getBoTaEventPressureAccMult.m';
     
     %Unpack params
-    eveTotPresNorm = params.eveTotPresNorm;
-    nComs          = params.nComs         ;
-    gasConsNormEq  = params.gasConsNormEq ;
-    inShExTa       = params.inShExTa      ;
-    nLKs           = params.nLKs          ;
     nS             = params.nS           ;
     funcEve        = params.funcEve{nS}  ;
     %---------------------------------------------------------------------%
     
     
-    
+  
     %---------------------------------------------------------------------%
     %Initialize solution arrays
     
     %Initialize the event vector 
-    event      = zeros(2,1); 
-    isterminal = zeros(2,1);
-    direction  = zeros(2,1);
+    event      = zeros(3,1); 
+    isterminal = zeros(3,1);
+    direction  = zeros(3,1);
     %---------------------------------------------------------------------%
     
     
     
     %---------------------------------------------------------------------%
-    %Compute the event criteria 
+    %Evaluate the first event
+
+    %Check the pressure threshold, i.e., the first event
+    [event(1),~,~] = getRaTaEventPressureAcc(params,0,states);      
+    %---------------------------------------------------------------------%    
     
-    %Shift the index to be that of the extract tank
-    indSh = inShExTa;
-
-    %Get the index for the heavy key
-    indHk = indSh+nLKs+1;
-
-    %Get the index for the last component
-    indEnd = indSh+nComs;
-
-    %Get the total gas concentration in the gas phase
-    gasConsTot = sum(states(indHk:indEnd));
-
-    %Get the interior temperature of the raffinate tank
-    intTempTank = states(indEnd+1);
-
-    %Compute the current pressure in the raffinate tank
-    currTankPressure = gasConsTot.*intTempTank.*gasConsNormEq;
-    %---------------------------------------------------------------------%
-
 
 
     %---------------------------------------------------------------------%
     %Evaluate the first event
 
-    %Check the pressure threshold
-    event(1) = currTankPressure ...
-             - eveTotPresNorm ;
-    %---------------------------------------------------------------------%    
+    %Check the pressure threshold, i.e., the first event
+    [event(2),~,~] = getExTaEventPressureAcc(params,0,states);      
+    %---------------------------------------------------------------------%  
     
 
       
@@ -111,9 +96,11 @@ function [event,isterminal,direction] ...
     
     %Shall we stop the integration after an event triggers?
     isterminal(1) = 1; % Halt integration (1 = true, 0 = false)
+    isterminal(2) = 1; % Halt integration (1 = true, 0 = false)
     
     %From which side should we approach zero?
     direction(1) = 0; % The zero can be approached from either direction    
+    direction(2) = 0; % The zero can be approached from either direction 
     %---------------------------------------------------------------------%
     
     
@@ -122,7 +109,7 @@ function [event,isterminal,direction] ...
     %Evaluate the second event
     
     %Check the breakthrough threshold, i.e., the second event
-    [event(2),isterminal(2),direction(2)] = funcEve(params,t,states);
+    [event(3),isterminal(3),direction(3)] = funcEve(params,t,states);
     %---------------------------------------------------------------------%
     
 end

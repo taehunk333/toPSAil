@@ -18,16 +18,18 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2022/8/13/Saturday
-%Code last modified on : 2022/10/22/Saturday
+%Code created on       : 2022/10/22/Saturday
+%Code last modified on : 2025/04/25/Friday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : calcVolFlows4UnitsFlowCtrlDT0.m
+%Function   : calcVolFlows4UnitsFlowCtrlDT1AccBoTa.m
 %Source     : common
 %Description: This function calculates volumetric flow rates for the rest
 %             of the process flow diagram, based on the calcualted and thus
-%             became known volumetric flow rates in the adsorbers.
+%             became known volumetric flow rates in the adsorbers. We let
+%             the pressure inside the raffinate and extract product tanks
+%             to accumulate.
 %Inputs     : params       - a struct containing simulation parameters.
 %             units        - a nested structure containing all the units in
 %                            the process flow diagram. 
@@ -42,16 +44,26 @@
 %                            the process flow diagram. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function units = calcVolFlows4UnitsFlowCtrlDT0(params,units,nS)
+function units = calcVolFlows4UnitsFlowCtrlDT1AccBoTa(params,units,nS)
 
     %---------------------------------------------------------------------%    
     %Define known quantities
     
     %Name the function ID
-    %funcId = 'calcVolFlows4UnitsFlowCtrlDT0.m';
+    %funcId = 'calcVolFlows4UnitsFlowCtrlDT1AccBoTa.m';
     
     %Unpack params   
-    nCols = params.nCols;
+    nCols            = params.nCols           ; 
+    gasConsNormEq    = params.gasConsNormEq   ;
+    feTaVolNorm      = params.feTaVolNorm     ;
+    tempFeedNorm     = params.tempFeedNorm    ;
+    htCapCpNorm      = params.htCapCpNorm     ;
+    pRatFe           = params.pRatFe          ;
+    yFeC             = params.yFeC            ;
+    gasConsNormFeTa  = params.gasConsNormFeTa ;
+    
+    %Unpack units
+    feTa = units.feTa;
     %---------------------------------------------------------------------%       
     
     
@@ -85,34 +97,83 @@ function units = calcVolFlows4UnitsFlowCtrlDT0(params,units,nS)
     
     %---------------------------------------------------------------------%
     %Calculate the remaining boundary conditions for the feed tank unit
+    
+        %-----------------------------------------------------------------%
+        %Unpack feed tank states variables
         
-    %The entering valve to the feed tank is always controlled to 
-    %maintain a constant pressure inside the feed tank. Therefore, we can 
-    %control the volumetric flow rate so that a constant pressure is 
-    %maintained inside the feed tank
-    vFlFeTa(:,(nCols+1)) = max(0,sum(vFlFeTa(:,1:nCols),2));    
+        %Unpack feTa tank overall heat capacity
+        feTaHtCO = feTa.n1.htCO;
+    
+        %Unpack the temperature variables for the feed tank
+        feTaTempCstr = feTa.n1.temps.cstr;
+        feTaTempWall = feTa.n1.temps.wall;
+    
+        %Unpack the feed tank total concentration
+        feTaConTot = feTa.n1.gasConsTot;        
+        %-----------------------------------------------------------------%
+
+
+
+        %-----------------------------------------------------------------%
+        %Obtain the time dependent terms.
+        
+        %Evaluate the feed stream tototal concentration
+        feedConTot = pRatFe/(gasConsNormEq*tempFeedNorm);
+
+        %Evaluate a common term for the time dependent coefficients
+        phiCommon = (feTaVolNorm*gasConsNormFeTa./feTaHtCO).*feTaConTot;
+
+        %Obtain the time dependent coefficients for the ith column        
+        phiZeroFeed = -(1+phiCommon);
+    
+        %Obtain the sum of the products of the volumetric flow rates and
+        %the state dependent coefficient (vectorized)
+        vFlFeedSum = phiZeroFeed ...
+                  .* sum(vFlFeTa(:,1:nCols),2);         
+    
+        %Calculate the heat transfer correction term
+        feTaBeta = (feTaVolNorm/feTaHtCO) ...
+                 * (feTaTempWall./feTaTempCstr-1);
+    
+        %Calculate the molar energy term (vectorized)
+        molarEnergyCurr = feedConTot*sum(htCapCpNorm.*yFeC);
+        
+        %Calculate the time dependent coefficient for the feed stream
+        phiPlusFeed = (1+phiCommon).*(feedConTot./feTaConTot) ...
+                    + (feTaVolNorm*gasConsNormFeTa./feTaHtCO) ...
+                   .* (tempFeedNorm./feTaTempCstr-1) ...
+                    * molarEnergyCurr;
+        %-----------------------------------------------------------------%
+
+
+
+        %-----------------------------------------------------------------%
+        %Save the results
+
+        %Save the feed volumetric flow rate to maintain a constant pressure
+        %inside the feed tank
+        vFlFeTa(:,nCols+1) = max(0,-(1./phiPlusFeed) ...
+                          .*(vFlFeedSum+feTaBeta));
+        %-----------------------------------------------------------------%
+
     %---------------------------------------------------------------------%       
     
     
     
     %---------------------------------------------------------------------%
     %Calculate the remaining boundary conditions for the raffinate product
-    %tank unit
+    %tank unit.
     
-    %Get the net volumetric flow rate in the raffinate product tank from 
-    %the streams associated with the columns
-    vFlRaTa(:,(nCols+1)) = max(0,sum(vFlRaTa(:,1:nCols),2));
+    %Nothing to do here. We let the pressure to accumulate.    
     %---------------------------------------------------------------------%
     
     
     
     %---------------------------------------------------------------------%
-    %Calculate the remaining boundary conditions for the extract product 
-    %tank unit
+    %Calculate the remaining boundary conditions for the extract product
+    %tank unit.
     
-    %Get the net volumetric flow rate in the extract product tank from 
-    %the streams associated with the columns
-    vFlExTa(:,(nCols+1)) = abs(min(0,sum(vFlExTa(:,1:nCols),2)));
+    %Nothing to do here. We let the pressure to accumulate.    
     %---------------------------------------------------------------------%
     
     

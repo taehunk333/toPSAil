@@ -112,7 +112,7 @@ function units = calcVolFlows4UnitsFlowCtrlDT0AccRaTa(params,units,nS)
     
     %Get the net volumetric flow rate in the extract product tank from 
     %the streams associated with the columns
-    vFlExTa(:,(nCols+1)) = max(0,sum(vFlExTa(:,1:nCols),2));   
+    vFlExTa(:,(nCols+1)) = abs(min(0,sum(vFlExTa(:,1:nCols),2)));   
     %---------------------------------------------------------------------%
     
     
