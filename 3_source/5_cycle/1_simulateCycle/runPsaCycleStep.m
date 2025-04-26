@@ -81,7 +81,8 @@ function [stTime,stStates,flags] ...
         
         %Let the pressure build up inside the raffinate product tank and/or
         %the extract product tank, if needed
-        [sol0,tDom0,preInt] = solvOdes0(params,tDom,iStates,nS);
+        [sol0,tDom0,preInt,eveTrigUser] ...
+            = solvOdes0(params,tDom,iStates,nS);
         %-----------------------------------------------------------------%
         
         
@@ -91,27 +92,7 @@ function [stTime,stStates,flags] ...
                         
         %If pre-integration was needed and done,
         if preInt == 1
-                 
-            %-------------------------------------------------------------%                        
-            %Check for the event status
-            
-            %Check to see if the user-specified event has triggered: 
-            %eveTrig = 2. First, see if the field is not empty or not
-            if ~isempty(sol0.ie)
-            
-                %When the field ie is not empty, we save it as an integer
-                eveTrig = sol0.ie;
-                
-            else
-                
-                %When the field ie is empty, we save it as a zero
-                eveTrig = 0;
-                
-            end
-            %-------------------------------------------------------------%                        
-            
-            
-            
+                                  
             %-------------------------------------------------------------%                        
             %Get the terminal time points
             tf  = tDom(end) ;
@@ -121,11 +102,8 @@ function [stTime,stStates,flags] ...
             %much done with the numerical integration for the step, within 
             %the numerical tolerance, or the second event triggered first,
             %then
-            if abs(tf-tf0) < numZero || eveTrig == 2
-                
-%                 %Update the solution data structure
-%                 sol = sol0;
-                
+            if abs(tf-tf0) < numZero || eveTrigUser == 1
+
                 %We've effectively finished simulating the step, so no need 
                 %to do the original integration
                 orgInt = 0;

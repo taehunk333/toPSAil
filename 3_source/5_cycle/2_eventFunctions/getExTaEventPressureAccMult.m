@@ -18,16 +18,16 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Code by               : Taehun Kim
 %Review by             : Taehun Kim
-%Code created on       : 2022/10/23/Sunday
-%Code last modified on : 2022/10/23/Sunday
+%Code created on       : 2022/12/22/Thursday
+%Code last modified on : 2022/12/22/Thursday
 %Code last modified by : Taehun Kim
 %Model Release Number  : 3rd
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Function   : getExTaEventPressureAcc.m
+%Function   : getExTaEventPressureAccMult.m
 %Source     : common
 %Description: This is an event function that triggers when the pressure
-%             inside the n_c th CSTR inside the extract tank reaches the
-%             extract tank nominal pressure level.
+%             inside the n_c th CSTR inside the extract tank reaches a 
+%             prespecified threshold value.
 %Inputs     : params       - a struct containing simulation parameters.
 %             t            - a current time point.
 %             states       - a current state vector at the current time 
@@ -41,66 +41,57 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function [event,isterminal,direction] ...
-    = getExTaEventPressureAcc(params,~,states)
+    = getExTaEventPressureAccMult(params,~,states)
 
     %---------------------------------------------------------------------%
     %Define known quantities
     
     %Define function ID
-    %funcId = 'getExTaEventPressureAcc.m';
+    %funcId = 'getExTaEventPressureAccMult.m';
     
     %Unpack params
-    pRatEx         = params.pRatEx        ;
-    nComs          = params.nComs         ;
-    gasConsNormEq  = params.gasConsNormEq ;
-    inShExTa       = params.inShExTa      ;
-    nLKs           = params.nLKs          ;
+    nS             = params.nS           ;
+    funcEve        = params.funcEve{nS}  ;
     %---------------------------------------------------------------------%
     
     
     
     %---------------------------------------------------------------------%
-    %Compute the event criteria 
+    %Initialize solution arrays
     
-    %Shift the index to be that of the extract tank
-    indSh = inShExTa;
-
-    %Get the index for the heavy key
-    indStart = indSh+1;
-
-    %Get the index for the last component
-    indEnd = indSh+nComs;
-
-    %Get the total gas concentration in the gas phase
-    gasConsTot = sum(states(indStart:indEnd));
-
-    %Get the interior temperature of the raffinate tank
-    intTempTank = states(indEnd+1);
-
-    %Compute the current pressure in the raffinate tank
-    currTankPressure = gasConsTot.*intTempTank.*gasConsNormEq;
+    %Initialize the event vector 
+    event      = zeros(2,1); 
+    isterminal = zeros(2,1);
+    direction  = zeros(2,1);
+    %---------------------------------------------------------------------%
+    
+    
+    
+    %---------------------------------------------------------------------%
+    %Evaluate the first event
+    
+    [event(1),~,~] = getExTaEventPressureAcc(params,0,states);
     %---------------------------------------------------------------------%
 
-
-
-    %---------------------------------------------------------------------%
-    %Evaluate the event
-
-    %Check the pressure threshold
-    event = currTankPressure ...
-          - pRatEx ;
-    %---------------------------------------------------------------------%    
-    
 
       
     %---------------------------------------------------------------------%
     %Specify the event criteria
     
     %Shall we stop the integration after an event triggers?
-    isterminal = 1; % Halt integration (1 = true, 0 = false)
+    isterminal(1) = 1; % Halt integration (1 = true, 0 = false)
     
     %From which side should we approach zero?
-    direction = 0; % The zero can be approached from either direction    
+    direction(1) = 0; % The zero can be approached from either direction    
+    %---------------------------------------------------------------------%
+    
+    
+    
+    %---------------------------------------------------------------------%
+    %Evaluate the second event
+    
+    %Check the breakthrough threshold, i.e., the second event
+    [event(2),isterminal(2),direction(2)] = funcEve(params,t,states);
     %---------------------------------------------------------------------%
     
 end

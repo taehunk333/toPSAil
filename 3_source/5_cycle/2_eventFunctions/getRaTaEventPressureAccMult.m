@@ -55,10 +55,6 @@ function [event,isterminal,direction] ...
     %funcId = 'getRaTaEventPressureAccMult.m';
     
     %Unpack params
-    pRatRa         = params.pRatRa       ;
-    nComs          = params.nComs        ;
-    gasConsNormEq  = params.gasConsNormEq;
-    inShRaTa       = params.inShRaTa     ;
     nS             = params.nS           ;
     funcEve        = params.funcEve{nS}  ;
     %---------------------------------------------------------------------%
@@ -76,36 +72,12 @@ function [event,isterminal,direction] ...
     
     
     
-    %---------------------------------------------------------------------%
-    %Compute the event criteria 
     
-    %Shift the index to be that of the raffinate tank
-    indSh = inShRaTa;
-
-    %Get the index for the first component
-    indFirst = indSh+1;
-
-    %Get the index for the last component
-    indEnd = indSh+nComs;
-
-    %Get the total gas concentration in the gas phase
-    gasConsTot = sum(states(indFirst:indEnd));
-
-    %Get the interior temperature of the raffinate tank
-    intTempTank = states(indEnd+1);
-
-    %Compute the current pressure in the raffinate tank
-    currTankPressure = gasConsTot.*intTempTank.*gasConsNormEq;
-    %---------------------------------------------------------------------%
-
-
-
     %---------------------------------------------------------------------%
     %Evaluate the first event
 
     %Check the pressure threshold, i.e., the first event
-    event(1) = currTankPressure ...
-             - pRatRa ;             
+    [event(1),~,~] = getRaTaEventPressureAcc(params,0,states);
     %---------------------------------------------------------------------%    
     
 
