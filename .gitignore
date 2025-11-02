@@ -15,3 +15,6 @@
 4_example/.DS_Store
 4_example/case_study_1.0/.DS_Store
 4_example/case_study_1.0/2_simulation_outputs/.DS_Store
+*.csv
+*.mat
+*.pdf
