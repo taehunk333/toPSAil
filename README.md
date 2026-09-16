@@ -42,7 +42,6 @@ Please visit [the Official YouTube Channel for toPSAil](https://www.youtube.com/
 # Developers
 
 > * Taehun Kim: [email](tk6at@virginia.edu)
-> * Viktor Kalman
 
 # User Community
 
